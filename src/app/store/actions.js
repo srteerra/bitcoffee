@@ -1,9 +1,11 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 import axios from "axios";
+import { client } from "../../lib/sanityClient";
+import imageUrlBuilder from "@sanity/image-url";
 
-// // Get a pre-configured url-builder from your sanity client
-// const builder = imageUrlBuilder(client);
+// Get a pre-configured url-builder from your sanity client
+const builder = imageUrlBuilder(client);
 
 const Web3 = require("web3");
 const web3 = new Web3(Web3.givenProvider || "ws://localhost:8546");
