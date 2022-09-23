@@ -114,6 +114,8 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   name: "BifcoffeeCard",
   data() {
@@ -121,6 +123,13 @@ export default {
       currentStep: 1,
       amountInput: 0,
     };
+  },
+  computed: {
+    progress() {
+      return Math.round(100 / this.max_step) * this.currentStep;
+    },
+
+    ...mapState(["donator", "isconnected", "username", "balanceOf"]),
   },
   methods: {
     onClickNext() {

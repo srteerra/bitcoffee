@@ -230,7 +230,9 @@
 <script>
 export default {
   name: "HomeView",
-  data() {},
+  data() {
+    return {};
+  },
 };
 </script>
 

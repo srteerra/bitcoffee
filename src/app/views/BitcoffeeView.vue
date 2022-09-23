@@ -9,13 +9,13 @@ import BitcoffeeCard from "../components/BitcoffeeCard.vue";
 
 export default {
   name: "BifcoffeeView",
+  data() {
+    return {};
+  },
   components: {
     BitcoffeeCard,
   },
   methods: {},
-  data() {
-    return {};
-  },
 };
 </script>
 

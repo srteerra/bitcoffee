@@ -1,11 +1,13 @@
 <template>
-  <div></div>
+  <div>asdasd</div>
 </template>
 
 <script>
 export default {
   name: "Footer",
-  data() {},
+  data() {
+    return {};
+  },
 };
 </script>
 
