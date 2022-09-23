@@ -18,7 +18,7 @@
             <strong>Your page, your <br />own place.</strong>
           </h1>
           <p class="py-4">Here with us</p>
-          <div class="search-creator w-100 text-center">
+          <div class="search-creator text-center">
             <input
               class="search-creator__input"
               type="text"
@@ -148,6 +148,21 @@
       <!-- Membership section -->
       <div>
         <b-row class="membership-section__container py-5 px-4">
+          <img
+            src="../assets/vectors/Dollar 1.png"
+            alt="dollar"
+            class="membershipVector1"
+          />
+          <img
+            src="../assets/vectors/Doc 2.png"
+            alt="doc"
+            class="membershipVector2"
+          />
+          <img
+            src="../assets/vectors/xusd.png"
+            alt="xusd"
+            class="membershipVector3"
+          />
           <b-col align-self="start" cols="12" md="12" lg="4">
             <h2 class="font-weight-bold">
               Build a <span style="color: #594d42">monthly</span> income!
@@ -160,6 +175,7 @@
               data-aos-duration="1000"
               src="../assets/images/btc-hands.png"
               alt="btc-hands"
+              class="w-100"
             />
           </b-col>
           <b-col md="6" offset-md="6" class="text-right">
@@ -226,7 +242,7 @@ export default {
   height: 100vh;
   position: relative;
   .search-creator {
-    width: 50%;
+    width: 100%;
     .search-creator__input {
       width: 50%;
       padding-right: 50px;
@@ -312,12 +328,28 @@ export default {
 
 // Css styles for membership section
 .membership-section__container {
-  height: 100vh !important;
-  img {
-    width: 100%;
-  }
+  position: relative;
+  height: 100vh;
   h2 {
     color: rgba(45, 45, 45, 0.5);
+  }
+
+  .membershipVector1 {
+    width: 50px;
+    position: absolute;
+    right: 100px;
+  }
+  .membershipVector2 {
+    width: 50px;
+    position: absolute;
+    left: 150px;
+    bottom: 200px;
+  }
+  .membershipVector3 {
+    width: 70px;
+    position: absolute;
+    left: 200px;
+    bottom: 150px;
   }
 }
 
@@ -394,7 +426,7 @@ export default {
   }
 
   .search-creator__input {
-    width: 90%;
+    width: 100%;
   }
 }
 </style>
