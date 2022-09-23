@@ -11,6 +11,18 @@ const routes = [
     name: "home",
     component: () => import(/* webpackChunkName:"home" */ "../views/HomeView"),
   },
+  {
+    path: "/:user",
+    name: "bitcoffee",
+    component: () =>
+      import(/* webpackChunkName:"home" */ "../views/BitcoffeeView"),
+  },
+  {
+    path: "/creator/",
+    name: "creator",
+    component: () =>
+      import(/* webpackChunkName:"home" */ "../views/ProfileView"),
+  },
 ];
 
 const router = new Router({
