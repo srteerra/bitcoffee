@@ -1,5 +1,10 @@
-@media (max-width: 770px) {
+@media (max-width: 790px) {
   .solid-back {
+    display: none;
+  }
+  .coffeeVector,
+  .hearthVector,
+  .coffee-cupVector {
     display: none;
   }
 }
