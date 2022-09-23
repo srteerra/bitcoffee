@@ -1,0 +1,35 @@
+$enable-responsive-font-sizes: true;
+
+$primary: #594d42;
+$secondary: #545759;
+$success: #69b770;
+$info: cyan;
+$warning: #fbea4f;
+$danger: red;
+$light: rgb(255, 255, 255);
+$dark: #2d2d2d;
+
+$theme-colors: (
+  "primary": $primary,
+  "secondary": $secondary,
+  "success": $success,
+  "info": $info,
+  "warning": $warning,
+  "danger": $danger,
+  "light": $light,
+  "dark": $dark,
+);
+
+$enable-responsive-font-sizes: true;
+
+$font-weight-lighter: lighter;
+$font-weight-light: 300;
+$font-weight-normal: 400;
+$font-weight-bold: 700;
+$font-weight-bolder: bolder;
+
+$font-weight-base: $font-weight-normal;
+
+$line-height-base: 1.5;
+$line-height-sm: 1.25;
+$line-height-lg: 2;

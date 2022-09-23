@@ -1,0 +1,220 @@
+<template>
+  <div id="profile__container" class="pb-5">
+    <div
+      class="profile__background"
+      :style="{
+        'background-repeat': 'no-repeat',
+        'background-position': 'center',
+        'background-size': 'cover',
+        'background-image':
+          'url(' + require('../assets/images/studio.jpg') + ')',
+      }"
+    />
+    <div class="profile__desc">
+      <div class="profile__desc__top">
+        <b-avatar class="profile__avatar mx-auto" size="6rem" />
+        <b-button
+          size="sm"
+          variant="light"
+          class="profile__edit rounded-pill"
+          :style="{
+            'background-repeat': 'no-repeat',
+            'background-position': 'center',
+            'background-size': 'cover',
+            'background-image':
+              'url(' + require('../assets/icons/go-link.png') + ')',
+          }"
+        >
+        </b-button>
+      </div>
+      <section>
+        <h3 class="font-weight-bold pt-5 text-center">
+          {{ this.$route.params.user }}
+        </h3>
+        <div v-if="currentStep == 1" class="p-0 text-center">
+          <div>
+            <b-row>
+              <b-col>
+                <div>
+                  <p class="font-weight-light">sarahsblog.com</p>
+                  <p style="max-width: 200px" class="mx-auto py-3">
+                    I like making instrumental music, it's one of my favorite
+                    things to do.
+                  </p>
+                </div>
+                <b-button
+                  size="lg"
+                  block
+                  variant="dark"
+                  class="rounded-pill font-weight-bold w-50 mx-auto"
+                  @click="onClickNext"
+                  v-if="!isconnected"
+                >
+                  <p class="p-0 m-0">Wallet required</p>
+                </b-button>
+                <b-button
+                  size="lg"
+                  block
+                  variant="dark"
+                  class="rounded-pill font-weight-bold w-50 mx-auto"
+                  @click="onClickNext"
+                  v-else
+                >
+                  <p class="p-0 m-0">Donate</p>
+                </b-button>
+              </b-col>
+            </b-row>
+          </div>
+        </div>
+        <div v-if="currentStep == 2" class="p-0">
+          <div>
+            <b-row>
+              <b-col>
+                <div class="w-50 mx-auto py-5">
+                  <b-form-group
+                    id="EmailInputGroup"
+                    class="text-dark font-weight-bold"
+                  >
+                    <label for="AmountInput">Amount</label>
+                    <b-form-input
+                      id="AmountInput"
+                      type="number"
+                      class="w-100 py-2 px-4 mb-0 AmountInput rounded-pill"
+                      v-model="amountInput"
+                      placeholder="Enter the amount of coffees"
+                      required
+                    />
+                  </b-form-group>
+                </div>
+                <b-button
+                  size="lg"
+                  block
+                  variant="dark"
+                  class="rounded-pill font-weight-bold w-50 mx-auto"
+                  @click="onClickNext"
+                >
+                  <p class="p-0 m-0">Next</p>
+                </b-button>
+                <b-button
+                  id="backStepButton"
+                  block
+                  class="rounded-pill font-weight-bold w-50 mx-auto"
+                  variant="outline-primary"
+                  @click="onClickBack"
+                >
+                  <p class="p-0 m-0">Back</p>
+                </b-button>
+              </b-col>
+            </b-row>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "BifcoffeeCard",
+  data() {
+    return {
+      currentStep: 1,
+      amountInput: 0,
+    };
+  },
+  methods: {
+    onClickNext() {
+      this.currentStep++;
+    },
+    onClickBack() {
+      this.currentStep--;
+    },
+    onClickFirst() {
+      this.currentStep = 1;
+    },
+    copyMyAddress(add) {
+      navigator.clipboard.writeText(add);
+    },
+  },
+};
+</script>
+
+<style lang="scss">
+#profile__container {
+  width: 100%;
+  max-width: 654px;
+  height: 625px;
+  background-color: rgb(255, 255, 255);
+  border-radius: 90px;
+
+  /* Center vertically and horizontally */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+
+  .profile__background {
+    height: 35%;
+    // background-image: url('../assets/images/bg-user.png');
+    // background-repeat: no-repeat;
+    // background-position: center;
+    // background-size: cover;
+    border-top-left-radius: 90px;
+    border-top-right-radius: 90px;
+  }
+
+  .profile__desc {
+    height: 50%;
+    position: relative;
+
+    .profile__desc__top {
+      position: absolute;
+      text-align: center;
+      left: 0;
+      right: 0;
+      top: -60px;
+    }
+
+    .profile__edit {
+      width: 35px;
+      height: 35px;
+      position: absolute;
+      top: 55%;
+      left: 52%;
+      border: none;
+      outline: none;
+    }
+  }
+
+  .AmountInput {
+    background-color: rgb(255, 255, 255);
+    border: 1px solid #2d2d2d;
+    outline: none;
+
+    &:focus {
+      color: #2d2d2d;
+      font-weight: 700;
+      outline: none !important;
+      outline-width: 0 !important;
+      box-shadow: none;
+      -moz-box-shadow: none;
+      -webkit-box-shadow: none;
+    }
+  }
+
+  @media screen and (max-width: 575px) {
+    border-radius: 0;
+
+    .profile__background {
+      height: 35%;
+      // background-image: url('../assets/images/bg-user.png');
+      // background-repeat: no-repeat;
+      // background-position: center;
+      // background-size: cover;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+  }
+}
+</style>
