@@ -11,6 +11,7 @@ const routes = [
     name: "home",
     component: () => import(/* webpackChunkName:"home" */ "../views/HomeView"),
   },
+  { path: "/", redirect: { name: "home" } },
   {
     path: "/", redirect: { name: "home" } 
   },
@@ -32,10 +33,10 @@ const routes = [
       import(/* webpackChunkName:"home" */ "../views/BitcoffeeView"),
   },
   {
-    path: "/creator/",
-    name: "creator",
+    path: "/member/:id",
+    name: "member",
     component: () =>
-      import(/* webpackChunkName:"home" */ "../views/ProfileView"),
+      import(/* webpackChunkName:"home" */ "../views/MemberView"),
   },
 
 ];

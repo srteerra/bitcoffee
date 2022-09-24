@@ -21,6 +21,7 @@
           size="sm"
           variant="light"
           class="profile__edit rounded-pill"
+          :to="`/member/${this.$route.params.user}`"
           :style="{
             'background-repeat': 'no-repeat',
             'background-position': 'center',
@@ -65,7 +66,7 @@
               <b-col>
                 <div class="w-50 mx-auto py-5">
                   <b-form-group
-                    id="EmailInputGroup"
+                    id="AmountInputGroup"
                     class="text-dark font-weight-bold"
                   >
                     <label for="AmountInput">Amount</label>
@@ -84,9 +85,53 @@
                   block
                   variant="dark"
                   class="rounded-pill font-weight-bold w-50 mx-auto"
-                  @click="sendDonation({ amount: amountInput })"
+                  @click="onClickNext"
                 >
                   <p class="p-0 m-0">Next</p>
+                </b-button>
+                <b-button
+                  id="backStepButton"
+                  block
+                  class="rounded-pill font-weight-bold w-50 mx-auto"
+                  variant="outline-primary"
+                  @click="onClickBack"
+                >
+                  <p class="p-0 m-0">Back</p>
+                </b-button>
+              </b-col>
+            </b-row>
+          </div>
+        </div>
+        <div v-if="currentStep == 3" class="p-0 pb-5">
+          <div>
+            <b-row>
+              <b-col>
+                <div class="w-50 mx-auto py-4">
+                  <p class="text-dark font-weight-bold">Summary</p>
+                  <p class="text-dark font-weight-bold" style="opacity: 50%">
+                    {{ amountInput }} TSY
+                  </p>
+                  <p class="text-dark font-weight-light">
+                    = {{ amountInput }} coffees
+                  </p>
+                  <b-form-checkbox
+                    id="approveCheck"
+                    v-model="approved"
+                    name="approveCheck"
+                    value="approved"
+                    unchecked-value="not_approved"
+                  >
+                    I’ve read the summary and I confirm.
+                  </b-form-checkbox>
+                </div>
+                <b-button
+                  size="lg"
+                  block
+                  variant="dark"
+                  class="rounded-pill font-weight-bold w-50 mx-auto"
+                  @click="sendDonation({ amount: amountInput })"
+                >
+                  <p class="p-0 m-0">Approve</p>
                 </b-button>
                 <b-button
                   id="backStepButton"
@@ -148,6 +193,7 @@ export default {
   width: 100%;
   max-width: 654px;
   height: 625px;
+  min-height: 625px;
   background-color: rgb(255, 255, 255);
   border-radius: 90px;
 
@@ -184,7 +230,7 @@ export default {
       width: 35px;
       height: 35px;
       position: absolute;
-      top: 55%;
+      top: 60%;
       left: 52%;
       border: none;
       outline: none;

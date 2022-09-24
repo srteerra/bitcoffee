@@ -28,20 +28,17 @@
             class="px-2 my-auto"
             active-class="activeLink"
           >
-            Become a creator
+            About us
           </router-link>
           <router-link
             to="/token"
             class="px-2 my-auto"
             active-class="activeLink"
           >
-            Q&A
+            Our token
           </router-link>
-          <router-link
-            to="/learn"
-            class="px-2 my-auto"
-            active-class="activeLink"
-          >
+          <router-link to="/q&a" class="px-2 my-auto" active-class="activeLink">
+            Q&A
           </router-link>
           <!-- Connect wallet -->
           <b-button
