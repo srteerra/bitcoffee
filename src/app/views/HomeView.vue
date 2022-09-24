@@ -20,7 +20,7 @@
           <p class="py-4">Here with us</p>
           <div class="search-creator text-center">
             <div class="search-creator-input__container">
-              <p class="placeholder font-weight-regular">bitcoffe.com/</p>
+              <p class="placeholder font-weight-light">bitcoffee.com/</p>
               <input
                 class="search-creator__input font-weight-bold"
                 type="text"
@@ -39,7 +39,7 @@
           </div>
           <p class="pt-4 pb-5">
             Get started now, just connect your wallet and set up <br />your new
-            <strong>BitCofee</strong> page.
+            <strong>BitCoffee</strong> page.
           </p>
           <div class="down-arrow" id="down-arrow">
             <img
