@@ -1,4 +1,15 @@
 @media (max-width: 790px) {
+  .first-section {
+    .search-creator {
+      .search-creator-input__container {
+        display: none;
+      }
+      .alternativeBtn {
+        display: block;
+      }
+    }
+  }
+
   .solid-back {
     display: none;
   }
