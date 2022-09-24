@@ -9,7 +9,7 @@ import store from "./store";
 // import { client } from "../lib/sanityClient";
 // import imageUrlBuilder from "@sanity/image-url";
 import detectEthereumProvider from "@metamask/detect-provider";
-import $ from "jquery";
+// import $ from "jquery";
 import AOS from "aos";
 
 import "bootstrap";
