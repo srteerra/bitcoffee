@@ -38,6 +38,11 @@ export default {
   username: "",
   avatar: "",
 
+  // Creator data
+  creator_username: null,
+  creator_avatar: "",
+  creatorFound: false,
+
   // Notification center
   notifications: [],
 };

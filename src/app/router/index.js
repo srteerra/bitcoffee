@@ -12,7 +12,7 @@ const routes = [
     component: () => import(/* webpackChunkName:"home" */ "../views/404View"),
   },
   {
-    path: "/",
+    path: "/home",
     name: "home",
     component: () => import(/* webpackChunkName:"home" */ "../views/HomeView"),
   },
@@ -39,13 +39,5 @@ const router = new Router({
     window.scrollTo(0, 0);
   },
 });
-
-// router.beforeEach((to, from, next) => {
-// 	if (to.name === 'profile' && store.state.isconnected === false) {
-// 		next({ name: 'home' })
-// 	} else {
-// 		next()
-// 	}
-// })
 
 export default router;

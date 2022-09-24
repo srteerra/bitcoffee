@@ -16,7 +16,11 @@
       <!-- Navbar links -->
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav class="ml-auto text-center text-dark font-weight-regular">
-          <router-link to="/" class="px-2 my-auto" active-class="activeLink">
+          <router-link
+            to="/home"
+            class="px-2 my-auto"
+            active-class="activeLink"
+          >
             Home
           </router-link>
           <router-link

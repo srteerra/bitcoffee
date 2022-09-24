@@ -6,6 +6,22 @@ export const SET_USERNAME = (state, payload) => {
   state.username = payload.name;
 };
 
+export const CREATOR_FOUND = (state, payload) => {
+  state.creatorFound = payload.status;
+};
+
+export const SET_CREATOR_USERNAME = (state, payload) => {
+  state.creator_username = payload.name;
+};
+
+export const SET_CREATOR_AVATAR = (state, payload) => {
+  if (payload.avatar == undefined) {
+    state.avatar = "";
+  } else {
+    state.avatar = payload.avatar;
+  }
+};
+
 export const SWITCH_BLANK = (state) => {
   state.shadowblank = !state.shadowblank;
 };

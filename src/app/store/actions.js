@@ -14,6 +14,8 @@ console.log(Web3.givenProvider);
 const ethereum = window.ethereum;
 
 const net = await web3.eth.net.getId();
+
+const artifact = require("../../../build/contracts/Thosony.json");
 let tokenContract;
 
 // let tokenContract = new web3.eth.Contract(artifact.abi, artifact.networks[netID].address)
@@ -40,13 +42,75 @@ export const actions = {
   async updateBalance({ commit }) {
     tokenContract = new web3.eth.Contract(
       artifact.abi,
-      artifact.networks[networkId].address
+      artifact.networks[net].address
     );
 
-    const balanceRSK = await web3.eth.getBalance(from);
-    const balanceTSY = await tokenContract.methods.balanceOf(from).call();
+    const balanceRSK = await web3.eth.getBalance(ethereum.selectedAddress);
+    const balanceTSY = await tokenContract.methods
+      .balanceOf(ethereum.selectedAddress)
+      .call();
 
+    console.log(balanceRSK);
+    console.log(balanceTSY);
     commit("SET_BALANCE", { balanceRSK: balanceRSK, balanceTSY: balanceTSY });
+  },
+  async getCreator({ commit }, payload) {
+    console.log(payload.user);
+    const query =
+      '*[_type == "users" && userName == $user] {userName, userAddress}';
+    const params = { user: payload.user };
+
+    client
+      .fetch(query, params)
+      .then((users) => {
+        console.log(users);
+        if (users.length > 0) {
+          users.forEach((user) => {
+            console.log(`${user.userName} (${user.userAddress})`);
+            commit("SET_CREATOR_USERNAME", { name: user.userName });
+            if (user.userAvatar == undefined) {
+              commit("SET_CREATOR_AVATAR", { avatar: undefined });
+            } else {
+              commit("SET_CREATOR_AVATAR", {
+                avatar: builder.image(user.userAvatar).url(),
+              });
+            }
+            commit("CREATOR_FOUND", { status: true });
+          });
+        } else {
+          console.log("Creator not found");
+          commit("CREATOR_FOUND", { status: false });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
+  async sendDonation({ commit }, payload) {
+    let from = ethereum.selectedAddress;
+    let to = "0xa1324A30D08F064a8A0c54C26151C68e9D3E06fc";
+
+    const ab = tokenContract.methods
+      .decimals()
+      .call()
+      .then((res) => {
+        console.log("decimals: ", res);
+
+        return res;
+      });
+
+    let decimals = web3.utils.toBN(await ab);
+    var value = (payload.amount * 10 ** decimals).toString();
+    let amount = web3.utils.toBN(value);
+
+    if (Number(amount <= 0)) {
+      alert("Invalid amount");
+      return;
+    }
+
+    tokenContract.methods.transfer(to, amount).send({
+      from,
+    });
   },
   async connect_wallet({ commit, dispatch }) {
     commit("CONNECT_BUTTON", true); // Button disabled

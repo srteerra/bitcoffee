@@ -1,10 +1,12 @@
 <template>
   <div>
-    <BitcoffeeCard />
+    <b-container v-if="getCreatorFound"> <BitcoffeeCard /> </b-container>
+    <b-container v-else>Not registered page</b-container>
   </div>
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
 import BitcoffeeCard from "../components/BitcoffeeCard.vue";
 
 export default {
@@ -12,10 +14,20 @@ export default {
   data() {
     return {};
   },
+  beforeMount() {
+    this.$store.dispatch("getCreator", {
+      user: this.$route.params.user,
+    });
+  },
   components: {
     BitcoffeeCard,
   },
-  methods: {},
+  computed: {
+    ...mapGetters(["getCreatorFound"]),
+  },
+  methods: {
+    ...mapActions(["getCreator"]),
+  },
 };
 </script>
 
