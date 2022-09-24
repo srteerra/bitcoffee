@@ -8,7 +8,10 @@ export default {
   provider: null,
   currentAccount: null,
   isconnected: false,
-  balanceOf: 0,
+  balanceOf: {
+    rskBal: 0,
+    tsyBal: 0,
+  },
   contract: "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
   netID: null,
 
@@ -19,6 +22,7 @@ export default {
   disconnectBtnState: true,
 
   // Modals
+  showinstallMetaModalState: false,
 
   // Notification Ex
   noWalletNoti: false,
@@ -33,6 +37,11 @@ export default {
   // User data
   username: "",
   avatar: "",
+
+  // Creator data
+  creator_username: null,
+  creator_avatar: "",
+  creatorFound: false,
 
   // Notification center
   notifications: [],

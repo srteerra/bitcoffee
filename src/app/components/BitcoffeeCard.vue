@@ -12,7 +12,11 @@
     />
     <div class="profile__desc">
       <div class="profile__desc__top">
-        <b-avatar class="profile__avatar mx-auto" size="6rem" />
+        <b-avatar
+          class="profile__avatar mx-auto"
+          size="6rem"
+          :src="`${getCreatorAvatar}`"
+        />
         <b-button
           size="sm"
           variant="light"
@@ -29,7 +33,7 @@
       </div>
       <section>
         <h3 class="font-weight-bold pt-5 text-center">
-          {{ this.$route.params.user }}
+          {{ getCreatorUsername }}
         </h3>
         <div v-if="currentStep == 1" class="p-0 text-center">
           <div>
@@ -48,17 +52,6 @@
                   variant="dark"
                   class="rounded-pill font-weight-bold w-50 mx-auto"
                   @click="onClickNext"
-                  v-if="!isconnected"
-                >
-                  <p class="p-0 m-0">Wallet required</p>
-                </b-button>
-                <b-button
-                  size="lg"
-                  block
-                  variant="dark"
-                  class="rounded-pill font-weight-bold w-50 mx-auto"
-                  @click="onClickNext"
-                  v-else
                 >
                   <p class="p-0 m-0">Donate</p>
                 </b-button>
@@ -91,7 +84,7 @@
                   block
                   variant="dark"
                   class="rounded-pill font-weight-bold w-50 mx-auto"
-                  @click="onClickNext"
+                  @click="sendDonation({ amount: amountInput })"
                 >
                   <p class="p-0 m-0">Next</p>
                 </b-button>
@@ -114,15 +107,26 @@
 </template>
 
 <script>
+import { mapState, mapActions, mapGetters } from "vuex";
+
 export default {
   name: "BifcoffeeCard",
   data() {
     return {
       currentStep: 1,
-      amountInput: 0,
+      amountInput: null,
     };
   },
+  computed: {
+    progress() {
+      return Math.round(100 / this.max_step) * this.currentStep;
+    },
+
+    ...mapState(["donator", "isconnected", "username", "balanceOf"]),
+    ...mapGetters(["getCreatorUsername", "getCreatorAvatar"]),
+  },
   methods: {
+    ...mapActions(["sendDonation"]),
     onClickNext() {
       this.currentStep++;
     },

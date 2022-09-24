@@ -7,9 +7,20 @@ Vue.use(Router);
 
 const routes = [
   {
-    path: "/",
+    path: "*",
+    name: "404",
+    component: () => import(/* webpackChunkName:"home" */ "../views/404View"),
+  },
+  {
+    path: "/home",
     name: "home",
     component: () => import(/* webpackChunkName:"home" */ "../views/HomeView"),
+  },
+  {
+    path: "/profile",
+    name: "profile",
+    component: () =>
+      import(/* webpackChunkName:"profile" */ "../views/ProfileView"),
   },
   {
     path: "/:user",
@@ -34,13 +45,5 @@ const router = new Router({
     window.scrollTo(0, 0);
   },
 });
-
-// router.beforeEach((to, from, next) => {
-// 	if (to.name === 'profile' && store.state.isconnected === false) {
-// 		next({ name: 'home' })
-// 	} else {
-// 		next()
-// 	}
-// })
 
 export default router;

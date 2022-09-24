@@ -6,6 +6,22 @@ export const SET_USERNAME = (state, payload) => {
   state.username = payload.name;
 };
 
+export const CREATOR_FOUND = (state, payload) => {
+  state.creatorFound = payload.status;
+};
+
+export const SET_CREATOR_USERNAME = (state, payload) => {
+  state.creator_username = payload.name;
+};
+
+export const SET_CREATOR_AVATAR = (state, payload) => {
+  if (payload.avatar == undefined) {
+    state.avatar = "";
+  } else {
+    state.avatar = payload.avatar;
+  }
+};
+
 export const SWITCH_BLANK = (state) => {
   state.shadowblank = !state.shadowblank;
 };
@@ -34,8 +50,8 @@ export const DISCONNECT_BUTTON = (state, status) => {
   state.disconnectBtnState = status;
 };
 
-export const CURRENT_ADDRESS = (state, address) => {
-  state.currentAccount = address;
+export const CURRENT_ADDRESS = (state, payload) => {
+  state.currentAccount = payload;
 };
 
 export const IS_CONNECTED = (state, status) => {
@@ -43,7 +59,10 @@ export const IS_CONNECTED = (state, status) => {
 };
 
 export const SET_BALANCE = (state, payload) => {
-  state.balanceOf = payload.balance;
+  state.balanceOf = {
+    rskBal: payload.balanceRSK,
+    tsyBal: payload.balanceTSY,
+  };
 };
 
 export const CLEAR_BALANCE = (state) => {
@@ -64,6 +83,10 @@ export const SHOW_NOWALLET_NOTIFICATION = (state) => {
 
 export const SHOW_CHANGE_NETWORK = (state) => {
   state.showpleaseChangeNetState = !state.showpleaseChangeNetState;
+};
+
+export const SHOW_INSTALL_METAMASK = (state) => {
+  state.showinstallMetaModalState = !state.showinstallMetaModalState;
 };
 
 export const PUSH_NOTIFICATION = (state, payload) => {

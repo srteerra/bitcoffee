@@ -19,18 +19,20 @@
           </h1>
           <p class="py-4">Here with us</p>
           <div class="search-creator text-center">
-            <input
-              class="search-creator__input"
-              type="text"
-              placeholder="bitcoffee.com/"
-            />
-            <button class="search-creator__button">
-              <img
-                src="../assets/icons/Artboard 81 1.png"
-                class="mx-auto"
-                alt="arrow-right"
-              />
-            </button>
+            <div class="search-creator-input__container">
+              <p class="placeholder font-weight-bold">bitcoffe.com/</p>
+              <input class="search-creator__input" type="text" />
+              <button class="search-creator__button">
+                <img
+                  src="../assets/icons/Artboard 81 1.png"
+                  class="mx-auto"
+                  alt="arrow-right"
+                />
+              </button>
+            </div>
+            <b-button class="alternativeBtn w-100 bg-dark font-weight-bold" pill
+              >Get started</b-button
+            >
           </div>
           <p class="pt-4 pb-5">
             Get started now, just connect your wallet and set up <br />your new
@@ -50,7 +52,7 @@
 
       <!-- Gallery section -->
       <div>
-        <b-row class="galery-section__container my-5">
+        <b-row class="galery-section__container my-5 px-3">
           <b-col class="galery-info__column" cols="12" md="6" lg="4">
             <img
               src="../assets/vectors/coffee-cup.png"
@@ -75,7 +77,7 @@
             <b-row class="galery-people__row p-3 mt-4">
               <b-col
                 class="text-center my-2"
-                cols="12"
+                cols="6"
                 md="6"
                 lg="4"
                 data-aos="fade-up"
@@ -85,7 +87,7 @@
               </b-col>
               <b-col
                 class="text-center my-2"
-                cols="12"
+                cols="6"
                 md="6"
                 lg="4"
                 data-aos="fade-up"
@@ -96,7 +98,7 @@
               </b-col>
               <b-col
                 class="text-center my-2"
-                cols="12"
+                cols="6"
                 md="6"
                 lg="4"
                 data-aos="fade-up"
@@ -107,7 +109,7 @@
               </b-col>
               <b-col
                 class="text-center my-2"
-                cols="12"
+                cols="6"
                 md="6"
                 lg="4"
                 data-aos="fade-up"
@@ -118,7 +120,7 @@
               </b-col>
               <b-col
                 class="text-center my-2"
-                cols="12"
+                cols="6"
                 md="6"
                 lg="4"
                 data-aos="fade-up"
@@ -129,7 +131,7 @@
               </b-col>
               <b-col
                 class="text-center my-2"
-                cols="12"
+                cols="6"
                 md="6"
                 lg="4"
                 data-aos="fade-up"
@@ -163,7 +165,7 @@
             alt="xusd"
             class="membershipVector3"
           />
-          <b-col align-self="start" cols="12" md="12" lg="4">
+          <b-col class="mb-0" align-self="start" cols="12" md="12" lg="4">
             <h2 class="font-weight-bold">
               Build a <span style="color: #594d42">monthly</span> income!
             </h2>
@@ -230,7 +232,9 @@
 <script>
 export default {
   name: "HomeView",
-  data() {},
+  data() {
+    return {};
+  },
 };
 </script>
 
@@ -239,18 +243,26 @@ export default {
 .first-section {
   display: flex;
   align-items: center;
-  height: 100vh;
+  height: 90vh;
   position: relative;
+  .alternativeBtn {
+    display: none;
+  }
   .search-creator {
     width: 100%;
+    .placeholder {
+      display: inline-block;
+      margin-right: -130px;
+      color: rgb(146, 142, 142);
+    }
     .search-creator__input {
       width: 50%;
-      padding-right: 50px;
       height: 45px;
-      padding: 10px 100px 10px 20px;
+      padding: 10px 100px 10px 130px;
       border-radius: 50px;
       border: 3px solid #594d42;
       outline: none;
+      background: transparent;
     }
     .search-creator__button {
       margin-left: -80px;
@@ -297,11 +309,11 @@ export default {
   align-items: center;
   height: 100vh;
   .coffee-cupVector {
-    width: 50px;
+    width: 30px;
     opacity: 0.5;
     position: absolute;
-    right: 20px;
-    bottom: 10px;
+    right: 60px;
+    bottom: 0;
     animation-name: vectorAnimation3;
     animation-duration: 6s;
     animation-iteration-count: infinite;
@@ -423,10 +435,6 @@ export default {
 @media (max-width: 790px) {
   .galery-section__container {
     height: auto;
-  }
-
-  .search-creator__input {
-    width: 100%;
   }
 }
 </style>

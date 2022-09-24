@@ -7,6 +7,7 @@
       </a>
     </div> -->
     <Header />
+    <NotificationList />
     <router-view />
     <Footer />
   </div>
@@ -15,6 +16,7 @@
 <script>
 import Header from "./components/Header.vue";
 import Footer from "./components/Footer.vue";
+import NotificationList from "./components/NotificationList.vue";
 
 import { mapState } from "vuex";
 
@@ -26,6 +28,7 @@ export default {
   components: {
     Header,
     Footer,
+    NotificationList,
   },
   computed: {
     ...mapState(["shadowblank"]),
