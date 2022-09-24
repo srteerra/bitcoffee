@@ -20,8 +20,11 @@
           <p class="py-4">Here with us</p>
           <div class="search-creator text-center">
             <div class="search-creator-input__container">
-              <p class="placeholder font-weight-bold">bitcoffe.com/</p>
-              <input class="search-creator__input" type="text" />
+              <p class="placeholder font-weight-regular">bitcoffe.com/</p>
+              <input
+                class="search-creator__input font-weight-bold"
+                type="text"
+              />
               <button class="search-creator__button">
                 <img
                   src="../assets/icons/Artboard 81 1.png"

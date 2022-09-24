@@ -57,7 +57,7 @@
             class="ml-0 mt-3 mt-xl-0 ml-xl-4 px-4 py-2 rounded-pill font-weight-bold"
             variant="dark"
           >
-            <span v-if="isConnected" class="pr-2"><b-icon-wallet /></span>
+            <span v-if="isconnected" class="pr-2"><b-icon-wallet /></span>
             {{ walletConnectText }}
           </b-button>
         </b-navbar-nav>
