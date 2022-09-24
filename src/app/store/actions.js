@@ -54,7 +54,7 @@ export const actions = {
     console.log(balanceTSY);
     commit("SET_BALANCE", { balanceRSK: balanceRSK, balanceTSY: balanceTSY });
   },
-  async getCreator({ commit }, payload) {
+  async getCreatorPage({ commit }, payload) {
     console.log(payload.user);
     const query =
       '*[_type == "users" && userName == $user] {userName, userAddress}';

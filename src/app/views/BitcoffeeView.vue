@@ -15,7 +15,7 @@ export default {
     return {};
   },
   beforeMount() {
-    this.$store.dispatch("getCreator", {
+    this.$store.dispatch("getCreatorPage", {
       user: this.$route.params.user,
     });
   },
@@ -26,7 +26,7 @@ export default {
     ...mapGetters(["getCreatorFound"]),
   },
   methods: {
-    ...mapActions(["getCreator"]),
+    ...mapActions(["getCreatorPage"]),
   },
 };
 </script>
