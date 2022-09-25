@@ -1,6 +1,5 @@
 <template>
   <b-container class="user-goals__container my-5">
-    <h1 class="my-4 font-weight-bold">My goals</h1>
     <div
       class="user-goal-card__container"
       data-aos="fade-up"

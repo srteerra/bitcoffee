@@ -29,12 +29,24 @@
           class="px-5 font-weight-bold"
           >{{ address }} <b-icon icon="files"></b-icon
         ></b-button>
-        <a href="#" style="display: block" class="user-site my-3">
+        <a href="#" style="display: block" class="user-site my-4">
           {{ user_site
           }}<span class="px-2"
             ><b-icon icon="box-arrow-up-right"></b-icon
           ></span>
         </a>
+
+        <div class="edit-profile my-3">
+          <b-button
+            class="edit-btn font-weight-bold"
+            pill
+            variant="outline-dark"
+            >Edit profile</b-button
+          >
+          <b-button class="edit-add"
+            ><b-icon icon="plus" font-scale="1"></b-icon
+          ></b-button>
+        </div>
       </div>
       <!-- user description -->
       <b-container class="user-description__container">
@@ -52,7 +64,11 @@
       </b-container>
 
       <!-- User goals -->
-      <UserGoalCard />
+      <div>
+        <h1 class="my-4 font-weight-bold">My goals</h1>
+        <UserGoalCard />
+        <UserGoalCard />
+      </div>
     </b-container>
   </div>
 </template>
@@ -105,10 +121,31 @@ export default {
 
 //user personal styles
 .user-personal-info__container {
+  position: relative;
   .user-name__container {
     font-size: 30px;
     p {
       display: inline-block;
+    }
+  }
+
+  .user-site {
+    &:hover {
+      color: #969292;
+    }
+  }
+
+  .edit-profile {
+    position: absolute;
+    text-align: end;
+    width: 50%;
+    right: 0;
+    top: 50px;
+    .edit-btn {
+      width: 30%;
+    }
+    .edit-add {
+      border-radius: 50%;
     }
   }
 }
@@ -122,6 +159,22 @@ export default {
     width: 80%;
     p:nth-child(2) {
       color: #969292;
+    }
+  }
+}
+
+@media (max-width: 1000px) {
+  .user-personal-info__container {
+    .edit-profile {
+      position: initial;
+      text-align: center;
+      width: 100%;
+      .edit-btn {
+        width: 40%;
+      }
+      .edit-add {
+        border-radius: 50%;
+      }
     }
   }
 }
