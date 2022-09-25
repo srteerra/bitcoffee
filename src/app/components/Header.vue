@@ -3,12 +3,16 @@
     <b-navbar toggleable="md" type="light" variant="white" class="px-5 py-4">
       <!-- Navbar logo -->
       <b-navbar-brand href="#">
-        <img
-          id="principal-logo"
-          src="../assets/logos/horizontal-logo.png"
-          alt=""
-        />
-        <img id="secundary-logo" src="../assets/logos/icon-logo.png" alt="" />
+        <router-link to="/home">
+          <img
+            id="principal-logo"
+            src="../assets/logos/horizontal-logo.png"
+            alt=""
+          />
+        </router-link>
+        <router-link to="/home"
+          ><img id="secundary-logo" src="../assets/logos/icon-logo.png" alt=""
+        /></router-link>
       </b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse" />

@@ -55,6 +55,7 @@ export const actions = {
     commit("SET_BALANCE", { balanceRSK: balanceRSK, balanceTSY: balanceTSY });
   },
   async getCreatorPage({ commit }, payload) {
+    commit("LOADING_DATA", true);
     console.log(payload.user);
     const query =
       '*[_type == "users" && userName == $user] {userName, userAddress}';
@@ -76,10 +77,12 @@ export const actions = {
               });
             }
             commit("CREATOR_FOUND", { status: true });
+            commit("LOADING_DATA", false);
           });
         } else {
           console.log("Creator not found");
           commit("CREATOR_FOUND", { status: false });
+          commit("LOADING_DATA", false);
         }
       })
       .catch((err) => {

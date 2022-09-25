@@ -36,7 +36,12 @@
         <h3 class="font-weight-bold pt-5 text-center">
           {{ getCreatorUsername }}
         </h3>
-        <div v-if="currentStep == 1" class="p-0 text-center">
+        <div
+          v-if="currentStep == 1"
+          class="p-0 text-center"
+          data-aos="fade-left"
+          data-aos-duration="500"
+        >
           <div>
             <b-row>
               <b-col>
@@ -60,7 +65,12 @@
             </b-row>
           </div>
         </div>
-        <div v-if="currentStep == 2" class="p-0">
+        <div
+          v-if="currentStep == 2"
+          class="p-0"
+          data-aos="fade-left"
+          data-aos-duration="500"
+        >
           <div>
             <b-row>
               <b-col>
@@ -102,7 +112,12 @@
             </b-row>
           </div>
         </div>
-        <div v-if="currentStep == 3" class="p-0 pb-5">
+        <div
+          v-if="currentStep == 3"
+          class="p-0 pb-5"
+          data-aos="fade-left"
+          data-aos-duration="500"
+        >
           <div>
             <b-row>
               <b-col>
