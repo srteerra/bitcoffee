@@ -132,25 +132,66 @@ export const actions = {
 
             dispatch("updateBalance");
 
-            const userDoc = {
-              _type: "users",
-              _id: ethereum.selectedAddress,
-              userName: "Unnamed",
-              userAddress: ethereum.selectedAddress,
-            };
+            const query =
+              '*[_type == "users" && userName == $user] {userName, userAddress}';
+            const params = { user: "Unnamed" };
 
-            client.createIfNotExists(userDoc);
-            client.getDocument(ethereum.selectedAddress).then((users) => {
-              console.log(`${users.userName}`);
-              commit("SET_USERNAME", { name: users.userName });
-              if (users.userAvatar == undefined) {
-                commit("SET_AVATAR", { avatar: undefined });
-              } else {
-                commit("SET_AVATAR", {
-                  avatar: builder.image(users.userAvatar).url(),
-                });
-              }
-            });
+            client
+              .fetch(query, params)
+              .then((users) => {
+                console.log(users);
+                if (users.length === 0) {
+                  // Name available
+                  var userDoc = {
+                    _type: "users",
+                    _id: ethereum.selectedAddress,
+                    userName: "Unnamed",
+                    userAddress: ethereum.selectedAddress,
+                  };
+
+                  client.createIfNotExists(userDoc);
+
+                  client.getDocument(ethereum.selectedAddress).then((users) => {
+                    console.log(`${users.userName}`);
+                    commit("SET_USERNAME", { name: users.userName });
+                    if (users.userAvatar == undefined) {
+                      commit("SET_AVATAR", { avatar: undefined });
+                    } else {
+                      commit("SET_AVATAR", {
+                        avatar: builder.image(users.userAvatar).url(),
+                      });
+                    }
+                  });
+                } else {
+                  // Name not available
+                  console.log("Name not available");
+                  const ran = Math.floor(Math.random() * 10001);
+
+                  var userDoc = {
+                    _type: "users",
+                    _id: ethereum.selectedAddress,
+                    userName: "Unnamed" + ran,
+                    userAddress: ethereum.selectedAddress,
+                  };
+
+                  client.createIfNotExists(userDoc);
+
+                  client.getDocument(ethereum.selectedAddress).then((users) => {
+                    console.log(`${users.userName}`);
+                    commit("SET_USERNAME", { name: users.userName });
+                    if (users.userAvatar == undefined) {
+                      commit("SET_AVATAR", { avatar: undefined });
+                    } else {
+                      commit("SET_AVATAR", {
+                        avatar: builder.image(users.userAvatar).url(),
+                      });
+                    }
+                  });
+                }
+              })
+              .catch((err) => {
+                console.log(err);
+              });
           }
         })
         .catch((err) => {

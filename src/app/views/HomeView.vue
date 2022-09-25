@@ -24,8 +24,25 @@
               <input
                 class="search-creator__input font-weight-bold"
                 type="text"
+                v-model="requestedName"
               />
-              <button class="search-creator__button">
+              <div class="search-creator__status" v-show="requestedName">
+                <b-icon
+                  icon="check-circle-fill"
+                  font-scale="1"
+                  v-if="isAvailable"
+                ></b-icon>
+                <b-icon
+                  icon="x-circle-fill"
+                  font-scale="1"
+                  v-if="!isAvailable"
+                ></b-icon>
+              </div>
+              <button
+                class="search-creator__button"
+                :disabled="isAvailableBtn"
+                @click="getMyPage"
+              >
                 <img
                   src="../assets/icons/Artboard 81 1.png"
                   class="mx-auto"
@@ -33,7 +50,10 @@
                 />
               </button>
             </div>
-            <b-button class="alternativeBtn w-100 bg-dark font-weight-bold" pill
+            <b-button
+              class="alternativeBtn w-100 bg-dark font-weight-bold"
+              pill
+              :disabled="isAvailableBtn"
               >Get started</b-button
             >
           </div>
@@ -233,10 +253,54 @@
 </template>
 
 <script>
+import { log } from "console";
+import { mapActions } from "vuex";
+import { client } from "../../lib/sanityClient";
+
 export default {
   name: "HomeView",
   data() {
-    return {};
+    return {
+      isAvailable: false,
+      requestedName: null,
+      fetchingPage: false,
+    };
+  },
+  methods: {
+    ...mapActions(["getMyPage"]),
+  },
+  computed: {
+    isAvailableBtn() {
+      if (this.isAvailable === false) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+  },
+  watch: {
+    requestedName() {
+      if (this.requestedName) {
+        this.fetchingPage = true;
+        const query =
+          '*[_type == "users" && userName == $user] {userName, userAddress}';
+        const params = { user: this.requestedName };
+        client
+          .fetch(query, params)
+          .then((users) => {
+            if (users.length === 0) {
+              this.isAvailable = true;
+            } else {
+              this.isAvailable = false;
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
+        this.isAvailable = false;
+      }
+    },
   },
 };
 </script>
@@ -278,8 +342,28 @@ export default {
       &:hover {
         background-color: #726253;
       }
+      &:disabled {
+        background-color: #aa9684;
+      }
       img {
         width: 20px;
+      }
+    }
+    .search-creator__status {
+      width: 100px;
+      height: 100px;
+      position: absolute;
+      top: 44%;
+      right: 33%;
+
+      @media (max-width: 1200px) {
+        top: 43.5%;
+        right: 35%;
+      }
+
+      @media (max-width: 990px) {
+        top: 43%;
+        right: 37%;
       }
     }
   }
