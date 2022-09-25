@@ -7,16 +7,19 @@ Vue.use(Router);
 
 const routes = [
   {
-    path: "*",
-    name: "404",
-    component: () => import(/* webpackChunkName:"home" */ "../views/404View"),
-  },
-  {
     path: "/home",
     name: "home",
     component: () => import(/* webpackChunkName:"home" */ "../views/HomeView"),
   },
   { path: "/", redirect: { name: "home" } },
+  {
+    path: "/", redirect: { name: "home" } 
+  },
+  {
+    path: "*",
+    name: "404",
+    component: () => import(/* webpackChunkName:"home" */ "../views/404View"),
+  },
   {
     path: "/profile",
     name: "profile",
@@ -35,6 +38,7 @@ const routes = [
     component: () =>
       import(/* webpackChunkName:"home" */ "../views/MemberView"),
   },
+
 ];
 
 const router = new Router({
