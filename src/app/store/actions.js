@@ -117,7 +117,7 @@ export const actions = {
   },
   async connect_wallet({ commit, dispatch }) {
     commit("CONNECT_BUTTON", true); // Button disabled
-    commit("LOADING_DATA", true); // Loading data on
+    commit("LOADING_DATA_WAIT", true); // Loading data on
 
     if (ethereum) {
       ethereum
@@ -128,7 +128,7 @@ export const actions = {
 
             commit("IS_CONNECTED", true);
             commit("DISCONNECT_BUTTON", false); // Disconnect button enabled on nav
-            commit("LOADING_DATA", false); // Loading data off
+            commit("LOADING_DATA_WAIT", false); // Loading data off
 
             console.log(net);
             commit("SET_NET", net);
@@ -150,6 +150,10 @@ export const actions = {
                     _id: ethereum.selectedAddress,
                     userName: "Unnamed",
                     userAddress: ethereum.selectedAddress,
+                    userTitle: "",
+                    userSite: "",
+                    userSubtitle: "",
+                    userDesc: "",
                   };
 
                   client.createIfNotExists(userDoc);
@@ -157,11 +161,26 @@ export const actions = {
                   client.getDocument(ethereum.selectedAddress).then((users) => {
                     console.log(`${users.userName}`);
                     commit("SET_USERNAME", { name: users.userName });
+                    commit("SET_USER_TITLE", { title: users.userTitle });
+                    commit("SET_USER_SITE", { site: users.userSite });
+                    commit("SET_USER_SUBTITLE", {
+                      subtitle: users.userSubtitle,
+                    });
+                    commit("SET_USER_DESC", { desc: users.userDesc });
+
                     if (users.userAvatar == undefined) {
                       commit("SET_AVATAR", { avatar: undefined });
                     } else {
                       commit("SET_AVATAR", {
                         avatar: builder.image(users.userAvatar).url(),
+                      });
+                    }
+
+                    if (users.userBg == undefined) {
+                      commit("SET_BACKGROUND", { bg: undefined });
+                    } else {
+                      commit("SET_BACKGROUND", {
+                        bg: builder.image(users.userBg).url(),
                       });
                     }
                   });
@@ -175,6 +194,10 @@ export const actions = {
                     _id: ethereum.selectedAddress,
                     userName: "Unnamed" + ran,
                     userAddress: ethereum.selectedAddress,
+                    userTitle: "",
+                    userSite: "",
+                    userSubtitle: "",
+                    userDesc: "",
                   };
 
                   client.createIfNotExists(userDoc);
@@ -182,11 +205,26 @@ export const actions = {
                   client.getDocument(ethereum.selectedAddress).then((users) => {
                     console.log(`${users.userName}`);
                     commit("SET_USERNAME", { name: users.userName });
+                    commit("SET_USER_TITLE", { title: users.userTitle });
+                    commit("SET_USER_SITE", { site: users.userSite });
+                    commit("SET_USER_SUBTITLE", {
+                      subtitle: users.userSubtitle,
+                    });
+                    commit("SET_USER_DESC", { desc: users.userDesc });
+
                     if (users.userAvatar == undefined) {
                       commit("SET_AVATAR", { avatar: undefined });
                     } else {
                       commit("SET_AVATAR", {
                         avatar: builder.image(users.userAvatar).url(),
+                      });
+                    }
+
+                    if (users.userBg == undefined) {
+                      commit("SET_BACKGROUND", { bg: undefined });
+                    } else {
+                      commit("SET_BACKGROUND", {
+                        bg: builder.image(users.userBg).url(),
                       });
                     }
                   });
@@ -206,7 +244,7 @@ export const actions = {
             });
             commit("CONNECT_BUTTON", false); // Button enabled
             commit("DISCONNECT_BUTTON", true); // Disconnect button disabled on nav
-            commit("LOADING_DATA", false); // Loading data off
+            commit("LOADING_DATA_WAIT", false); // Loading data off
           } else if (err.code === -32002) {
             console.log("Request still in progress.");
             dispatch("addNotification", {
@@ -215,7 +253,7 @@ export const actions = {
             });
             commit("CONNECT_BUTTON", false); // Button enabled
             commit("DISCONNECT_BUTTON", true); // Disconnect button disabled on nav
-            commit("LOADING_DATA", false); // Loading data off
+            commit("LOADING_DATA_WAIT", false); // Loading data off
           } else {
             console.error(err);
             dispatch("addNotification", {
@@ -224,7 +262,7 @@ export const actions = {
             });
             commit("CONNECT_BUTTON", false); // Button enabled
             commit("DISCONNECT_BUTTON", true); // Disconnect button disabled on nav
-            commit("LOADING_DATA", false); // Loading data off
+            commit("LOADING_DATA_WAIT", false); // Loading data off
           }
         });
     } else {
@@ -232,7 +270,7 @@ export const actions = {
       commit("SHOW_INSTALL_METAMASK");
       commit("CONNECT_BUTTON", false); // Button enabled
       commit("DISCONNECT_BUTTON", true); // Disconnect button disabled on nav
-      commit("LOADING_DATA", false); // Loading data off
+      commit("LOADING_DATA_WAIT", false); // Loading data off
     }
   },
   async addNotification({ commit }, payload) {

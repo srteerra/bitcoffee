@@ -1,5 +1,6 @@
 export default {
   fetchingData: false,
+  fetchingDataWait: false,
   shadowblank: false,
   error: null,
   windowWidth: window.innerWidth,
@@ -35,12 +36,19 @@ export default {
   },
 
   // User data
-  username: "",
+  username: "Sarah",
   avatar: "",
+
+  user_bg: "",
+  user_site: "sarahsblog.com",
+  user_title: "Hi! My name is Sarah",
+  user_subtitle: "I live in Mexico",
+  user_description: "Lorem ipsum dolor sit amet consectetur",
 
   // Creator data
   creator_username: null,
   creator_avatar: "",
+  creator_bg: "",
   creatorFound: false,
 
   // Notification center
