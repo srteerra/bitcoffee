@@ -39,6 +39,7 @@ const routes = [
     component: () =>
       import(/* webpackChunkName:"home" */ "../views/MemberView"),
   },
+
 ];
 
 const router = new Router({

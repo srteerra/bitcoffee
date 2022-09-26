@@ -175,7 +175,6 @@ export const actions = {
                         avatar: builder.image(users.userAvatar).url(),
                       });
                     }
-
                     if (users.userBg == undefined) {
                       commit("SET_BACKGROUND", { bg: undefined });
                     } else {
@@ -211,7 +210,6 @@ export const actions = {
                       subtitle: users.userSubtitle,
                     });
                     commit("SET_USER_DESC", { desc: users.userDesc });
-
                     if (users.userAvatar == undefined) {
                       commit("SET_AVATAR", { avatar: undefined });
                     } else {
@@ -219,7 +217,6 @@ export const actions = {
                         avatar: builder.image(users.userAvatar).url(),
                       });
                     }
-
                     if (users.userBg == undefined) {
                       commit("SET_BACKGROUND", { bg: undefined });
                     } else {
