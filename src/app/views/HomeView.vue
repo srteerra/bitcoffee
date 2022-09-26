@@ -296,7 +296,7 @@ export default {
         client
           .fetch(query, params)
           .then((users) => {
-            if (users.length === 0) {
+            if (users.length === 0 && this.requestedName.length >= 3) {
               this.isAvailable = true;
             } else {
               this.isAvailable = false;

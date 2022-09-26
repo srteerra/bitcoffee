@@ -91,7 +91,6 @@ export default {
       goal_status: 90,
       goal_description:
         "My guitar is nearly to break :( I really need a new one",
-
       blur: false,
     };
   },
@@ -121,6 +120,7 @@ export default {
 // user personal styles
 .user-personal-info__container {
   position: relative;
+
   .edit-profile {
     .edit-btn {
       width: 90%;

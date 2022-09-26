@@ -36,12 +36,7 @@
         <h3 class="font-weight-bold pt-5 text-center">
           {{ getCreatorUsername }}
         </h3>
-        <div
-          v-if="currentStep == 1"
-          class="p-0 text-center"
-          data-aos="fade-left"
-          data-aos-duration="500"
-        >
+        <div v-if="currentStep == 1" class="p-0 text-center">
           <div>
             <b-row>
               <b-col>
@@ -65,12 +60,7 @@
             </b-row>
           </div>
         </div>
-        <div
-          v-if="currentStep == 2"
-          class="p-0"
-          data-aos="fade-left"
-          data-aos-duration="500"
-        >
+        <div v-if="currentStep == 2" class="p-0">
           <div>
             <b-row>
               <b-col>
@@ -112,12 +102,7 @@
             </b-row>
           </div>
         </div>
-        <div
-          v-if="currentStep == 3"
-          class="p-0 pb-5"
-          data-aos="fade-left"
-          data-aos-duration="500"
-        >
+        <div v-if="currentStep == 3" class="p-0 pb-5">
           <div>
             <b-row>
               <b-col>
@@ -136,13 +121,14 @@
                     value="approved"
                     unchecked-value="not_approved"
                   >
-                    I’ve read the summary and I confirm.
+                    I’ve read the summary. It's correct.
                   </b-form-checkbox>
                 </div>
                 <b-button
                   size="lg"
                   block
                   variant="dark"
+                  :disabled="approvedCheck"
                   class="rounded-pill font-weight-bold w-50 mx-auto"
                   @click="sendDonation({ amount: amountInput })"
                 >
@@ -175,11 +161,20 @@ export default {
     return {
       currentStep: 1,
       amountInput: null,
+      approved: "approved",
     };
   },
   computed: {
     progress() {
       return Math.round(100 / this.max_step) * this.currentStep;
+    },
+
+    approvedCheck() {
+      if (this.approved !== "approved") {
+        return true;
+      } else {
+        return false;
+      }
     },
 
     ...mapState(["donator", "isconnected", "username", "balanceOf"]),
