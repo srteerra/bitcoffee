@@ -273,6 +273,157 @@ export const actions = {
       commit("LOADING_DATA_WAIT", false); // Loading data off
     }
   },
+  async updateAccount({ commit, getters, dispatch }, payload) {
+    commit("LOADING_DATA_WAIT");
+    if (payload.avatar) {
+      client.assets
+        .upload("image", payload.avatar)
+        .then((imageAsset) => {
+          // Here you can decide what to do with the returned asset document.
+          // If you want to set a specific asset field you can to the following:
+          return client
+            .patch(getters.getAddress)
+            .set({
+              userAvatar: {
+                _type: "image",
+                asset: {
+                  _type: "reference",
+                  _ref: imageAsset._id,
+                },
+              },
+            })
+            .commit()
+            .then((res) => {
+              console.log(res);
+              commit("SET_AVATAR", {
+                avatar: builder.image(res.userAvatar).url(),
+              });
+            });
+        })
+        .then(() => {
+          console.log("Done!");
+        });
+    }
+
+    if (payload.bg) {
+      client.assets
+        .upload("image", payload.bg)
+        .then((imageAsset) => {
+          // Here you can decide what to do with the returned asset document.
+          // If you want to set a specific asset field you can to the following:
+          return client
+            .patch(getters.getAddress)
+            .set({
+              userAvatar: {
+                _type: "image",
+                asset: {
+                  _type: "reference",
+                  _ref: imageAsset._id,
+                },
+              },
+            })
+            .commit()
+            .then((res) => {
+              console.log(res);
+              commit("SET_BACKGROUND", {
+                bg: builder.image(res.userBg).url(),
+              });
+            });
+        })
+        .then(() => {
+          console.log("Done!");
+        });
+    }
+
+    const query =
+      '*[_type == "users" && userName == $user] {userName, userAddress}';
+    const params = { user: payload.name };
+
+    client.fetch(query, params).then((users) => {
+      console.log("usrs", users);
+      if (users.length === 0) {
+        console.log("Not used");
+        client
+          .patch(getters.getAddress) // Document ID to patch
+          .set({
+            userName: payload.name,
+            userSite: payload.site,
+            userTitle: payload.title,
+            userSubtitle: payload.sub,
+            userDesc: payload.desc,
+          })
+          .commit()
+          .then((updatedAcc) => {
+            console.log("Hurray, the acc is updated! New document:");
+            console.log(updatedAcc);
+            console.log(updatedAcc.userName);
+            console.log(updatedAcc.userSubtitle);
+            commit("SET_USERNAME", { name: updatedAcc.userName });
+            commit("SET_USER_SITE", { site: updatedAcc.userSite });
+            commit("SET_USER_TITLE", { title: updatedAcc.userTitle });
+            commit("SET_USER_SUBTITLE", { subtitle: updatedAcc.userSubtitle });
+            commit("SET_USER_DESC", { desc: updatedAcc.userDesc });
+            commit("LOADING_DATA_WAIT");
+            commit("SHOW_EDIT_PROFILE");
+            dispatch("addNotification", {
+              type: "success",
+              message: "Profile updated!",
+            });
+          })
+          .catch((err) => {
+            console.error("Oh no, the update failed: ", err.message);
+            commit("LOADING_DATA_WAIT");
+            commit("SHOW_EDIT_PROFILE");
+            dispatch("addNotification", {
+              type: "danger",
+              message: "Oh no, the update failed.",
+            });
+          });
+      } else {
+        console.log("Used");
+        client
+          .patch(getters.getAddress) // Document ID to patch
+          .set({
+            userName: payload.oldName,
+            userSite: payload.site,
+            userTitle: payload.title,
+            userSubtitle: payload.sub,
+            userDesc: payload.desc,
+          })
+          .commit()
+          .then((updatedAcc) => {
+            console.log("Hurray, the acc is updated! New document:");
+            console.log(updatedAcc);
+            console.log(updatedAcc.userName);
+            console.log(updatedAcc.userSubtitle);
+            commit("SET_USERNAME", { name: updatedAcc.userName });
+            commit("SET_USER_SITE", { site: updatedAcc.userSite });
+            commit("SET_USER_TITLE", { title: updatedAcc.userTitle });
+            commit("SET_USER_SUBTITLE", { subtitle: updatedAcc.userSubtitle });
+            commit("SET_USER_DESC", { desc: updatedAcc.userDesc });
+            commit("LOADING_DATA_WAIT");
+            commit("SHOW_EDIT_PROFILE");
+            dispatch("addNotification", {
+              type: "danger",
+              message: "Username in use",
+            });
+            dispatch("addNotification", {
+              type: "success",
+              message: "Profile updated!",
+            });
+          })
+          .catch((err) => {
+            console.error("Oh no, the update failed: ", err.message);
+            commit("LOADING_DATA_WAIT");
+            commit("SHOW_EDIT_PROFILE");
+            dispatch("addNotification", {
+              type: "danger",
+              message: "Oh no, the update failed.",
+            });
+          });
+      }
+    });
+  },
   async addNotification({ commit }, payload) {
     commit("PUSH_NOTIFICATION", payload);
   },

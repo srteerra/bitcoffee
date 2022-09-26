@@ -109,12 +109,16 @@ export const LOADING_DATA = (state, status) => {
   state.fetchingData = status;
 };
 
-export const LOADING_DATA_WAIT = (state, status) => {
-  state.fetchingDataWait = status;
+export const LOADING_DATA_WAIT = (state) => {
+  state.fetchingDataWait = !state.fetchingDataWait;
 };
 
 export const SHOW_NOWALLET_NOTIFICATION = (state) => {
   state.noWalletNoti = !state.noWalletNoti;
+};
+
+export const SHOW_EDIT_PROFILE = (state) => {
+  state.editProfileModal = !state.editProfileModal;
 };
 
 export const SHOW_CHANGE_NETWORK = (state) => {

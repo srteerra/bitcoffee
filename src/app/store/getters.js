@@ -20,6 +20,10 @@ export const getAvatar = (state) => {
   return state.avatar;
 };
 
+export const getAddress = (state) => {
+  return state.currentAccount;
+};
+
 export const getUsername = (state) => {
   return state.username;
 };

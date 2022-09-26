@@ -6,8 +6,8 @@ import App from "./App.vue";
 import axios from "axios";
 import router from "./router";
 import store from "./store";
-// import { client } from "../lib/sanityClient";
-// import imageUrlBuilder from "@sanity/image-url";
+import { client } from "../lib/sanityClient";
+import imageUrlBuilder from "@sanity/image-url";
 import detectEthereumProvider from "@metamask/detect-provider";
 // import $ from "jquery";
 import AOS from "aos";
@@ -17,7 +17,7 @@ import { BootstrapVue, BootstrapVueIcons } from "bootstrap-vue";
 import "./assets/style.scss";
 
 // Get a pre-configured url-builder from your sanity client
-// const builder = imageUrlBuilder(client);
+const builder = imageUrlBuilder(client);
 const provider = await detectEthereumProvider();
 const ethereum = window.ethereum;
 
@@ -41,47 +41,110 @@ new Vue({
 
 // Vue.config.productionTip = false
 
-// // On resize change
-// window.addEventListener("resize", () => {
-//   store.commit("WINDOW_WIDTH");
-// });
+// On resize change
+window.addEventListener("resize", () => {
+  store.commit("WINDOW_WIDTH");
+});
 
-// // On Acc change
-// ethereum.on("accountsChanged", function (accounts) {
-//   console.log(accounts);
-//   if (accounts.length > 0) {
-//     store.dispatch("setAcc", accounts[0]);
-//     const userDoc = {
-//       _type: "users",
-//       _id: store.getters.getAddress,
-//       userName: "Unnamed",
-//       userAddress: store.getters.getAddress,
-//       userTrees: 0,
-//       userCountry: "Undefined",
-//     };
+// On Acc change
+ethereum.on("accountsChanged", function (accounts) {
+  console.log(accounts);
+  if (accounts.length > 0) {
+    store.commit("CURRENT_ADDRESS", accounts[0]);
+    store.dispatch("updateBalance");
 
-//     client.createIfNotExists(userDoc);
-//     client.getDocument(store.getters.getAddress).then((users) => {
-//       console.log(`${users.userName}`);
-//       store.commit("SET_PLANTED_TREES", { amount: users.userTrees });
-//       store.commit("SET_USER_COUNTRY", { country: users.userCountry });
-//       store.commit("SET_USERNAME", { name: users.userName });
-//       if (users.userAvatar == undefined) {
-//         store.commit("SET_AVATAR", { avatar: undefined });
-//       } else {
-//         store.commit("SET_AVATAR", {
-//           avatar: builder.image(users.userAvatar).url(),
-//         });
-//       }
-//     });
-//     store.dispatch("addNotification", {
-//       type: "warning",
-//       message: "Account changed.",
-//     });
-//   } else {
-//     window.location.reload();
-//   }
-// });
+    const query =
+      '*[_type == "users" && userAddress == $add] {userName, userAddress}';
+    const params = { add: accounts[0] };
+
+    client
+      .fetch(query, params)
+      .then((users) => {
+        console.log(users);
+        if (users.length > 0) {
+          client.getDocument(accounts[0]).then((users) => {
+            console.log(`${users.userName}`);
+            store.commit("SET_USERNAME", { name: users.userName });
+            store.commit("SET_USER_TITLE", { title: users.userTitle });
+            store.commit("SET_USER_SITE", { site: users.userSite });
+            store.commit("SET_USER_SUBTITLE", {
+              subtitle: users.userSubtitle,
+            });
+            store.commit("SET_USER_DESC", { desc: users.userDesc });
+
+            if (users.userAvatar == undefined) {
+              store.commit("SET_AVATAR", { avatar: undefined });
+            } else {
+              store.commit("SET_AVATAR", {
+                avatar: builder.image(users.userAvatar).url(),
+              });
+            }
+
+            if (users.userBg == undefined) {
+              store.commit("SET_BACKGROUND", { bg: undefined });
+            } else {
+              store.commit("SET_BACKGROUND", {
+                bg: builder.image(users.userBg).url(),
+              });
+            }
+          });
+        } else {
+          // Name not available
+          console.log("cam232");
+          const ran = Math.floor(Math.random() * 10001);
+
+          var userDoc = {
+            _type: "users",
+            _id: accounts[0],
+            userName: "Unnamed" + ran,
+            userAddress: accounts[0],
+            userTitle: "",
+            userSite: "",
+            userSubtitle: "",
+            userDesc: "",
+          };
+
+          client.createIfNotExists(userDoc);
+
+          client.getDocument(accounts[0]).then((users) => {
+            console.log(`${users.userName}`);
+            store.commit("SET_USERNAME", { name: users.userName });
+            store.commit("SET_USER_TITLE", { title: users.userTitle });
+            store.commit("SET_USER_SITE", { site: users.userSite });
+            store.commit("SET_USER_SUBTITLE", {
+              subtitle: users.userSubtitle,
+            });
+            store.commit("SET_USER_DESC", { desc: users.userDesc });
+
+            if (users.userAvatar == undefined) {
+              store.commit("SET_AVATAR", { avatar: undefined });
+            } else {
+              store.commit("SET_AVATAR", {
+                avatar: builder.image(users.userAvatar).url(),
+              });
+            }
+
+            if (users.userBg == undefined) {
+              store.commit("SET_BACKGROUND", { bg: undefined });
+            } else {
+              store.commit("SET_BACKGROUND", {
+                bg: builder.image(users.userBg).url(),
+              });
+            }
+          });
+        }
+        store.dispatch("addNotification", {
+          type: "warning",
+          message: "Account changed.",
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  } else {
+    window.location.reload();
+  }
+});
 
 // ethereum.on("disconnect", (error) => {
 //   console.log(error);

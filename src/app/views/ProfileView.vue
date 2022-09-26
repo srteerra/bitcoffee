@@ -8,7 +8,7 @@
         'background-repeat': 'no-repeat',
         'background-position': 'center',
         'background-size': 'cover',
-        'background-image': 'url(' + user_bg + ')',
+        'background-image': 'url(' + background + ')',
       }"
     />
     <!-- User avatar -->
@@ -41,6 +41,9 @@
             class="edit-btn font-weight-bold"
             pill
             variant="outline-dark"
+            @click="SHOW_EDIT_PROFILE()"
+            data-backdrop="static"
+            data-keyboard="false"
             >Edit profile</b-button
           >
           <b-button class="edit-add p-0 m-0"
@@ -86,6 +89,8 @@
       footer-bg-variant="light"
       footer-text-variant="dark"
       footer-border-variant="light"
+      no-close-on-backdrop
+      no-close-on-esc
     >
       <template #modal-header>
         <div class="w-100">
@@ -93,7 +98,7 @@
             variant="light"
             size="md"
             class="float-right"
-            @click="editProfileModal = false"
+            @click="SHOW_EDIT_PROFILE()"
           >
             <b-icon-x />
           </b-button>
@@ -103,7 +108,7 @@
         <b-container class="px-5">
           <b-row class="pb-4">
             <b-col>
-              <h4>Edit your profile</h4>
+              <h4>☕ Edit your profile</h4>
             </b-col>
           </b-row>
           <b-row class="pb-3">
@@ -120,7 +125,7 @@
                     v-model="newUsername"
                     :maxlength="maxLengthUsername"
                     type="text"
-                    class="w-100 py-2 px-3 mb-4"
+                    class="w-100 py-2 px-3"
                     placeholder="Enter a new username"
                     required
                   />
@@ -138,31 +143,74 @@
                   />
                 </b-form-group>
                 <b-form-group
-                  id="CountryInputGroup"
+                  id="BackgroundInputGroup"
                   class="text-dark font-weight-bold"
-                  label="Country"
-                  label-for="CountryInput"
+                  label="Background"
+                  label-for="BackgroundInput"
                 >
-                  <b-form-select
-                    id="CountryInput"
-                    v-model="newCountry"
-                    :options="countryOptions"
-                    class="w-50 py-2 px-3 mb-4"
+                  <b-form-file
+                    v-model="newBackground"
+                    placeholder="Choose another background or just ignore me..."
+                    drop-placeholder="Drop file here..."
                   />
                 </b-form-group>
+                <section class="user-data__container">
+                  <b-form-group
+                    id="TitleInputGroup"
+                    class="text-dark font-weight-bold"
+                    label="Title"
+                    label-for="TitleInput"
+                  >
+                    <b-form-input
+                      id="TitleInput"
+                      v-model="newTitle"
+                      type="text"
+                      class="w-100 py-2 px-3 mb-4"
+                      placeholder="Write a new title"
+                      required
+                    />
+                  </b-form-group>
+                  <b-form-group
+                    id="SubtitleInputGroup"
+                    class="text-dark font-weight-bold"
+                    label="Subtitle"
+                    label-for="SubtitleInput"
+                  >
+                    <b-form-input
+                      id="SubtitleInput"
+                      v-model="newSub"
+                      type="text"
+                      class="w-100 py-2 px-3 mb-4"
+                      placeholder="Write a new subtitle"
+                      required
+                    />
+                  </b-form-group>
+                  <b-form-group
+                    id="DescInputGroup"
+                    class="text-dark font-weight-bold"
+                    label="Description"
+                    label-for="DescInput"
+                  >
+                    <b-form-textarea
+                      id="DescInput"
+                      v-model="newDesc"
+                      type="text"
+                      class="w-100 py-2 px-3 mb-4"
+                      placeholder="Enter a new description"
+                      required
+                    />
+                  </b-form-group>
+                </section>
               </b-form>
             </b-col>
           </b-row>
           <b-row>
             <b-col>
               <p class="font-weight-light">
-                *If you're using <span class="font-weight-bold">Brave</span> as
-                your browser, it might be a problem selecting a wallet. We
-                recommend you move to another browser or change the
-                <span class="font-weight-bold"
-                  >"Default cryptocurrency wallet"</span
-                >
-                on your settings to have the best experience.
+                Everything is stored by your
+                <span class="font-weight-bold">Wallet</span>, your address makes
+                you unique. We recommend that you do not share your private data
+                with others.
               </p>
             </b-col>
           </b-row>
@@ -174,7 +222,7 @@
             variant="dark"
             size="md"
             class="float-right"
-            @click="editProfileModal = false"
+            @click="SHOW_EDIT_PROFILE()"
           >
             Close
           </b-button>
@@ -183,12 +231,16 @@
             size="md"
             class="float-right mr-2"
             @click="
-              (editProfileModal = false),
-                updateAccount({
-                  name: newUsername,
-                  country: newCountry,
-                  avatar: newAvatar,
-                })
+              updateAccount({
+                oldName: username,
+                name: newUsername,
+                site: newSite,
+                title: newTitle,
+                sub: newSub,
+                desc: newDesc,
+                avatar: newAvatar,
+                bg: newBackground,
+              })
             "
           >
             Save
@@ -202,26 +254,35 @@
 <script>
 import UserGoalCard from "../components/UserGoalCard.vue";
 import Header from "../components/Header.vue";
-import { mapActions, mapGetters, mapState } from "vuex";
+import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
 
 export default {
   name: "ProfileView",
   data() {
     return {
-      editProfileModal: false,
       maxLengthUsername: 35,
       newUsername: "",
       newAvatar: null,
+      newBackground: null,
+      newTitle: null,
+      newSub: null,
+      newDesc: null,
+      newSite: null,
 
       noSite: "yourSite",
       noTitle: "No title added",
       noSub: "No subtitle added",
       noDesc: "No description added",
+      noBg: "https://images.unsplash.com/photo-1554147090-e1221a04a025?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1148&q=80",
     };
   },
   components: {
     UserGoalCard,
     Header,
+  },
+  methods: {
+    ...mapActions(["updateAccount"]),
+    ...mapMutations(["SHOW_EDIT_PROFILE"]),
   },
   computed: {
     title() {
@@ -252,6 +313,13 @@ export default {
         return this.user_description;
       }
     },
+    background() {
+      if (!this.user_bg) {
+        return this.noBg;
+      } else {
+        return this.user_bg;
+      }
+    },
     ...mapState([
       "username",
       "currentAccount",
@@ -262,6 +330,7 @@ export default {
       "user_subtitle",
       "user_description",
       "fetchingDataWait",
+      "editProfileModal",
     ]),
 
     myaddress() {
@@ -283,6 +352,15 @@ export default {
 
 .user-goals__list {
   margin: 0 0 300px;
+}
+
+.user-data__container {
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px,
+    rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
+  padding: 20px 50px;
+  margin: 50px 0;
 }
 
 // avatar styles
