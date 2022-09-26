@@ -38,7 +38,7 @@
 
         <div class="edit-profile my-3">
           <b-button
-            class="edit-btn font-weight-bold"
+            class="edit-btn font-weight-bold mr-2"
             pill
             variant="outline-dark"
             @click="SHOW_EDIT_PROFILE()"
@@ -128,7 +128,12 @@
                     class="w-100 py-2 px-3"
                     placeholder="Enter a new username"
                     required
+                    :state="isAvailable"
                   />
+                  <b-form-invalid-feedback>
+                    This username is in use OR is incorrect.
+                  </b-form-invalid-feedback>
+                  <b-form-text>At least 3 characters.</b-form-text>
                 </b-form-group>
                 <b-form-group
                   id="AvatarInputGroup"
@@ -230,6 +235,7 @@
             variant="primary"
             size="md"
             class="float-right mr-2"
+            :disabled="!isAvailable"
             @click="
               updateAccount({
                 oldName: username,
@@ -255,11 +261,15 @@
 import UserGoalCard from "../components/UserGoalCard.vue";
 import Header from "../components/Header.vue";
 import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
+import { client } from "../../lib/sanityClient";
 
 export default {
   name: "ProfileView",
   data() {
     return {
+      isAvailable: false,
+      fetchingPage: false,
+
       maxLengthUsername: 35,
       newUsername: "",
       newAvatar: null,
@@ -339,6 +349,32 @@ export default {
       );
     },
   },
+  watch: {
+    newUsername() {
+      if (this.newUsername) {
+        this.fetchingPage = true;
+        const query =
+          '*[_type == "users" && userName == $user] {userName, userAddress}';
+        const params = { user: this.newUsername };
+        client
+          .fetch(query, params)
+          .then((users) => {
+            if (users.userName === this.username) {
+              this.isAvailable = true;
+            } else if (users.length === 0 && this.newUsername.length >= 3) {
+              this.isAvailable = true;
+            } else {
+              this.isAvailable = false;
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
+        this.isAvailable = false;
+      }
+    },
+  },
 };
 </script>
 
@@ -352,6 +388,19 @@ export default {
 
 .user-goals__list {
   margin: 0 0 300px;
+}
+
+.newUsername__status {
+  width: 200px;
+  height: 100px;
+  position: absolute;
+  top: 5.5%;
+  right: -3%;
+
+  @media (max-width: 990px) {
+    top: 5.5%;
+    right: -10%;
+  }
 }
 
 .user-data__container {

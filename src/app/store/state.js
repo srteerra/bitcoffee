@@ -37,14 +37,14 @@ export default {
   },
 
   // User data
-  username: "Sarah",
+  username: "",
   avatar: "",
 
   user_bg: "",
-  user_site: "sarahsblog.com",
-  user_title: "Hi! My name is Sarah",
-  user_subtitle: "I live in Mexico",
-  user_description: "Lorem ipsum dolor sit amet consectetur",
+  user_site: "",
+  user_title: "",
+  user_subtitle: "",
+  user_description: "",
 
   // Creator data
   creator_username: null,

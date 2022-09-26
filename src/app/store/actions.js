@@ -337,7 +337,7 @@ export const actions = {
 
     const query =
       '*[_type == "users" && userName == $user] {userName, userAddress}';
-    const params = { user: payload.name };
+    const params = { user: payload.name ?? payload.oldName };
 
     client.fetch(query, params).then((users) => {
       console.log("usrs", users);
@@ -403,10 +403,6 @@ export const actions = {
             commit("SET_USER_DESC", { desc: updatedAcc.userDesc });
             commit("LOADING_DATA_WAIT");
             commit("SHOW_EDIT_PROFILE");
-            dispatch("addNotification", {
-              type: "danger",
-              message: "Username in use",
-            });
             dispatch("addNotification", {
               type: "success",
               message: "Profile updated!",

@@ -257,7 +257,6 @@
 <script>
 import Header from "../components/Header.vue";
 import Footer from "../components/Footer.vue";
-import { log } from "console";
 import { mapActions } from "vuex";
 import { client } from "../../lib/sanityClient";
 
