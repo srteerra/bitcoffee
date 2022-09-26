@@ -121,13 +121,14 @@
                     value="approved"
                     unchecked-value="not_approved"
                   >
-                    I’ve read the summary and I confirm.
+                    I’ve read the summary. It's correct.
                   </b-form-checkbox>
                 </div>
                 <b-button
                   size="lg"
                   block
                   variant="dark"
+                  :disabled="approvedCheck"
                   class="rounded-pill font-weight-bold w-50 mx-auto"
                   @click="sendDonation({ amount: amountInput })"
                 >
@@ -160,11 +161,20 @@ export default {
     return {
       currentStep: 1,
       amountInput: null,
+      approved: "approved",
     };
   },
   computed: {
     progress() {
       return Math.round(100 / this.max_step) * this.currentStep;
+    },
+
+    approvedCheck() {
+      if (this.approved !== "approved") {
+        return true;
+      } else {
+        return false;
+      }
     },
 
     ...mapState(["donator", "isconnected", "username", "balanceOf"]),

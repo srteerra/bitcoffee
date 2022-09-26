@@ -1,14 +1,18 @@
 <template>
   <div class="container-fluid p-0 m-0">
-    <b-navbar toggleable="md" type="light" variant="white" class="px-5 py-4">
+    <b-navbar toggleable="lg" type="light" variant="white" class="px-5 py-4">
       <!-- Navbar logo -->
       <b-navbar-brand href="#">
-        <img
-          id="principal-logo"
-          src="../assets/logos/horizontal-logo.png"
-          alt=""
-        />
-        <img id="secundary-logo" src="../assets/logos/icon-logo.png" alt="" />
+        <router-link to="/home">
+          <img
+            id="principal-logo"
+            src="../assets/logos/horizontal-logo.png"
+            alt=""
+          />
+        </router-link>
+        <router-link to="/home"
+          ><img id="secundary-logo" src="../assets/logos/icon-logo.png" alt=""
+        /></router-link>
       </b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse" />
@@ -51,7 +55,7 @@
             "
             :disabled="connectBtnState"
             @click="connect_wallet()"
-            class="ml-0 mt-3 mt-xl-0 ml-xl-4 px-4 py-2 rounded-pill font-weight-bold"
+            class="ml-0 mt-3 mt-lg-0 ml-lg-4 px-4 py-2 rounded-pill font-weight-bold"
             variant="dark"
           >
             <span v-if="isconnected" class="pr-2"><b-icon-wallet /></span>
@@ -69,7 +73,7 @@
           no-caret="true"
         >
           <template #button-content>
-            <b-avatar button :src="`${creator_avatar}`" size="4rem" />
+            <b-avatar button :src="`${avatar}`" size="4rem" />
           </template>
           <b-dropdown-item to="/profile">
             <div class="py-2">
@@ -184,7 +188,7 @@ export default {
       "isconnected",
       "connectBtnState",
       "disconnectBtnState",
-      "creator_avatar",
+      "avatar",
     ]),
   },
   methods: {

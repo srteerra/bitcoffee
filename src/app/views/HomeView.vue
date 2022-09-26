@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Header />
     <b-container>
       <!-- First secrtion -->
       <div class="first-section text-center p-5">
@@ -249,16 +250,22 @@
       </div>
       <!-- / Address section -->
     </b-container>
+    <Footer />
   </div>
 </template>
 
 <script>
-import { log } from "console";
+import Header from "../components/Header.vue";
+import Footer from "../components/Footer.vue";
 import { mapActions } from "vuex";
 import { client } from "../../lib/sanityClient";
 
 export default {
   name: "HomeView",
+  components: {
+    Header,
+    Footer,
+  },
   data() {
     return {
       isAvailable: false,
@@ -288,7 +295,7 @@ export default {
         client
           .fetch(query, params)
           .then((users) => {
-            if (users.length === 0) {
+            if (users.length === 0 && this.requestedName.length >= 3) {
               this.isAvailable = true;
             } else {
               this.isAvailable = false;

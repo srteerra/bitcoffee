@@ -13,7 +13,8 @@ const routes = [
   },
   { path: "/", redirect: { name: "home" } },
   {
-    path: "/", redirect: { name: "home" } 
+    path: "/",
+    redirect: { name: "home" },
   },
   {
     path: "*",
@@ -49,6 +50,14 @@ const router = new Router({
   scrollBehavior() {
     window.scrollTo(0, 0);
   },
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.name === "profile" && store.state.isconnected === false) {
+    next({ name: "home" });
+  } else {
+    next();
+  }
 });
 
 export default router;
