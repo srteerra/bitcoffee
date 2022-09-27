@@ -28,12 +28,6 @@ const routes = [
       import(/* webpackChunkName:"profile" */ "../views/ProfileView"),
   },
   {
-    path: "/profile-pub",
-    name: "profile-pub",
-    component: () =>
-      import(/* webpackChunkName:"profile" */ "../views/PublicProfileView"),
-  },
-  {
     path: "/:user",
     name: "bitcoffee",
     component: () =>
@@ -45,7 +39,6 @@ const routes = [
     component: () =>
       import(/* webpackChunkName:"home" */ "../views/MemberView"),
   },
-
 ];
 
 const router = new Router({

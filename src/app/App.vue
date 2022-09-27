@@ -1,7 +1,7 @@
 <!-- eslint-disable vue/attribute-hyphenation -->
 <template>
   <div>
-    <div id="fetchingData__screen" v-if="fetchingData">
+    <div id="fetchingData__screen" v-if="fetchingData" style="z-index: 100">
       <img
         src="./assets/logos/icon-logo.png"
         alt=""

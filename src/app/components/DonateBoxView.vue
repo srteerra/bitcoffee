@@ -1,9 +1,11 @@
 <template>
-  <div class="donate-card p-4" data-aos="zoom-in" data-aos-duration="1000">
+  <div class="donate-card p-4">
     <div class="donate-card-title w-50 mx-auto my-4">
-      <h3 class="font-weight-bold my-3">Buy me a coffee</h3>
+      <h4 class="font-weight-bold my-3 p-0 mx-auto" style="width: 80%">
+        Buy me a coffee
+      </h4>
     </div>
-    <div>
+    <div class="px-4">
       <div class="hola w-100 text-left">
         <!-- critpo dropdown -->
         <b-dropdown
@@ -57,8 +59,11 @@
       />
 
       <!-- Donation amount -->
+      <p class="pl-3 m-0 text-left font-weight-light" style="opacity: 80%">
+        How much coffees do you want to contribute?
+      </p>
       <div class="py-3 amountSelection">
-        <div class="amount-list my-3 px-3">
+        <div class="amount-list my-3 px-4">
           <div class="amountSelection-item">
             <input
               id="1cripto"
@@ -105,7 +110,7 @@
         </b-form-group>
       </div>
 
-      <p class="px-3">
+      <p class="px-5">
         I appreciate all the support, with this donation I’ll keep doing what I
         love.
       </p>
@@ -126,9 +131,9 @@ export default {
   data() {
     return {
       // Amount group
-      amountSelected: "",
-      amountSelectedInput: "",
-      amountSelectedCustomInput: "",
+      amountSelected: 0,
+      amountSelectedInput: 0,
+      amountSelectedCustomInput: 0,
 
       selectedCypto: "BITC",
     };
@@ -141,14 +146,19 @@ export default {
   // },
   watch: {
     amountSelectedCustomInput(newValue, oldValue) {
-      if (this.amountSelectedCustomInput !== "") {
+      if (this.amountSelectedCustomInput !== 0) {
         this.amountSelectedInput = newValue;
+      } else {
+        this.amountSelectedInput = 0;
       }
     },
     amountSelectedInput(newValue, oldValue) {
-      if (this.amountSelectedInput !== "") {
+      if (this.amountSelectedInput !== 0) {
         this.amountSelectedCustomInput = newValue;
         this.amountSelected = this.amountSelectedInput;
+      } else {
+        this.amountSelectedCustomInput = 0;
+        this.amountSelected = 0;
       }
     },
   },
@@ -159,19 +169,38 @@ export default {
 .donate-card {
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   border-radius: 25px;
-  width: 80%;
+  width: 70%;
   margin: 0 auto;
+
+  @media (max-width: 1300px) {
+    width: 90%;
+  }
+
+  @media (max-width: 992px) {
+    width: 80%;
+  }
+
   .coffee2 {
     width: 40px;
     opacity: 0.5;
     position: absolute;
-    right: 60px;
+    right: 190px;
     top: 120px;
     transform: rotate(25deg);
+
+    @media (min-width: 992px) {
+      right: 90px;
+    }
+
+    @media (min-width: 1301px) {
+      right: 150px;
+    }
+
+    @media (min-width: 1550px) {
+      right: 200px;
+    }
   }
-  .donate-card-title {
-    border-bottom: 3px solid #000;
-  }
+
   .amountSelection {
     width: 100%;
     display: flex;
@@ -197,6 +226,7 @@ export default {
       padding: 0;
       display: grid;
       place-content: center;
+
       cursor: pointer;
       border: 3px solid gray;
       border-radius: 50%;
@@ -205,11 +235,12 @@ export default {
 
     input[type="number"] {
       margin: 0;
+      width: 120px;
+      min-width: 70px;
       height: 40px;
       border-radius: 50px;
       border: 3px solid #000;
       outline: none;
-      min-width: 70px;
     }
 
     .amountSelection-item {

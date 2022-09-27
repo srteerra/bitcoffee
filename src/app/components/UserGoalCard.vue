@@ -1,10 +1,6 @@
 <template>
   <b-container class="user-goals__container my-5">
-    <div
-      class="user-goal-card__container"
-      data-aos="fade-up"
-      data-aos-duration="1000"
-    >
+    <div class="user-goal-card__container">
       <div class="goal-completed" v-if="goal_status == 100">
         <p class="bg-dark font-weight-bold p-3">COMPLETED</p>
       </div>
@@ -47,7 +43,10 @@ export default {
 
 <style lang="scss">
 .user-goals__container {
+  width: 80%;
+  margin: 0 auto 200px;
   .user-goal-card__container {
+    width: 100%;
     position: relative;
     .goal-completed {
       width: 100%;
@@ -65,7 +64,7 @@ export default {
     .user-goal__card {
       box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
       border-radius: 20px;
-      width: 80%;
+      width: 100%;
       position: relative;
       .user-goal__progressbar {
         width: 80%;

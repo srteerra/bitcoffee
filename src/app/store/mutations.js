@@ -2,6 +2,22 @@ export const WINDOW_WIDTH = (state) => {
   state.windowWidth = window.innerWidth;
 };
 
+export const DONATION_CARD_STEPPER_NEXT = (state) => {
+  state.donationCardsteps + 1;
+};
+
+export const DONATION_CARD_STEPPER_BACK = (state) => {
+  state.donationCardsteps - 1;
+};
+
+export const DONATION_MAIN_STEPPER_NEXT = (state) => {
+  state.donationSteps = state.donationSteps + 1;
+};
+
+export const DONATION_MAIN_STEPPER_BACK = (state) => {
+  state.donationSteps = state.donationSteps - 1;
+};
+
 export const SET_USERNAME = (state, payload) => {
   state.username = payload.name;
 };
@@ -26,8 +42,16 @@ export const SET_CREATOR_SITE = (state, payload) => {
   state.creator_site = payload.site;
 };
 
+export const SET_CREATOR_TITLE = (state, payload) => {
+  state.creator_title = payload.title;
+};
+
 export const SET_CREATOR_SUBTITLE = (state, payload) => {
   state.creator_subtitle = payload.subtitle;
+};
+
+export const SET_CREATOR_DESC = (state, payload) => {
+  state.creator_description = payload.desc;
 };
 
 export const CREATOR_FOUND = (state, payload) => {

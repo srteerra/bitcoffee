@@ -30,12 +30,9 @@ export default {
   // Notification Ex
   noWalletNoti: false,
 
-  // Donator data
-  donator: {
-    donatorName: "",
-    donatorEmail: "",
-    donatorMessage: "",
-  },
+  // Donator card steps
+  donationCardsteps: 1,
+  donationSteps: 1,
 
   // User data
   username: "",
@@ -50,9 +47,11 @@ export default {
   // Creator data
   creator_username: null,
   creator_site: null,
+  creator_title: null,
   creator_subtitle: null,
   creator_avatar: "",
   creator_bg: "",
+  creator_description: null,
   creatorFound: false,
 
   // Notification center

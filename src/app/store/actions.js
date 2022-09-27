@@ -59,7 +59,7 @@ export const actions = {
     commit("LOADING_DATA", true);
     console.log(payload.user);
     const query =
-      '*[_type == "users" && userName == $user] {userName, userAddress, userSite, userSubtitle, userAvatar, userBg}';
+      '*[_type == "users" && userName == $user] {userName, userAddress, userSite, userTitle, userDesc, userSubtitle, userAvatar, userBg}';
     const params = { user: payload.user };
 
     client
@@ -71,6 +71,8 @@ export const actions = {
             console.log(`${user.userName} (${user.userAddress})`);
             commit("SET_CREATOR_USERNAME", { name: user.userName });
             commit("SET_CREATOR_SITE", { site: user.userSite });
+            commit("SET_CREATOR_DESC", { desc: user.userDesc });
+            commit("SET_CREATOR_TITLE", { title: user.userTitle });
             commit("SET_CREATOR_SUBTITLE", {
               subtitle: user.userSubtitle,
             });
@@ -137,6 +139,14 @@ export const actions = {
               .transfer(user.userAddress, amount)
               .send({
                 from,
+              })
+              .on("transactionHash", (hash) => {
+                console.log(hash);
+              })
+              .on("receipt", (receipt) => {
+                // receipt example
+                console.log("ultimo");
+                console.log(receipt);
               })
               .catch((err) => {
                 if (err.code === 4001) {

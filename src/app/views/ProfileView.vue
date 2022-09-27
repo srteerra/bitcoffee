@@ -51,8 +51,10 @@
           ></b-button>
         </div>
       </div>
+
       <!-- user description -->
       <b-container class="user-description__container">
+        <h1 class="my-5 font-weight-bold">About me</h1>
         <b-container
           data-aos="fade-up"
           data-aos-duration="1000"
