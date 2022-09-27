@@ -8,7 +8,7 @@
         'background-repeat': 'no-repeat',
         'background-position': 'center',
         'background-size': 'cover',
-        'background-image': 'url(' + background + ')',
+        'background-image': 'url(' + user_bg + ')',
       }"
     />
     <!-- User avatar -->
@@ -163,7 +163,7 @@
                   <b-form-group
                     id="SiteInputGroup"
                     class="text-dark font-weight-bold"
-                    label="Site"
+                    label="Your Site"
                     label-for="SiteInput"
                   >
                     <b-form-input
@@ -186,14 +186,14 @@
                       v-model="newTitle"
                       type="text"
                       class="w-100 py-2 px-3 mb-4"
-                      placeholder="Write a new title"
+                      placeholder="Enter the title"
                       required
                     />
                   </b-form-group>
                   <b-form-group
                     id="SubtitleInputGroup"
                     class="text-dark font-weight-bold"
-                    label="Subtitle"
+                    label="Short description"
                     label-for="SubtitleInput"
                   >
                     <b-form-input
@@ -201,14 +201,14 @@
                       v-model="newSub"
                       type="text"
                       class="w-100 py-2 px-3 mb-4"
-                      placeholder="Write a new subtitle"
+                      placeholder="Who are you?..."
                       required
                     />
                   </b-form-group>
                   <b-form-group
                     id="DescInputGroup"
                     class="text-dark font-weight-bold"
-                    label="Description"
+                    label="About me"
                     label-for="DescInput"
                   >
                     <b-form-textarea
@@ -216,7 +216,7 @@
                       v-model="newDesc"
                       type="text"
                       class="w-100 py-2 px-3 mb-4"
-                      placeholder="Enter a new description"
+                      placeholder="Tell us about you..."
                       required
                     />
                   </b-form-group>
@@ -348,13 +348,6 @@ export default {
         return this.noDesc;
       } else {
         return this.user_description;
-      }
-    },
-    background() {
-      if (!this.user_bg) {
-        return this.noBg;
-      } else {
-        return this.user_bg;
       }
     },
     ...mapState([

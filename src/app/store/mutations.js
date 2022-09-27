@@ -40,7 +40,8 @@ export const SET_CREATOR_USERNAME = (state, payload) => {
 
 export const SET_CREATOR_AVATAR = (state, payload) => {
   if (payload.avatar == undefined) {
-    state.creator_avatar = "";
+    state.creator_avatar =
+      "https://ipfs.io/ipfs/QmZWdmc9wwn51FupMqy3GYzkK4opu9dhWHpAiZKNe7vpBq?filename=BitcoffeePlace.png";
   } else {
     state.creator_avatar = payload.avatar;
   }
@@ -52,7 +53,8 @@ export const SWITCH_BLANK = (state) => {
 
 export const SET_AVATAR = (state, payload) => {
   if (payload.avatar == undefined) {
-    state.avatar = "";
+    state.avatar =
+      "https://ipfs.io/ipfs/QmZWdmc9wwn51FupMqy3GYzkK4opu9dhWHpAiZKNe7vpBq?filename=BitcoffeePlace.png";
   } else {
     state.avatar = payload.avatar;
   }
@@ -60,7 +62,8 @@ export const SET_AVATAR = (state, payload) => {
 
 export const SET_BACKGROUND = (state, payload) => {
   if (payload.bg == undefined) {
-    state.user_bg = "";
+    state.user_bg =
+      "https://images.unsplash.com/photo-1554147090-e1221a04a025?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1148&q=80";
   } else {
     state.user_bg = payload.bg;
   }
@@ -68,7 +71,8 @@ export const SET_BACKGROUND = (state, payload) => {
 
 export const SET_CREATOR_BACKGROUND = (state, payload) => {
   if (payload.bg == undefined) {
-    state.creator_bg = "";
+    state.creator_bg =
+      "https://images.unsplash.com/photo-1554147090-e1221a04a025?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1148&q=80";
   } else {
     state.creator_bg = payload.bg;
   }
