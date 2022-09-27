@@ -22,6 +22,14 @@ export const SET_USER_SITE = (state, payload) => {
   state.user_site = payload.site;
 };
 
+export const SET_CREATOR_SITE = (state, payload) => {
+  state.creator_site = payload.site;
+};
+
+export const SET_CREATOR_SUBTITLE = (state, payload) => {
+  state.creator_subtitle = payload.subtitle;
+};
+
 export const CREATOR_FOUND = (state, payload) => {
   state.creatorFound = payload.status;
 };
@@ -31,7 +39,7 @@ export const SET_CREATOR_USERNAME = (state, payload) => {
 };
 
 export const SET_CREATOR_AVATAR = (state, payload) => {
-  if (payload.creator_avatar == undefined) {
+  if (payload.avatar == undefined) {
     state.creator_avatar = "";
   } else {
     state.creator_avatar = payload.avatar;
@@ -59,7 +67,7 @@ export const SET_BACKGROUND = (state, payload) => {
 };
 
 export const SET_CREATOR_BACKGROUND = (state, payload) => {
-  if (payload.creator_bg == undefined) {
+  if (payload.bg == undefined) {
     state.creator_bg = "";
   } else {
     state.creator_bg = payload.bg;

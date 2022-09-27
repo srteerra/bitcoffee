@@ -58,7 +58,7 @@ export const actions = {
     commit("LOADING_DATA", true);
     console.log(payload.user);
     const query =
-      '*[_type == "users" && userName == $user] {userName, userAddress}';
+      '*[_type == "users" && userName == $user] {userName, userAddress, userSite, userSubtitle, userAvatar, userBg}';
     const params = { user: payload.user };
 
     client
@@ -69,11 +69,22 @@ export const actions = {
           users.forEach((user) => {
             console.log(`${user.userName} (${user.userAddress})`);
             commit("SET_CREATOR_USERNAME", { name: user.userName });
+            commit("SET_CREATOR_SITE", { site: user.userSite });
+            commit("SET_CREATOR_SUBTITLE", {
+              subtitle: user.userSubtitle,
+            });
             if (user.userAvatar == undefined) {
               commit("SET_CREATOR_AVATAR", { avatar: undefined });
             } else {
               commit("SET_CREATOR_AVATAR", {
                 avatar: builder.image(user.userAvatar).url(),
+              });
+            }
+            if (user.userBg == undefined) {
+              commit("SET_CREATOR_BACKGROUND", { bg: undefined });
+            } else {
+              commit("SET_CREATOR_BACKGROUND", {
+                bg: builder.image(user.userBg).url(),
               });
             }
             commit("CREATOR_FOUND", { status: true });
@@ -314,7 +325,7 @@ export const actions = {
           return client
             .patch(getters.getAddress)
             .set({
-              userAvatar: {
+              userBg: {
                 _type: "image",
                 asset: {
                   _type: "reference",
@@ -325,6 +336,7 @@ export const actions = {
             .commit()
             .then((res) => {
               console.log(res);
+              console.log(builder.image(res.userBg).url());
               commit("SET_BACKGROUND", {
                 bg: builder.image(res.userBg).url(),
               });
@@ -340,17 +352,52 @@ export const actions = {
     const params = { user: payload.name ?? payload.oldName };
 
     client.fetch(query, params).then((users) => {
-      console.log("usrs", users);
+      let nUser;
+      let nSite;
+      let nTitle;
+      let nSubitle;
+      let nDesc;
+
+      if (!payload.name) {
+        nUser = getters.getUsername;
+      } else {
+        nUser = payload.name;
+      }
+
+      if (!payload.title) {
+        nTitle = getters.getUserTitle;
+      } else {
+        nTitle = payload.title;
+      }
+
+      if (!payload.site) {
+        nSite = getters.getUserSite;
+      } else {
+        nSite = payload.site;
+      }
+
+      if (!payload.sub) {
+        nSubitle = getters.getUserSubtitle;
+      } else {
+        nSubitle = payload.sub;
+      }
+
+      if (!payload.desc) {
+        nDesc = getters.getUserDescription;
+      } else {
+        nDesc = payload.desc;
+      }
+
       if (users.length === 0) {
         console.log("Not used");
         client
           .patch(getters.getAddress) // Document ID to patch
           .set({
-            userName: payload.name,
-            userSite: payload.site,
-            userTitle: payload.title,
-            userSubtitle: payload.sub,
-            userDesc: payload.desc,
+            userName: nUser,
+            userSite: nSite,
+            userTitle: nTitle,
+            userSubtitle: nSubitle,
+            userDesc: nDesc,
           })
           .commit()
           .then((updatedAcc) => {
@@ -384,11 +431,11 @@ export const actions = {
         client
           .patch(getters.getAddress) // Document ID to patch
           .set({
-            userName: payload.oldName,
-            userSite: payload.site,
-            userTitle: payload.title,
-            userSubtitle: payload.sub,
-            userDesc: payload.desc,
+            userName: getters.getUsername,
+            userSite: nSite,
+            userTitle: nTitle,
+            userSubtitle: nSubitle,
+            userDesc: nDesc,
           })
           .commit()
           .then((updatedAcc) => {

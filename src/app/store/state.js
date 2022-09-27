@@ -48,6 +48,8 @@ export default {
 
   // Creator data
   creator_username: null,
+  creator_site: null,
+  creator_subtitle: null,
   creator_avatar: "",
   creator_bg: "",
   creatorFound: false,

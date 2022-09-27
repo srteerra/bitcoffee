@@ -6,8 +6,7 @@
         'background-repeat': 'no-repeat',
         'background-position': 'center',
         'background-size': 'cover',
-        'background-image':
-          'url(' + require('../assets/images/studio.jpg') + ')',
+        'background-image': 'url(' + creator_bg + ')',
       }"
     />
     <div class="profile__desc">
@@ -15,7 +14,7 @@
         <b-avatar
           class="profile__avatar mx-auto"
           size="6rem"
-          :src="`${getCreatorAvatar}`"
+          :src="`${creator_avatar}`"
         />
         <b-button
           size="sm"
@@ -34,17 +33,16 @@
       </div>
       <section>
         <h3 class="font-weight-bold pt-5 text-center">
-          {{ getCreatorUsername }}
+          {{ creator_username }}
         </h3>
         <div v-if="currentStep == 1" class="p-0 text-center">
           <div>
             <b-row>
               <b-col>
                 <div>
-                  <p class="font-weight-light">sarahsblog.com</p>
+                  <p class="font-weight-light">{{ creator_site }}</p>
                   <p style="max-width: 200px" class="mx-auto py-3">
-                    I like making instrumental music, it's one of my favorite
-                    things to do.
+                    {{ creator_subtitle }}
                   </p>
                 </div>
                 <b-button
@@ -177,7 +175,17 @@ export default {
       }
     },
 
-    ...mapState(["donator", "isconnected", "username", "balanceOf"]),
+    ...mapState([
+      "donator",
+      "isconnected",
+      "username",
+      "balanceOf",
+      "creator_username",
+      "creator_site",
+      "creator_subtitle",
+      "creator_avatar",
+      "creator_bg",
+    ]),
     ...mapGetters(["getCreatorUsername", "getCreatorAvatar"]),
   },
   methods: {
@@ -240,7 +248,7 @@ export default {
       width: 35px;
       height: 35px;
       position: absolute;
-      top: 60%;
+      top: 65%;
       left: 52%;
       border: none;
       outline: none;

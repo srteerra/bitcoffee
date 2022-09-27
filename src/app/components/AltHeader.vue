@@ -49,7 +49,7 @@
           no-caret="true"
         >
           <template #button-content>
-            <b-avatar button :src="`${creator_avatar}`" size="4rem" />
+            <b-avatar button :src="`${avatar}`" size="4rem" />
           </template>
           <b-dropdown-item to="/profile">
             <div class="py-2">
@@ -165,6 +165,7 @@ export default {
       "connectBtnState",
       "disconnectBtnState",
       "creator_avatar",
+      "avatar",
     ]),
   },
   methods: {

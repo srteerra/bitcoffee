@@ -161,6 +161,21 @@
                 </b-form-group>
                 <section class="user-data__container">
                   <b-form-group
+                    id="SiteInputGroup"
+                    class="text-dark font-weight-bold"
+                    label="Site"
+                    label-for="SiteInput"
+                  >
+                    <b-form-input
+                      id="SiteInput"
+                      v-model="newSite"
+                      type="text"
+                      class="w-100 py-2 px-3 mb-4"
+                      placeholder="Enter the link of your site"
+                      required
+                    />
+                  </b-form-group>
+                  <b-form-group
                     id="TitleInputGroup"
                     class="text-dark font-weight-bold"
                     label="Title"
@@ -238,7 +253,6 @@
             :disabled="!isAvailable"
             @click="
               updateAccount({
-                oldName: username,
                 name: newUsername,
                 site: newSite,
                 title: newTitle,
@@ -289,6 +303,19 @@ export default {
   components: {
     UserGoalCard,
     Header,
+  },
+  mounted() {
+    this.newUsername = this.username;
+    this.newSite = this.user_site;
+    this.newTitle = this.user_title;
+    this.newSub = this.user_subtitle;
+    this.newDesc = this.user_description;
+
+    if (this.newUsername === this.username) {
+      this.isAvailable = true;
+    } else {
+      this.isAvailable = false;
+    }
   },
   methods: {
     ...mapActions(["updateAccount"]),
@@ -359,12 +386,14 @@ export default {
         client
           .fetch(query, params)
           .then((users) => {
-            if (users.userName === this.username) {
-              this.isAvailable = true;
-            } else if (users.length === 0 && this.newUsername.length >= 3) {
+            if (users.length === 0 && this.newUsername.length >= 3) {
               this.isAvailable = true;
             } else {
-              this.isAvailable = false;
+              if (this.newUsername === this.username) {
+                this.isAvailable = true;
+              } else {
+                this.isAvailable = false;
+              }
             }
           })
           .catch((err) => {
