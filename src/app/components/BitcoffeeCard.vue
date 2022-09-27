@@ -130,7 +130,12 @@
                   variant="dark"
                   :disabled="approvedCheck"
                   class="rounded-pill font-weight-bold w-50 mx-auto"
-                  @click="sendDonation({ amount: amountInput })"
+                  @click="
+                    sendSingleDonation({
+                      creator: $route.params.user,
+                      amount: amountInput,
+                    })
+                  "
                 >
                   <p class="p-0 m-0">Approve</p>
                 </b-button>
@@ -176,6 +181,7 @@ export default {
         return this.creator_subtitle;
       }
     },
+
     site() {
       if (!this.creator_site) {
         return "...";
@@ -206,7 +212,7 @@ export default {
     ...mapGetters(["getCreatorUsername", "getCreatorAvatar"]),
   },
   methods: {
-    ...mapActions(["sendDonation"]),
+    ...mapActions(["sendSingleDonation"]),
     onClickNext() {
       this.currentStep++;
     },

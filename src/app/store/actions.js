@@ -100,9 +100,8 @@ export const actions = {
         console.log(err);
       });
   },
-  async sendDonation({ commit }, payload) {
+  async sendSingleDonation({ dispatch }, payload) {
     let from = ethereum.selectedAddress;
-    let to = "0xa1324A30D08F064a8A0c54C26151C68e9D3E06fc";
 
     const ab = tokenContract.methods
       .decimals()
@@ -122,9 +121,45 @@ export const actions = {
       return;
     }
 
-    tokenContract.methods.transfer(to, amount).send({
-      from,
-    });
+    const query =
+      '*[_type == "users" && userName == $user] {userName, userAddress}';
+    const params = { user: payload.creator };
+
+    client
+      .fetch(query, params)
+      .then((users) => {
+        console.log(users);
+        if (users.length > 0) {
+          users.forEach((user) => {
+            console.log(`${user.userName} (${user.userAddress})`);
+            tokenContract.methods
+              .transfer(user.userAddress, amount)
+              .send({
+                from,
+              })
+              .catch((err) => {
+                if (err.code === 4001) {
+                  console.log("Request denied.");
+                  dispatch("addNotification", {
+                    type: "danger",
+                    message: "Request denied.",
+                  });
+                }
+              });
+          });
+        } else {
+          dispatch("addNotification", {
+            type: "danger",
+            message: "Error with the address.",
+          });
+        }
+      })
+      .catch((err) => {
+        dispatch("addNotification", {
+          type: "danger",
+          message: err,
+        });
+      });
   },
   async connect_wallet({ commit, dispatch }) {
     commit("CONNECT_BUTTON", true); // Button disabled
