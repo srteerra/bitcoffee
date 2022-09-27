@@ -69,7 +69,6 @@
         </b-container>
       </b-container>
 
-      <!-- User goals -->
       <div class="user-goals__list">
         <h1 class="my-4 font-weight-bold">My goals</h1>
         <UserGoalCard />
