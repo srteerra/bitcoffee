@@ -1,5 +1,6 @@
 <template>
   <div class="pub-profile">
+    <Header />
     <!-- Banner -->
     <div
       class="user-profile__background"
@@ -82,6 +83,7 @@
 <script>
 import UserGoalCard from "../components/UserGoalCard.vue";
 import DonateBoxView from "../components/DonateBoxView.vue";
+import Header from "../components/Header.vue";
 
 export default {
   name: "PublicProfileView",
@@ -106,6 +108,7 @@ export default {
   components: {
     UserGoalCard,
     DonateBoxView,
+    Header,
   },
 };
 </script>
