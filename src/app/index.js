@@ -55,20 +55,18 @@ ethereum.on("disconnect", (error) => {
   console.log(error);
 });
 
-// // On Chain change
-// ethereum.on("chainChanged", (_chainId) => {
-//   console.log(_chainId);
-//   if (_chainId === "0x38") {
-//     try {
-//       store.dispatch("updateBalance");
-//       store.commit("SET_NET", parseInt(_chainId, 16));
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   } else {
-//     console.log("change your chain");
-//     store.commit("CLEAR_BALANCE");
-//     store.commit("SET_NET", parseInt(_chainId, 16));
-//   }
-//   // window.location.reload()
-// });
+// On Chain change
+ethereum.on("chainChanged", (_chainId) => {
+  console.log(_chainId);
+  if (_chainId === "0x1f") {
+    try {
+      store.dispatch("updateBalance");
+      store.commit("SET_NET", parseInt(_chainId, 16));
+    } catch (error) {
+      console.log(error);
+    }
+  } else {
+    window.location.reload();
+  }
+  // window.location.reload()
+});

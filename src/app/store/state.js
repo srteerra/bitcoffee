@@ -25,6 +25,7 @@ export default {
   // Modals
   showinstallMetaModalState: false,
   editProfileModal: false,
+  showpleaseChangeNetState: false,
 
   // Notification Ex
   noWalletNoti: false,
