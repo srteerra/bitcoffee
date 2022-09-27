@@ -40,9 +40,11 @@
             <b-row>
               <b-col>
                 <div>
-                  <p class="font-weight-light">{{ creator_site }}</p>
+                  <p class="font-weight-light" v-if="creator_site">
+                    {{ site }}
+                  </p>
                   <p style="max-width: 200px" class="mx-auto py-3">
-                    {{ creator_subtitle }}
+                    {{ desc }}
                   </p>
                 </div>
                 <b-button
@@ -165,6 +167,21 @@ export default {
   computed: {
     progress() {
       return Math.round(100 / this.max_step) * this.currentStep;
+    },
+
+    desc() {
+      if (!this.creator_subtitle) {
+        return "No description :(";
+      } else {
+        return this.creator_subtitle;
+      }
+    },
+    site() {
+      if (!this.creator_site) {
+        return "...";
+      } else {
+        return this.creator_site;
+      }
     },
 
     approvedCheck() {
