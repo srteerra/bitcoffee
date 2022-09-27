@@ -45,6 +45,7 @@ const routes = [
     component: () =>
       import(/* webpackChunkName:"home" */ "../views/MemberView"),
   },
+
 ];
 
 const router = new Router({
@@ -55,6 +56,14 @@ const router = new Router({
   scrollBehavior() {
     window.scrollTo(0, 0);
   },
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.name === "profile" && store.state.isconnected === false) {
+    next({ name: "home" });
+  } else {
+    next();
+  }
 });
 
 export default router;

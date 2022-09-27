@@ -1,5 +1,6 @@
 export default {
   fetchingData: false,
+  fetchingDataWait: false,
   shadowblank: false,
   error: null,
   windowWidth: window.innerWidth,
@@ -23,6 +24,7 @@ export default {
 
   // Modals
   showinstallMetaModalState: false,
+  editProfileModal: false,
 
   // Notification Ex
   noWalletNoti: false,
@@ -38,9 +40,16 @@ export default {
   username: "",
   avatar: "",
 
+  user_bg: "",
+  user_site: "",
+  user_title: "",
+  user_subtitle: "",
+  user_description: "",
+
   // Creator data
   creator_username: null,
   creator_avatar: "",
+  creator_bg: "",
   creatorFound: false,
 
   // Notification center

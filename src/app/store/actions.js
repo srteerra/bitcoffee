@@ -55,6 +55,7 @@ export const actions = {
     commit("SET_BALANCE", { balanceRSK: balanceRSK, balanceTSY: balanceTSY });
   },
   async getCreatorPage({ commit }, payload) {
+    commit("LOADING_DATA", true);
     console.log(payload.user);
     const query =
       '*[_type == "users" && userName == $user] {userName, userAddress}';
@@ -76,10 +77,12 @@ export const actions = {
               });
             }
             commit("CREATOR_FOUND", { status: true });
+            commit("LOADING_DATA", false);
           });
         } else {
           console.log("Creator not found");
           commit("CREATOR_FOUND", { status: false });
+          commit("LOADING_DATA", false);
         }
       })
       .catch((err) => {
@@ -114,7 +117,7 @@ export const actions = {
   },
   async connect_wallet({ commit, dispatch }) {
     commit("CONNECT_BUTTON", true); // Button disabled
-    commit("LOADING_DATA", true); // Loading data on
+    commit("LOADING_DATA_WAIT", true); // Loading data on
 
     if (ethereum) {
       ethereum
@@ -125,7 +128,7 @@ export const actions = {
 
             commit("IS_CONNECTED", true);
             commit("DISCONNECT_BUTTON", false); // Disconnect button enabled on nav
-            commit("LOADING_DATA", false); // Loading data off
+            commit("LOADING_DATA_WAIT", false); // Loading data off
 
             console.log(net);
             commit("SET_NET", net);
@@ -147,6 +150,10 @@ export const actions = {
                     _id: ethereum.selectedAddress,
                     userName: "Unnamed",
                     userAddress: ethereum.selectedAddress,
+                    userTitle: "",
+                    userSite: "",
+                    userSubtitle: "",
+                    userDesc: "",
                   };
 
                   client.createIfNotExists(userDoc);
@@ -154,11 +161,25 @@ export const actions = {
                   client.getDocument(ethereum.selectedAddress).then((users) => {
                     console.log(`${users.userName}`);
                     commit("SET_USERNAME", { name: users.userName });
+                    commit("SET_USER_TITLE", { title: users.userTitle });
+                    commit("SET_USER_SITE", { site: users.userSite });
+                    commit("SET_USER_SUBTITLE", {
+                      subtitle: users.userSubtitle,
+                    });
+                    commit("SET_USER_DESC", { desc: users.userDesc });
+
                     if (users.userAvatar == undefined) {
                       commit("SET_AVATAR", { avatar: undefined });
                     } else {
                       commit("SET_AVATAR", {
                         avatar: builder.image(users.userAvatar).url(),
+                      });
+                    }
+                    if (users.userBg == undefined) {
+                      commit("SET_BACKGROUND", { bg: undefined });
+                    } else {
+                      commit("SET_BACKGROUND", {
+                        bg: builder.image(users.userBg).url(),
                       });
                     }
                   });
@@ -172,6 +193,10 @@ export const actions = {
                     _id: ethereum.selectedAddress,
                     userName: "Unnamed" + ran,
                     userAddress: ethereum.selectedAddress,
+                    userTitle: "",
+                    userSite: "",
+                    userSubtitle: "",
+                    userDesc: "",
                   };
 
                   client.createIfNotExists(userDoc);
@@ -179,11 +204,24 @@ export const actions = {
                   client.getDocument(ethereum.selectedAddress).then((users) => {
                     console.log(`${users.userName}`);
                     commit("SET_USERNAME", { name: users.userName });
+                    commit("SET_USER_TITLE", { title: users.userTitle });
+                    commit("SET_USER_SITE", { site: users.userSite });
+                    commit("SET_USER_SUBTITLE", {
+                      subtitle: users.userSubtitle,
+                    });
+                    commit("SET_USER_DESC", { desc: users.userDesc });
                     if (users.userAvatar == undefined) {
                       commit("SET_AVATAR", { avatar: undefined });
                     } else {
                       commit("SET_AVATAR", {
                         avatar: builder.image(users.userAvatar).url(),
+                      });
+                    }
+                    if (users.userBg == undefined) {
+                      commit("SET_BACKGROUND", { bg: undefined });
+                    } else {
+                      commit("SET_BACKGROUND", {
+                        bg: builder.image(users.userBg).url(),
                       });
                     }
                   });
@@ -203,7 +241,7 @@ export const actions = {
             });
             commit("CONNECT_BUTTON", false); // Button enabled
             commit("DISCONNECT_BUTTON", true); // Disconnect button disabled on nav
-            commit("LOADING_DATA", false); // Loading data off
+            commit("LOADING_DATA_WAIT", false); // Loading data off
           } else if (err.code === -32002) {
             console.log("Request still in progress.");
             dispatch("addNotification", {
@@ -212,7 +250,7 @@ export const actions = {
             });
             commit("CONNECT_BUTTON", false); // Button enabled
             commit("DISCONNECT_BUTTON", true); // Disconnect button disabled on nav
-            commit("LOADING_DATA", false); // Loading data off
+            commit("LOADING_DATA_WAIT", false); // Loading data off
           } else {
             console.error(err);
             dispatch("addNotification", {
@@ -221,7 +259,7 @@ export const actions = {
             });
             commit("CONNECT_BUTTON", false); // Button enabled
             commit("DISCONNECT_BUTTON", true); // Disconnect button disabled on nav
-            commit("LOADING_DATA", false); // Loading data off
+            commit("LOADING_DATA_WAIT", false); // Loading data off
           }
         });
     } else {
@@ -229,8 +267,155 @@ export const actions = {
       commit("SHOW_INSTALL_METAMASK");
       commit("CONNECT_BUTTON", false); // Button enabled
       commit("DISCONNECT_BUTTON", true); // Disconnect button disabled on nav
-      commit("LOADING_DATA", false); // Loading data off
+      commit("LOADING_DATA_WAIT", false); // Loading data off
     }
+  },
+  async updateAccount({ commit, getters, dispatch }, payload) {
+    commit("LOADING_DATA_WAIT");
+    if (payload.avatar) {
+      client.assets
+        .upload("image", payload.avatar)
+        .then((imageAsset) => {
+          // Here you can decide what to do with the returned asset document.
+          // If you want to set a specific asset field you can to the following:
+          return client
+            .patch(getters.getAddress)
+            .set({
+              userAvatar: {
+                _type: "image",
+                asset: {
+                  _type: "reference",
+                  _ref: imageAsset._id,
+                },
+              },
+            })
+            .commit()
+            .then((res) => {
+              console.log(res);
+              commit("SET_AVATAR", {
+                avatar: builder.image(res.userAvatar).url(),
+              });
+            });
+        })
+        .then(() => {
+          console.log("Done!");
+        });
+    }
+
+    if (payload.bg) {
+      client.assets
+        .upload("image", payload.bg)
+        .then((imageAsset) => {
+          // Here you can decide what to do with the returned asset document.
+          // If you want to set a specific asset field you can to the following:
+          return client
+            .patch(getters.getAddress)
+            .set({
+              userAvatar: {
+                _type: "image",
+                asset: {
+                  _type: "reference",
+                  _ref: imageAsset._id,
+                },
+              },
+            })
+            .commit()
+            .then((res) => {
+              console.log(res);
+              commit("SET_BACKGROUND", {
+                bg: builder.image(res.userBg).url(),
+              });
+            });
+        })
+        .then(() => {
+          console.log("Done!");
+        });
+    }
+
+    const query =
+      '*[_type == "users" && userName == $user] {userName, userAddress}';
+    const params = { user: payload.name ?? payload.oldName };
+
+    client.fetch(query, params).then((users) => {
+      console.log("usrs", users);
+      if (users.length === 0) {
+        console.log("Not used");
+        client
+          .patch(getters.getAddress) // Document ID to patch
+          .set({
+            userName: payload.name,
+            userSite: payload.site,
+            userTitle: payload.title,
+            userSubtitle: payload.sub,
+            userDesc: payload.desc,
+          })
+          .commit()
+          .then((updatedAcc) => {
+            console.log("Hurray, the acc is updated! New document:");
+            console.log(updatedAcc);
+            console.log(updatedAcc.userName);
+            console.log(updatedAcc.userSubtitle);
+            commit("SET_USERNAME", { name: updatedAcc.userName });
+            commit("SET_USER_SITE", { site: updatedAcc.userSite });
+            commit("SET_USER_TITLE", { title: updatedAcc.userTitle });
+            commit("SET_USER_SUBTITLE", { subtitle: updatedAcc.userSubtitle });
+            commit("SET_USER_DESC", { desc: updatedAcc.userDesc });
+            commit("LOADING_DATA_WAIT");
+            commit("SHOW_EDIT_PROFILE");
+            dispatch("addNotification", {
+              type: "success",
+              message: "Profile updated!",
+            });
+          })
+          .catch((err) => {
+            console.error("Oh no, the update failed: ", err.message);
+            commit("LOADING_DATA_WAIT");
+            commit("SHOW_EDIT_PROFILE");
+            dispatch("addNotification", {
+              type: "danger",
+              message: "Oh no, the update failed.",
+            });
+          });
+      } else {
+        console.log("Used");
+        client
+          .patch(getters.getAddress) // Document ID to patch
+          .set({
+            userName: payload.oldName,
+            userSite: payload.site,
+            userTitle: payload.title,
+            userSubtitle: payload.sub,
+            userDesc: payload.desc,
+          })
+          .commit()
+          .then((updatedAcc) => {
+            console.log("Hurray, the acc is updated! New document:");
+            console.log(updatedAcc);
+            console.log(updatedAcc.userName);
+            console.log(updatedAcc.userSubtitle);
+            commit("SET_USERNAME", { name: updatedAcc.userName });
+            commit("SET_USER_SITE", { site: updatedAcc.userSite });
+            commit("SET_USER_TITLE", { title: updatedAcc.userTitle });
+            commit("SET_USER_SUBTITLE", { subtitle: updatedAcc.userSubtitle });
+            commit("SET_USER_DESC", { desc: updatedAcc.userDesc });
+            commit("LOADING_DATA_WAIT");
+            commit("SHOW_EDIT_PROFILE");
+            dispatch("addNotification", {
+              type: "success",
+              message: "Profile updated!",
+            });
+          })
+          .catch((err) => {
+            console.error("Oh no, the update failed: ", err.message);
+            commit("LOADING_DATA_WAIT");
+            commit("SHOW_EDIT_PROFILE");
+            dispatch("addNotification", {
+              type: "danger",
+              message: "Oh no, the update failed.",
+            });
+          });
+      }
+    });
   },
   async addNotification({ commit }, payload) {
     commit("PUSH_NOTIFICATION", payload);

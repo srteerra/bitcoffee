@@ -9,20 +9,20 @@
         <p class="bg-dark font-weight-bold p-3">COMPLETED</p>
       </div>
       <b-container
-        class="user-goal__card p-4"
+        class="user-goal__card px-4 py-5"
         :class="{ blur: goal_status == 100 }"
       >
         <p class="firstValue">0%</p>
         <p class="lastValue">100%</p>
-        <h2 class="font-weight-bold">{{ goal_title }}</h2>
+        <h4 class="font-weight-bold">{{ goal_title }}</h4>
         <b-progress
           class="user-goal__progressbar mx-auto my-4"
           :value="goal_status"
           variant="dark"
         ></b-progress>
-        <h4 class="mb-4">
+        <!-- <h4 class="mb-4">
           <b-badge class="progress__badge">{{ goal_status }}%</b-badge>
-        </h4>
+        </h4> -->
         <p>{{ goal_description }}</p>
       </b-container>
     </div>
@@ -65,7 +65,7 @@ export default {
     .user-goal__card {
       box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
       border-radius: 20px;
-      width: 90%;
+      width: 80%;
       position: relative;
       .user-goal__progressbar {
         width: 80%;
@@ -75,13 +75,13 @@ export default {
       }
       .firstValue {
         position: absolute;
-        top: 100px;
+        top: 120px;
         left: 110px;
       }
       .lastValue {
         position: absolute;
         right: 110px;
-        top: 100px;
+        top: 120px;
       }
     }
   }
