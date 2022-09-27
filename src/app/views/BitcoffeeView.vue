@@ -45,6 +45,13 @@ export default {
     BitcoffeeCard,
     AltHeader,
   },
+  watch: {
+    $route(to, from) {
+      this.$store.dispatch("getCreatorPage", {
+        user: to.params.user,
+      });
+    },
+  },
   computed: {
     ...mapGetters(["getCreatorFound"]),
   },
