@@ -65,7 +65,7 @@ export default {
     .user-goal__card {
       box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
       border-radius: 20px;
-      width: 80%;
+      width: 90%;
       position: relative;
       .user-goal__progressbar {
         width: 80%;
