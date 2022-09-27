@@ -51,10 +51,22 @@
                   size="lg"
                   block
                   variant="dark"
+                  :disabled="!isconnected"
+                  v-if="$route.params.user !== $store.state.username"
                   class="rounded-pill font-weight-bold w-50 mx-auto"
                   @click="onClickNext"
                 >
                   <p class="p-0 m-0">Donate</p>
+                </b-button>
+                <b-button
+                  size="lg"
+                  block
+                  variant="outline-dark"
+                  v-else
+                  class="rounded-pill font-weight-bold w-50 mx-auto"
+                  to="profile"
+                >
+                  <p class="p-0 m-0">Edit profile</p>
                 </b-button>
               </b-col>
             </b-row>
