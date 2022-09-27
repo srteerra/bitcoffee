@@ -4,7 +4,7 @@
       <h3 class="font-weight-bold my-3">Buy me a coffee</h3>
     </div>
     <div>
-      <div class="w-100 text-left">
+      <div class="hola w-100 text-left">
         <!-- critpo dropdown -->
         <b-dropdown
           size="md"
@@ -13,38 +13,55 @@
           toggle-class="text-decoration-none"
         >
           <template #button-content>
-            <span class="pr-1"><img alt="" style="max-width: 25px" /></span>
+            <span class="pr-1"
+              ><img
+                :src="require('../assets/icons/' + selectedCypto + '.png')"
+                alt=""
+                style="max-width: 25px"
+            /></span>
             {{ selectedCypto }}
           </template>
           <b-dropdown-item-button
-            v-if="selectedCypto !== 'WBNB'"
+            v-if="selectedCypto !== 'RBTC'"
             class="py-1"
-            @click="selectedCypto({ crypto: 'WBNB' })"
+            @click="selectedCypto = 'RBTC'"
           >
             <span class="pr-1"
-              ><img src="" alt="" style="max-width: 25px"
+              ><img
+                src="../assets/icons/RBTC.png"
+                alt="RBTC"
+                style="max-width: 25px"
             /></span>
-            WBNB
+            RBTC
           </b-dropdown-item-button>
           <b-dropdown-item-button
-            v-if="selectedCypto !== 'ETH'"
+            v-if="selectedCypto !== 'BITC'"
             class="py-1"
-            @click="selectCrypto({ crypto: 'ETH' })"
+            @click="selectedCypto = 'BITC'"
           >
             <span class="pr-1"
-              ><img src="" alt="" style="max-width: 25px"
+              ><img
+                src="../assets/icons/BITC.png"
+                alt="BITC"
+                style="max-width: 25px"
             /></span>
-            ETH
+            BITC
           </b-dropdown-item-button>
         </b-dropdown>
       </div>
 
+      <img
+        src="../assets/vectors/coffee-2.png"
+        alt="coffee2-cup"
+        class="coffee2"
+      />
+
       <!-- Donation amount -->
       <div class="py-3 amountSelection">
-        <div class="amount-list my-3">
+        <div class="amount-list my-3 px-3">
           <div class="amountSelection-item">
             <input
-              id="1critpo"
+              id="1cripto"
               v-model="amountSelectedInput"
               type="radio"
               name="amountSelection"
@@ -88,7 +105,7 @@
         </b-form-group>
       </div>
 
-      <p>
+      <p class="px-3">
         I appreciate all the support, with this donation I’ll keep doing what I
         love.
       </p>
@@ -113,7 +130,7 @@ export default {
       amountSelectedInput: "",
       amountSelectedCustomInput: "",
 
-      selectedCypto: "BTC",
+      selectedCypto: "BITC",
     };
   },
   // computed: {
@@ -144,6 +161,14 @@ export default {
   border-radius: 25px;
   width: 80%;
   margin: 0 auto;
+  .coffee2 {
+    width: 40px;
+    opacity: 0.5;
+    position: absolute;
+    right: 60px;
+    top: 120px;
+    transform: rotate(25deg);
+  }
   .donate-card-title {
     border-bottom: 3px solid #000;
   }

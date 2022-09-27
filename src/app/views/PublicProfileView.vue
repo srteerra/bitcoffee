@@ -173,7 +173,7 @@ export default {
 
 @media (max-width: 790px) {
   .creator-information__container {
-    width: 95% !important;
+    width: 95%;
   }
 }
 </style>
