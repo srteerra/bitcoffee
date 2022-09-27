@@ -3,31 +3,6 @@
     <AltHeader v-if="getCreatorFound" />
     <b-container v-if="getCreatorFound"> <BitcoffeeCard /> </b-container>
     <b-container v-else>
-<<<<<<< HEAD
-            <div class="notfound__container">
-        <div class="notfound__content">
-              <img
-                    src="../assets/logos/icon-logo.png"
-                    class="cup-logo"
-                  />
-          <p
-            class="notfound__title"
-            style="margin: 0; font-weight: 700;"
-          >
-            <strong>PAGE <span style="color:#D9BEA7;">NOT</span> <br>REGISTERED</strong>
-          </p>
-          <div>
-            <p class="notfound__warning">
-              This page not available.
-            </p>
-          </div>
-          <router-link to="/">
-            <b-button class="px-5" variant="outline-dark" pill >
-            Go back
-          </b-button>
-          </router-link>
-          
-=======
       <div class="notfound__container">
         <div class="notfound__content">
           <img src="../assets/logos/icon-logo.png" class="cup-logo" />
@@ -45,7 +20,6 @@
               Go back
             </b-button>
           </router-link>
->>>>>>> a5467b8b49a7fa2fc6fe3ccb4be9e0f1f6721495
         </div>
       </div>
     </b-container>
