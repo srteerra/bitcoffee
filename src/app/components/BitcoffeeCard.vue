@@ -91,20 +91,64 @@
                       required
                     />
                   </b-form-group> -->
-                  <!-- Donation amount -->
-                  <div>
+                  <div class="mb-3">
                     <p class="m-0 text-center font-weight-bold">
                       Amount of coffees
                     </p>
-                    <p
-                      class="m-0 text-center font-weight-light"
-                      style="opacity: 80%"
-                    >
-                      How much caffeine?
-                    </p>
                   </div>
-                  <div class="py-3 amountSelection">
-                    <div class="amount-list my-3 px-4">
+                  <!-- Donation amount -->
+                  <div class="hola w-100 text-left">
+                    <!-- critpo dropdown -->
+                    <b-dropdown
+                      size="md"
+                      class="my-2"
+                      variant="link"
+                      toggle-class="text-decoration-none"
+                    >
+                      <template #button-content>
+                        <span class="pr-1"
+                          ><img
+                            :src="
+                              require('../assets/icons/' +
+                                selectedCypto +
+                                '.png')
+                            "
+                            alt=""
+                            style="max-width: 25px"
+                        /></span>
+                        {{ selectedCypto }}
+                      </template>
+                      <b-dropdown-item-button
+                        v-if="selectedCypto !== 'RBTC'"
+                        class="py-1"
+                        @click="selectedCypto = 'RBTC'"
+                      >
+                        <span class="pr-1"
+                          ><img
+                            src="../assets/icons/RBTC.png"
+                            alt="RBTC"
+                            style="max-width: 25px"
+                        /></span>
+                        RBTC
+                      </b-dropdown-item-button>
+                      <b-dropdown-item-button
+                        v-if="selectedCypto !== 'BITC'"
+                        class="py-1"
+                        @click="selectedCypto = 'BITC'"
+                      >
+                        <span class="pr-1"
+                          ><img
+                            src="../assets/icons/BITC.png"
+                            alt="BITC"
+                            style="max-width: 25px"
+                        /></span>
+                        BITC
+                      </b-dropdown-item-button>
+                    </b-dropdown>
+                  </div>
+
+                  <div class="amountSelection">
+                    <div class="amount-list my-3">
                       <div class="amountSelection-item">
                         <input
                           id="1cripto"
@@ -138,7 +182,7 @@
                     </div>
                     <b-form-group
                       id="amountSelectedGroup"
-                      class="text-dark font-weight-bold m-0"
+                      class="text-dark font-weight-bold m-0 pl-3"
                     >
                       <b-form-input
                         id="customAmountInput"
@@ -154,7 +198,7 @@
                 <b-button
                   size="lg"
                   block
-                  :disabled="!amountSelected && amountSelected !== 0"
+                  :disabled="amountSelected < 1"
                   variant="dark"
                   class="rounded-pill font-weight-bold w-50 mx-auto"
                   @click="DONATION_MAIN_STEPPER_NEXT()"
@@ -240,6 +284,7 @@ export default {
       amountSelectedInput: 0,
       amountSelectedCustomInput: 0,
       approved: "approved",
+      selectedCypto: "BITC",
     };
   },
   computed: {
@@ -380,7 +425,8 @@ export default {
 #profile__container {
   width: 100%;
   max-width: 654px;
-  height: 625px;
+  min-height: 625px;
+  height: auto;
   min-height: 625px;
   background-color: rgb(255, 255, 255);
   border-radius: 90px;
@@ -393,7 +439,7 @@ export default {
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 
   .profile__background {
-    height: 35%;
+    height: 218.75px;
     // background-image: url('../assets/images/bg-user.png');
     // background-repeat: no-repeat;
     // background-position: center;
