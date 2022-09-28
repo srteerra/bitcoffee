@@ -40,6 +40,7 @@ export const actions = {
     window.location.reload();
   },
   async updateBalance({ commit }) {
+    const net = await web3.eth.net.getId();
     tokenContract = new web3.eth.Contract(
       artifact.abi,
       artifact.networks[net].address
@@ -58,7 +59,7 @@ export const actions = {
     commit("LOADING_DATA", true);
     console.log(payload.user);
     const query =
-      '*[_type == "users" && userName == $user] {userName, userAddress}';
+      '*[_type == "users" && userName == $user] {userName, userAddress, userSite, userTitle, userDesc, userSubtitle, userAvatar, userBg}';
     const params = { user: payload.user };
 
     client
@@ -69,11 +70,24 @@ export const actions = {
           users.forEach((user) => {
             console.log(`${user.userName} (${user.userAddress})`);
             commit("SET_CREATOR_USERNAME", { name: user.userName });
+            commit("SET_CREATOR_SITE", { site: user.userSite });
+            commit("SET_CREATOR_DESC", { desc: user.userDesc });
+            commit("SET_CREATOR_TITLE", { title: user.userTitle });
+            commit("SET_CREATOR_SUBTITLE", {
+              subtitle: user.userSubtitle,
+            });
             if (user.userAvatar == undefined) {
               commit("SET_CREATOR_AVATAR", { avatar: undefined });
             } else {
               commit("SET_CREATOR_AVATAR", {
                 avatar: builder.image(user.userAvatar).url(),
+              });
+            }
+            if (user.userBg == undefined) {
+              commit("SET_CREATOR_BACKGROUND", { bg: undefined });
+            } else {
+              commit("SET_CREATOR_BACKGROUND", {
+                bg: builder.image(user.userBg).url(),
               });
             }
             commit("CREATOR_FOUND", { status: true });
@@ -89,9 +103,8 @@ export const actions = {
         console.log(err);
       });
   },
-  async sendDonation({ commit }, payload) {
+  async sendSingleDonation({ dispatch }, payload) {
     let from = ethereum.selectedAddress;
-    let to = "0xa1324A30D08F064a8A0c54C26151C68e9D3E06fc";
 
     const ab = tokenContract.methods
       .decimals()
@@ -111,9 +124,53 @@ export const actions = {
       return;
     }
 
-    tokenContract.methods.transfer(to, amount).send({
-      from,
-    });
+    const query =
+      '*[_type == "users" && userName == $user] {userName, userAddress}';
+    const params = { user: payload.creator };
+
+    client
+      .fetch(query, params)
+      .then((users) => {
+        console.log(users);
+        if (users.length > 0) {
+          users.forEach((user) => {
+            console.log(`${user.userName} (${user.userAddress})`);
+            tokenContract.methods
+              .transfer(user.userAddress, amount)
+              .send({
+                from,
+              })
+              .on("transactionHash", (hash) => {
+                console.log(hash);
+              })
+              .on("receipt", (receipt) => {
+                // receipt example
+                console.log("ultimo");
+                console.log(receipt);
+              })
+              .catch((err) => {
+                if (err.code === 4001) {
+                  console.log("Request denied.");
+                  dispatch("addNotification", {
+                    type: "danger",
+                    message: "Request denied.",
+                  });
+                }
+              });
+          });
+        } else {
+          dispatch("addNotification", {
+            type: "danger",
+            message: "Error with the address.",
+          });
+        }
+      })
+      .catch((err) => {
+        dispatch("addNotification", {
+          type: "danger",
+          message: err,
+        });
+      });
   },
   async connect_wallet({ commit, dispatch }) {
     commit("CONNECT_BUTTON", true); // Button disabled
@@ -121,116 +178,161 @@ export const actions = {
 
     if (ethereum) {
       ethereum
-        .request({ method: "eth_requestAccounts" })
-        .then((provider) => {
-          if (provider) {
-            commit("CURRENT_ADDRESS", ethereum.selectedAddress);
+        .request({
+          method: "wallet_switchEthereumChain",
+          params: [{ chainId: "0x1f" }], // chainId must be in hexadecimal numbers
+        })
+        .then((res) => {
+          console.log(res);
+          ethereum
+            .request({ method: "eth_requestAccounts" })
+            .then((provider) => {
+              if (provider) {
+                commit("CURRENT_ADDRESS", ethereum.selectedAddress);
 
-            commit("IS_CONNECTED", true);
-            commit("DISCONNECT_BUTTON", false); // Disconnect button enabled on nav
-            commit("LOADING_DATA_WAIT", false); // Loading data off
+                commit("IS_CONNECTED", true);
+                commit("DISCONNECT_BUTTON", false); // Disconnect button enabled on nav
+                commit("LOADING_DATA_WAIT", false); // Loading data off
 
-            console.log(net);
-            commit("SET_NET", net);
+                console.log(net);
+                commit("SET_NET", net);
 
-            dispatch("updateBalance");
+                dispatch("updateBalance");
 
-            const query =
-              '*[_type == "users" && userName == $user] {userName, userAddress}';
-            const params = { user: "Unnamed" };
+                const query =
+                  '*[_type == "users" && userName == $user] {userName, userAddress}';
+                const params = { user: "Unnamed" };
 
-            client
-              .fetch(query, params)
-              .then((users) => {
-                console.log(users);
-                if (users.length === 0) {
-                  // Name available
-                  var userDoc = {
-                    _type: "users",
-                    _id: ethereum.selectedAddress,
-                    userName: "Unnamed",
-                    userAddress: ethereum.selectedAddress,
-                    userTitle: "",
-                    userSite: "",
-                    userSubtitle: "",
-                    userDesc: "",
-                  };
+                client
+                  .fetch(query, params)
+                  .then((users) => {
+                    console.log(users);
+                    if (users.length === 0) {
+                      // Name available
+                      var userDoc = {
+                        _type: "users",
+                        _id: ethereum.selectedAddress,
+                        userName: "Unnamed",
+                        userAddress: ethereum.selectedAddress,
+                        userTitle: "",
+                        userSite: "",
+                        userSubtitle: "",
+                        userDesc: "",
+                      };
 
-                  client.createIfNotExists(userDoc);
+                      client.createIfNotExists(userDoc);
 
-                  client.getDocument(ethereum.selectedAddress).then((users) => {
-                    console.log(`${users.userName}`);
-                    commit("SET_USERNAME", { name: users.userName });
-                    commit("SET_USER_TITLE", { title: users.userTitle });
-                    commit("SET_USER_SITE", { site: users.userSite });
-                    commit("SET_USER_SUBTITLE", {
-                      subtitle: users.userSubtitle,
-                    });
-                    commit("SET_USER_DESC", { desc: users.userDesc });
+                      client
+                        .getDocument(ethereum.selectedAddress)
+                        .then((users) => {
+                          console.log(`${users.userName}`);
+                          commit("SET_USERNAME", { name: users.userName });
+                          commit("SET_USER_TITLE", { title: users.userTitle });
+                          commit("SET_USER_SITE", { site: users.userSite });
+                          commit("SET_USER_SUBTITLE", {
+                            subtitle: users.userSubtitle,
+                          });
+                          commit("SET_USER_DESC", { desc: users.userDesc });
 
-                    if (users.userAvatar == undefined) {
-                      commit("SET_AVATAR", { avatar: undefined });
+                          if (users.userAvatar == undefined) {
+                            commit("SET_AVATAR", { avatar: undefined });
+                          } else {
+                            commit("SET_AVATAR", {
+                              avatar: builder.image(users.userAvatar).url(),
+                            });
+                          }
+
+                          if (users.userBg == undefined) {
+                            commit("SET_BACKGROUND", { bg: undefined });
+                          } else {
+                            commit("SET_BACKGROUND", {
+                              bg: builder.image(users.userBg).url(),
+                            });
+                          }
+                        });
                     } else {
-                      commit("SET_AVATAR", {
-                        avatar: builder.image(users.userAvatar).url(),
-                      });
+                      // Name not available
+                      console.log("Name not available");
+                      const ran = Math.floor(Math.random() * 10001);
+
+                      var userDoc = {
+                        _type: "users",
+                        _id: ethereum.selectedAddress,
+                        userName: "Unnamed" + ran,
+                        userAddress: ethereum.selectedAddress,
+                        userTitle: "",
+                        userSite: "",
+                        userSubtitle: "",
+                        userDesc: "",
+                      };
+
+                      client.createIfNotExists(userDoc);
+
+                      client
+                        .getDocument(ethereum.selectedAddress)
+                        .then((users) => {
+                          console.log(`${users.userName}`);
+                          commit("SET_USERNAME", { name: users.userName });
+                          commit("SET_USER_TITLE", { title: users.userTitle });
+                          commit("SET_USER_SITE", { site: users.userSite });
+                          commit("SET_USER_SUBTITLE", {
+                            subtitle: users.userSubtitle,
+                          });
+                          commit("SET_USER_DESC", { desc: users.userDesc });
+
+                          if (users.userAvatar == undefined) {
+                            commit("SET_AVATAR", { avatar: undefined });
+                          } else {
+                            commit("SET_AVATAR", {
+                              avatar: builder.image(users.userAvatar).url(),
+                            });
+                          }
+
+                          if (users.userBg == undefined) {
+                            commit("SET_BACKGROUND", { bg: undefined });
+                          } else {
+                            commit("SET_BACKGROUND", {
+                              bg: builder.image(users.userBg).url(),
+                            });
+                          }
+                        });
                     }
-                    if (users.userBg == undefined) {
-                      commit("SET_BACKGROUND", { bg: undefined });
-                    } else {
-                      commit("SET_BACKGROUND", {
-                        bg: builder.image(users.userBg).url(),
-                      });
-                    }
+                  })
+                  .catch((err) => {
+                    console.log(err);
                   });
-                } else {
-                  // Name not available
-                  console.log("Name not available");
-                  const ran = Math.floor(Math.random() * 10001);
-
-                  var userDoc = {
-                    _type: "users",
-                    _id: ethereum.selectedAddress,
-                    userName: "Unnamed" + ran,
-                    userAddress: ethereum.selectedAddress,
-                    userTitle: "",
-                    userSite: "",
-                    userSubtitle: "",
-                    userDesc: "",
-                  };
-
-                  client.createIfNotExists(userDoc);
-
-                  client.getDocument(ethereum.selectedAddress).then((users) => {
-                    console.log(`${users.userName}`);
-                    commit("SET_USERNAME", { name: users.userName });
-                    commit("SET_USER_TITLE", { title: users.userTitle });
-                    commit("SET_USER_SITE", { site: users.userSite });
-                    commit("SET_USER_SUBTITLE", {
-                      subtitle: users.userSubtitle,
-                    });
-                    commit("SET_USER_DESC", { desc: users.userDesc });
-                    if (users.userAvatar == undefined) {
-                      commit("SET_AVATAR", { avatar: undefined });
-                    } else {
-                      commit("SET_AVATAR", {
-                        avatar: builder.image(users.userAvatar).url(),
-                      });
-                    }
-                    if (users.userBg == undefined) {
-                      commit("SET_BACKGROUND", { bg: undefined });
-                    } else {
-                      commit("SET_BACKGROUND", {
-                        bg: builder.image(users.userBg).url(),
-                      });
-                    }
-                  });
-                }
-              })
-              .catch((err) => {
-                console.log(err);
-              });
-          }
+              }
+            })
+            .catch((err) => {
+              if (err.code === 4001) {
+                console.log("Request denied.");
+                dispatch("addNotification", {
+                  type: "danger",
+                  message: "Request denied.",
+                });
+                commit("CONNECT_BUTTON", false); // Button enabled
+                commit("DISCONNECT_BUTTON", true); // Disconnect button disabled on nav
+                commit("LOADING_DATA_WAIT", false); // Loading data off
+              } else if (err.code === -32002) {
+                console.log("Request still in progress.");
+                dispatch("addNotification", {
+                  type: "danger",
+                  message: "Metamask is already processing.",
+                });
+                commit("CONNECT_BUTTON", false); // Button enabled
+                commit("DISCONNECT_BUTTON", true); // Disconnect button disabled on nav
+                commit("LOADING_DATA_WAIT", false); // Loading data off
+              } else {
+                console.error(err);
+                dispatch("addNotification", {
+                  type: "danger",
+                  message: err,
+                });
+                commit("CONNECT_BUTTON", false); // Button enabled
+                commit("DISCONNECT_BUTTON", true); // Disconnect button disabled on nav
+                commit("LOADING_DATA_WAIT", false); // Loading data off
+              }
+            });
         })
         .catch((err) => {
           if (err.code === 4001) {
@@ -311,7 +413,7 @@ export const actions = {
           return client
             .patch(getters.getAddress)
             .set({
-              userAvatar: {
+              userBg: {
                 _type: "image",
                 asset: {
                   _type: "reference",
@@ -322,6 +424,7 @@ export const actions = {
             .commit()
             .then((res) => {
               console.log(res);
+              console.log(builder.image(res.userBg).url());
               commit("SET_BACKGROUND", {
                 bg: builder.image(res.userBg).url(),
               });
@@ -337,17 +440,52 @@ export const actions = {
     const params = { user: payload.name ?? payload.oldName };
 
     client.fetch(query, params).then((users) => {
-      console.log("usrs", users);
+      let nUser;
+      let nSite;
+      let nTitle;
+      let nSubitle;
+      let nDesc;
+
+      if (!payload.name) {
+        nUser = getters.getUsername;
+      } else {
+        nUser = payload.name;
+      }
+
+      if (!payload.title) {
+        nTitle = getters.getUserTitle;
+      } else {
+        nTitle = payload.title;
+      }
+
+      if (!payload.site) {
+        nSite = getters.getUserSite;
+      } else {
+        nSite = payload.site;
+      }
+
+      if (!payload.sub) {
+        nSubitle = getters.getUserSubtitle;
+      } else {
+        nSubitle = payload.sub;
+      }
+
+      if (!payload.desc) {
+        nDesc = getters.getUserDescription;
+      } else {
+        nDesc = payload.desc;
+      }
+
       if (users.length === 0) {
         console.log("Not used");
         client
           .patch(getters.getAddress) // Document ID to patch
           .set({
-            userName: payload.name,
-            userSite: payload.site,
-            userTitle: payload.title,
-            userSubtitle: payload.sub,
-            userDesc: payload.desc,
+            userName: nUser,
+            userSite: nSite,
+            userTitle: nTitle,
+            userSubtitle: nSubitle,
+            userDesc: nDesc,
           })
           .commit()
           .then((updatedAcc) => {
@@ -381,11 +519,11 @@ export const actions = {
         client
           .patch(getters.getAddress) // Document ID to patch
           .set({
-            userName: payload.oldName,
-            userSite: payload.site,
-            userTitle: payload.title,
-            userSubtitle: payload.sub,
-            userDesc: payload.desc,
+            userName: getters.getUsername,
+            userSite: nSite,
+            userTitle: nTitle,
+            userSubtitle: nSubitle,
+            userDesc: nDesc,
           })
           .commit()
           .then((updatedAcc) => {
@@ -415,6 +553,12 @@ export const actions = {
             });
           });
       }
+    });
+  },
+  async changeNetwork() {
+    window.ethereum.request({
+      method: "wallet_switchEthereumChain",
+      params: [{ chainId: "0x1f" }], // chainId must be in hexadecimal numbers
     });
   },
   async addNotification({ commit }, payload) {

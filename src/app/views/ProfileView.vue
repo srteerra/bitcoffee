@@ -8,7 +8,7 @@
         'background-repeat': 'no-repeat',
         'background-position': 'center',
         'background-size': 'cover',
-        'background-image': 'url(' + background + ')',
+        'background-image': 'url(' + user_bg + ')',
       }"
     />
     <!-- User avatar -->
@@ -51,8 +51,10 @@
           ></b-button>
         </div>
       </div>
+
       <!-- user description -->
       <b-container class="user-description__container">
+        <h1 class="my-5 font-weight-bold">About me</h1>
         <b-container
           data-aos="fade-up"
           data-aos-duration="1000"
@@ -75,7 +77,7 @@
         <UserGoalCard />
       </div>
     </b-container>
-    
+
     <!-- Edit profile modal -->
     <b-modal
       id="modal-editProfile"
@@ -160,6 +162,21 @@
                 </b-form-group>
                 <section class="user-data__container">
                   <b-form-group
+                    id="SiteInputGroup"
+                    class="text-dark font-weight-bold"
+                    label="Your Site"
+                    label-for="SiteInput"
+                  >
+                    <b-form-input
+                      id="SiteInput"
+                      v-model="newSite"
+                      type="text"
+                      class="w-100 py-2 px-3 mb-4"
+                      placeholder="Enter the link of your site"
+                      required
+                    />
+                  </b-form-group>
+                  <b-form-group
                     id="TitleInputGroup"
                     class="text-dark font-weight-bold"
                     label="Title"
@@ -170,14 +187,14 @@
                       v-model="newTitle"
                       type="text"
                       class="w-100 py-2 px-3 mb-4"
-                      placeholder="Write a new title"
+                      placeholder="Enter the title"
                       required
                     />
                   </b-form-group>
                   <b-form-group
                     id="SubtitleInputGroup"
                     class="text-dark font-weight-bold"
-                    label="Subtitle"
+                    label="Short description"
                     label-for="SubtitleInput"
                   >
                     <b-form-input
@@ -185,14 +202,14 @@
                       v-model="newSub"
                       type="text"
                       class="w-100 py-2 px-3 mb-4"
-                      placeholder="Write a new subtitle"
+                      placeholder="Who are you?..."
                       required
                     />
                   </b-form-group>
                   <b-form-group
                     id="DescInputGroup"
                     class="text-dark font-weight-bold"
-                    label="Description"
+                    label="About me"
                     label-for="DescInput"
                   >
                     <b-form-textarea
@@ -200,7 +217,7 @@
                       v-model="newDesc"
                       type="text"
                       class="w-100 py-2 px-3 mb-4"
-                      placeholder="Enter a new description"
+                      placeholder="Tell us about you..."
                       required
                     />
                   </b-form-group>
@@ -237,7 +254,6 @@
             :disabled="!isAvailable"
             @click="
               updateAccount({
-                oldName: username,
                 name: newUsername,
                 site: newSite,
                 title: newTitle,
@@ -289,6 +305,19 @@ export default {
     UserGoalCard,
     Header,
   },
+  mounted() {
+    this.newUsername = this.username;
+    this.newSite = this.user_site;
+    this.newTitle = this.user_title;
+    this.newSub = this.user_subtitle;
+    this.newDesc = this.user_description;
+
+    if (this.newUsername === this.username) {
+      this.isAvailable = true;
+    } else {
+      this.isAvailable = false;
+    }
+  },
   methods: {
     ...mapActions(["updateAccount"]),
     ...mapMutations(["SHOW_EDIT_PROFILE"]),
@@ -322,13 +351,6 @@ export default {
         return this.user_description;
       }
     },
-    background() {
-      if (!this.user_bg) {
-        return this.noBg;
-      } else {
-        return this.user_bg;
-      }
-    },
     ...mapState([
       "username",
       "currentAccount",
@@ -358,12 +380,14 @@ export default {
         client
           .fetch(query, params)
           .then((users) => {
-            if (users.userName === this.username) {
-              this.isAvailable = true;
-            } else if (users.length === 0 && this.newUsername.length >= 3) {
+            if (users.length === 0 && this.newUsername.length >= 3) {
               this.isAvailable = true;
             } else {
-              this.isAvailable = false;
+              if (this.newUsername === this.username) {
+                this.isAvailable = true;
+              } else {
+                this.isAvailable = false;
+              }
             }
           })
           .catch((err) => {
