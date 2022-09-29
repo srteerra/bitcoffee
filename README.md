@@ -14,7 +14,7 @@ Bitcoffee is a CrowdFonding Dapp on the RSK network, in which anyone can raise f
 
 - 👁‍🗨 Pure desing.
 - 🦊 Connection with Metamask.
-- 📱  Easy UI and a beautiful UX Design.
+- 📱 Easy UI and a beautiful UX Design.
 - 📡 RSK Testnet Network.
 - 💳 Platform with own token (BITC).
 - 🌐 Under the distributed IPFS network.
@@ -80,7 +80,7 @@ To run Bitcoffe localy:
 
 ## Instalation:
 1. First need to create a Folder, where you will save the project.  
-3. move on terminal to Folder.
+3. Move on terminal to Folder.
 ```bash
 cd/to/folder/file
 ```
@@ -88,12 +88,12 @@ cd/to/folder/file
 ```bash
 git clone https://github.com/srteerra/bitcoffee.git
 ```
-3. you need install dependeces with:
+3. You need install dependeces with:
 ```bash
 npm install
 ```
 ### For development
-for run app need to use:
+For run app need to use:
 ```bash
 npm run server
 ```
