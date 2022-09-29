@@ -27,7 +27,7 @@ Bitcoffee is a CrowdFonding Dapp on the RSK network, in which anyone can raise f
  ## Built with:
 
 - [VueJs](https://vuejs.org/) - Vuejs is a JavaScript framework for building user interfaces.
-- [Web3.js](https://web3js.readthedocs.io/en/v1.8.0/) - web3.js is a collection of libraries that allow you to interact with a local or remote ethereum node using HTTP, IPC or WebSocket.
+- [Web3.js](https://web3js.readthedocs.io/en/v1.8.0/) - Web3.js is a collection of libraries that allow you to interact with a local or remote ethereum node using HTTP, IPC or WebSocket.
 - [BootstrapVue](https://bootstrap-vue.org/) - Extensive list of components and  Bundled Javascript plugins.
 - [Sanity.io](https://www.sanity.io/) - Sanity is the platform for structured content that powers remarkable digital experiences.
 - [Webpack](https://webpack.js.org/) - Webpack is a module bundler. Its main purpose is to bundle JavaScript files for usage in a browser, yet it is also capable of transforming, bundling, or packaging just about any resource or asset.
