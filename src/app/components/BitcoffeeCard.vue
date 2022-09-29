@@ -1,5 +1,5 @@
 <template>
-  <div id="profile__container" class="pb-5">
+  <div id="profile__container" class="ho pb-2">
     <div
       class="profile__background"
       :style="{
@@ -38,36 +38,84 @@
         <div v-if="donationSteps == 1" class="p-0 text-center">
           <div>
             <b-row>
-              <b-col>
+              <b-col style="height: auto">
                 <div>
-                  <p class="font-weight-light" v-if="creator_site">
-                    {{ site }}
-                  </p>
+                  <a :href="'https://' + site" target="_blank"
+                    ><p class="font-weight-light" v-if="creator_site">
+                      {{ site }}
+                    </p></a
+                  >
                   <p style="max-width: 200px" class="mx-auto py-3">
                     {{ desc }}
                   </p>
                 </div>
-                <b-button
-                  size="lg"
-                  block
-                  variant="dark"
-                  :disabled="!isconnected"
-                  v-if="$route.params.user !== $store.state.username"
-                  class="rounded-pill font-weight-bold w-50 mx-auto"
-                  @click="DONATION_MAIN_STEPPER_NEXT()"
-                >
-                  <p class="p-0 m-0">Donate</p>
-                </b-button>
-                <b-button
-                  size="lg"
-                  block
-                  variant="outline-dark"
-                  v-else
-                  class="rounded-pill font-weight-bold w-50 mx-auto"
-                  to="profile"
-                >
-                  <p class="p-0 m-0">Edit profile</p>
-                </b-button>
+                <div class="donate__button">
+                  <div class="social__section py-2">
+                    <b-button
+                      size="sm"
+                      variant="outline-primary"
+                      class="social__button mb-2 mx-2"
+                      href="https://www.google.com"
+                      target="_blank"
+                      v-b-tooltip.hover.top="'Instagram'"
+                    >
+                      <b-icon icon="instagram" aria-label="Help"></b-icon>
+                    </b-button>
+                    <b-button
+                      size="sm"
+                      variant="outline-primary"
+                      class="social__button mb-2 mx-2"
+                      href="https://www.google.com"
+                      target="_blank"
+                      v-b-tooltip.hover.top="'Twitter'"
+                    >
+                      <b-icon icon="twitter" aria-label="Help"></b-icon>
+                    </b-button>
+                    <b-button
+                      size="sm"
+                      variant="outline-primary"
+                      class="social__button mb-2 mx-2"
+                      href="https://www.google.com"
+                      target="_blank"
+                      v-b-tooltip.hover.top="'YouTube'"
+                    >
+                      <b-icon icon="youtube" aria-label="Help"></b-icon>
+                    </b-button>
+                    <b-button
+                      size="sm"
+                      variant="outline-primary"
+                      class="social__button mb-2 mx-2"
+                      href="https://www.google.com"
+                      target="_blank"
+                      v-b-tooltip.hover.top="'Twitch'"
+                    >
+                      <b-icon icon="twitch" aria-label="Help"></b-icon>
+                    </b-button>
+                  </div>
+                  <div>
+                    <b-button
+                      size="lg"
+                      block
+                      variant="dark"
+                      :disabled="!isconnected"
+                      v-if="$route.params.user !== $store.state.username"
+                      class="rounded-pill font-weight-bold w-50 mx-auto"
+                      @click="DONATION_MAIN_STEPPER_NEXT()"
+                    >
+                      <p class="p-0 m-0">Donate</p>
+                    </b-button>
+                    <b-button
+                      size="lg"
+                      block
+                      variant="outline-dark"
+                      v-else
+                      class="rounded-pill font-weight-bold w-50 mx-auto"
+                      to="profile"
+                    >
+                      <p class="p-0 m-0">Edit profile</p>
+                    </b-button>
+                  </div>
+                </div>
               </b-col>
             </b-row>
           </div>
@@ -329,6 +377,9 @@ export default {
       "creator_bg",
     ]),
     ...mapGetters(["getCreatorUsername", "getCreatorAvatar"]),
+    google() {
+      return "https://www.google.com";
+    },
   },
   methods: {
     ...mapActions(["sendSingleDonation"]),
@@ -432,10 +483,7 @@ export default {
   border-radius: 90px;
 
   /* Center vertically and horizontally */
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  margin: 0px auto;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 
   .profile__background {
@@ -451,6 +499,10 @@ export default {
   .profile__desc {
     height: 50%;
     position: relative;
+
+    a:hover {
+      color: gray;
+    }
 
     .profile__desc__top {
       position: absolute;
@@ -468,6 +520,28 @@ export default {
       left: 52%;
       border: none;
       outline: none;
+    }
+
+    .donate__button {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 70%;
+
+      //Social networks section
+      .social__section {
+        display: flex;
+        width: 80%;
+        margin: 0 auto;
+        justify-content: center;
+        .social__button {
+          width: 40px;
+          height: 40px;
+          border-radius: 25px;
+          display: grid;
+          place-items: center;
+        }
+      }
     }
   }
 
@@ -488,8 +562,6 @@ export default {
   }
 
   @media screen and (max-width: 575px) {
-    border-radius: 0;
-
     .profile__background {
       height: 35%;
       // background-image: url('../assets/images/bg-user.png');
@@ -499,6 +571,8 @@ export default {
       border-top-left-radius: 0;
       border-top-right-radius: 0;
     }
+    box-shadow: none;
+    border-radius: 0;
   }
 }
 </style>

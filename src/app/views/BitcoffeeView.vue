@@ -1,7 +1,9 @@
 <template>
   <div>
     <AltHeader v-if="getCreatorFound" />
-    <b-container v-if="getCreatorFound"> <BitcoffeeCard /> </b-container>
+    <b-container class="coffee__container" v-if="getCreatorFound">
+      <BitcoffeeCard />
+    </b-container>
     <b-container v-else>
       <div class="notfound__container">
         <div class="notfound__content">
@@ -62,6 +64,14 @@ export default {
 </script>
 
 <style lang="scss">
+.coffee__container {
+  width: 100%;
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .notfound__container {
   height: 100vh;
   width: 100%;
@@ -95,6 +105,12 @@ export default {
     width: 100px;
     height: 100px;
     padding-bottom: 20px;
+  }
+}
+
+@media (max-width: 580px) {
+  .coffee__container {
+    padding: 0;
   }
 }
 </style>
