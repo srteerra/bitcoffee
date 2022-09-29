@@ -1,6 +1,7 @@
 export default {
   fetchingData: false,
   fetchingDataWait: false,
+  transactionWait: false,
   shadowblank: false,
   error: null,
   windowWidth: window.innerWidth,
@@ -17,6 +18,9 @@ export default {
   netID: null,
 
   selectedCypto: null,
+
+  // Transaction info
+  transactionHash: "",
 
   // Btn states
   connectBtnState: false,
