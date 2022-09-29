@@ -182,6 +182,10 @@ export default {
       top: 300px;
       left: 60px;
       transform: rotate(-25deg);
+      transform: rotate(25deg);
+      animation-name: vectorAnimation2;
+      animation-duration: 5s;
+      animation-iteration-count: infinite;
     }
     #cat-2 {
       width: 60px;
@@ -190,6 +194,18 @@ export default {
       right: 100px;
       bottom: 200px;
       transform: rotate(25deg);
+      transform: rotate(25deg);
+      animation-name: vectorAnimation;
+      animation-duration: 5s;
+      animation-iteration-count: infinite;
+    }
+
+    @media (max-width: 790px) {
+      #cat-1 {
+        bottom: 0;
+        top: initial;
+        left: 40%;
+      }
     }
   }
 
