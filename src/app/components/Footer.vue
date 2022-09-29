@@ -44,7 +44,10 @@
               </router-link>
             </li>
             <li class="py-2">
-              <router-link to="/how" class="footer__link">
+              <router-link
+                to="https://github.com/srteerra/bitcoffee"
+                class="footer__link"
+              >
                 Repository
               </router-link>
             </li>

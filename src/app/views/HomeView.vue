@@ -474,57 +474,6 @@ export default {
   position: relative;
 }
 
-@keyframes upAnimation {
-  0% {
-    top: 0;
-  }
-  50% {
-    top: 50px;
-  }
-  100% {
-    top: 0;
-  }
-}
-
-@keyframes vectorAnimation {
-  0% {
-    transform: rotate(0deg);
-  }
-  50% {
-    transform: rotate(25deg);
-  }
-  100% {
-    transform: rotate(0deg);
-  }
-}
-
-@keyframes vectorAnimation2 {
-  0% {
-    transform: rotate(0deg);
-  }
-  50% {
-    transform: rotate(-25deg);
-  }
-  100% {
-    transform: rotate(0deg);
-  }
-}
-
-@keyframes vectorAnimation3 {
-  0% {
-    transform: rotate(0deg);
-  }
-  25% {
-    transform: rotate(25deg);
-  }
-  50% {
-    transform: rotate(-25deg);
-  }
-  100% {
-    transform: rotate(0deg);
-  }
-}
-
 // This media query don't works correctly in breackpoint files
 @media (max-width: 790px) {
   .galery-section__container {
