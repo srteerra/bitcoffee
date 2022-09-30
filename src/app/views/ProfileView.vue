@@ -51,7 +51,7 @@
             data-keyboard="false"
             >Edit profile</b-button
           >
-          <b-button class="edit-add p-0 m-0"
+          <b-button class="edit-add p-0 m-0" v-b-modal.goal-modal
             ><b-icon icon="plus" font-scale="1" class="p-0 m-0"></b-icon
           ></b-button>
         </div>
@@ -129,6 +129,84 @@
         <UserGoalCard />
       </div>
     </b-container>
+    <!-- Edit goals modal -->
+    <b-modal
+      id="goal-modal"
+      ref="goal-modal"
+      size="lg"
+      hide-footer
+      hide-header
+      title="Edit goals"
+      centered
+      no-close-on-backdrop
+      no-close-on-esc
+    >
+      <b-container class="d-block text-center">
+        <h3 class="my-5">Edit your goal</h3>
+        <b-form class="text-left">
+          <b-form-group
+            id="goal-title"
+            label="Goal title"
+            label-for="goal-title"
+            description="Example (A new guitar)"
+            class="my-3"
+          >
+            <b-form-input
+              id="goal-title"
+              type="text"
+              placeholder="Enter the goal title"
+              required
+            ></b-form-input>
+          </b-form-group>
+
+          <b-form-group
+            id="goal-description"
+            label="Goal description"
+            label-for="goal-description"
+            class="my-3"
+          >
+            <b-form-input
+              id="goal-description"
+              type="text"
+              placeholder="Enter the goal description"
+              required
+            ></b-form-input>
+          </b-form-group>
+
+          <b-form-group
+            id="goal-amount"
+            label="Goal amount"
+            label-for="goal-amount"
+            class="my-3"
+          >
+            <b-input-group prepend="$" class="mb-2 mr-sm-2 mb-sm-0">
+              <b-form-input
+                id="goal-amount"
+                placeholder="Enter the goal amount"
+                type="number"
+                ondrop="return false;"
+                onpaste="return false;"
+                onkeypress="return event.charCode>=48 && event.charCode<=57"
+                required
+              ></b-form-input>
+            </b-input-group>
+          </b-form-group>
+
+          <b-row class="w-75 my-5 mx-auto">
+            <b-col class="my-3" cols="12" md="6">
+              <b-button class="w-100" @click="hideModal" variant="primary"
+                >Close</b-button
+              >
+            </b-col>
+            <b-col class="my-3" cols="12" md="6">
+              <b-button type="submit" class="w-100" variant="outline-primary"
+                >Save</b-button
+              ></b-col
+            >
+          </b-row>
+        </b-form>
+      </b-container>
+    </b-modal>
 
     <!-- Edit profile modal -->
     <b-modal
@@ -373,6 +451,9 @@ export default {
   methods: {
     ...mapActions(["updateAccount"]),
     ...mapMutations(["SHOW_EDIT_PROFILE"]),
+    hideModal() {
+      this.$refs["goal-modal"].hide();
+    },
   },
   computed: {
     title() {
