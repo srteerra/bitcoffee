@@ -1,4 +1,7 @@
-![Logotipo 500x500 px (1)](https://user-images.githubusercontent.com/74383100/192911380-fee6c85a-d1a8-44e0-936e-69243b1357f2.gif)
+<div align="center">
+<img src="https://user-images.githubusercontent.com/74383100/192911380-fee6c85a-d1a8-44e0-936e-69243b1357f2.gif" />
+</div>
+
 # Bitcoffee
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
@@ -11,7 +14,7 @@ Bitcoffee is a CrowdFonding Dapp on the RSK network, in which anyone can raise f
 
 - 👁‍🗨 Pure desing.
 - 🦊 Connection with Metamask.
-- 📱  Easy UI and a beautiful UX Design.
+- 📱 Easy UI and a beautiful UX Design.
 - 📡 RSK Testnet Network.
 - 💳 Platform with own token (BITC).
 - 🌐 Under the distributed IPFS network.
@@ -24,7 +27,7 @@ Bitcoffee is a CrowdFonding Dapp on the RSK network, in which anyone can raise f
  ## Built with:
 
 - [VueJs](https://vuejs.org/) - Vuejs is a JavaScript framework for building user interfaces.
-- [Web3.js](https://web3js.readthedocs.io/en/v1.8.0/) - web3.js is a collection of libraries that allow you to interact with a local or remote ethereum node using HTTP, IPC or WebSocket.
+- [Web3.js](https://web3js.readthedocs.io/en/v1.8.0/) - Web3.js is a collection of libraries that allow you to interact with a local or remote ethereum node using HTTP, IPC or WebSocket.
 - [BootstrapVue](https://bootstrap-vue.org/) - Extensive list of components and  Bundled Javascript plugins.
 - [Sanity.io](https://www.sanity.io/) - Sanity is the platform for structured content that powers remarkable digital experiences.
 - [Webpack](https://webpack.js.org/) - Webpack is a module bundler. Its main purpose is to bundle JavaScript files for usage in a browser, yet it is also capable of transforming, bundling, or packaging just about any resource or asset.
@@ -77,7 +80,7 @@ To run Bitcoffe localy:
 
 ## Instalation:
 1. First need to create a Folder, where you will save the project.  
-3. move on terminal to Folder.
+3. Move on terminal to Folder.
 ```bash
 cd/to/folder/file
 ```
@@ -85,12 +88,12 @@ cd/to/folder/file
 ```bash
 git clone https://github.com/srteerra/bitcoffee.git
 ```
-3. you need install dependeces with:
+3. You need install dependeces with:
 ```bash
 npm install
 ```
 ### For development
-for run app need to use:
+For run app need to use:
 ```bash
 npm run server
 ```

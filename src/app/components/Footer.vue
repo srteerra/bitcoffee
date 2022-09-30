@@ -16,8 +16,8 @@
               </router-link>
             </li>
             <li class="py-2">
-              <router-link to="/about" class="footer__link">
-                Beacome a creator
+              <router-link to="/our-token" class="footer__link">
+                Our token
               </router-link>
             </li>
             <li class="py-2">
@@ -34,9 +34,12 @@
           <ul class="text-light p-0">
             <li class="py-2 font-weight-bold">Others</li>
             <li class="py-2">
-              <router-link to="/" class="footer__link">
-                Terms and conditions
-              </router-link>
+              <a
+                class="footer__link"
+                href="https://github.com/srteerra/bitcoffee/blob/master/README.md"
+                target="_blank"
+                >Terms and conditions</a
+              >
             </li>
             <li class="py-2">
               <router-link to="/about" class="footer__link">
@@ -44,14 +47,20 @@
               </router-link>
             </li>
             <li class="py-2">
-              <router-link to="/how" class="footer__link">
-                Repository
-              </router-link>
+              <a
+                class="footer__link"
+                href="https://github.com/srteerra/bitcoffee"
+                target="_blank"
+                >Repository</a
+              >
             </li>
             <li class="py-2">
-              <router-link to="/how" class="footer__link">
-                Licence
-              </router-link>
+              <a
+                class="footer__link"
+                href="https://github.com/srteerra/bitcoffee/blob/master/LICENSE"
+                target="_blank"
+                >Licence</a
+              >
             </li>
           </ul>
         </b-col>

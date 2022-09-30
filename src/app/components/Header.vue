@@ -35,13 +35,17 @@
             About us
           </router-link>
           <router-link
-            to="/token"
+            to="/our-token"
             class="px-2 my-auto"
             active-class="activeLink"
           >
             Our token
           </router-link>
-          <router-link to="/q&a" class="px-2 my-auto" active-class="activeLink">
+          <router-link
+            to="/our-token"
+            class="px-2 my-auto"
+            active-class="activeLink"
+          >
             Q&A
           </router-link>
           <!-- Connect wallet -->
