@@ -15,7 +15,8 @@ const ethereum = window.ethereum;
 
 const net = await web3.eth.net.getId();
 
-const artifact = require("../../../build/contracts/Thosony.json");
+const artifact = require("../../../build/contracts/Bitcoffee.json");
+const artifact_crowdfunding = require("../../../build/contracts/CrowdFund.json");
 let tokenContract;
 
 // let tokenContract = new web3.eth.Contract(artifact.abi, artifact.networks[netID].address)

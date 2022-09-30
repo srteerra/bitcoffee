@@ -14,7 +14,7 @@ export default {
     rskBal: 0,
     tsyBal: 0,
   },
-  contract: "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+  contract: "0x2F395a03820af458AE3e39fcA40C9DC80223492D",
   netID: null,
 
   selectedCypto: null,
