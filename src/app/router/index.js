@@ -28,6 +28,12 @@ const routes = [
       import(/* webpackChunkName:"home" */ "../views/OurTokenView"),
   },
   {
+    path: "/faucet",
+    name: "faucet",
+    component: () =>
+      import(/* webpackChunkName:"home" */ "../views/FaucetView"),
+  },
+  {
     path: "/profile",
     name: "profile",
     component: () =>
