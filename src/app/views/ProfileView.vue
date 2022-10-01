@@ -141,7 +141,7 @@
       no-close-on-esc
     >
       <b-container class="d-block text-center">
-        <h3 class="my-5">Edit your goal</h3>
+        <h3 class="my-5">New goal</h3>
         <b-form class="text-left">
           <b-form-group
             id="goal-title"
@@ -156,6 +156,24 @@
               placeholder="Enter the goal title"
               required
             ></b-form-input>
+          </b-form-group>
+
+          <b-form-group>
+            <label for="start-datepicker">Choose a start date</label>
+            <b-form-datepicker
+              id="start-datepicker"
+              v-model="value"
+              class="mb-2"
+            ></b-form-datepicker>
+          </b-form-group>
+
+          <b-form-group>
+            <label for="end-datepicker">Choose a end date</label>
+            <b-form-datepicker
+              id="end-datepicker"
+              v-model="value"
+              class="mb-2"
+            ></b-form-datepicker>
           </b-form-group>
 
           <b-form-group
@@ -174,11 +192,11 @@
 
           <b-form-group
             id="goal-amount"
-            label="Goal amount"
+            label="Needed tokens amount"
             label-for="goal-amount"
             class="my-3"
           >
-            <b-input-group prepend="$" class="mb-2 mr-sm-2 mb-sm-0">
+            <b-input-group prepend="🪙" class="mb-2 mr-sm-2 mb-sm-0">
               <b-form-input
                 id="goal-amount"
                 placeholder="Enter the goal amount"
