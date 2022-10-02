@@ -36,7 +36,9 @@
 import Header from "../components/Header.vue";
 export default {
   name: "FaucetView",
-  data() {},
+  data() {
+    return {};
+  },
   components: {
     Header,
   },

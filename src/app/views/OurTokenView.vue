@@ -104,7 +104,9 @@ import Footer from "../components/Footer.vue";
 
 export default {
   name: "OurTokenView",
-  data() {},
+  data() {
+    return {};
+  },
   components: {
     Header,
     Footer,
