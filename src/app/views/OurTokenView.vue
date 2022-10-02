@@ -49,12 +49,12 @@
           <h2><strong>Where to buy?</strong></h2>
           <div class="buy-information mx-auto">
             <p class="py-4">
-              For noa, it's only a development token, So it's not in liquidty.
+              For now, it's only a development token, So it's not in liquidty.
             </p>
             <p class="py-3">
               But you can interact using RBTC, here is a
-              <strong><a href="#" target="_blank">faucet</a></strong> to founf
-              you tesnet account.
+              <strong><a href="#" target="_blank">faucet</a></strong> to fund
+              you Testnet account.
             </p>
           </div>
         </div>

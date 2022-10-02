@@ -35,7 +35,7 @@
             About us
           </router-link>
           <router-link
-            to="/our-token"
+            to="/token"
             class="px-2 my-auto"
             active-class="activeLink"
           >

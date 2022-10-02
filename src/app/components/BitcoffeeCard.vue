@@ -340,7 +340,7 @@
                     </b-col>
                     <h4 class="font-weight-bold">Tranfering funds...</h4>
                     <p class="text-dark font-weight-light">
-                      Plase wait until the transaction.
+                      Please wait until the transaction is completed.
                     </p>
                     <a
                       :href="gohash"

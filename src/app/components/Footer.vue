@@ -16,7 +16,7 @@
               </router-link>
             </li>
             <li class="py-2">
-              <router-link to="/our-token" class="footer__link">
+              <router-link to="/token" class="footer__link">
                 Our token
               </router-link>
             </li>

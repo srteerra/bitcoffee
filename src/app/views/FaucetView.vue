@@ -8,7 +8,8 @@
           alt="coffeee"
           class="coffeeVector"
         />
-        <div class="faucet-form__box p-3 text-center mx-auto">
+        <div class="faucet-form__box px-3 py-5 text-center mx-auto">
+          <p class="font-weight-light p-0 m-0">BITCOFFEE FAUCET</p>
           <h2 class="font-weight-bold my-4">Enter the amount to request</h2>
           <input
             type="number"
