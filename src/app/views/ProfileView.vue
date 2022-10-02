@@ -51,6 +51,14 @@
             data-keyboard="false"
             >Edit profile</b-button
           >
+          <b-button
+            class="share-btn font-weight-bold mr-2"
+            pill
+            v-b-modal.share-modal
+            variant="dark"
+            ><span class="px-2"><b-icon icon="share"></b-icon></span
+          ></b-button>
+
           <b-button class="edit-add p-0 m-0" v-b-modal.goal-modal
             ><b-icon icon="plus" font-scale="1" class="p-0 m-0"></b-icon
           ></b-button>
@@ -128,6 +136,90 @@
         <UserGoalCard />
       </div>
     </b-container>
+
+    <!-- Share modal -->
+    <b-modal
+      id="share-modal"
+      ref="share-modal"
+      size="lg"
+      hide-header
+      title="Edit goals"
+      centered
+      no-close-on-backdrop
+      no-close-on-esc
+      class="share__modal"
+    >
+      <b-container class="d-block text-center">
+        <h3 class="my-5">Share your profile</h3>
+      </b-container>
+
+      <div class="share__button w-100 text-center my-5">
+        <b-button
+          class="w-75 px-4 py-2 my-4"
+          variant="outline-dark"
+          @click="copyAddress('https://bitcoffee.site/{{ username }}')"
+          v-b-tooltip.click="'Copied'"
+          >bitcoffee.site/ {{ username }}
+          <span class="px-4"><b-icon icon="files"></b-icon></span
+        ></b-button>
+      </div>
+
+      <b-row class="mt-5 text-center">
+        <p class="font-weight-bold mx-auto" style="color: gray">
+          Or share in your social networks
+        </p>
+        <div
+          class="modal-social__section text-center w-100 pt-4"
+          style="border-top: 1px solid black"
+        >
+          <b-button
+            size="lg"
+            pill
+            variant="outline-primary"
+            class="mb-2 mx-2"
+            href="https://www.google.com"
+            target="_blank"
+            v-b-tooltip.hover.top="'Instagram'"
+          >
+            <b-icon icon="instagram" aria-label="Help"></b-icon>
+          </b-button>
+          <b-button
+            size="lg"
+            pill
+            variant="outline-primary"
+            class="mb-2 mx-2"
+            href="https://www.google.com"
+            target="_blank"
+            v-b-tooltip.hover.top="'Twitter'"
+          >
+            <b-icon icon="twitter" aria-label="Help"></b-icon>
+          </b-button>
+          <b-button
+            size="lg"
+            pill
+            variant="outline-primary"
+            class="mb-2 mx-2"
+            href="https://www.google.com"
+            target="_blank"
+            v-b-tooltip.hover.top="'YouTube'"
+          >
+            <b-icon icon="youtube" aria-label="Help"></b-icon>
+          </b-button>
+          <b-button
+            size="lg"
+            pill
+            variant="outline-primary"
+            class="mb-2 mx-2"
+            href="https://www.google.com"
+            target="_blank"
+            v-b-tooltip.hover.top="'Twitch'"
+          >
+            <b-icon icon="twitch" aria-label="Help"></b-icon>
+          </b-button>
+        </div>
+      </b-row>
+    </b-modal>
+
     <!-- Edit goals modal -->
     <b-modal
       id="goal-modal"
@@ -471,6 +563,17 @@ export default {
     hideModal() {
       this.$refs["goal-modal"].hide();
     },
+    copyAddress(add) {
+      navigator.clipboard.writeText(add).then(
+        () => {
+          console.log("copied");
+        },
+
+        () => {
+          console.log("not copied");
+        }
+      );
+    },
   },
   computed: {
     title() {
@@ -621,11 +724,12 @@ export default {
     position: absolute;
     text-align: end;
     width: 50%;
-    right: 0;
+    right: -40px;
     top: 50px;
     .edit-btn {
       width: 30%;
     }
+
     .edit-add {
       width: 40px;
       height: 40px;
@@ -649,7 +753,7 @@ export default {
       display: flex;
       justify-content: space-around;
       width: 60%;
-      margin: 100px auto 20px;
+      margin: 100px 0 20px;
     }
   }
 }
