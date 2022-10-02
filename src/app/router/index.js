@@ -22,6 +22,23 @@ const routes = [
     component: () => import(/* webpackChunkName:"home" */ "../views/404View"),
   },
   {
+    path: "/token",
+    name: "token",
+    component: () =>
+      import(/* webpackChunkName:"home" */ "../views/OurTokenView"),
+  },
+  {
+    path: "/faucet",
+    name: "faucet",
+    component: () =>
+      import(/* webpackChunkName:"home" */ "../views/FaucetView"),
+  },
+  {
+    path: "/about",
+    name: "about",
+    component: () => import(/* webpackChunkName:"home" */ "../views/AboutView"),
+  },
+  {
     path: "/profile",
     name: "profile",
     component: () =>

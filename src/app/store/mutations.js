@@ -3,11 +3,15 @@ export const WINDOW_WIDTH = (state) => {
 };
 
 export const DONATION_CARD_STEPPER_NEXT = (state) => {
-  state.donationCardsteps + 1;
+  state.donationCardsteps = state.donationCardsteps + 1;
 };
 
 export const DONATION_CARD_STEPPER_BACK = (state) => {
-  state.donationCardsteps - 1;
+  state.donationCardsteps = state.donationCardsteps - 1;
+};
+
+export const DONATION_CARD_STEPPER_INITIAL = (state) => {
+  state.donationSteps = 1;
 };
 
 export const DONATION_MAIN_STEPPER_NEXT = (state) => {
@@ -16,6 +20,10 @@ export const DONATION_MAIN_STEPPER_NEXT = (state) => {
 
 export const DONATION_MAIN_STEPPER_BACK = (state) => {
   state.donationSteps = state.donationSteps - 1;
+};
+
+export const DONATION_MAIN_STEPPER_INITIAL = (state) => {
+  state.donationSteps = 1;
 };
 
 export const SET_USERNAME = (state, payload) => {
@@ -149,6 +157,10 @@ export const LOADING_DATA_WAIT = (state) => {
   state.fetchingDataWait = !state.fetchingDataWait;
 };
 
+export const TRANSACTION_WAIT = (state) => {
+  state.transactionWait = !state.transactionWait;
+};
+
 export const SHOW_NOWALLET_NOTIFICATION = (state) => {
   state.noWalletNoti = !state.noWalletNoti;
 };
@@ -176,4 +188,8 @@ export const REMOVE_NOTIFICATION = (state, NotificationToRemove) => {
   state.notifications = state.notifications.filter((notification) => {
     return notification.id != NotificationToRemove.id;
   });
+};
+
+export const SET_TRANSACTION_HASH = (state, payload) => {
+  state.transactionHash = payload.hash;
 };

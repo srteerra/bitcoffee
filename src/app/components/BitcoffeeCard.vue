@@ -1,5 +1,5 @@
 <template>
-  <div id="profile__container" class="pb-5">
+  <div id="profile__container" class="ho pb-2">
     <div
       class="profile__background"
       :style="{
@@ -38,36 +38,84 @@
         <div v-if="donationSteps == 1" class="p-0 text-center">
           <div>
             <b-row>
-              <b-col>
+              <b-col style="height: auto">
                 <div>
-                  <p class="font-weight-light" v-if="creator_site">
-                    {{ site }}
-                  </p>
+                  <a :href="'https://' + site" target="_blank"
+                    ><p class="font-weight-light" v-if="creator_site">
+                      {{ site }}
+                    </p></a
+                  >
                   <p style="max-width: 200px" class="mx-auto py-3">
                     {{ desc }}
                   </p>
                 </div>
-                <b-button
-                  size="lg"
-                  block
-                  variant="dark"
-                  :disabled="!isconnected"
-                  v-if="$route.params.user !== $store.state.username"
-                  class="rounded-pill font-weight-bold w-50 mx-auto"
-                  @click="DONATION_MAIN_STEPPER_NEXT()"
-                >
-                  <p class="p-0 m-0">Donate</p>
-                </b-button>
-                <b-button
-                  size="lg"
-                  block
-                  variant="outline-dark"
-                  v-else
-                  class="rounded-pill font-weight-bold w-50 mx-auto"
-                  to="profile"
-                >
-                  <p class="p-0 m-0">Edit profile</p>
-                </b-button>
+                <div class="donate__button">
+                  <div class="social__section py-2">
+                    <b-button
+                      size="sm"
+                      variant="outline-primary"
+                      class="social__button mb-2 mx-2"
+                      href="https://www.google.com"
+                      target="_blank"
+                      v-b-tooltip.hover.top="'Instagram'"
+                    >
+                      <b-icon icon="instagram" aria-label="Help"></b-icon>
+                    </b-button>
+                    <b-button
+                      size="sm"
+                      variant="outline-primary"
+                      class="social__button mb-2 mx-2"
+                      href="https://www.google.com"
+                      target="_blank"
+                      v-b-tooltip.hover.top="'Twitter'"
+                    >
+                      <b-icon icon="twitter" aria-label="Help"></b-icon>
+                    </b-button>
+                    <b-button
+                      size="sm"
+                      variant="outline-primary"
+                      class="social__button mb-2 mx-2"
+                      href="https://www.google.com"
+                      target="_blank"
+                      v-b-tooltip.hover.top="'YouTube'"
+                    >
+                      <b-icon icon="youtube" aria-label="Help"></b-icon>
+                    </b-button>
+                    <b-button
+                      size="sm"
+                      variant="outline-primary"
+                      class="social__button mb-2 mx-2"
+                      href="https://www.google.com"
+                      target="_blank"
+                      v-b-tooltip.hover.top="'Twitch'"
+                    >
+                      <b-icon icon="twitch" aria-label="Help"></b-icon>
+                    </b-button>
+                  </div>
+                  <div>
+                    <b-button
+                      size="lg"
+                      block
+                      variant="dark"
+                      :disabled="!isconnected"
+                      v-if="$route.params.user !== $store.state.username"
+                      class="rounded-pill font-weight-bold w-50 mx-auto"
+                      @click="DONATION_MAIN_STEPPER_NEXT()"
+                    >
+                      <p class="p-0 m-0">Donate</p>
+                    </b-button>
+                    <b-button
+                      size="lg"
+                      block
+                      variant="outline-dark"
+                      v-else
+                      class="rounded-pill font-weight-bold w-50 mx-auto"
+                      to="profile"
+                    >
+                      <p class="p-0 m-0">Edit profile</p>
+                    </b-button>
+                  </div>
+                </div>
               </b-col>
             </b-row>
           </div>
@@ -76,7 +124,7 @@
           <div>
             <b-row>
               <b-col>
-                <div class="w-50 mx-auto py-5">
+                <div class="w-50 mx-auto py-3">
                   <!-- <b-form-group
                     id="AmountInputGroup"
                     class="text-dark font-weight-bold"
@@ -91,11 +139,7 @@
                       required
                     />
                   </b-form-group> -->
-                  <div class="mb-3">
-                    <p class="m-0 text-center font-weight-bold">
-                      Amount of coffees
-                    </p>
-                  </div>
+
                   <!-- Donation amount -->
                   <div class="hola w-100 text-left">
                     <!-- critpo dropdown -->
@@ -122,6 +166,7 @@
                         v-if="selectedCypto !== 'RBTC'"
                         class="py-1"
                         @click="selectedCypto = 'RBTC'"
+                        disabled="true"
                       >
                         <span class="pr-1"
                           ><img
@@ -149,6 +194,15 @@
 
                   <div class="amountSelection">
                     <div class="amount-list my-3">
+                      <div class="amountSelection-item">
+                        <!-- <img
+                          src="../assets/icons/coffee-icon.png"
+                          alt="coffees"
+                          style="max-width: 25px"
+                        /> -->
+                        <span style="font-size: 25px">☕</span>
+                        <span class="px-3">x</span>
+                      </div>
                       <div class="amountSelection-item">
                         <input
                           id="1cripto"
@@ -219,54 +273,139 @@
           </div>
         </div>
         <div v-if="donationSteps == 3" class="p-0 pb-5">
-          <div>
-            <b-row>
-              <b-col>
-                <div class="w-50 mx-auto py-4">
-                  <p class="text-dark font-weight-bold">Summary</p>
-                  <p class="text-dark font-weight-bold" style="opacity: 50%">
-                    {{ amountSelected }} TSY
-                  </p>
-                  <p class="text-dark font-weight-light">
-                    = {{ amountSelected }} coffees
-                  </p>
-                  <b-form-checkbox
-                    id="approveCheck"
-                    v-model="approved"
-                    name="approveCheck"
-                    value="approved"
-                    unchecked-value="not_approved"
+          <b-overlay :show="transactionWait" rounded="sm">
+            <div>
+              <b-row>
+                <b-col>
+                  <div class="w-50 mx-auto py-4">
+                    <p class="text-dark font-weight-bold">Summary</p>
+                    <p class="text-dark font-weight-bold" style="opacity: 50%">
+                      {{ amountSelected }} TSY
+                    </p>
+                    <p class="text-dark font-weight-light">
+                      = ☕ {{ amountSelected }} coffees
+                    </p>
+                    <b-form-checkbox
+                      id="approveCheck"
+                      v-model="approved"
+                      name="approveCheck"
+                      value="approved"
+                      unchecked-value="not_approved"
+                    >
+                      I’ve read the summary. It's correct.
+                    </b-form-checkbox>
+                  </div>
+                  <b-button
+                    size="lg"
+                    block
+                    variant="dark"
+                    :disabled="approvedCheck"
+                    class="rounded-pill font-weight-bold w-50 mx-auto"
+                    @click="
+                      sendSingleDonation({
+                        creator: $route.params.user,
+                        amount: amountSelected,
+                      })
+                    "
                   >
-                    I’ve read the summary. It's correct.
-                  </b-form-checkbox>
-                </div>
-                <b-button
-                  size="lg"
-                  block
-                  variant="dark"
-                  :disabled="approvedCheck"
-                  class="rounded-pill font-weight-bold w-50 mx-auto"
-                  @click="
-                    sendSingleDonation({
-                      creator: $route.params.user,
-                      amount: amountSelected,
-                    })
-                  "
-                >
-                  <p class="p-0 m-0">Approve</p>
-                </b-button>
-                <b-button
-                  id="backStepButton"
-                  block
-                  class="rounded-pill font-weight-bold w-50 mx-auto"
-                  variant="outline-primary"
-                  @click="DONATION_MAIN_STEPPER_BACK()"
-                >
-                  <p class="p-0 m-0">Back</p>
-                </b-button>
-              </b-col>
-            </b-row>
-          </div>
+                    <p class="p-0 m-0">Approve</p>
+                  </b-button>
+                  <b-button
+                    id="backStepButton"
+                    block
+                    class="rounded-pill font-weight-bold w-50 mx-auto"
+                    variant="outline-primary"
+                    @click="DONATION_MAIN_STEPPER_BACK()"
+                  >
+                    <p class="p-0 m-0">Back</p>
+                  </b-button>
+                </b-col>
+              </b-row>
+            </div>
+          </b-overlay>
+        </div>
+        <div v-if="donationSteps == 4" class="p-0 pb-5">
+          <b-overlay :show="false" rounded="sm">
+            <div>
+              <b-row>
+                <b-col>
+                  <div class="w-50 mx-auto py-4 text-center">
+                    <b-col md="12" class="mb-3 pt-3">
+                      <b-icon
+                        class="mx-auto"
+                        icon="arrow-clockwise"
+                        animation="spin"
+                        font-scale="4"
+                      ></b-icon>
+                    </b-col>
+                    <h4 class="font-weight-bold">Tranfering funds...</h4>
+                    <p class="text-dark font-weight-light">
+                      Please wait until the transaction is completed.
+                    </p>
+                    <a
+                      :href="gohash"
+                      style="display: block"
+                      class="user-site my-4"
+                      target="_blank"
+                    >
+                      {{ shortHash
+                      }}<span class="px-2"
+                        ><b-icon icon="box-arrow-up-right"></b-icon
+                      ></span>
+                    </a>
+                  </div>
+                </b-col>
+              </b-row>
+            </div>
+          </b-overlay>
+        </div>
+        <div v-if="donationSteps == 5" class="p-0 pb-5">
+          <b-overlay :show="false" rounded="sm">
+            <div>
+              <b-row>
+                <b-col>
+                  <div class="w-50 mx-auto py-4 text-center">
+                    <b-col md="12" class="mb-3 pt-3">
+                      <img
+                        src="../assets/icons/success.png"
+                        style="width: 100px"
+                        alt=""
+                      />
+                    </b-col>
+                    <h4 class="font-weight-bold">
+                      Your coffees have been sent!
+                    </h4>
+                    <p class="text-dark font-weight-light">
+                      Thanks for your contribution.
+                    </p>
+                    <a
+                      :href="gohash"
+                      style="display: block"
+                      class="user-site my-4"
+                      target="_blank"
+                    >
+                      View transaction<span class="px-2"
+                        ><b-icon icon="box-arrow-up-right"></b-icon
+                      ></span>
+                    </a>
+                  </div>
+                  <b-button
+                    id="backStepButton"
+                    block
+                    class="rounded-pill font-weight-bold w-50 mx-auto"
+                    variant="outline-primary"
+                    @click="
+                      DONATION_MAIN_STEPPER_INITIAL(),
+                        (amountSelected = 0),
+                        (amountSelectedCustomInput = 0)
+                    "
+                  >
+                    <p class="p-0 m-0">Go back</p>
+                  </b-button>
+                </b-col>
+              </b-row>
+            </div>
+          </b-overlay>
         </div>
       </section>
     </div>
@@ -283,13 +422,25 @@ export default {
       amountSelected: 0,
       amountSelectedInput: 0,
       amountSelectedCustomInput: 0,
-      approved: "approved",
+      approved: "",
       selectedCypto: "BITC",
     };
   },
   computed: {
     progress() {
       return Math.round(100 / this.max_step) * this.currentStep;
+    },
+
+    gohash() {
+      return "https://explorer.testnet.rsk.co/tx/" + this.transactionHash;
+    },
+
+    shortHash() {
+      return (
+        this.transactionHash.slice(0, 4) +
+        "..." +
+        this.transactionHash.slice(60)
+      );
     },
 
     desc() {
@@ -309,7 +460,7 @@ export default {
     },
 
     approvedCheck() {
-      if (this.approved !== "approved") {
+      if (this.approved !== "approved" && this.amountSelected > 0) {
         return true;
       } else {
         return false;
@@ -327,14 +478,20 @@ export default {
       "creator_subtitle",
       "creator_avatar",
       "creator_bg",
+      "transactionWait",
+      "transactionHash",
     ]),
     ...mapGetters(["getCreatorUsername", "getCreatorAvatar"]),
+    google() {
+      return "https://www.google.com";
+    },
   },
   methods: {
     ...mapActions(["sendSingleDonation"]),
     ...mapMutations([
       "DONATION_MAIN_STEPPER_NEXT",
       "DONATION_MAIN_STEPPER_BACK",
+      "DONATION_MAIN_STEPPER_INITIAL",
     ]),
     copyMyAddress(add) {
       navigator.clipboard.writeText(add);
@@ -372,8 +529,8 @@ export default {
     visibility: hidden;
     width: 0;
     &:checked + label {
-      color: #000;
-      border: 3px solid #000;
+      color: rgb(52, 52, 52);
+      border: 3px solid rgb(52, 52, 52);
     }
   }
 
@@ -396,12 +553,16 @@ export default {
 
   input[type="number"] {
     margin: 0;
-    width: 120px;
+    width: 80px;
     min-width: 70px;
     height: 40px;
     border-radius: 50px;
-    border: 3px solid #000;
+    border: 3px solid rgb(52, 52, 52);
     outline: none;
+
+    @media (max-width: 790px) {
+      width: 100%;
+    }
   }
 
   .amountSelection-item {
@@ -432,10 +593,7 @@ export default {
   border-radius: 90px;
 
   /* Center vertically and horizontally */
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  margin: 0px auto;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 
   .profile__background {
@@ -451,6 +609,10 @@ export default {
   .profile__desc {
     height: 50%;
     position: relative;
+
+    a:hover {
+      color: gray;
+    }
 
     .profile__desc__top {
       position: absolute;
@@ -468,6 +630,28 @@ export default {
       left: 52%;
       border: none;
       outline: none;
+    }
+
+    .donate__button {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 70%;
+
+      //Social networks section
+      .social__section {
+        display: flex;
+        width: 80%;
+        margin: 0 auto;
+        justify-content: center;
+        .social__button {
+          width: 40px;
+          height: 40px;
+          border-radius: 25px;
+          display: grid;
+          place-items: center;
+        }
+      }
     }
   }
 
@@ -488,8 +672,6 @@ export default {
   }
 
   @media screen and (max-width: 575px) {
-    border-radius: 0;
-
     .profile__background {
       height: 35%;
       // background-image: url('../assets/images/bg-user.png');
@@ -499,6 +681,8 @@ export default {
       border-top-left-radius: 0;
       border-top-right-radius: 0;
     }
+    box-shadow: none;
+    border-radius: 0;
   }
 }
 </style>

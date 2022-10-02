@@ -31,7 +31,12 @@
           class="px-5 font-weight-bold"
           >{{ myaddress }} <b-icon icon="files"></b-icon
         ></b-button>
-        <a href="#" style="display: block" class="user-site my-4">
+        <a
+          :href="'https://' + site"
+          target="_blank"
+          style="display: block"
+          class="user-site my-4"
+        >
           {{ site
           }}<span class="px-2"
             ><b-icon icon="box-arrow-up-right"></b-icon
@@ -51,6 +56,52 @@
                 <p>
                   {{ description }}
                 </p>
+                <div class="social__section">
+                  <b-button
+                    size="lg"
+                    pill
+                    variant="outline-primary"
+                    class="mb-2"
+                    href="https://www.google.com"
+                    target="_blank"
+                    v-b-tooltip.hover.top="'Instagram'"
+                  >
+                    <b-icon icon="instagram" aria-label="Help"></b-icon>
+                  </b-button>
+                  <b-button
+                    size="lg"
+                    pill
+                    variant="outline-primary"
+                    class="mb-2"
+                    href="https://www.google.com"
+                    target="_blank"
+                    v-b-tooltip.hover.top="'Twitter'"
+                  >
+                    <b-icon icon="twitter" aria-label="Help"></b-icon>
+                  </b-button>
+                  <b-button
+                    size="lg"
+                    pill
+                    variant="outline-primary"
+                    class="mb-2"
+                    href="https://www.google.com"
+                    target="_blank"
+                    v-b-tooltip.hover.top="'YouTube'"
+                  >
+                    <b-icon icon="youtube" aria-label="Help"></b-icon>
+                  </b-button>
+                  <b-button
+                    size="lg"
+                    pill
+                    variant="outline-primary"
+                    class="mb-2"
+                    href="https://www.google.com"
+                    target="_blank"
+                    v-b-tooltip.hover.top="'Twitch'"
+                  >
+                    <b-icon icon="twitch" aria-label="Help"></b-icon>
+                  </b-button>
+                </div>
               </div>
             </div>
           </b-col>
@@ -228,7 +279,7 @@ export default {
     width: 150px;
     border-radius: 50%;
   }
-  top: 350px;
+  top: 320px;
 
   @media (max-width: 991px) {
     top: 315px;
@@ -270,6 +321,12 @@ export default {
         width: 100%;
         p:nth-child(2) {
           color: #969292;
+        }
+        .social__section {
+          display: flex;
+          justify-content: space-around;
+          width: 60%;
+          margin: 100px auto 20px;
         }
       }
     }

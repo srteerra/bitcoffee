@@ -15,7 +15,8 @@ const ethereum = window.ethereum;
 
 const net = await web3.eth.net.getId();
 
-const artifact = require("../../../build/contracts/Thosony.json");
+const artifact = require("../../../build/contracts/Bitcoffee.json");
+const artifact_crowdfunding = require("../../../build/contracts/CrowdFund.json");
 let tokenContract;
 
 // let tokenContract = new web3.eth.Contract(artifact.abi, artifact.networks[netID].address)
@@ -53,7 +54,11 @@ export const actions = {
 
     console.log(balanceRSK);
     console.log(balanceTSY);
-    commit("SET_BALANCE", { balanceRSK: balanceRSK, balanceTSY: balanceTSY });
+    var adjustedBalance = (await balanceTSY) / Math.pow(10, 3);
+    commit("SET_BALANCE", {
+      balanceRSK: balanceRSK,
+      balanceTSY: adjustedBalance,
+    });
   },
   async getCreatorPage({ commit }, payload) {
     commit("LOADING_DATA", true);
@@ -103,7 +108,7 @@ export const actions = {
         console.log(err);
       });
   },
-  async sendSingleDonation({ dispatch }, payload) {
+  async sendSingleDonation({ dispatch, commit }, payload) {
     let from = ethereum.selectedAddress;
 
     const ab = tokenContract.methods
@@ -135,6 +140,7 @@ export const actions = {
         if (users.length > 0) {
           users.forEach((user) => {
             console.log(`${user.userName} (${user.userAddress})`);
+            commit("TRANSACTION_WAIT");
             tokenContract.methods
               .transfer(user.userAddress, amount)
               .send({
@@ -142,15 +148,25 @@ export const actions = {
               })
               .on("transactionHash", (hash) => {
                 console.log(hash);
+                commit("DONATION_MAIN_STEPPER_NEXT");
+                commit("SET_TRANSACTION_HASH", { hash: hash });
               })
               .on("receipt", (receipt) => {
-                // receipt example
-                console.log("ultimo");
+                // Receipt
                 console.log(receipt);
+                commit("TRANSACTION_WAIT");
+                commit("DONATION_MAIN_STEPPER_NEXT");
+                dispatch("updateBalance");
+                dispatch("addNotification", {
+                  type: "success",
+                  message: "Successful transaction!",
+                });
               })
               .catch((err) => {
                 if (err.code === 4001) {
                   console.log("Request denied.");
+                  commit("TRANSACTION_WAIT");
+                  commit("DONATION_MAIN_STEPPER_INITIAL");
                   dispatch("addNotification", {
                     type: "danger",
                     message: "Request denied.",
