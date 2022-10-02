@@ -132,7 +132,9 @@ import Footer from "../components/Footer.vue";
 import MemberCard from "../components/MemberCard.vue";
 export default {
   name: "AboutView",
-  data() {},
+  data() {
+    return {};
+  },
   components: {
     Header,
     Footer,
