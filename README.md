@@ -1,5 +1,6 @@
 ![Logotipo 500x500 px (1)](https://user-images.githubusercontent.com/74383100/192911380-fee6c85a-d1a8-44e0-936e-69243b1357f2.gif)
 # Bitcoffee
+*Never stop doing what you love.*
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
 ![](https://img.shields.io/github/stars/srteerra/bitcoffee)![](https://img.shields.io/github/forks/srteerra/bitcoffee)
@@ -10,7 +11,10 @@ Bitcoffee is a CrowdFunding Dapp on the RSK network, in which anyone can raise f
 # Table of contents
 - [Features](#features)
 - [Built with](#built-with)
-- [Our Roadmap](#roadmap)
+- [Roadmap](#roadmap)
+- [Our Contracts](#our-contracts)
+  - [Bitcoffee Token](#bitcoffee-token-contract)
+  - [Crowdfunding Contract](#bitcoffee-crowdfunding-contract)
 - [Screenshots](#screenshots)
 - [Authors](#authors)
 - [See our Demo](#demo-on-figma)
@@ -41,27 +45,30 @@ Bitcoffee is a CrowdFunding Dapp on the RSK network, in which anyone can raise f
 -  [Node.js](https://nodejs.org/es/) -As an asynchronous event-driven JavaScript runtime, Node.js is designed to build scalable network applications.
 
 # Roadmap:
-## 🚩 Phase 1:
+## 🚩 Phase 1
 - Wireframes and UI.
 - Branding.
 - Initial structure.
 - Fleek deploy.
 
-## 🚀 Phase 2:
+## 🚀 Phase 2
 - ERC-20 Token.
 - Smart Contract deployed on RSK Testnet.
 - Unit testing.
 - Dapp v1 Launch.
 
-## 🏁 Phase 3:
+## 🏁 Phase 3
 - Smart contract for Crowdfunding.
 - Rebranding essentials.
 - Cross-chain support.
 - Dapp v2 Launch.
 
-# Our token
-See our token on RSK Explorer on Testnet.
-[Bitcoffee Token](https://explorer.testnet.rsk.co/address/0x2f395a03820af458ae3e39fca40c9dc80223492d) - Deployed on RSK Testnet
+# Our Contracts
+See our token and the Crowdfunding smart contract on the RSK Explorer.
+  #### [Bitcoffee Token Contract](https://explorer.testnet.rsk.co/address/0x2f395a03820af458ae3e39fca40c9dc80223492d)
+  #### [Bitcoffee Crowdfunding Contract](https://explorer.testnet.rsk.co/address/0xf927aa202d6f565e0c9df1753fa00e28f2dcd9cc)
+<br />
+both already deployed on RSK Testnet and implemented in the application.
 
 
 # Screenshots
@@ -76,9 +83,9 @@ See our token on RSK Explorer on Testnet.
 
 # Authors:
 
-- [@srteerra](https://www.github.com/srteerra)
-- [@Guapura89](https://www.github.com/Guapura89)
-- [@jonocrod12](https://github.com/jonocrod12)
+- [@srteerra](https://www.github.com/srteerra) - Angel Lopez
+- [@Guapura89](https://www.github.com/Guapura89) - Carlos Sanchez
+- [@jonocrod12](https://github.com/jonocrod12) - Jonathan Ocampo
 
 # Demo on Figma:
 [Bitcoffee Board](https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2F5GghfAuXAy1BLI8FNXynOD%2FBitcoffee%3Fnode-id%3D0%253A1 "@embed")
@@ -94,10 +101,13 @@ Here is what you need to run Bitcoffee locally:
  - [Node.js](https://nodejs.org/es/) ^ 16.0.0 
 
 ## Installation:
-### 1. First you need to create a folder, where you will save the project.  
+### 1. First you need to create a folder, where you will save the project. (Optional)
+```bash
+mkdir bitcoffee
+```
 ### 2. Move on terminal to the new folder.
 ```bash
-cd/to/folder/file
+cd bitcoffee/
 ```
 ### 3. Clone the repository
 ```bash
@@ -115,9 +125,9 @@ Execute the following command:
 npm run server
 ```
 It may take a few minutes to set up the application, so stay calm!
-#### The default port is **8000**
+#### The default port is **8080**
 ```bash
-http:/localhost:8000/
+http:/localhost:8080/
 ```
 
 # Project Structure
