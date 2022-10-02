@@ -5,6 +5,7 @@
         <p class="bg-dark font-weight-bold p-3">COMPLETED</p>
       </div>
       <b-container
+        id="eff"
         class="user-goal__card px-4 py-5"
         :class="{ blur: goal_status == 100 }"
       >
@@ -20,6 +21,21 @@
           <b-badge class="progress__badge">{{ goal_status }}%</b-badge>
         </h4> -->
         <p>{{ goal_description }}</p>
+        <b-row>
+          <b-col cols="12" md="6" class="mx-auto">
+            <b-button
+              v-if="goal_status == 99"
+              class="w-100"
+              pill
+              @click="claim"
+              variant="outline-primary"
+              >Claim</b-button
+            >
+            <b-button v-else class="w-100" pill variant="outline-primary"
+              >Refound</b-button
+            >
+          </b-col>
+        </b-row>
       </b-container>
     </div>
   </b-container>
@@ -37,6 +53,11 @@ export default {
 
       blur: false,
     };
+  },
+  methods: {
+    claim() {
+      this.goal_status = 100;
+    },
   },
 };
 </script>
@@ -81,6 +102,45 @@ export default {
         position: absolute;
         right: 110px;
         top: 120px;
+      }
+    }
+
+    @keyframes effect {
+      25% {
+        background: linear-gradient(
+          160deg,
+          rgba(245, 244, 84, 1) 21%,
+          rgba(121, 9, 116, 1) 54%,
+          rgba(58, 137, 137, 1) 78%,
+          rgba(0, 255, 156, 1) 100%
+        );
+      }
+      50% {
+        background: linear-gradient(
+          160deg,
+          rgba(245, 88, 84, 1) 21%,
+          rgba(245, 244, 84, 1) 54%,
+          rgba(121, 9, 116, 1) 78%,
+          rgba(58, 137, 137, 1) 100%
+        );
+      }
+      75% {
+        background: linear-gradient(
+          160deg,
+          rgba(84, 116, 245, 1) 21%,
+          rgba(245, 88, 84, 1) 54%,
+          rgba(245, 244, 84, 1) 78%,
+          rgba(121, 9, 116, 1) 100%
+        );
+      }
+      100% {
+        background: linear-gradient(
+          160deg,
+          rgba(245, 84, 156, 1) 21%,
+          rgba(84, 116, 245, 1) 54%,
+          rgba(245, 88, 84, 1) 78%,
+          rgba(245, 244, 84, 1) 100%
+        );
       }
     }
   }

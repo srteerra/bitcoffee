@@ -34,6 +34,11 @@ const routes = [
       import(/* webpackChunkName:"home" */ "../views/FaucetView"),
   },
   {
+    path: "/about",
+    name: "about",
+    component: () => import(/* webpackChunkName:"home" */ "../views/AboutView"),
+  },
+  {
     path: "/profile",
     name: "profile",
     component: () =>

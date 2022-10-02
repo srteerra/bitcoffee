@@ -150,8 +150,6 @@ export default {
           text-align: center;
         }
       }
-      .token-info__container {
-      }
     }
     .solid-back {
       background-color: #f1e9e1;
