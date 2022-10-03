@@ -53,8 +53,8 @@
             </p>
             <p class="py-3">
               But you can interact using RBTC, here is a
-              <strong><a href="#" target="_blank">faucet</a></strong> to fund
-              you Testnet account.
+              <strong><a href="#">faucet</a></strong> to fund you Testnet
+              account.
             </p>
           </div>
         </div>
@@ -77,7 +77,7 @@
               ><a
                 href="https://crypto4dummy.com/que-es-testnet/"
                 target="_blank"
-                >Tesnet</a
+                >Testnet</a
               ></strong
             >
             address, please verfy it before making transaction or purchase.
@@ -110,6 +110,11 @@ export default {
   components: {
     Header,
     Footer,
+  },
+  data() {
+    return {
+      token: "Bitcoffee",
+    };
   },
 };
 </script>

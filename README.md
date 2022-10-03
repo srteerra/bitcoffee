@@ -11,6 +11,7 @@ Bitcoffee is a CrowdFunding Dapp on the RSK network, in which anyone can raise f
 # Table of contents
 - [Features](#features)
 - [Built with](#built-with)
+- [Workflow](#Workflow)
 - [Roadmap](#roadmap)
 - [Our Contracts](#our-contracts)
   - [Bitcoffee Token](#bitcoffee-token-contract)
@@ -24,7 +25,7 @@ Bitcoffee is a CrowdFunding Dapp on the RSK network, in which anyone can raise f
   - [Development environment](#for-development-environment)
 - [Project Structure](#project-structure)
 
-# Features:
+# Features
 
 - 👁‍🗨 Pure design and dynamic views.
 - 🦊 Connection with Metamask.
@@ -35,7 +36,7 @@ Bitcoffee is a CrowdFunding Dapp on the RSK network, in which anyone can raise f
 - ⛏ ERC-20 Tokens transactions on RSK Blockchain.
 
  
- # Built with:
+ # Built with
 
 - [VueJs](https://vuejs.org/) - Vuejs is a JavaScript framework for building user interfaces.
 - [Web3.js](https://web3js.readthedocs.io/en/v1.8.0/) - Web3.js is a collection of libraries that allow you to interact with a local or remote ethereum node using HTTP, IPC or WebSocket.
@@ -44,7 +45,10 @@ Bitcoffee is a CrowdFunding Dapp on the RSK network, in which anyone can raise f
 - [Webpack](https://webpack.js.org/) - Webpack is a module bundler. Its main purpose is to bundle JavaScript files for usage in a browser, yet it is also capable of transforming, bundling, or packaging just about any resource or asset.
 -  [Node.js](https://nodejs.org/es/) -As an asynchronous event-driven JavaScript runtime, Node.js is designed to build scalable network applications.
 
-# Roadmap:
+# WorkFlow
+![WhatsApp Image 2022-10-02 at 15 58 23](https://user-images.githubusercontent.com/74383100/193482294-39d40b0c-1e46-4adc-b1b9-e6166683f18b.jpg)
+
+# Roadmap
 ## 🚩 Phase 1
 - Wireframes and UI.
 - Branding.
@@ -81,16 +85,14 @@ both already deployed on RSK Testnet and implemented in the application.
 ### Public Profile View:
 ![Slide 16_9 - 2](https://user-images.githubusercontent.com/74383100/192911120-e5eeef0e-8a5c-4607-b59e-ee9eee16f7ba.png)
 
-# Authors:
+# Authors
 
 - [@srteerra](https://www.github.com/srteerra) - Angel Lopez
 - [@Guapura89](https://www.github.com/Guapura89) - Carlos Sanchez
 - [@jonocrod12](https://github.com/jonocrod12) - Jonathan Ocampo
 
-# Demo on Figma:
+# Demo on Figma
 [Bitcoffee Board](https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2F5GghfAuXAy1BLI8FNXynOD%2FBitcoffee%3Fnode-id%3D0%253A1 "@embed")
-
-
 
 
 # Quick start
