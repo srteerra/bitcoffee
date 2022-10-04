@@ -9,9 +9,10 @@ Bitcoffee is a CrowdFunding Dapp on the RSK network, in which anyone can raise f
 
 
 # Table of contents
+- [Pitch](#Pitch)
 - [Features](#features)
 - [Built with](#built-with)
-- [Workflow](#Workflow)
+- [Workflow](#WorkFlow)
 - [Roadmap](#roadmap)
 - [Our Contracts](#our-contracts)
   - [Bitcoffee Token](#bitcoffee-token-contract)
@@ -25,8 +26,10 @@ Bitcoffee is a CrowdFunding Dapp on the RSK network, in which anyone can raise f
   - [Development environment](#for-development-environment)
 - [Project Structure](#project-structure)
 
-# Features
+# Pitch
+[![Alt text](https://img.youtube.com/vi/Acfm1Ey-9Lw/0.jpg)](https://www.youtube.com/watch?v=Acfm1Ey-9Lw)
 
+# Features
 - 👁‍🗨 Pure design and dynamic views.
 - 🦊 Connection with Metamask.
 - 📱 Simple UI and a beautiful UX Design.
@@ -37,7 +40,6 @@ Bitcoffee is a CrowdFunding Dapp on the RSK network, in which anyone can raise f
 
  
  # Built with
-
 - [VueJs](https://vuejs.org/) - Vuejs is a JavaScript framework for building user interfaces.
 - [Web3.js](https://web3js.readthedocs.io/en/v1.8.0/) - Web3.js is a collection of libraries that allow you to interact with a local or remote ethereum node using HTTP, IPC or WebSocket.
 - [BootstrapVue](https://bootstrap-vue.org/) - Extensive list of components and  Bundled Javascript plugins.
@@ -73,7 +75,6 @@ See our token and the Crowdfunding smart contract on the RSK Explorer.
   #### [Bitcoffee Crowdfunding Contract](https://explorer.testnet.rsk.co/address/0xf927aa202d6f565e0c9df1753fa00e28f2dcd9cc)
 <br />
 both already deployed on RSK Testnet and implemented in the application.
-
 
 # Screenshots
 ### Home View:
