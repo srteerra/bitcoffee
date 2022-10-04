@@ -47,6 +47,9 @@ Bitcoffee is a CrowdFunding Dapp on the RSK network, in which anyone can raise f
 - [Webpack](https://webpack.js.org/) - Webpack is a module bundler. Its main purpose is to bundle JavaScript files for usage in a browser, yet it is also capable of transforming, bundling, or packaging just about any resource or asset.
 -  [Node.js](https://nodejs.org/es/) -As an asynchronous event-driven JavaScript runtime, Node.js is designed to build scalable network applications.
 
+In addition, we plan to create a subscription for users who want to contribute monthly to the creators.
+This is possible with the [SDK](https://developers.rsk.co/rif/scheduler/sdk/) of RIF to schedule transactions in RSK and offer plans for creators to upload exclusive content as a way to thank their followers for their support.
+
 # WorkFlow
 ![WhatsApp Image 2022-10-02 at 15 58 23](https://user-images.githubusercontent.com/74383100/193482294-39d40b0c-1e46-4adc-b1b9-e6166683f18b.jpg)
 
