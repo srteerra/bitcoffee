@@ -5,13 +5,18 @@
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
 ![](https://img.shields.io/github/stars/srteerra/bitcoffee)![](https://img.shields.io/github/forks/srteerra/bitcoffee)
 
+#### *AVISO: TODAS LAS ADDRESS PRESENTADAS EN EL DISEÑO Y PROTOTIPO FUNCIONAL SON DE EJEMPLO, NO SE UTILIZA NINGUNA DE ESAS ADDRESS O WALLETS*
+
+
+
 Bitcoffee is a CrowdFunding Dapp on the RSK network, in which anyone can raise funds for their personal interests, campaigns, charity funds, etc as well as for their followers can follow their goals, this through the use of crypto assets such as RBTC, Stablecoins from RSK or our own token BITC (Bitcoffee Token).
 
 
 # Table of contents
+- [Pitch](#Pitch)
 - [Features](#features)
 - [Built with](#built-with)
-- [Workflow](#Workflow)
+- [Workflow](#WorkFlow)
 - [Roadmap](#roadmap)
 - [Our Contracts](#our-contracts)
   - [Bitcoffee Token](#bitcoffee-token-contract)
@@ -25,8 +30,10 @@ Bitcoffee is a CrowdFunding Dapp on the RSK network, in which anyone can raise f
   - [Development environment](#for-development-environment)
 - [Project Structure](#project-structure)
 
-# Features
+# Pitch
+[![Alt text](https://img.youtube.com/vi/Acfm1Ey-9Lw/0.jpg)](https://www.youtube.com/watch?v=Acfm1Ey-9Lw)
 
+# Features
 - 👁‍🗨 Pure design and dynamic views.
 - 🦊 Connection with Metamask.
 - 📱 Simple UI and a beautiful UX Design.
@@ -37,13 +44,15 @@ Bitcoffee is a CrowdFunding Dapp on the RSK network, in which anyone can raise f
 
  
  # Built with
-
 - [VueJs](https://vuejs.org/) - Vuejs is a JavaScript framework for building user interfaces.
 - [Web3.js](https://web3js.readthedocs.io/en/v1.8.0/) - Web3.js is a collection of libraries that allow you to interact with a local or remote ethereum node using HTTP, IPC or WebSocket.
 - [BootstrapVue](https://bootstrap-vue.org/) - Extensive list of components and  Bundled Javascript plugins.
 - [Sanity.io](https://www.sanity.io/) - Sanity is the platform for structured content that powers remarkable digital experiences.
 - [Webpack](https://webpack.js.org/) - Webpack is a module bundler. Its main purpose is to bundle JavaScript files for usage in a browser, yet it is also capable of transforming, bundling, or packaging just about any resource or asset.
 -  [Node.js](https://nodejs.org/es/) -As an asynchronous event-driven JavaScript runtime, Node.js is designed to build scalable network applications.
+
+In addition, we plan to create a subscription for users who want to contribute monthly to the creators.
+This is possible with the [SDK](https://developers.rsk.co/rif/scheduler/sdk/) of RIF to schedule transactions in RSK and offer plans for creators to upload exclusive content as a way to thank their followers for their support.
 
 # WorkFlow
 ![WhatsApp Image 2022-10-02 at 15 58 23](https://user-images.githubusercontent.com/74383100/193482294-39d40b0c-1e46-4adc-b1b9-e6166683f18b.jpg)
@@ -73,7 +82,6 @@ See our token and the Crowdfunding smart contract on the RSK Explorer.
   #### [Bitcoffee Crowdfunding Contract](https://explorer.testnet.rsk.co/address/0xf927aa202d6f565e0c9df1753fa00e28f2dcd9cc)
 <br />
 both already deployed on RSK Testnet and implemented in the application.
-
 
 # Screenshots
 ### Home View:
