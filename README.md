@@ -5,6 +5,10 @@
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
 ![](https://img.shields.io/github/stars/srteerra/bitcoffee)![](https://img.shields.io/github/forks/srteerra/bitcoffee)
 
+#### *AVISO: TODAS LAS ADDRESS PRESENTADAS EN EL DISEÑO Y PROTOTIPO FUNCIONAL SON DE EJEMPLO, NO SE UTILIZA NINGUNA DE ESAS ADDRESS O WALLETS*
+
+
+
 Bitcoffee is a CrowdFunding Dapp on the RSK network, in which anyone can raise funds for their personal interests, campaigns, charity funds, etc as well as for their followers can follow their goals, this through the use of crypto assets such as RBTC, Stablecoins from RSK or our own token BITC (Bitcoffee Token).
 
 
