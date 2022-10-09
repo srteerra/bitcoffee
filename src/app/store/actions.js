@@ -40,6 +40,38 @@ export const actions = {
   async disconnectAcc() {
     window.location.reload();
   },
+  async activeCampaigns() {
+    const net = await web3.eth.net.getId();
+    tokenContract = new web3.eth.Contract(
+      artifact_crowdfunding.abi,
+      artifact_crowdfunding.networks[net].address
+    );
+
+    tokenContract.setProvider(Web3.givenProvider || "ws://localhost:8546");
+
+    const campaigns = await tokenContract.methods.campaigns(1).call();
+
+    console.log(campaigns);
+  },
+  async launchGoal({ commit, getters, dispatch }, payload) {
+    const net = await web3.eth.net.getId();
+    tokenContract = new web3.eth.Contract(
+      artifact_crowdfunding.abi,
+      artifact_crowdfunding.networks[net].address
+    );
+
+    tokenContract.setProvider(Web3.givenProvider || "ws://localhost:8546");
+
+    var date = new Date().getTime() / 1000;
+    console.log(date);
+
+    const launch = await tokenContract.methods
+      .launch(100, 1665286354, 1665286554)
+      .send({ from: ethereum.selectedAddress });
+
+    console.log(tokenContract);
+    launch;
+  },
   async updateBalance({ commit }) {
     const net = await web3.eth.net.getId();
     tokenContract = new web3.eth.Contract(
