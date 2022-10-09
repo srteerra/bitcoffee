@@ -40,7 +40,8 @@ export const actions = {
   async disconnectAcc() {
     window.location.reload();
   },
-  async activeCampaigns() {
+  async activeCampaigns({ commit, getters, dispatch }, payload) {
+    console.log("camps:", payload);
     const net = await web3.eth.net.getId();
     tokenContract = new web3.eth.Contract(
       artifact_crowdfunding.abi,
@@ -49,9 +50,38 @@ export const actions = {
 
     tokenContract.setProvider(Web3.givenProvider || "ws://localhost:8546");
 
-    const campaigns = await tokenContract.methods.campaigns(1).call();
+    const campaigns = await tokenContract.methods
+      .campaigns(payload.campaign)
+      .call();
 
     console.log(campaigns);
+  },
+  async pledgeCampaign({ commit, getters, dispatch }, payload) {
+    console.log("pledge:", payload.campaign);
+    const net = await web3.eth.net.getId();
+    tokenContract = new web3.eth.Contract(
+      artifact_crowdfunding.abi,
+      artifact_crowdfunding.networks[net].address
+    );
+
+    let tokenContractBITC = new web3.eth.Contract(
+      artifact.abi,
+      artifact.networks[net].address
+    );
+
+    tokenContract.setProvider(Web3.givenProvider || "ws://localhost:8546");
+
+    const campaigns = await tokenContract.methods
+      .pledge(payload.campaign, payload.amount)
+      .send({ from: ethereum.selectedAddress });
+
+    const approve = await tokenContractBITC.methods
+      .approve(artifact_crowdfunding.networks[net].address, payload.amount)
+      .send({
+        from: ethereum.selectedAddress,
+      });
+
+    campaigns;
   },
   async launchGoal({ commit, getters, dispatch }, payload) {
     const net = await web3.eth.net.getId();

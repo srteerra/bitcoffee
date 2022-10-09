@@ -326,14 +326,39 @@
                 variant="primary"
                 >Launch goal</b-button
               >
+              <b-form-input
+                type="text"
+                placeholder="Active campaigns"
+                v-model="activeCam"
+                required
+              ></b-form-input>
               <b-button
-                @click="activeCampaigns()"
+                @click="activeCampaigns({ campaign: activeCam })"
                 class="w-100"
                 variant="primary"
                 >Campaigns</b-button
+              >
+              <b-form-input
+                type="text"
+                placeholder="Amount to pledge"
+                v-model="pledgeA"
+                required
+              ></b-form-input>
+              <b-form-input
+                type="text"
+                placeholder="Campaign to pledge"
+                v-model="pledgeC"
+                required
+              ></b-form-input>
+              <b-button
+                @click="pledgeCampaign({ campaign: pledgeC, amount: pledgeA })"
+                class="w-100"
+                variant="primary"
+                >pledge</b-button
               ></b-col
             >
           </b-row>
+          <b-row> </b-row>
         </b-form>
       </b-container>
     </b-modal>
@@ -542,6 +567,10 @@ export default {
   name: "ProfileView",
   data() {
     return {
+      goals: [],
+      activeCam: null,
+      pledgeC: null,
+      pledgeA: null,
       isAvailable: false,
       fetchingPage: false,
 
@@ -584,7 +613,12 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["updateAccount", "launchGoal", "activeCampaigns"]),
+    ...mapActions([
+      "updateAccount",
+      "launchGoal",
+      "activeCampaigns",
+      "pledgeCampaign",
+    ]),
     ...mapMutations(["SHOW_EDIT_PROFILE"]),
     hideModal() {
       this.$refs["goal-modal"].hide();
