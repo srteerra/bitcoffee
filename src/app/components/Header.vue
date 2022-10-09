@@ -42,7 +42,7 @@
             Our token
           </router-link>
           <router-link
-            to="/our-token"
+            to="/home"
             class="px-2 my-auto"
             active-class="activeLink"
           >
