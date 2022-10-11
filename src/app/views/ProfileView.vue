@@ -254,7 +254,7 @@
             <label for="start-datepicker">Choose a start date</label>
             <b-form-datepicker
               id="start-datepicker"
-              v-model="value"
+              v-model="goalDateStart"
               class="mb-2"
             ></b-form-datepicker>
           </b-form-group>
@@ -263,7 +263,7 @@
             <label for="end-datepicker">Choose a end date</label>
             <b-form-datepicker
               id="end-datepicker"
-              v-model="value"
+              v-model="goalDateEnd"
               class="mb-2"
             ></b-form-datepicker>
           </b-form-group>
@@ -278,6 +278,7 @@
               id="goal-description"
               type="text"
               placeholder="Enter the goal description"
+              v-model="goalDesc"
               required
             ></b-form-input>
           </b-form-group>
@@ -293,6 +294,7 @@
                 id="goal-amount"
                 placeholder="Enter the goal amount"
                 type="number"
+                v-model="goalAmount"
                 ondrop="return false;"
                 onpaste="return false;"
                 onkeypress="return event.charCode>=48 && event.charCode<=57"
@@ -303,16 +305,60 @@
 
           <b-row class="w-75 my-5 mx-auto">
             <b-col class="my-3" cols="12" md="6">
-              <b-button class="w-100" @click="hideModal" variant="primary"
+              <b-button
+                class="w-100"
+                @click="hideModal"
+                variant="outline-primary"
                 >Close</b-button
               >
             </b-col>
             <b-col class="my-3" cols="12" md="6">
-              <b-button type="submit" class="w-100" variant="outline-primary"
-                >Save</b-button
+              <b-button
+                @click="
+                  launchGoal({
+                    startDate: goalDateStart,
+                    endDate: goalDateEnd,
+                    desc: goalDesc,
+                    amount: goalAmount,
+                  })
+                "
+                class="w-100"
+                variant="primary"
+                >Launch goal</b-button
+              >
+              <b-form-input
+                type="text"
+                placeholder="Active campaigns"
+                v-model="activeCam"
+                required
+              ></b-form-input>
+              <b-button
+                @click="activeCampaigns({ campaign: activeCam })"
+                class="w-100"
+                variant="primary"
+                >Campaigns</b-button
+              >
+              <b-form-input
+                type="text"
+                placeholder="Amount to pledge"
+                v-model="pledgeA"
+                required
+              ></b-form-input>
+              <b-form-input
+                type="text"
+                placeholder="Campaign to pledge"
+                v-model="pledgeC"
+                required
+              ></b-form-input>
+              <b-button
+                @click="pledgeCampaign({ campaign: pledgeC, amount: pledgeA })"
+                class="w-100"
+                variant="primary"
+                >pledge</b-button
               ></b-col
             >
           </b-row>
+          <b-row> </b-row>
         </b-form>
       </b-container>
     </b-modal>
@@ -521,6 +567,10 @@ export default {
   name: "ProfileView",
   data() {
     return {
+      goals: [],
+      activeCam: null,
+      pledgeC: null,
+      pledgeA: null,
       isAvailable: false,
       fetchingPage: false,
 
@@ -538,6 +588,11 @@ export default {
       noSub: "No subtitle added",
       noDesc: "No description added",
       noBg: "https://images.unsplash.com/photo-1554147090-e1221a04a025?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1148&q=80",
+
+      goalDateStart: null,
+      goalDateEnd: null,
+      goalDesc: null,
+      goalAmount: null,
     };
   },
   components: {
@@ -558,7 +613,12 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["updateAccount"]),
+    ...mapActions([
+      "updateAccount",
+      "launchGoal",
+      "activeCampaigns",
+      "pledgeCampaign",
+    ]),
     ...mapMutations(["SHOW_EDIT_PROFILE"]),
     hideModal() {
       this.$refs["goal-modal"].hide();
