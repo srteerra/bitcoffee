@@ -16,8 +16,11 @@ contract CrowdFund {
         uint id,
         address indexed creator,
         uint goal,
+        string title,
+        string description,
         uint32 startAt,
-        uint32 endAt
+        uint32 endAt,
+        uint category
     );
     event Cancel(uint id);
     event Pledge(uint indexed id, address indexed caller, uint amount);
@@ -30,6 +33,12 @@ contract CrowdFund {
         address creator;
         // Amount of tokens to raise
         uint goal;
+        // Category goal
+        uint category;
+        // Title for goal
+        string title;
+        // Desc in goal
+        string description;
         // Total amount pledged
         uint pledged;
         // Timestamp of start of campaign
@@ -56,8 +65,12 @@ contract CrowdFund {
     function launch(
         uint _goal,
         uint32 _startAt,
-        uint32 _endAt
+        uint32 _endAt,
+        string memory _title,
+        string memory _description,
+        uint _category
     ) external {
+        require(_category >= 0, "invalid category");
         require(_startAt >= block.timestamp, "start at < now");
         require(_endAt >= _startAt, "end at < start at");
         require(_endAt <= block.timestamp + 90 days, "end at > max duration");
@@ -66,13 +79,16 @@ contract CrowdFund {
         campaigns[count] = Campaign({
             creator: msg.sender,
             goal: _goal,
+            title: _title,
+            description: _description,
             pledged: 0,
             startAt: _startAt,
             endAt: _endAt,
-            claimed: false
+            claimed: false,
+            category: _category
         });
 
-        emit Launch(count, msg.sender, _goal, _startAt, _endAt);
+        emit Launch(count, msg.sender, _goal, _title, _description, _startAt, _endAt, _category);
     }
 
     function cancel(uint _id) external {

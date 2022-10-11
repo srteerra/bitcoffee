@@ -367,6 +367,13 @@
           <b-row>
             <h1>RIF</h1>
             <b-col class="my-3" cols="12" md="6">
+              <p>{{ campaigns_count_rif }}</p>
+              <b-button
+                @click="$store.commit('SET_COUNT_RIF_CAMPAIGNS')"
+                class="w-100"
+                variant="primary"
+                >Update counts</b-button
+              >
               <b-button
                 @click="approveSpenderRIF()"
                 class="w-100"
@@ -741,6 +748,8 @@ export default {
       "user_description",
       "fetchingDataWait",
       "editProfileModal",
+      "getCountCampaignsRIF",
+      "campaigns_count_rif",
     ]),
 
     myaddress() {

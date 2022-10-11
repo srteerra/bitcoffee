@@ -158,6 +158,10 @@ export const actions = {
     launch;
   },
   async launchGoalRIF({ commit, getters, dispatch }, payload) {
+    console.log(payload.amount);
+    const amountRIF = web3.utils.toWei(payload.amount, "ether");
+    console.log(amountRIF);
+
     const net = await web3.eth.net.getId();
     tokenContract = new web3.eth.Contract(
       artifact_crowdfunding_rif.abi,
@@ -170,7 +174,7 @@ export const actions = {
     console.log(date);
 
     const launch = await tokenContract.methods
-      .launch("50000000000000000000", 1665507825, 1665507955)
+      .launch(amountRIF, 1665507825, 1665507955)
       .send({ from: ethereum.selectedAddress });
 
     console.log(tokenContract);
