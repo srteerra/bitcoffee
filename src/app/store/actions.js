@@ -100,7 +100,7 @@ export const actions = {
     const approval = await tokenContract.methods
       .approve(
         artifact_crowdfunding_rif.networks[net].address,
-        "100000000000000000000"
+        "50000000000000000000"
       )
       .send({ from: ethereum.selectedAddress });
 
@@ -133,7 +133,7 @@ export const actions = {
     tokenContract.setProvider(Web3.givenProvider || "ws://localhost:8546");
 
     const campaigns = await tokenContract.methods
-      .pledge(payload.campaign, "100000000000000000000")
+      .pledge(payload.campaign, "50000000000000000000")
       .send({ from: ethereum.selectedAddress });
 
     campaigns;
@@ -170,7 +170,7 @@ export const actions = {
     console.log(date);
 
     const launch = await tokenContract.methods
-      .launch("100000000000000000000", 1665503568, 1665503768)
+      .launch("50000000000000000000", 1665507825, 1665507955)
       .send({ from: ethereum.selectedAddress });
 
     console.log(tokenContract);

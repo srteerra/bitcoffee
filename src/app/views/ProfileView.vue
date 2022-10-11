@@ -680,6 +680,10 @@ export default {
       "activeCampaigns",
       "approveSpender",
       "pledgeCampaign",
+      "launchGoalRIF",
+      "activeCampaignsRIF",
+      "approveSpenderRIF",
+      "pledgeCampaignRIF",
     ]),
     ...mapMutations(["SHOW_EDIT_PROFILE"]),
     hideModal() {
