@@ -17,6 +17,7 @@ const net = await web3.eth.net.getId();
 
 const artifact = require("../../../build/contracts/Bitcoffee.json");
 const artifact_crowdfunding = require("../../../build/contracts/CrowdFund.json");
+const artifact_crowdfunding_rif = require("../../../build/contracts/CrowdFundERC677.json");
 let tokenContract;
 
 // let tokenContract = new web3.eth.Contract(artifact.abi, artifact.networks[netID].address)
@@ -56,6 +57,55 @@ export const actions = {
 
     console.log(campaigns);
   },
+  async activeCampaignsRIF({ commit, getters, dispatch }, payload) {
+    console.log("camps:", payload);
+    const net = await web3.eth.net.getId();
+    tokenContract = new web3.eth.Contract(
+      artifact_crowdfunding_rif.abi,
+      artifact_crowdfunding_rif.networks[net].address
+    );
+
+    tokenContract.setProvider(Web3.givenProvider || "ws://localhost:8546");
+
+    const campaigns = await tokenContract.methods
+      .campaigns(payload.campaign)
+      .call();
+
+    console.log(campaigns);
+  },
+  async approveSpender({ commit, getters, dispatch }) {
+    const net = await web3.eth.net.getId();
+    tokenContract = new web3.eth.Contract(
+      artifact.abi,
+      artifact.networks[net].address
+    );
+
+    tokenContract.setProvider(Web3.givenProvider || "ws://localhost:8546");
+
+    const approval = await tokenContract.methods
+      .approve(artifact_crowdfunding.networks[net].address, 100000)
+      .send({ from: ethereum.selectedAddress });
+
+    approval;
+  },
+  async approveSpenderRIF({ commit, getters, dispatch }) {
+    const net = await web3.eth.net.getId();
+    tokenContract = new web3.eth.Contract(
+      artifact.abi,
+      "0x19f64674d8a5b4e652319f5e239efd3bc969a1fe"
+    );
+
+    tokenContract.setProvider(Web3.givenProvider || "ws://localhost:8546");
+
+    const approval = await tokenContract.methods
+      .approve(
+        artifact_crowdfunding_rif.networks[net].address,
+        "100000000000000000000"
+      )
+      .send({ from: ethereum.selectedAddress });
+
+    approval;
+  },
   async pledgeCampaign({ commit, getters, dispatch }, payload) {
     console.log("pledge:", payload.campaign);
     const net = await web3.eth.net.getId();
@@ -64,22 +114,27 @@ export const actions = {
       artifact_crowdfunding.networks[net].address
     );
 
-    let tokenContractBITC = new web3.eth.Contract(
-      artifact.abi,
-      artifact.networks[net].address
-    );
-
     tokenContract.setProvider(Web3.givenProvider || "ws://localhost:8546");
 
     const campaigns = await tokenContract.methods
       .pledge(payload.campaign, payload.amount)
       .send({ from: ethereum.selectedAddress });
 
-    const approve = await tokenContractBITC.methods
-      .approve(artifact_crowdfunding.networks[net].address, payload.amount)
-      .send({
-        from: ethereum.selectedAddress,
-      });
+    campaigns;
+  },
+  async pledgeCampaignRIF({ commit, getters, dispatch }, payload) {
+    console.log("pledge:", payload.campaign);
+    const net = await web3.eth.net.getId();
+    tokenContract = new web3.eth.Contract(
+      artifact_crowdfunding_rif.abi,
+      artifact_crowdfunding_rif.networks[net].address
+    );
+
+    tokenContract.setProvider(Web3.givenProvider || "ws://localhost:8546");
+
+    const campaigns = await tokenContract.methods
+      .pledge(payload.campaign, "100000000000000000000")
+      .send({ from: ethereum.selectedAddress });
 
     campaigns;
   },
@@ -96,7 +151,26 @@ export const actions = {
     console.log(date);
 
     const launch = await tokenContract.methods
-      .launch(100, 1665286354, 1665286554)
+      .launch(100000, 1665503568, 1665503768)
+      .send({ from: ethereum.selectedAddress });
+
+    console.log(tokenContract);
+    launch;
+  },
+  async launchGoalRIF({ commit, getters, dispatch }, payload) {
+    const net = await web3.eth.net.getId();
+    tokenContract = new web3.eth.Contract(
+      artifact_crowdfunding_rif.abi,
+      artifact_crowdfunding_rif.networks[net].address
+    );
+
+    tokenContract.setProvider(Web3.givenProvider || "ws://localhost:8546");
+
+    var date = new Date().getTime() / 1000;
+    console.log(date);
+
+    const launch = await tokenContract.methods
+      .launch("100000000000000000000", 1665503568, 1665503768)
       .send({ from: ethereum.selectedAddress });
 
     console.log(tokenContract);

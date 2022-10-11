@@ -314,6 +314,12 @@
             </b-col>
             <b-col class="my-3" cols="12" md="6">
               <b-button
+                @click="approveSpender()"
+                class="w-100"
+                variant="primary"
+                >Approve 100</b-button
+              >
+              <b-button
                 @click="
                   launchGoal({
                     startDate: goalDateStart,
@@ -358,7 +364,62 @@
               ></b-col
             >
           </b-row>
-          <b-row> </b-row>
+          <b-row>
+            <h1>RIF</h1>
+            <b-col class="my-3" cols="12" md="6">
+              <b-button
+                @click="approveSpenderRIF()"
+                class="w-100"
+                variant="primary"
+                >Approve 100</b-button
+              >
+              <b-button
+                @click="
+                  launchGoalRIF({
+                    startDate: goalDateStart,
+                    endDate: goalDateEnd,
+                    desc: goalDesc,
+                    amount: goalAmount,
+                  })
+                "
+                class="w-100"
+                variant="primary"
+                >Launch goal</b-button
+              >
+              <b-form-input
+                type="text"
+                placeholder="Active campaigns"
+                v-model="activeCam"
+                required
+              ></b-form-input>
+              <b-button
+                @click="activeCampaignsRIF({ campaign: activeCam })"
+                class="w-100"
+                variant="primary"
+                >Campaigns</b-button
+              >
+              <b-form-input
+                type="text"
+                placeholder="Amount to pledge"
+                v-model="pledgeA"
+                required
+              ></b-form-input>
+              <b-form-input
+                type="text"
+                placeholder="Campaign to pledge"
+                v-model="pledgeC"
+                required
+              ></b-form-input>
+              <b-button
+                @click="
+                  pledgeCampaignRIF({ campaign: pledgeC, amount: pledgeA })
+                "
+                class="w-100"
+                variant="primary"
+                >pledge</b-button
+              ></b-col
+            >
+          </b-row>
         </b-form>
       </b-container>
     </b-modal>
@@ -617,6 +678,7 @@ export default {
       "updateAccount",
       "launchGoal",
       "activeCampaigns",
+      "approveSpender",
       "pledgeCampaign",
     ]),
     ...mapMutations(["SHOW_EDIT_PROFILE"]),
