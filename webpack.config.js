@@ -112,11 +112,11 @@ module.exports = {
     topLevelAwait: true,
   },
   devServer: {
-    hot: false,
+    hot: true,
     host: "0.0.0.0",
     compress: true,
     port: 8000,
     historyApiFallback: true,
   },
-  devtool: "eval",
+  // devtool: "eval",
 };
