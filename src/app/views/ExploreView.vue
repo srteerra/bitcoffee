@@ -25,12 +25,11 @@
         </b-col>
       </b-row>
       <b-row>
-        <b-col cols="8" class="d-initial d-lg-flex mx-auto">
-          <b-col cols="12" lg="6" class="d-flex">
-            <b-form-select
-              v-model="filterBy"
-              :options="filterByOptions"
-            ></b-form-select>
+        <b-col
+          cols="8"
+          class="d-initial d-lg-flex justify-content-lg-center mx-auto"
+        >
+          <b-col cols="12" lg="3" class="d-flex my-auto">
             <b-form-select
               v-model="selectedCategory"
               :options="categoryOptions"
@@ -116,9 +115,14 @@
                       </b-card-text>
                       <div class="d-flex justify-content-center">
                         <div class="category-badge rounded-pill mx-1">
-                          <p class="m-0">Music</p>
+                          <p class="m-0">
+                            {{ getCategory(creator.userCategory) }}
+                          </p>
                         </div>
-                        <div class="category-badge-fill rounded-pill mx-1">
+                        <div
+                          class="category-badge-fill rounded-pill mx-1"
+                          v-if="creator.userVerify"
+                        >
                           <p class="m-0">Verified</p>
                         </div>
                       </div>
@@ -176,18 +180,12 @@ export default {
       defaultAvatar: undefined,
       defaultBackground: undefined,
       builder: imageUrlBuilder(client),
-      filterBy: null,
-      filterByOptions: [
-        { value: null, text: "Filter creators by" },
-        { value: "newest", text: "Newest first" },
-        { value: "oldest", text: "Oldest first" },
-        { value: "a", text: "A-Z" },
-        { value: "z", text: "Z-A" },
-      ],
-      selectedCategory: null,
+      selectedCategory: "All",
       categoryOptions: [
         { value: null, text: "Select your category" },
+        { value: "All", text: "All" },
         { value: "Music", text: "Music" },
+        { value: "IT", text: "IT" },
         { value: "Art & Culture", text: "Art & Culture" },
       ],
       selectedContent: "creators",
@@ -197,7 +195,7 @@ export default {
       ],
       filterSearchInput: "",
       creators: [],
-      CreatorsperPage: 6,
+      CreatorsperPage: 9,
       currentPage: 1,
     };
   },
@@ -264,7 +262,11 @@ export default {
       return this.creators.length;
     },
     itemsForCreatorsList() {
-      if (!this.isSearching) {
+      if (
+        !this.isSearching ||
+        this.selectedCategory === "All" ||
+        !this.selectedCategory
+      ) {
         return this.creators.slice(
           (this.currentPage - 1) * this.CreatorsperPage,
           this.currentPage * this.CreatorsperPage
@@ -274,7 +276,23 @@ export default {
       }
     },
   },
+  watch: {
+    filterSearchInput(newValue, oldValue) {
+      this.selectedCategory = "All";
+      this.creatorVerify = false;
+    },
+    selectedCategory(newValue, oldValue) {
+      this.filterSearchInput = "";
+    },
+  },
   methods: {
+    getCategory(category) {
+      if (!category || category.length === 0) {
+        return "Creator";
+      } else {
+        return category[0];
+      }
+    },
     filterSearch(creator) {
       var show = true;
 
@@ -290,6 +308,11 @@ export default {
       } else if (!creator.userVerify && this.creatorVerify) {
         show = false;
         this.isSearching = true;
+      } else if (
+        (!creator.userCategory || creator.userCategory) &&
+        (this.selectedCategory === "All" || this.selectedCategory === null)
+      ) {
+        show = true;
       } else if (
         !creator.userCategory ||
         this.selectedCategory !== creator.userCategory[0]
