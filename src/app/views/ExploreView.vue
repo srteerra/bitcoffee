@@ -25,8 +25,8 @@
         </b-col>
       </b-row>
       <b-row>
-        <b-col cols="6" class="d-initial d-lg-flex mx-auto">
-          <b-col cols="12" lg="8" class="d-flex">
+        <b-col cols="8" class="d-initial d-lg-flex mx-auto">
+          <b-col cols="12" lg="6" class="d-flex">
             <b-form-select
               v-model="filterBy"
               :options="filterByOptions"
@@ -37,11 +37,23 @@
               class="ml-0 ml-lg-3"
             ></b-form-select>
           </b-col>
-          <b-col cols="12" lg="4" class="my-auto">
+          <b-col cols="12" lg="3" class="my-auto">
             <div class="mt-3 mt-lg-0">
-              <b-form-checkbox v-model="status" name="check-button" switch>
+              <b-form-checkbox
+                v-model="creatorVerify"
+                name="check-button"
+                switch
+              >
                 Verified creators
               </b-form-checkbox>
+            </div>
+          </b-col>
+          <b-col cols="12" lg="3" class="my-auto">
+            <div class="mt-3 mt-lg-0">
+              <b-form-input
+                v-model="filterSearchInput"
+                placeholder="Search..."
+              ></b-form-input>
             </div>
           </b-col>
         </b-col>
@@ -53,6 +65,7 @@
             class="d-flex justify-content-center flex-wrap p-0 m-0"
           >
             <li
+              v-show="filterSearch(creator)"
               v-for="(creator, index) in itemsForCreatorsList"
               v-bind:key="index"
             >
@@ -158,7 +171,8 @@ export default {
   data() {
     return {
       loading: true,
-      status: true,
+      isSearching: false,
+      creatorVerify: false,
       defaultAvatar: undefined,
       defaultBackground: undefined,
       builder: imageUrlBuilder(client),
@@ -173,14 +187,15 @@ export default {
       selectedCategory: null,
       categoryOptions: [
         { value: null, text: "Select your category" },
-        { value: 1, text: "Music" },
-        { value: 2, text: "Art & Culture" },
+        { value: "Music", text: "Music" },
+        { value: "Art & Culture", text: "Art & Culture" },
       ],
       selectedContent: "creators",
       contentOptions: [
         { value: "creators", text: "Creators" },
         { value: "goals", text: "Goals" },
       ],
+      filterSearchInput: "",
       creators: [],
       CreatorsperPage: 6,
       currentPage: 1,
@@ -190,7 +205,7 @@ export default {
     this.loading = true;
 
     const query =
-      '*[_type == "users"] {userName, userAddress, userAvatar, userBg, userTitle, userSubtitle, userDesc, _createdAt}';
+      '*[_type == "users"] {userName, userAddress, userAvatar, userBg, userTitle, userVerify, userCategory, userSubtitle, userDesc, _createdAt}';
 
     client
       .fetch(query)
@@ -249,10 +264,41 @@ export default {
       return this.creators.length;
     },
     itemsForCreatorsList() {
-      return this.creators.slice(
-        (this.currentPage - 1) * this.CreatorsperPage,
-        this.currentPage * this.CreatorsperPage
-      );
+      if (!this.isSearching) {
+        return this.creators.slice(
+          (this.currentPage - 1) * this.CreatorsperPage,
+          this.currentPage * this.CreatorsperPage
+        );
+      } else {
+        return this.creators;
+      }
+    },
+  },
+  methods: {
+    filterSearch(creator) {
+      var show = true;
+
+      if (this.filterSearchInput !== "") {
+        if (
+          creator.userName
+            .toLocaleLowerCase()
+            .indexOf(this.filterSearchInput.toLocaleLowerCase()) < 0
+        ) {
+          show = false;
+          this.isSearching = true;
+        }
+      } else if (!creator.userVerify && this.creatorVerify) {
+        show = false;
+        this.isSearching = true;
+      } else if (
+        !creator.userCategory ||
+        this.selectedCategory !== creator.userCategory[0]
+      ) {
+        show = false;
+        this.isSearching = true;
+      }
+
+      return show;
     },
   },
   components: {

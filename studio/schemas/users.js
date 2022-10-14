@@ -53,6 +53,7 @@ export default {
       name: "userVerify",
       title: "Verify",
       type: "boolean",
+      initialValue: false,
     },
     {
       name: "userAddress",
