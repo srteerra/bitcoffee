@@ -9,9 +9,27 @@
         class="user-goal__card px-4 py-5"
         :class="{ blur: goal_status == 100 }"
       >
-        <p class="firstValue">0%</p>
-        <p class="lastValue">100%</p>
+        <!-- <p class="firstValue">0%</p>
+        <p class="lastValue">100%</p> -->
+
+        <b-collapse id="collapse-b" class="my-2">
+          <b-card style="border: none">
+            <div class="text-center">
+              <img
+                class="w-50 mx-auto"
+                src="../assets/images/user-goal.png"
+                alt="user-goal"
+              />
+            </div>
+          </b-card>
+        </b-collapse>
+
         <h4 class="font-weight-bold">{{ goal_title }}</h4>
+        <p>
+          by <strong>{{ user_name }}</strong>
+        </p>
+
+        <h3>8 days left</h3>
         <b-progress
           class="user-goal__progressbar mx-auto my-4"
           :value="goal_status"
@@ -21,7 +39,56 @@
           <b-badge class="progress__badge">{{ goal_status }}%</b-badge>
         </h4> -->
         <p>{{ goal_description }}</p>
-        <b-row>
+
+        <b-row class="stats my-3">
+          <b-col class="stats-item__container">
+            <div>
+              <h3>43</h3>
+              <p>Supporters</p>
+            </div>
+          </b-col>
+
+          <b-col class="stats-item__container">
+            <h3>$233.24</h3>
+            <p>Raised</p>
+          </b-col>
+          <b-col class="stats-item__container">
+            <div>
+              <h3>$350</h3>
+              <p>Goal</p>
+            </div>
+          </b-col>
+        </b-row>
+
+        <p
+          class="my-4"
+          :class="{ hide: hide }"
+          v-b-toggle="['collapse-a', 'collapse-b']"
+          @click="hide_p"
+        >
+          See details
+        </p>
+
+        <b-collapse id="collapse-a" class="mt-2">
+          <b-card style="border: none">
+            <b-row align-h="center">
+              <b-col cols="4">
+                <b-button class="w-100 mx-auto" @click="claim">Claim</b-button>
+              </b-col>
+              <b-col cols="4">
+                <b-button
+                  class="w-100 mx-auto"
+                  variant="outline-dark"
+                  @click="show"
+                  v-b-toggle="['collapse-a', 'collapse-b']"
+                  >Close</b-button
+                >
+              </b-col>
+            </b-row>
+          </b-card>
+        </b-collapse>
+
+        <!-- <b-row>
           <b-col cols="12" md="6" class="mx-auto">
             <b-button
               v-if="goal_status == 99"
@@ -35,7 +102,7 @@
               >Refound</b-button
             >
           </b-col>
-        </b-row>
+        </b-row> -->
       </b-container>
     </div>
   </b-container>
@@ -50,13 +117,21 @@ export default {
       goal_status: 90,
       goal_description:
         "My guitar is nearly to break :( I really need a new one",
+      user_name: "Angel Lopez",
 
       blur: false,
+      hide: false,
     };
   },
   methods: {
     claim() {
       this.goal_status = 100;
+    },
+    hide_p() {
+      this.hide = true;
+    },
+    show() {
+      this.hide = false;
     },
   },
 };
@@ -105,43 +180,13 @@ export default {
       }
     }
 
-    @keyframes effect {
-      25% {
-        background: linear-gradient(
-          160deg,
-          rgba(245, 244, 84, 1) 21%,
-          rgba(121, 9, 116, 1) 54%,
-          rgba(58, 137, 137, 1) 78%,
-          rgba(0, 255, 156, 1) 100%
-        );
+    .stats {
+      .stats-item__container {
+        border-right: 1px solid black;
       }
-      50% {
-        background: linear-gradient(
-          160deg,
-          rgba(245, 88, 84, 1) 21%,
-          rgba(245, 244, 84, 1) 54%,
-          rgba(121, 9, 116, 1) 78%,
-          rgba(58, 137, 137, 1) 100%
-        );
-      }
-      75% {
-        background: linear-gradient(
-          160deg,
-          rgba(84, 116, 245, 1) 21%,
-          rgba(245, 88, 84, 1) 54%,
-          rgba(245, 244, 84, 1) 78%,
-          rgba(121, 9, 116, 1) 100%
-        );
-      }
-      100% {
-        background: linear-gradient(
-          160deg,
-          rgba(245, 84, 156, 1) 21%,
-          rgba(84, 116, 245, 1) 54%,
-          rgba(245, 88, 84, 1) 78%,
-          rgba(245, 244, 84, 1) 100%
-        );
-      }
+    }
+    .stats-item__container:nth-child(3) {
+      border: none;
     }
   }
 }
