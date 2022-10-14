@@ -58,6 +58,15 @@
         </b-col>
       </b-row>
       <b-row>
+        <b-col
+          class="text-center my-5"
+          cols="12"
+          v-if="itemsForCreatorsList.length === 0"
+        >
+          <p class="py-5 my-5" style="opacity: 40%">
+            <strong>No results.</strong>
+          </p>
+        </b-col>
         <b-col cols="11" class="mx-auto">
           <ul
             id="creatorsList"
@@ -262,11 +271,21 @@ export default {
       return this.creators.length;
     },
     itemsForCreatorsList() {
-      if (
-        !this.isSearching ||
-        this.selectedCategory === "All" ||
-        !this.selectedCategory
-      ) {
+      var whatTo;
+
+      if (this.selectedCategory === "All") {
+        whatTo = true;
+      } else {
+        whatTo = false;
+      }
+
+      if (this.filterSearchInput === "") {
+        whatTo = true;
+      } else {
+        whatTo = false;
+      }
+
+      if (whatTo) {
         return this.creators.slice(
           (this.currentPage - 1) * this.CreatorsperPage,
           this.currentPage * this.CreatorsperPage
@@ -303,11 +322,9 @@ export default {
             .indexOf(this.filterSearchInput.toLocaleLowerCase()) < 0
         ) {
           show = false;
-          this.isSearching = true;
         }
       } else if (!creator.userVerify && this.creatorVerify) {
         show = false;
-        this.isSearching = true;
       } else if (
         (!creator.userCategory || creator.userCategory) &&
         (this.selectedCategory === "All" || this.selectedCategory === null)
@@ -318,7 +335,6 @@ export default {
         this.selectedCategory !== creator.userCategory[0]
       ) {
         show = false;
-        this.isSearching = true;
       }
 
       return show;
