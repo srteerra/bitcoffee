@@ -1,13 +1,13 @@
 <!-- eslint-disable vue/attribute-hyphenation -->
 <template>
   <div>
-    <div id="fetchingData__screen" v-if="fetchingData" style="z-index: 100">
+    <!-- <div id="fetchingData__screen" v-if="fetchingData" style="z-index: 100">
       <img
         src="./assets/logos/icon-logo.png"
         alt=""
         style="width: 100px; height: 100px"
       />
-    </div>
+    </div> -->
     <!-- <div id="bg-slot-page" v-if="shadowblank" class="text-center">
       <a href="/">
         <img id="shadow-icon-place" src="./assets/logos/icon-logo.png" alt="" />
