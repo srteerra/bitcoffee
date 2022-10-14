@@ -25,12 +25,37 @@
         </b-col>
       </b-row>
       <b-row>
+        <b-col cols="6" class="d-initial d-lg-flex mx-auto">
+          <b-col cols="12" lg="8" class="d-flex">
+            <b-form-select
+              v-model="filterBy"
+              :options="filterByOptions"
+            ></b-form-select>
+            <b-form-select
+              v-model="selectedCategory"
+              :options="categoryOptions"
+              class="ml-0 ml-lg-3"
+            ></b-form-select>
+          </b-col>
+          <b-col cols="12" lg="4" class="my-auto">
+            <div class="mt-3 mt-lg-0">
+              <b-form-checkbox v-model="status" name="check-button" switch>
+                Verified creators
+              </b-form-checkbox>
+            </div>
+          </b-col>
+        </b-col>
+      </b-row>
+      <b-row>
         <b-col cols="11" class="mx-auto">
           <ul
             id="creatorsList"
             class="d-flex justify-content-center flex-wrap p-0 m-0"
           >
-            <li v-for="creator in itemsForCreatorsList" v-bind:key="creator">
+            <li
+              v-for="(creator, index) in itemsForCreatorsList"
+              v-bind:key="index"
+            >
               <b-skeleton-wrapper :loading="loading">
                 <template #loading>
                   <b-card id="main__card">
@@ -77,8 +102,11 @@
                         </h4>
                       </b-card-text>
                       <div class="d-flex justify-content-center">
-                        <div class="category-badge rounded-pill">
+                        <div class="category-badge rounded-pill mx-1">
                           <p class="m-0">Music</p>
+                        </div>
+                        <div class="category-badge-fill rounded-pill mx-1">
+                          <p class="m-0">Verified</p>
                         </div>
                       </div>
                       <b-card-text class="px-3 my-3">
@@ -88,6 +116,7 @@
                       </b-card-text>
                       <b-card-text class="px-3">
                         {{ creator.userSubtitle.slice(0, 30) + "..." }}
+                        {{ new Date(creator._createdAt).getFullYear() }}
                         <span><b-icon icon="box-arrow-up-right"></b-icon></span>
                       </b-card-text>
                     </b-row>
@@ -97,6 +126,7 @@
             </li>
           </ul>
           <b-pagination
+            class="my-5"
             v-model="currentPage"
             :total-rows="Creatorsrows"
             :per-page="CreatorsperPage"
@@ -128,13 +158,28 @@ export default {
   data() {
     return {
       loading: true,
+      status: true,
       defaultAvatar: undefined,
       defaultBackground: undefined,
       builder: imageUrlBuilder(client),
+      filterBy: null,
+      filterByOptions: [
+        { value: null, text: "Filter creators by" },
+        { value: "newest", text: "Newest first" },
+        { value: "oldest", text: "Oldest first" },
+        { value: "a", text: "A-Z" },
+        { value: "z", text: "Z-A" },
+      ],
+      selectedCategory: null,
+      categoryOptions: [
+        { value: null, text: "Select your category" },
+        { value: 1, text: "Music" },
+        { value: 2, text: "Art & Culture" },
+      ],
       selectedContent: "creators",
       contentOptions: [
-        { text: "Creators", value: "creators" },
-        { text: "Goals", value: "goals" },
+        { value: "creators", text: "Creators" },
+        { value: "goals", text: "Goals" },
       ],
       creators: [],
       CreatorsperPage: 6,
@@ -145,7 +190,7 @@ export default {
     this.loading = true;
 
     const query =
-      '*[_type == "users"] {userName, userAddress, userAvatar, userBg, userTitle, userSubtitle, userDesc}';
+      '*[_type == "users"] {userName, userAddress, userAvatar, userBg, userTitle, userSubtitle, userDesc, _createdAt}';
 
     client
       .fetch(query)
@@ -227,6 +272,12 @@ export default {
   border: none;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px,
     rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
+  transition: ease-in 0.2s;
+
+  &:hover {
+    box-shadow: rgba(249, 195, 86, 0.38) 0px 30px 30px -5px,
+      rgba(249, 195, 86, 0.38) 0px 10px 10px -5px;
+  }
 }
 
 .creator__avatar {
@@ -242,6 +293,13 @@ export default {
   .category-badge {
     width: auto;
     border: 1px solid black;
+    padding: 5px 15px;
+  }
+
+  .category-badge-fill {
+    width: auto;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.826);
     padding: 5px 15px;
   }
 }

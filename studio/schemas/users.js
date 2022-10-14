@@ -11,7 +11,22 @@ export default {
     {
       name: "userSite",
       title: "Site",
-      type: "string",
+      type: "url",
+    },
+    {
+      name: "userInstagram",
+      title: "Instagram",
+      type: "url",
+    },
+    {
+      name: "userYoutube",
+      title: "Youtube",
+      type: "url",
+    },
+    {
+      name: "userTwitter",
+      title: "Twitter",
+      type: "url",
     },
     {
       name: "userTitle",
@@ -27,6 +42,17 @@ export default {
       name: "userDesc",
       title: "Description",
       type: "text",
+    },
+    {
+      name: "userCategory",
+      title: "Category",
+      type: "array",
+      of: [{ type: "string" }],
+    },
+    {
+      name: "userVerify",
+      title: "Verify",
+      type: "boolean",
     },
     {
       name: "userAddress",
