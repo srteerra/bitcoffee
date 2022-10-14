@@ -235,7 +235,7 @@ export const actions = {
       console.log("install a wallet");
     }
   },
-  async getCreatorPage({ commit }, payload) {
+  async getCreatorPage({ commit, getters }, payload) {
     if (provider) {
       commit("LOADING_DATA", true);
       console.log(payload.user);
@@ -248,7 +248,7 @@ export const actions = {
         .then((users) => {
           console.log(users);
           if (users.length > 0) {
-            users.forEach((user) => {
+            users.forEach(async (user) => {
               console.log(`${user.userName} (${user.userAddress})`);
               commit("SET_CREATOR_USERNAME", { name: user.userName });
               commit("SET_CREATOR_SITE", { site: user.userSite });
@@ -257,15 +257,51 @@ export const actions = {
               commit("SET_CREATOR_SUBTITLE", {
                 subtitle: user.userSubtitle,
               });
+
               if (user.userAvatar == undefined) {
-                commit("SET_CREATOR_AVATAR", { avatar: undefined });
+                client
+                  .fetch(
+                    '*[_type == "assets" && assetName == "DefaultAvatar"] {assetProvider}'
+                  )
+                  .then((assets) => {
+                    if (assets.length > 0) {
+                      commit("SET_CREATOR_AVATAR", {
+                        avatar: builder
+                          .image(assets[0].assetProvider.asset._ref)
+                          .url(),
+                      });
+                    } else {
+                      console.log("Avatar not found");
+                    }
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
               } else {
                 commit("SET_CREATOR_AVATAR", {
                   avatar: builder.image(user.userAvatar).url(),
                 });
               }
+
               if (user.userBg == undefined) {
-                commit("SET_CREATOR_BACKGROUND", { bg: undefined });
+                client
+                  .fetch(
+                    '*[_type == "assets" && assetName == "DefaultBackground"] {assetProvider}'
+                  )
+                  .then((assets) => {
+                    if (assets.length > 0) {
+                      commit("SET_CREATOR_BACKGROUND", {
+                        bg: builder
+                          .image(assets[0].assetProvider.asset._ref)
+                          .url(),
+                      });
+                    } else {
+                      console.log("Background not found");
+                    }
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
               } else {
                 commit("SET_CREATOR_BACKGROUND", {
                   bg: builder.image(user.userBg).url(),

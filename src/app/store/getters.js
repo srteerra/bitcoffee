@@ -1,4 +1,5 @@
 import state from "./state";
+import { client } from "../../lib/sanityClient";
 
 export const getBalanceOf = (state) => {
   return state.balanceOf;
@@ -46,4 +47,40 @@ export const getUserDescription = (state) => {
 
 export const isConnected = () => {
   return state.isconnected;
+};
+
+export const getDefaultAvatar = () => {
+  const query =
+    '*[_type == "assets" && assetName == "DefaultAvatar"] {assetProvider}';
+
+  client
+    .fetch(query)
+    .then((assets) => {
+      if (assets.length > 0) {
+        return assets[0].assetProvider.asset._ref;
+      } else {
+        return console.log("Avatar not found");
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+export const getDefaultBackground = () => {
+  const query =
+    '*[_type == "assets" && assetName == "DefaultBackground"] {assetProvider}';
+
+  client
+    .fetch(query)
+    .then((assets) => {
+      if (assets.length > 0) {
+        return assets[0].assetProvider.asset._ref;
+      } else {
+        return console.log("Background not found");
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
