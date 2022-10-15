@@ -82,7 +82,7 @@
             {{ description }}
           </p>
 
-          <div class="social__section">
+          <div class="social__section mx-auto">
             <b-button
               size="lg"
               pill
