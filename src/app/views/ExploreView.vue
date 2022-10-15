@@ -57,7 +57,114 @@
           </b-col>
         </b-col>
       </b-row>
-      <b-row>
+      <b-row v-if="selectedContent === 'goals'">
+        <b-col
+          class="text-center my-5"
+          cols="12"
+          v-if="itemsForGoalsList.length === 0"
+        >
+          <p class="py-5 my-5" style="opacity: 40%">
+            <strong>No results.</strong>
+          </p>
+        </b-col>
+        <b-col cols="11" class="mx-auto" v-if="itemsForGoalsList.length > 0">
+          <ul
+            id="creatorsList"
+            class="d-flex justify-content-center flex-wrap p-0 m-0"
+          >
+            <li
+              v-show="filterSearch(creator)"
+              v-for="(creator, index) in itemsForCreatorsList"
+              v-bind:key="index"
+            >
+              <b-skeleton-wrapper :loading="loading">
+                <template #loading>
+                  <b-card id="main__card">
+                    <b-skeleton-img
+                      card-img="top"
+                      aspect="3:1"
+                    ></b-skeleton-img>
+                    <b-skeleton
+                      type="avatar"
+                      size="5rem"
+                      style="position: aboslute; top: -15%; left: 39.5%"
+                    ></b-skeleton>
+                    <b-skeleton width="50%" class="mx-auto"></b-skeleton>
+                    <b-skeleton width="70%" class="mx-auto my-3"></b-skeleton>
+                    <b-skeleton width="90%" class="mx-auto my-3"></b-skeleton>
+                  </b-card>
+                </template>
+                <router-link
+                  :to="`/member/${creator.userName}`"
+                  class="px-2 my-auto"
+                  active-class="activeLink"
+                >
+                  <b-card
+                    id="main__card"
+                    :img-src="
+                      builder.image(creator.userBg || defaultBackground).url()
+                    "
+                    aspect="3:1"
+                    img-height="100"
+                    img-alt="Card image"
+                    img-top
+                  >
+                    <b-avatar
+                      class="mx-auto creator__avatar"
+                      size="5rem"
+                      :src="`${builder
+                        .image(creator.userAvatar || defaultAvatar)
+                        .url()}`"
+                    />
+                    <b-row class="creator__desc text-center">
+                      <b-card-text class="mt-3">
+                        <h4>
+                          <strong>{{ creator.userName }}</strong>
+                        </h4>
+                      </b-card-text>
+                      <div class="d-flex justify-content-center">
+                        <div class="category-badge rounded-pill mx-1">
+                          <p class="m-0">
+                            {{ getCategory(creator.userCategory) }}
+                          </p>
+                        </div>
+                        <div
+                          class="category-badge-fill rounded-pill mx-1"
+                          v-if="creator.userVerify"
+                        >
+                          <p class="m-0">Verified</p>
+                        </div>
+                      </div>
+                      <b-card-text class="px-3 my-3">
+                        <strong style="opacity: 50%">
+                          {{ creator.userTitle.slice(0, 20) + "..." }}
+                        </strong>
+                      </b-card-text>
+                      <b-card-text class="px-3">
+                        {{ creator.userSubtitle.slice(0, 30) + "..." }}
+                        {{ new Date(creator._createdAt).getFullYear() }}
+                        <span><b-icon icon="box-arrow-up-right"></b-icon></span>
+                      </b-card-text>
+                    </b-row>
+                  </b-card>
+                </router-link>
+              </b-skeleton-wrapper>
+            </li>
+          </ul>
+          <b-pagination
+            class="my-5"
+            v-model="currentPage"
+            :total-rows="Creatorsrows"
+            :per-page="CreatorsperPage"
+            pills
+            align="center"
+            aria-controls="creatorsList"
+            first-number
+            last-number
+          ></b-pagination>
+        </b-col>
+      </b-row>
+      <b-row v-if="selectedContent === 'creators'">
         <b-col
           class="text-center my-5"
           cols="12"
@@ -67,7 +174,7 @@
             <strong>No results.</strong>
           </p>
         </b-col>
-        <b-col cols="11" class="mx-auto">
+        <b-col cols="11" class="mx-auto" v-if="itemsForCreatorsList.length > 0">
           <ul
             id="creatorsList"
             class="d-flex justify-content-center flex-wrap p-0 m-0"
@@ -204,12 +311,16 @@ export default {
       ],
       filterSearchInput: "",
       creators: [],
+      goals: [],
       CreatorsperPage: 9,
       currentPage: 1,
     };
   },
   beforeMount() {
     this.loading = true;
+
+    this.$store.dispatch("activeCampaignsRIF", { campaign: 1 });
+    this.$store.commit("SET_COUNT_RIF_CAMPAIGNS");
 
     const query =
       '*[_type == "users"] {userName, userAddress, userAvatar, userBg, userTitle, userVerify, userCategory, userSubtitle, userDesc, _createdAt}';
@@ -265,10 +376,41 @@ export default {
   },
   computed: {
     slicedDesc(givenDesc) {
-      return givenDesc.slice(0, 11) + "...";
+      if (givenDesc) {
+        return givenDesc.slice(0, 11) + "...";
+      } else {
+        return "...";
+      }
     },
     Creatorsrows() {
       return this.creators.length;
+    },
+    Goalsrows() {
+      return this.creators.length;
+    },
+    itemsForGoalsList() {
+      var whatTo;
+
+      if (this.selectedCategory === "All") {
+        whatTo = true;
+      } else {
+        whatTo = false;
+      }
+
+      if (this.filterSearchInput === "") {
+        whatTo = true;
+      } else {
+        whatTo = false;
+      }
+
+      if (whatTo) {
+        return this.goals.slice(
+          (this.currentPage - 1) * this.CreatorsperPage,
+          this.currentPage * this.CreatorsperPage
+        );
+      } else {
+        return this.goals;
+      }
     },
     itemsForCreatorsList() {
       var whatTo;
@@ -336,7 +478,6 @@ export default {
       ) {
         show = false;
       }
-
       return show;
     },
   },

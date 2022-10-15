@@ -202,7 +202,14 @@ export const actions = {
       console.log(date);
 
       const launch = await tokenContract.methods
-        .launch(amountRIF, 1665507825, 1665507955)
+        .launch(
+          amountRIF,
+          1665820174,
+          1665820774,
+          payload.title,
+          payload.desc,
+          1
+        )
         .send({ from: ethereum.selectedAddress });
 
       console.log(tokenContract);

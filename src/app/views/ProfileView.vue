@@ -269,6 +269,21 @@
           </b-form-group>
 
           <b-form-group
+            id="goal-title"
+            label="Goal title"
+            label-for="goal-title"
+            class="my-3"
+          >
+            <b-form-input
+              id="goal-title"
+              type="text"
+              placeholder="Enter the goal title"
+              v-model="goalTitle"
+              required
+            ></b-form-input>
+          </b-form-group>
+
+          <b-form-group
             id="goal-description"
             label="Goal description"
             label-for="goal-description"
@@ -324,6 +339,7 @@
                   launchGoal({
                     startDate: goalDateStart,
                     endDate: goalDateEnd,
+                    title: goalTitle,
                     desc: goalDesc,
                     amount: goalAmount,
                   })
@@ -385,6 +401,7 @@
                   launchGoalRIF({
                     startDate: goalDateStart,
                     endDate: goalDateEnd,
+                    title: goalTitle,
                     desc: goalDesc,
                     amount: goalAmount,
                   })

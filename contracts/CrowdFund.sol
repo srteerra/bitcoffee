@@ -29,6 +29,8 @@ contract CrowdFund {
     event Refund(uint id, address indexed caller, uint amount);
 
     struct Campaign {
+        // Campaign id
+        uint id;
         // Creator of campaign
         address creator;
         // Amount of tokens to raise
@@ -55,6 +57,8 @@ contract CrowdFund {
     uint public count;
     // Mapping from id to Campaign
     mapping(uint => Campaign) public campaigns;
+    // Mapping from creator addres to Campaign
+    mapping(address => Campaign[]) public campaignsAddress;
     // Mapping from campaign id => pledger => amount pledged
     mapping(uint => mapping(address => uint)) public pledgedAmount;
 
@@ -77,6 +81,7 @@ contract CrowdFund {
 
         count += 1;
         campaigns[count] = Campaign({
+            id: count,
             creator: msg.sender,
             goal: _goal,
             title: _title,
@@ -88,7 +93,24 @@ contract CrowdFund {
             category: _category
         });
 
+        campaignsAddress[msg.sender].push(Campaign({
+            id: count,
+            creator: msg.sender,
+            goal: _goal,
+            title: _title,
+            description: _description,
+            pledged: 0,
+            startAt: _startAt,
+            endAt: _endAt,
+            claimed: false,
+            category: _category
+        }));
+
         emit Launch(count, msg.sender, _goal, _title, _description, _startAt, _endAt, _category);
+    }
+
+    function creatorCamps(address _add) public view returns (uint) {
+        return campaignsAddress[_add].length;
     }
 
     function cancel(uint _id) external {
