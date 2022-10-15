@@ -399,8 +399,8 @@
               <b-button
                 @click="
                   launchGoalRIF({
-                    startDate: goalDateStart,
-                    endDate: goalDateEnd,
+                    startDate: 1665871735,
+                    endDate: 1665881735,
                     title: goalTitle,
                     desc: goalDesc,
                     amount: goalAmount,
@@ -441,8 +441,8 @@
                 class="w-100"
                 variant="primary"
                 >pledge</b-button
-              ></b-col
-            >
+              >
+            </b-col>
           </b-row>
         </b-form>
       </b-container>
@@ -676,6 +676,7 @@ export default {
 
       goalDateStart: null,
       goalDateEnd: null,
+      goalTitle: null,
       goalDesc: null,
       goalAmount: null,
     };

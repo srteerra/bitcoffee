@@ -61,90 +61,62 @@
         <b-col
           class="text-center my-5"
           cols="12"
-          v-if="itemsForGoalsList.length === 0"
+          v-if="campaigns_rif.length === 0"
         >
           <p class="py-5 my-5" style="opacity: 40%">
             <strong>No results.</strong>
           </p>
         </b-col>
-        <b-col cols="11" class="mx-auto" v-if="itemsForGoalsList.length > 0">
+        <b-col cols="11" class="mx-auto" v-if="campaigns_rif.length > 0">
           <ul
             id="creatorsList"
             class="d-flex justify-content-center flex-wrap p-0 m-0"
           >
-            <li
-              v-show="filterSearch(creator)"
-              v-for="(creator, index) in itemsForCreatorsList"
-              v-bind:key="index"
-            >
+            <li v-for="(campaign, index) in campaigns_rif" v-bind:key="index">
               <b-skeleton-wrapper :loading="loading">
                 <template #loading>
                   <b-card id="main__card">
-                    <b-skeleton-img
-                      card-img="top"
-                      aspect="3:1"
-                    ></b-skeleton-img>
-                    <b-skeleton
-                      type="avatar"
-                      size="5rem"
-                      style="position: aboslute; top: -15%; left: 39.5%"
-                    ></b-skeleton>
+                    <b-skeleton type="avatar" size="5rem"></b-skeleton>
                     <b-skeleton width="50%" class="mx-auto"></b-skeleton>
                     <b-skeleton width="70%" class="mx-auto my-3"></b-skeleton>
                     <b-skeleton width="90%" class="mx-auto my-3"></b-skeleton>
                   </b-card>
                 </template>
                 <router-link
-                  :to="`/member/${creator.userName}`"
+                  :to="`/member/Terra`"
                   class="px-2 my-auto"
                   active-class="activeLink"
                 >
-                  <b-card
-                    id="main__card"
-                    :img-src="
-                      builder.image(creator.userBg || defaultBackground).url()
-                    "
-                    aspect="3:1"
-                    img-height="100"
-                    img-alt="Card image"
-                    img-top
-                  >
-                    <b-avatar
-                      class="mx-auto creator__avatar"
-                      size="5rem"
-                      :src="`${builder
-                        .image(creator.userAvatar || defaultAvatar)
-                        .url()}`"
-                    />
+                  <b-card id="main__card">
                     <b-row class="creator__desc text-center">
+                      <b-avatar
+                        class="mx-auto"
+                        size="5rem"
+                        :src="`${builder
+                          .image(campaign.userAvatar || defaultAvatar)
+                          .url()}`"
+                      />
                       <b-card-text class="mt-3">
                         <h4>
-                          <strong>{{ creator.userName }}</strong>
+                          <strong>{{ campaign.title }}</strong>
                         </h4>
                       </b-card-text>
                       <div class="d-flex justify-content-center">
                         <div class="category-badge rounded-pill mx-1">
                           <p class="m-0">
-                            {{ getCategory(creator.userCategory) }}
+                            {{ getCategory(campaign.category) }}
                           </p>
-                        </div>
-                        <div
-                          class="category-badge-fill rounded-pill mx-1"
-                          v-if="creator.userVerify"
-                        >
-                          <p class="m-0">Verified</p>
                         </div>
                       </div>
                       <b-card-text class="px-3 my-3">
                         <strong style="opacity: 50%">
-                          {{ creator.userTitle.slice(0, 20) + "..." }}
+                          {{ web3.utils.fromWei(campaign.goal, "ether") }}
                         </strong>
                       </b-card-text>
                       <b-card-text class="px-3">
-                        {{ creator.userSubtitle.slice(0, 30) + "..." }}
-                        {{ new Date(creator._createdAt).getFullYear() }}
-                        <span><b-icon icon="box-arrow-up-right"></b-icon></span>
+                        {{ campaign.description }}
                       </b-card-text>
+                      <p>{{ new Date(campaign.endAt * 1000) }}</p>
                     </b-row>
                   </b-card>
                 </router-link>
@@ -283,8 +255,14 @@ import { mapActions } from "vuex";
 import { client } from "../../lib/sanityClient";
 import imageUrlBuilder from "@sanity/image-url";
 
-// Get a pre-configured url-builder from your sanity client
-const builder = imageUrlBuilder(client);
+const Web3 = require("web3");
+const web3 = new Web3(Web3.givenProvider || "ws://localhost:8546");
+
+const provider = window.ethereum;
+
+const artifact_crowdfunding = require("../../../build/contracts/CrowdFund.json");
+const artifact_crowdfunding_rif = require("../../../build/contracts/CrowdFundERC677.json");
+let tokenContract;
 
 export default {
   name: "ExploreView",
@@ -296,6 +274,7 @@ export default {
       defaultAvatar: undefined,
       defaultBackground: undefined,
       builder: imageUrlBuilder(client),
+      web3: new Web3(Web3.givenProvider || "ws://localhost:8546"),
       selectedCategory: "All",
       categoryOptions: [
         { value: null, text: "Select your category" },
@@ -311,16 +290,34 @@ export default {
       ],
       filterSearchInput: "",
       creators: [],
-      goals: [],
+      campaigns_rif: [],
       CreatorsperPage: 9,
       currentPage: 1,
     };
   },
-  beforeMount() {
+  async beforeMount() {
     this.loading = true;
 
-    this.$store.dispatch("activeCampaignsRIF", { campaign: 1 });
-    this.$store.commit("SET_COUNT_RIF_CAMPAIGNS");
+    if (provider) {
+      const net = await web3.eth.net.getId();
+
+      tokenContract = new web3.eth.Contract(
+        artifact_crowdfunding_rif.abi,
+        artifact_crowdfunding_rif.networks[net].address
+      );
+
+      tokenContract.setProvider(Web3.givenProvider || "ws://localhost:8545");
+
+      const count = await tokenContract.methods.count.call().call();
+      console.log(await count);
+
+      for (var i = 1; i <= count; i++) {
+        const campaign = await tokenContract.methods.campaigns(i).call();
+        this.campaigns_rif.push(await campaign);
+      }
+    } else {
+      console.log("No wallet");
+    }
 
     const query =
       '*[_type == "users"] {userName, userAddress, userAvatar, userBg, userTitle, userVerify, userCategory, userSubtitle, userDesc, _createdAt}';

@@ -204,8 +204,8 @@ export const actions = {
       const launch = await tokenContract.methods
         .launch(
           amountRIF,
-          1665820174,
-          1665820774,
+          payload.startDate,
+          payload.endDate,
           payload.title,
           payload.desc,
           1
