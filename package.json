@@ -2,7 +2,7 @@
   "name": "bitcoffee",
   "version": "1.0.0",
   "description": "bitcoffee",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development node-dev src/app.js --no-notify -max-old-space-size=4096",
     "start": "npm run build:prod",

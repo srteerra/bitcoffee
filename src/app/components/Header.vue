@@ -28,6 +28,13 @@
             Home
           </router-link>
           <router-link
+            to="/explore"
+            class="px-2 my-auto"
+            active-class="activeLink"
+          >
+            Explore
+          </router-link>
+          <router-link
             to="/about"
             class="px-2 my-auto"
             active-class="activeLink"
@@ -79,6 +86,19 @@
           <template #button-content>
             <b-avatar button :src="`${avatar}`" size="4rem" />
           </template>
+          <b-dropdown-item>
+            <div class="py-2">
+              <span class="px-2">
+                <img
+                  style="max-width: 50px"
+                  src="../assets/rsk/RSK_Logo_RGB_150dpi.png"
+                  alt=""
+                />
+              </span>
+              <span>RSK Testnet</span>
+            </div>
+          </b-dropdown-item>
+          <b-dropdown-divider />
           <b-dropdown-item to="/profile">
             <div class="py-2">
               <span class="px-2"><b-icon-person /></span> My profile

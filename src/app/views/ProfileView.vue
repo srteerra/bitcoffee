@@ -82,7 +82,7 @@
             {{ description }}
           </p>
 
-          <div class="social__section">
+          <div class="social__section mx-auto">
             <b-button
               size="lg"
               pill
@@ -236,16 +236,17 @@
         <h3 class="my-5">New goal</h3>
         <b-form class="text-left">
           <b-form-group
-            id="goal-title"
-            label="Goal title"
-            label-for="goal-title"
-            description="Example (A new guitar)"
+            id="goal-category"
+            label="Goal Category"
+            label-for="goal-category"
+            description="Example (Music, Arts)"
             class="my-3"
           >
             <b-form-input
-              id="goal-title"
+              id="goal-category"
               type="text"
-              placeholder="Enter the goal title"
+              v-model="goalCategory"
+              placeholder="Enter the goal category"
               required
             ></b-form-input>
           </b-form-group>
@@ -254,18 +255,55 @@
             <label for="start-datepicker">Choose a start date</label>
             <b-form-datepicker
               id="start-datepicker"
+              :min="minStart"
+              :date-disabled-fn="dateDisabledStart"
+              :date-format-options="{ month: 'long', day: '2-digit' }"
               v-model="goalDateStart"
+              menu-class="w-100"
+              calendar-width="100%"
+              reset-button
+              @context="onContext1"
               class="mb-2"
             ></b-form-datepicker>
           </b-form-group>
 
           <b-form-group>
             <label for="end-datepicker">Choose a end date</label>
-            <b-form-datepicker
-              id="end-datepicker"
-              v-model="goalDateEnd"
-              class="mb-2"
-            ></b-form-datepicker>
+            <b-input-group>
+              <b-form-datepicker
+                id="end-datepicker"
+                :date-disabled-fn="dateDisabledEnd"
+                :date-format-options="{ month: 'long', day: '2-digit' }"
+                :disabled="goalDateStart === ''"
+                v-model="goalDateEnd"
+                menu-class="w-100"
+                calendar-width="100%"
+                @context="onContext2"
+                class="mb-2"
+              ></b-form-datepicker>
+              <b-form-group-append>
+                <b-button
+                  v-b-tooltip.hover.top="'Set a 5 minutes goal'"
+                  :disabled="goalDateStart === ''"
+                  ><b-icon icon="clock"></b-icon
+                ></b-button>
+              </b-form-group-append>
+            </b-input-group>
+          </b-form-group>
+
+          <b-form-group
+            id="goal-title"
+            label="Goal title"
+            label-for="goal-title"
+            class="my-3"
+          >
+            <b-form-input
+              id="goal-title"
+              type="text"
+              placeholder="Enter the goal title"
+              v-model="goalTitle"
+              required
+            ></b-form-input>
           </b-form-group>
 
           <b-form-group
@@ -314,10 +352,17 @@
             </b-col>
             <b-col class="my-3" cols="12" md="6">
               <b-button
+                @click="approveSpender()"
+                class="w-100"
+                variant="primary"
+                >Approve 100</b-button
+              >
+              <b-button
                 @click="
                   launchGoal({
                     startDate: goalDateStart,
                     endDate: goalDateEnd,
+                    title: goalTitle,
                     desc: goalDesc,
                     amount: goalAmount,
                   })
@@ -358,7 +403,71 @@
               ></b-col
             >
           </b-row>
-          <b-row> </b-row>
+          <b-row>
+            <h1>RIF</h1>
+            <b-col class="my-3" cols="12" md="6">
+              <p>{{ campaigns_count_rif }}</p>
+              <b-button
+                @click="$store.commit('SET_COUNT_RIF_CAMPAIGNS')"
+                class="w-100"
+                variant="primary"
+                >Update counts</b-button
+              >
+              <b-button
+                @click="approveSpenderRIF()"
+                class="w-100"
+                variant="primary"
+                >Approve 100</b-button
+              >
+              <b-button
+                @click="
+                  launchGoalRIF({
+                    startDate: 1665953417,
+                    endDate: 1665963417,
+                    title: goalTitle,
+                    desc: goalDesc,
+                    amount: goalAmount,
+                    category: goalCategory,
+                  })
+                "
+                class="w-100"
+                variant="primary"
+                >Launch goal</b-button
+              >
+              <b-form-input
+                type="text"
+                placeholder="Active campaigns"
+                v-model="activeCam"
+                required
+              ></b-form-input>
+              <b-button
+                @click="activeCampaignsRIF({ campaign: activeCam })"
+                class="w-100"
+                variant="primary"
+                >Campaigns</b-button
+              >
+              <b-form-input
+                type="text"
+                placeholder="Amount to pledge"
+                v-model="pledgeA"
+                required
+              ></b-form-input>
+              <b-form-input
+                type="text"
+                placeholder="Campaign to pledge"
+                v-model="pledgeC"
+                required
+              ></b-form-input>
+              <b-button
+                @click="
+                  pledgeCampaignRIF({ campaign: pledgeC, amount: pledgeA })
+                "
+                class="w-100"
+                variant="primary"
+                >pledge</b-button
+              >
+            </b-col>
+          </b-row>
         </b-form>
       </b-container>
     </b-modal>
@@ -566,6 +675,22 @@ import { client } from "../../lib/sanityClient";
 export default {
   name: "ProfileView",
   data() {
+    //Getting the current date
+    const nowDate = new Date();
+    const today = new Date(
+      nowDate.getFullYear(),
+      nowDate.getMonth(),
+      nowDate.getDate()
+    );
+    // Setting up as minimum the corrent month
+    const minDateStart = new Date(today);
+    minDateStart.setMonth(minDateStart.getMonth());
+    minDateStart.setDate(today.getDate());
+
+    const minDateEnd = new Date(today);
+    minDateEnd.setMonth(minDateEnd.getMonth());
+    minDateEnd.setDate(today.getDate());
+
     return {
       goals: [],
       activeCam: null,
@@ -589,10 +714,22 @@ export default {
       noDesc: "No description added",
       noBg: "https://images.unsplash.com/photo-1554147090-e1221a04a025?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1148&q=80",
 
-      goalDateStart: null,
-      goalDateEnd: null,
+      //Minimum date to select
+      minStart: minDateStart,
+      minEnd: minDateEnd,
+      //Start date variables
+      goalDateStart: "",
+      startUnixtime: "",
+      //End date variables
+      goalDateEnd: "",
+      endUnixtime: "",
+      //Formatted date variables
+      formattedStart: "",
+      formattedEnd: "",
+
       goalDesc: null,
       goalAmount: null,
+      goalTitle: null,
     };
   },
   components: {
@@ -617,7 +754,12 @@ export default {
       "updateAccount",
       "launchGoal",
       "activeCampaigns",
+      "approveSpender",
       "pledgeCampaign",
+      "launchGoalRIF",
+      "activeCampaignsRIF",
+      "approveSpenderRIF",
+      "pledgeCampaignRIF",
     ]),
     ...mapMutations(["SHOW_EDIT_PROFILE"]),
     hideModal() {
@@ -634,8 +776,58 @@ export default {
         }
       );
     },
+
+    // Date formated
+    onContext1(ctx) {
+      // The date formatted
+      this.formattedStart = ctx.selectedFormatted;
+    },
+    onContext2(ctx) {
+      // The date formatted
+      this.formattedEnd = ctx.selectedFormatted;
+    },
+
+    //Disabling dates before
+    dateDisabledStart(ymd, date) {
+      // get the current day
+      const now = new Date().getDate();
+      const day = date.getDate();
+
+      // Disabling oll days before
+      return day < now;
+    },
+    dateDisabledEnd(ymd, date) {
+      // get the selected start date
+      let min = new Date().getMinutes();
+      let hrs = new Date().getHours();
+      let mil = new Date().getSeconds();
+      const SDate = new Date(
+        this.formattedStart + " " + hrs + ":" + min + ":" + mil
+      );
+      const selected = new Date(SDate).getDate();
+      const day = date.getDate();
+
+      // Disabling oll days before
+      return day <= selected;
+    },
   },
   computed: {
+    // Unixtimestamp for the start date
+    startUnixTime() {
+      let min = new Date().getMinutes();
+      let hrs = new Date().getHours();
+      let mil = new Date().getSeconds();
+      const FDate = new Date(
+        this.formattedStart + " " + hrs + ":" + min + ":" + mil
+      );
+      this.startUnixtime = FDate.getTime() / 1000;
+    },
+
+    // Unixtimestamp for the start date
+    endUnixTime() {
+      const FDate = new Date(this.formattedEnd + " 23:59:59");
+      this.endUnixtime = FDate.getTime() / 1000;
+    },
     title() {
       if (!this.user_title) {
         return this.noTitle;
@@ -675,6 +867,8 @@ export default {
       "user_description",
       "fetchingDataWait",
       "editProfileModal",
+      "getCountCampaignsRIF",
+      "campaigns_count_rif",
     ]),
 
     myaddress() {
