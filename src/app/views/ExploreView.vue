@@ -10,12 +10,12 @@
           <p class="py-2">Creators or goals on Bitcoffee.</p>
         </b-col>
         <b-col class="text-center" cols="12">
-          <b-form-group v-slot="{ ariaDescribedby }">
+          <b-form-group v-slot="{ ariaContentby }">
             <b-form-radio-group
               id="ContentFilterRadios"
               v-model="selectedContent"
               :options="contentOptions"
-              :aria-describedby="ariaDescribedby"
+              :aria-describedby="ariaContentby"
               button-variant="outline-primary"
               size="md"
               name="radio-btn-outline"
@@ -24,40 +24,37 @@
           </b-form-group>
         </b-col>
       </b-row>
-      <b-row>
-        <b-col
-          cols="8"
-          class="d-initial d-lg-flex justify-content-lg-center mx-auto"
-        >
-          <b-col cols="12" lg="3" class="d-flex my-auto">
-            <b-form-select
-              v-model="selectedCategory"
-              :options="categoryOptions"
-              class="ml-0 ml-lg-3"
-            ></b-form-select>
-          </b-col>
-          <b-col cols="12" lg="3" class="my-auto">
-            <div class="mt-3 mt-lg-0">
-              <b-form-checkbox
-                v-model="creatorVerify"
-                name="check-button"
-                switch
-              >
-                Verified creators
-              </b-form-checkbox>
-            </div>
-          </b-col>
-          <b-col cols="12" lg="3" class="my-auto">
-            <div class="mt-3 mt-lg-0">
-              <b-form-input
-                v-model="filterSearchInput"
-                placeholder="Search..."
-              ></b-form-input>
-            </div>
+      <b-row v-if="selectedContent === 'goals'">
+        <b-col>
+          <b-col
+            cols="8"
+            class="d-initial d-lg-flex justify-content-lg-center mx-auto"
+          >
+            <b-col cols="12" lg="3" class="d-flex my-auto">
+              <b-form-select
+                v-model="selectedCategory"
+                :options="categoryOptions"
+                class="ml-0 ml-lg-3"
+              ></b-form-select>
+            </b-col>
+            <b-col cols="12" lg="3" class="my-auto">
+              <div class="mt-3 mt-lg-0 my-auto">
+                <b-form-group v-slot="{ ariaCoinby }" class="my-auto">
+                  <b-form-radio-group
+                    id="ContractRadios"
+                    v-model="selectedContract"
+                    :options="contractOptions"
+                    :aria-describedby="ariaCoinby"
+                    button-variant="outline-primary"
+                    size="md"
+                    name="radio-btn-outline"
+                    buttons
+                  ></b-form-radio-group>
+                </b-form-group>
+              </div>
+            </b-col>
           </b-col>
         </b-col>
-      </b-row>
-      <b-row v-if="selectedContent === 'goals'">
         <b-col
           class="text-center my-5"
           cols="12"
@@ -137,6 +134,39 @@
         </b-col>
       </b-row>
       <b-row v-if="selectedContent === 'creators'">
+        <b-col>
+          <b-col
+            cols="8"
+            class="d-initial d-lg-flex justify-content-lg-center mx-auto"
+          >
+            <b-col cols="12" lg="3" class="d-flex my-auto">
+              <b-form-select
+                v-model="selectedCategory"
+                :options="categoryOptions"
+                class="ml-0 ml-lg-3"
+              ></b-form-select>
+            </b-col>
+            <b-col cols="12" lg="3" class="my-auto">
+              <div class="mt-3 mt-lg-0">
+                <b-form-checkbox
+                  v-model="creatorVerify"
+                  name="check-button"
+                  switch
+                >
+                  Verified creators
+                </b-form-checkbox>
+              </div>
+            </b-col>
+            <b-col cols="12" lg="3" class="my-auto">
+              <div class="mt-3 mt-lg-0">
+                <b-form-input
+                  v-model="filterSearchInput"
+                  placeholder="Search..."
+                ></b-form-input>
+              </div>
+            </b-col>
+          </b-col>
+        </b-col>
         <b-col
           class="text-center my-5"
           cols="12"
@@ -287,6 +317,11 @@ export default {
       contentOptions: [
         { value: "creators", text: "Creators" },
         { value: "goals", text: "Goals" },
+      ],
+      selectedContract: "rif",
+      contractOptions: [
+        { value: "rif", text: "RIF" },
+        { value: "bitc", text: "BITC" },
       ],
       filterSearchInput: "",
       creators: [],

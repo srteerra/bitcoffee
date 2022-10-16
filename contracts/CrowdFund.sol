@@ -20,7 +20,7 @@ contract CrowdFund {
         string description,
         uint32 startAt,
         uint32 endAt,
-        uint category
+        string category
     );
     event Cancel(uint id);
     event Pledge(uint indexed id, address indexed caller, uint amount);
@@ -36,7 +36,7 @@ contract CrowdFund {
         // Amount of tokens to raise
         uint goal;
         // Category goal
-        uint category;
+        string category;
         // Title for goal
         string title;
         // Desc in goal
@@ -72,9 +72,8 @@ contract CrowdFund {
         uint32 _endAt,
         string memory _title,
         string memory _description,
-        uint _category
+        string memory _category
     ) external {
-        require(_category >= 0, "invalid category");
         require(_startAt >= block.timestamp, "start at < now");
         require(_endAt >= _startAt, "end at < start at");
         require(_endAt <= block.timestamp + 90 days, "end at > max duration");
