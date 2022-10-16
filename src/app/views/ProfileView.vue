@@ -254,18 +254,40 @@
             <label for="start-datepicker">Choose a start date</label>
             <b-form-datepicker
               id="start-datepicker"
+              :min="minStart"
+              :date-disabled-fn="dateDisabledStart"
+              :date-format-options="{ month: 'long', day: '2-digit' }"
               v-model="goalDateStart"
+              menu-class="w-100"
+              calendar-width="100%"
+              reset-button
+              @context="onContext1"
               class="mb-2"
             ></b-form-datepicker>
           </b-form-group>
 
           <b-form-group>
             <label for="end-datepicker">Choose a end date</label>
-            <b-form-datepicker
-              id="end-datepicker"
-              v-model="goalDateEnd"
-              class="mb-2"
-            ></b-form-datepicker>
+            <b-input-group>
+              <b-form-datepicker
+                id="end-datepicker"
+                :date-disabled-fn="dateDisabledEnd"
+                :date-format-options="{ month: 'long', day: '2-digit' }"
+                :disabled="goalDateStart === ''"
+                v-model="goalDateEnd"
+                menu-class="w-100"
+                calendar-width="100%"
+                @context="onContext2"
+                class="mb-2"
+              ></b-form-datepicker>
+              <b-form-group-append>
+                <b-button
+                  v-b-tooltip.hover.top="'Set a 5 minutes goal'"
+                  :disabled="goalDateStart === ''"
+                  ><b-icon icon="clock"></b-icon
+                ></b-button>
+              </b-form-group-append>
+            </b-input-group>
           </b-form-group>
 
           <b-form-group
@@ -651,6 +673,22 @@ import { client } from "../../lib/sanityClient";
 export default {
   name: "ProfileView",
   data() {
+    //Getting the current date
+    const nowDate = new Date();
+    const today = new Date(
+      nowDate.getFullYear(),
+      nowDate.getMonth(),
+      nowDate.getDate()
+    );
+    // Setting up as minimum the corrent month
+    const minDateStart = new Date(today);
+    minDateStart.setMonth(minDateStart.getMonth());
+    minDateStart.setDate(today.getDate());
+
+    const minDateEnd = new Date(today);
+    minDateEnd.setMonth(minDateEnd.getMonth());
+    minDateEnd.setDate(today.getDate());
+
     return {
       goals: [],
       activeCam: null,
@@ -674,11 +712,22 @@ export default {
       noDesc: "No description added",
       noBg: "https://images.unsplash.com/photo-1554147090-e1221a04a025?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1148&q=80",
 
-      goalDateStart: null,
-      goalDateEnd: null,
-      goalTitle: null,
+      //Minimum date to select
+      minStart: minDateStart,
+      minEnd: minDateEnd,
+      //Start date variables
+      goalDateStart: "",
+      startUnixtime: "",
+      //End date variables
+      goalDateEnd: "",
+      endUnixtime: "",
+      //Formatted date variables
+      formattedStart: "",
+      formattedEnd: "",
+
       goalDesc: null,
       goalAmount: null,
+      goalTitle: null,
     };
   },
   components: {
@@ -725,8 +774,58 @@ export default {
         }
       );
     },
+
+    // Date formated
+    onContext1(ctx) {
+      // The date formatted
+      this.formattedStart = ctx.selectedFormatted;
+    },
+    onContext2(ctx) {
+      // The date formatted
+      this.formattedEnd = ctx.selectedFormatted;
+    },
+
+    //Disabling dates before
+    dateDisabledStart(ymd, date) {
+      // get the current day
+      const now = new Date().getDate();
+      const day = date.getDate();
+
+      // Disabling oll days before
+      return day < now;
+    },
+    dateDisabledEnd(ymd, date) {
+      // get the selected start date
+      let min = new Date().getMinutes();
+      let hrs = new Date().getHours();
+      let mil = new Date().getSeconds();
+      const SDate = new Date(
+        this.formattedStart + " " + hrs + ":" + min + ":" + mil
+      );
+      const selected = new Date(SDate).getDate();
+      const day = date.getDate();
+
+      // Disabling oll days before
+      return day <= selected;
+    },
   },
   computed: {
+    // Unixtimestamp for the start date
+    startUnixTime() {
+      let min = new Date().getMinutes();
+      let hrs = new Date().getHours();
+      let mil = new Date().getSeconds();
+      const FDate = new Date(
+        this.formattedStart + " " + hrs + ":" + min + ":" + mil
+      );
+      this.startUnixtime = FDate.getTime() / 1000;
+    },
+
+    // Unixtimestamp for the start date
+    endUnixTime() {
+      const FDate = new Date(this.formattedEnd + " 23:59:59");
+      this.endUnixtime = FDate.getTime() / 1000;
+    },
     title() {
       if (!this.user_title) {
         return this.noTitle;
