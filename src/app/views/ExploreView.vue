@@ -58,11 +58,35 @@
         <b-col
           class="text-center my-5"
           cols="12"
-          v-if="campaigns_rif.length === 0"
+          v-if="campaigns_rif.length === 0 && !noprovider"
         >
           <p class="py-5 my-5" style="opacity: 40%">
-            <strong>No results.</strong>
+            <strong>No results found.</strong>
           </p>
+        </b-col>
+        <b-col class="text-center my-5" cols="12" v-if="noprovider">
+          <div class="py-5 my-5">
+            <h4 class="pb-3 m-0"><strong>Connect your wallet</strong></h4>
+            <p class="p-0 m-0" style="opacity: 40%">
+              <strong>To explore Bitcoffee's goals</strong>
+            </p>
+            <!-- Connect wallet -->
+            <b-button
+              id="connectWallet"
+              style="
+                max-width: 100%;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+              "
+              :disabled="connectBtnState"
+              @click="connect_wallet()"
+              class="mt-3 px-4 py-2 rounded-pill font-weight-bold"
+              variant="dark"
+            >
+              Connect wallet
+            </b-button>
+          </div>
         </b-col>
         <b-col cols="11" class="mx-auto" v-if="campaigns_rif.length > 0">
           <ul
@@ -281,7 +305,7 @@
 <script>
 import Header from "../components/Header.vue";
 import Footer from "../components/Footer.vue";
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 import { client } from "../../lib/sanityClient";
 import imageUrlBuilder from "@sanity/image-url";
 
@@ -309,6 +333,7 @@ export default {
       web3: new Web3(
         Web3.givenProvider || "https://public-node.testnet.rsk.co"
       ),
+      noprovider: false,
       selectedCategory: "All",
       categoryOptions: [
         { value: null, text: "Select your category" },
@@ -357,6 +382,7 @@ export default {
         this.campaigns_rif.push(await campaign);
       }
     } else {
+      this.noprovider = true;
       console.log("No wallet");
     }
 
@@ -413,6 +439,7 @@ export default {
     this.loading = false;
   },
   computed: {
+    ...mapState(["isconnected", "connectBtnState", "disconnectBtnState"]),
     slicedDesc(givenDesc) {
       if (givenDesc) {
         return givenDesc.slice(0, 11) + "...";
@@ -485,6 +512,7 @@ export default {
     },
   },
   methods: {
+    ...mapActions(["connect_wallet"]),
     getCategory(category) {
       if (!category || category.length === 0) {
         return "Creator";
