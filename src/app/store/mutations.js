@@ -1,6 +1,8 @@
 const Web3 = require("web3");
 
-const web3 = new Web3(Web3.givenProvider || "ws://localhost:8546");
+const web3 = new Web3(
+  Web3.givenProvider || "https://public-node.testnet.rsk.co"
+);
 
 const artifact_crowdfunding_rif = require("../../../build/contracts/CrowdFundERC677.json");
 let tokenContract;
@@ -209,7 +211,9 @@ export const SET_COUNT_RIF_CAMPAIGNS = async (state) => {
       artifact_crowdfunding_rif.networks[net].address
     );
 
-    tokenContract.setProvider(Web3.givenProvider || "ws://localhost:8545");
+    tokenContract.setProvider(
+      Web3.givenProvider || "https://public-node.testnet.rsk.co"
+    );
 
     const count = await tokenContract.methods.count.call().call();
 

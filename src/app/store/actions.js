@@ -7,7 +7,9 @@ import imageUrlBuilder from "@sanity/image-url";
 const builder = imageUrlBuilder(client);
 
 const Web3 = require("web3");
-const web3 = new Web3(Web3.givenProvider || "ws://localhost:8546");
+const web3 = new Web3(
+  Web3.givenProvider || "https://public-node.testnet.rsk.co"
+);
 
 const provider = window.ethereum;
 let ethereum = window.ethereum;
@@ -49,7 +51,9 @@ export const actions = {
         artifact_crowdfunding.networks[net].address
       );
 
-      tokenContract.setProvider(Web3.givenProvider || "ws://localhost:8545");
+      tokenContract.setProvider(
+        Web3.givenProvider || "https://public-node.testnet.rsk.co"
+      );
 
       const campaigns = await tokenContract.methods
         .campaigns(payload.campaign)
@@ -69,7 +73,9 @@ export const actions = {
         artifact_crowdfunding_rif.networks[net].address
       );
 
-      tokenContract.setProvider(Web3.givenProvider || "ws://localhost:8545");
+      tokenContract.setProvider(
+        Web3.givenProvider || "https://public-node.testnet.rsk.co"
+      );
 
       const campaigns = await tokenContract.methods
         .campaigns(payload.campaign)
@@ -88,7 +94,9 @@ export const actions = {
         artifact.networks[net].address
       );
 
-      tokenContract.setProvider(Web3.givenProvider || "ws://localhost:8545");
+      tokenContract.setProvider(
+        Web3.givenProvider || "https://public-node.testnet.rsk.co"
+      );
 
       const approval = await tokenContract.methods
         .approve(artifact_crowdfunding.networks[net].address, 100000)
@@ -107,7 +115,9 @@ export const actions = {
         "0x19f64674d8a5b4e652319f5e239efd3bc969a1fe"
       );
 
-      tokenContract.setProvider(Web3.givenProvider || "ws://localhost:8545");
+      tokenContract.setProvider(
+        Web3.givenProvider || "https://public-node.testnet.rsk.co"
+      );
 
       const approval = await tokenContract.methods
         .approve(
@@ -130,7 +140,9 @@ export const actions = {
         artifact_crowdfunding.networks[net].address
       );
 
-      tokenContract.setProvider(Web3.givenProvider || "ws://localhost:8545");
+      tokenContract.setProvider(
+        Web3.givenProvider || "https://public-node.testnet.rsk.co"
+      );
 
       const campaigns = await tokenContract.methods
         .pledge(payload.campaign, payload.amount)
@@ -150,7 +162,9 @@ export const actions = {
         artifact_crowdfunding_rif.networks[net].address
       );
 
-      tokenContract.setProvider(Web3.givenProvider || "ws://localhost:8545");
+      tokenContract.setProvider(
+        Web3.givenProvider || "https://public-node.testnet.rsk.co"
+      );
 
       const campaigns = await tokenContract.methods
         .pledge(payload.campaign, "50000000000000000000")
@@ -169,7 +183,9 @@ export const actions = {
         artifact_crowdfunding.networks[net].address
       );
 
-      tokenContract.setProvider(Web3.givenProvider || "ws://localhost:8545");
+      tokenContract.setProvider(
+        Web3.givenProvider || "https://public-node.testnet.rsk.co"
+      );
 
       var date = new Date().getTime() / 1000;
       console.log(date);
@@ -197,7 +213,9 @@ export const actions = {
         artifact_crowdfunding_rif.networks[net].address
       );
 
-      tokenContract.setProvider(Web3.givenProvider || "ws://localhost:8545");
+      tokenContract.setProvider(
+        Web3.givenProvider || "https://public-node.testnet.rsk.co"
+      );
 
       var date = new Date().getTime() / 1000;
       console.log(date);

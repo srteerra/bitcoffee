@@ -13,9 +13,8 @@
         <img id="shadow-icon-place" src="./assets/logos/icon-logo.png" alt="" />
       </a>
     </div> -->
-    <!-- <NotificationList /> -->
-    <!-- <router-view /> -->
-    <h1>Hola</h1>
+    <NotificationList />
+    <router-view />
   </div>
 </template>
 

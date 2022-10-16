@@ -286,7 +286,9 @@ import { client } from "../../lib/sanityClient";
 import imageUrlBuilder from "@sanity/image-url";
 
 const Web3 = require("web3");
-const web3 = new Web3(Web3.givenProvider || "ws://localhost:8546");
+const web3 = new Web3(
+  Web3.givenProvider || "https://public-node.testnet.rsk.co"
+);
 
 const provider = window.ethereum;
 
@@ -304,7 +306,9 @@ export default {
       defaultAvatar: undefined,
       defaultBackground: undefined,
       builder: imageUrlBuilder(client),
-      web3: new Web3(Web3.givenProvider || "ws://localhost:8546"),
+      web3: new Web3(
+        Web3.givenProvider || "https://public-node.testnet.rsk.co"
+      ),
       selectedCategory: "All",
       categoryOptions: [
         { value: null, text: "Select your category" },
@@ -341,7 +345,9 @@ export default {
         artifact_crowdfunding_rif.networks[net].address
       );
 
-      tokenContract.setProvider(Web3.givenProvider || "ws://localhost:8545");
+      tokenContract.setProvider(
+        Web3.givenProvider || "https://public-node.testnet.rsk.co"
+      );
 
       const count = await tokenContract.methods.count.call().call();
       console.log(await count);
