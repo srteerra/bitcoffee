@@ -60,4 +60,6 @@ export default {
 
   // Notification center
   notifications: [],
+
+  campaigns_count_rif: 0,
 };

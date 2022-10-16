@@ -128,7 +128,6 @@
               </p>
             </div>
             <UserGoalCard />
-            <UserGoalCard />
           </b-col>
           <b-col cols="12" md="12" lg="5"> </b-col>
         </b-row>
