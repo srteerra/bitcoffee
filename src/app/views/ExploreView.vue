@@ -101,7 +101,7 @@
                       <div class="d-flex justify-content-center">
                         <div class="category-badge rounded-pill mx-1">
                           <p class="m-0">
-                            {{ getCategory(campaign.category) }}
+                            {{ campaign.category }}
                           </p>
                         </div>
                       </div>

@@ -187,6 +187,7 @@ export const actions = {
   async launchGoalRIF({ commit, getters, dispatch }, payload) {
     if (provider) {
       console.log(payload.amount);
+      console.log(payload.category);
       const amountRIF = web3.utils.toWei(payload.amount, "ether");
       console.log(amountRIF);
 
@@ -208,7 +209,7 @@ export const actions = {
           payload.endDate,
           payload.title,
           payload.desc,
-          1
+          payload.category
         )
         .send({ from: ethereum.selectedAddress });
 

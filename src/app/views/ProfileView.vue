@@ -236,16 +236,17 @@
         <h3 class="my-5">New goal</h3>
         <b-form class="text-left">
           <b-form-group
-            id="goal-title"
-            label="Goal title"
-            label-for="goal-title"
-            description="Example (A new guitar)"
+            id="goal-category"
+            label="Goal Category"
+            label-for="goal-category"
+            description="Example (Music, Arts)"
             class="my-3"
           >
             <b-form-input
-              id="goal-title"
+              id="goal-category"
               type="text"
-              placeholder="Enter the goal title"
+              v-model="goalCategory"
+              placeholder="Enter the goal category"
               required
             ></b-form-input>
           </b-form-group>
@@ -421,11 +422,12 @@
               <b-button
                 @click="
                   launchGoalRIF({
-                    startDate: 1665871735,
-                    endDate: 1665881735,
+                    startDate: 1665953417,
+                    endDate: 1665963417,
                     title: goalTitle,
                     desc: goalDesc,
                     amount: goalAmount,
+                    category: goalCategory,
                   })
                 "
                 class="w-100"

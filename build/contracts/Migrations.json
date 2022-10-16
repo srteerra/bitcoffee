@@ -1388,12 +1388,12 @@
     "31": {
       "events": {},
       "links": {},
-      "address": "0x7B4f2d64EC2B6fCC80371723c602904f6CAF44E8",
-      "transactionHash": "0x5813d8e47c65ee8b3132005e6c27637a2f692e7c41fc7b8b2140b812d7d5f5af"
+      "address": "0xB571335b1b249956A8ab4F6E5f1A9Bb33360Fe38",
+      "transactionHash": "0x9abe0bac7ab242dd30a4b77602450372c16397b8e878045e7df5fc97967e9fc6"
     }
   },
   "schemaVersion": "3.4.10",
-  "updatedAt": "2022-10-16T17:57:49.840Z",
+  "updatedAt": "2022-10-16T18:27:29.718Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",

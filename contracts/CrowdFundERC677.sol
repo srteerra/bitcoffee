@@ -11,7 +11,7 @@ interface IERC677 {
     ) external returns (bool);
 }
 
-contract CrowdFund {
+contract CrowdFundERC677 {
     event Launch(
         uint id,
         address indexed creator,
