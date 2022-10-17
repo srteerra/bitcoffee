@@ -251,46 +251,6 @@
             ></b-form-input>
           </b-form-group>
 
-          <b-form-group>
-            <label for="start-datepicker">Choose a start date</label>
-            <b-form-datepicker
-              id="start-datepicker"
-              :min="minStart"
-              :date-disabled-fn="dateDisabledStart"
-              :date-format-options="{ month: 'long', day: '2-digit' }"
-              v-model="goalDateStart"
-              menu-class="w-100"
-              calendar-width="100%"
-              reset-button
-              @context="onContext1"
-              class="mb-2"
-            ></b-form-datepicker>
-          </b-form-group>
-
-          <b-form-group>
-            <label for="end-datepicker">Choose a end date</label>
-            <b-input-group>
-              <b-form-datepicker
-                id="end-datepicker"
-                :date-disabled-fn="dateDisabledEnd"
-                :date-format-options="{ month: 'long', day: '2-digit' }"
-                :disabled="goalDateStart === ''"
-                v-model="goalDateEnd"
-                menu-class="w-100"
-                calendar-width="100%"
-                @context="onContext2"
-                class="mb-2"
-              ></b-form-datepicker>
-              <b-form-group-append>
-                <b-button
-                  v-b-tooltip.hover.top="'Set a 5 minutes goal'"
-                  :disabled="goalDateStart === ''"
-                  ><b-icon icon="clock"></b-icon
-                ></b-button>
-              </b-form-group-append>
-            </b-input-group>
-          </b-form-group>
-
           <b-form-group
             id="goal-title"
             label="Goal title"
@@ -340,6 +300,49 @@
               ></b-form-input>
             </b-input-group>
           </b-form-group>
+
+          <b-form-group>
+            <label for="start-datepicker">Choose a start date</label>
+            <b-form-datepicker
+              id="start-datepicker"
+              :min="minStart"
+              :date-disabled-fn="dateDisabledStart"
+              :date-format-options="{ month: 'long', day: '2-digit' }"
+              v-model="goalDateStart"
+              menu-class="w-100"
+              calendar-width="100%"
+              reset-button
+              @context="onContext1"
+              class="mb-2"
+            ></b-form-datepicker>
+          </b-form-group>
+
+          <b-form-group>
+            <label for="end-datepicker">Choose a end date</label>
+            <b-input-group>
+              <b-form-datepicker
+                id="end-datepicker"
+                :min="minEnd"
+                :date-disabled-fn="dateDisabledEnd"
+                :date-format-options="{ month: 'long', day: '2-digit' }"
+                :disabled="goalDateStart === ''"
+                v-model="goalDateEnd"
+                menu-class="w-100"
+                calendar-width="100%"
+                @context="onContext2"
+                class="mb-2"
+              ></b-form-datepicker>
+            </b-input-group>
+          </b-form-group>
+
+          <div class="text-center">
+            <b-button
+              v-b-tooltip.hover.top="'Set a 5 minutes goal'"
+              :disabled="goalDateStart === ''"
+              @click="hotGoal"
+              ><b-icon icon="clock"></b-icon
+            ></b-button>
+          </div>
 
           <b-row class="w-75 my-5 mx-auto">
             <b-col class="my-3" cols="12" md="6">
@@ -671,6 +674,7 @@ import UserGoalCard from "../components/UserGoalCard.vue";
 import Header from "../components/Header.vue";
 import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
 import { client } from "../../lib/sanityClient";
+import { time } from "console";
 
 export default {
   name: "ProfileView",
@@ -727,6 +731,7 @@ export default {
       formattedStart: "",
       formattedEnd: "",
 
+      goalCategory: "",
       goalDesc: null,
       goalAmount: null,
       goalTitle: null,
@@ -809,6 +814,27 @@ export default {
 
       // Disabling oll days before
       return day <= selected;
+    },
+    hotGoal() {
+      // Get today date for date-picker
+      const today = new Date();
+      const MM = today.getMonth() + 1;
+      const YYYY = today.getFullYear();
+      const DD = today.getDate();
+
+      // Get the current time
+      let min = new Date().getMinutes() + 5;
+      let hrs = new Date().getHours();
+      let mil = new Date().getSeconds();
+
+      // Set the current date in date-picker
+      this.goalDateEnd = YYYY + "-" + MM + "-" + DD;
+
+      // Send the new unixtime
+      const FDate = new Date(
+        this.formattedEnd + " " + hrs + ":" + min + ":" + mil
+      );
+      this.endUnixtime = FDate.getTime() / 1000;
     },
   },
   computed: {
