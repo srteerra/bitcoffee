@@ -34,7 +34,7 @@
               <b-form-select
                 v-model="selectedCategory"
                 :options="categoryOptions"
-                class="ml-0 ml-lg-3"
+                class="ml-0 ml-lg-3 rounded-pill"
               ></b-form-select>
             </b-col>
             <b-col cols="12" lg="3" class="my-auto">
@@ -167,7 +167,7 @@
               <b-form-select
                 v-model="selectedCategory"
                 :options="categoryOptions"
-                class="ml-0 ml-lg-3"
+                class="ml-0 ml-lg-3 rounded-pill"
               ></b-form-select>
             </b-col>
             <b-col cols="12" lg="3" class="my-auto">
@@ -183,10 +183,16 @@
             </b-col>
             <b-col cols="12" lg="3" class="my-auto">
               <div class="mt-3 mt-lg-0">
-                <b-form-input
-                  v-model="filterSearchInput"
-                  placeholder="Search..."
-                ></b-form-input>
+                <b-input-group>
+                  <b-icon id="searching__icon" icon="search"></b-icon>
+                  <b-form-input
+                    v-model="filterSearchInput"
+                    placeholder="Search..."
+                    style="padding-left: 32px"
+                    class="rounded-pill"
+                  >
+                  </b-form-input>
+                </b-input-group>
               </div>
             </b-col>
           </b-col>
@@ -265,7 +271,15 @@
                           class="category-badge-fill rounded-pill mx-1"
                           v-if="creator.userVerify"
                         >
-                          <p class="m-0">Verified</p>
+                          <p class="m-0">
+                            Verified
+                            <span
+                              ><b-icon
+                                icon="check"
+                                style="color: #ffff"
+                              ></b-icon
+                            ></span>
+                          </p>
                         </div>
                       </div>
                       <b-card-text class="px-3 my-3">
@@ -275,7 +289,6 @@
                       </b-card-text>
                       <b-card-text class="px-3">
                         {{ creator.userSubtitle.slice(0, 30) + "..." }}
-                        {{ new Date(creator._createdAt).getFullYear() }}
                         <span><b-icon icon="box-arrow-up-right"></b-icon></span>
                       </b-card-text>
                     </b-row>
@@ -555,11 +568,19 @@ export default {
 </script>
 
 <style lang="scss">
+#searching__icon {
+  position: absolute;
+  z-index: 20;
+  left: 11px;
+  top: 11px;
+  opacity: 70%;
+}
+
 #main__card {
   width: 400px;
-  height: 350px;
+  height: 400px;
   max-width: 400px;
-  max-height: 350px;
+  max-height: 400px;
   margin: 20px;
   border: none;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px,

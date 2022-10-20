@@ -41,6 +41,11 @@
           ></span>
         </a>
 
+        <p class="font-weight-bold" style="opacity: 40%">
+          Member since {{ monthNames[new Date(memberSince).getMonth()] }},
+          {{ new Date(memberSince).getFullYear() }}
+        </p>
+
         <div class="edit-profile my-3">
           <b-button
             class="edit-btn font-weight-bold mr-2"
@@ -155,12 +160,13 @@
 
       <div class="share__button w-100 text-center my-5">
         <b-button
+          pill
           class="w-75 px-4 py-2 my-4"
           variant="outline-dark"
-          @click="copyAddress('https://bitcoffee.site/{{ username }}')"
+          @click="copyAddress('www.bitcoffee.site/#/' + username)"
           v-b-tooltip.click="'Copied'"
-          >bitcoffee.site/ {{ username }}
-          <span class="px-4"><b-icon icon="files"></b-icon></span
+          >www.bitcoffee.site/{{ username }}
+          <span class="pl-1"><b-icon icon="files"></b-icon></span
         ></b-button>
       </div>
 
@@ -674,7 +680,7 @@ import UserGoalCard from "../components/UserGoalCard.vue";
 import Header from "../components/Header.vue";
 import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
 import { client } from "../../lib/sanityClient";
-import { time } from "console";
+import { log, time } from "console";
 
 export default {
   name: "ProfileView",
@@ -702,6 +708,22 @@ export default {
       pledgeA: null,
       isAvailable: false,
       fetchingPage: false,
+
+      monthNames: [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ],
+      memberSince: "",
 
       maxLengthUsername: 35,
       newUsername: "",
@@ -753,6 +775,26 @@ export default {
     } else {
       this.isAvailable = false;
     }
+
+    if (this.username) {
+      const query = '*[_type == "users" && userName == $user] {_createdAt}';
+      const params = { user: this.username };
+      client
+        .fetch(query, params)
+        .then((user) => {
+          console.log(user);
+          if (user.length > 0) {
+            this.memberSince = user[0]._createdAt;
+          } else {
+            console.log("error");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      console.log("error");
+    }
   },
   methods: {
     ...mapActions([
@@ -770,6 +812,7 @@ export default {
     hideModal() {
       this.$refs["goal-modal"].hide();
     },
+
     copyAddress(add) {
       navigator.clipboard.writeText(add).then(
         () => {
