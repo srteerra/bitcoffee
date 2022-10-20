@@ -22,7 +22,11 @@
           <p class="font-weight-bold pt-5 px-2">
             {{ this.$route.params.id }}
           </p>
-          <b-icon icon="patch-check-fill"></b-icon>
+          <b-icon
+            id="verify__badge"
+            icon="patch-check-fill"
+            v-if="memberVerified"
+          ></b-icon>
         </div>
         <b-button
           id="address"
@@ -155,6 +159,22 @@ export default {
       noBg: "https://images.unsplash.com/photo-1554147090-e1221a04a025?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1148&q=80",
 
       donation: 0,
+      monthNames: [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ],
+      memberSince: "",
+      memberVerified: false,
     };
   },
   components: {
@@ -168,7 +188,7 @@ export default {
     });
 
     const query =
-      '*[_type == "users" && userName == $user] {userName, userAddress}';
+      '*[_type == "users" && userName == $user] {userName, userAddress, _createdAt, userVerify}';
     const params = { user: this.$route.params.id };
 
     client
@@ -179,6 +199,8 @@ export default {
           users.forEach((user) => {
             this.myaddress =
               user.userAddress.slice(0, 4) + "..." + user.userAddress.slice(36);
+            this.memberSince = user._createdAt;
+            this.memberVerified = user.userVerify;
           });
         } else {
           console.log("Creator not found");
@@ -262,6 +284,10 @@ export default {
 </script>
 
 <style lang="scss">
+#verify__badge {
+  position: relative;
+}
+
 // banner styles
 .user-profile__background {
   width: 100%;
