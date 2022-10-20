@@ -20,7 +20,11 @@
       <div class="user-personal-info__container">
         <div class="user-name__container my-1">
           <p class="font-weight-bold pt-5 px-2">{{ username }}</p>
-          <b-icon icon="patch-check-fill"></b-icon>
+          <b-icon
+            id="verify__badge"
+            icon="patch-check-fill"
+            v-if="memberVerified"
+          ></b-icon>
         </div>
         <b-button
           id="address"
@@ -724,6 +728,7 @@ export default {
         "December",
       ],
       memberSince: "",
+      memberVerified: false,
 
       maxLengthUsername: 35,
       newUsername: "",
@@ -777,7 +782,8 @@ export default {
     }
 
     if (this.username) {
-      const query = '*[_type == "users" && userName == $user] {_createdAt}';
+      const query =
+        '*[_type == "users" && userName == $user] {_createdAt, userVerify}';
       const params = { user: this.username };
       client
         .fetch(query, params)
@@ -785,6 +791,7 @@ export default {
           console.log(user);
           if (user.length > 0) {
             this.memberSince = user[0]._createdAt;
+            this.memberVerified = user[0].userVerify;
           } else {
             console.log("error");
           }
@@ -978,6 +985,11 @@ export default {
 </script>
 
 <style lang="scss">
+#verify__badge {
+  position: absolute;
+  top: 55px;
+}
+
 // banner styles
 .user-profile__background {
   width: 100%;

@@ -578,9 +578,9 @@ export default {
 
 #main__card {
   width: 400px;
-  height: 400px;
+  height: 350px;
   max-width: 400px;
-  max-height: 400px;
+  max-height: 350px;
   margin: 20px;
   border: none;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px,
