@@ -10,7 +10,7 @@
         :class="{ blur: goal_status == 100 }"
       >
         <!-- Image collapse -->
-        <b-collapse id="collapse-a" class="my-2">
+        <b-collapse :id="collapse_a" class="my-2">
           <b-card style="border: none">
             <div class="text-center">
               <img
@@ -55,7 +55,7 @@
         </b-row>
 
         <!-- Description collapse -->
-        <b-collapse id="collapse-b" class="mt-2">
+        <b-collapse :id="collapse_b" class="mt-2">
           <b-card style="border: none">
             <p>{{ goal_description }}</p>
           </b-card>
@@ -79,7 +79,7 @@
         </div>
 
         <!-- Time left collapse -->
-        <b-collapse id="collapse-b" class="mt-2">
+        <b-collapse :id="collapse_c" class="mt-2">
           <b-card :class="{ hide: !time }" style="border: none">
             <p>to complete the goal.</p>
           </b-card>
@@ -121,14 +121,19 @@
         <p
           class="my-4"
           :class="{ hide: hide }"
-          v-b-toggle="['collapse-a', 'collapse-b', 'collapse-c', 'collapse-d']"
+          v-b-toggle="[
+            this.collapse_a,
+            this.collapse_b,
+            this.collapse_c,
+            this.collapse_d,
+          ]"
           @click="hide_p"
         >
           See details
         </p>
 
         <!-- Buttons collapse -->
-        <b-collapse id="collapse-d" class="mt-2">
+        <b-collapse :id="collapse_d" class="mt-2">
           <b-card style="border: none">
             <b-row align-h="center">
               <b-col cols="12" md="4" class="my-2">
@@ -144,10 +149,10 @@
                   variant="outline-dark"
                   @click="show"
                   v-b-toggle="[
-                    'collapse-a',
-                    'collapse-b',
-                    'collapse-c',
-                    'collapse-d',
+                    this.collapse_a,
+                    this.collapse_b,
+                    this.collapse_c,
+                    this.collapse_d,
                   ]"
                   >CANCEL</b-button
                 >
@@ -156,7 +161,7 @@
           </b-card>
         </b-collapse>
 
-        <b-collapse id="collapse-a" class="mt-2">
+        <b-collapse :id="collapse_a" class="mt-2">
           <b-card style="border: none">
             <b-row align-h="center">
               <b-col cols="12" md="4" class="my-2">
@@ -220,6 +225,7 @@ export default {
       finalDate: "October 28,2022 00:34:00",
     };
   },
+  props: ["collapse_a", "collapse_b", "collapse_c", "collapse_d"],
   methods: {
     claim() {
       this.goal_status = 100;

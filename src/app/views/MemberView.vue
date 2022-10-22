@@ -115,25 +115,31 @@
               <DonateBoxView />
             </div>
           </b-col>
-
-          <!-- creator goals -->
         </b-row>
-        <b-row class="creator-row">
-          <b-col cols="12" md="12" lg="7" class="p-0">
-            <div
-              class="text-center text-lg-left"
-              style="width: 80%; margin: 0 auto 50px"
-            >
-              <h1 class="font-weight-bold">
-                {{ this.$route.params.id }}'s goals
-              </h1>
-              <p class="font-weight-light">
-                Help {{ this.$route.params.id }} with the following goals.
-              </p>
-            </div>
-            <UserGoalCard />
+
+        <!-- creator goals -->
+        <div
+          class="text-center text-lg-left"
+          style="width: 80%; margin: 0 auto"
+        >
+          <h1 class="font-weight-bold">{{ this.$route.params.id }}'s goals</h1>
+          <p class="font-weight-light">
+            Help {{ this.$route.params.id }} with the following goals.
+          </p>
+        </div>
+        <b-row class="creator-row my-1">
+          <b-col cols="12">
+            <ul class="d-flex justify-content-center flex-wrap p-0 m-0">
+              <li class="w-50" v-for="(card, idx) in cards" :key="idx">
+                <UserGoalCard
+                  :collapse_a="'hola' + card.id"
+                  :collapse_b="'hola' + card.id"
+                  :collapse_c="'hola' + card.id"
+                  :collapse_d="'hola' + card.id"
+                />
+              </li>
+            </ul>
           </b-col>
-          <b-col cols="12" md="12" lg="5"> </b-col>
         </b-row>
       </div>
     </div>
@@ -157,6 +163,13 @@ export default {
       noSub: "No subtitle added",
       noDesc: "No description added",
       noBg: "https://images.unsplash.com/photo-1554147090-e1221a04a025?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1148&q=80",
+      cards: [
+        { id: "h1" },
+        { id: "h2" },
+        { id: "h3" },
+        { id: "h4" },
+        { id: "h4" },
+      ],
 
       donation: 0,
       monthNames: [
@@ -175,6 +188,7 @@ export default {
       ],
       memberSince: "",
       memberVerified: false,
+      coll: "",
     };
   },
   components: {
