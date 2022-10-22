@@ -1,27 +1,23 @@
 <!-- eslint-disable vue/attribute-hyphenation -->
 <template>
   <div>
-    <!-- <div id="fetchingData__screen" v-if="fetchingData" style="z-index: 100">
-      <img
-        src="./assets/logos/icon-logo.png"
-        alt=""
-        style="width: 100px; height: 100px"
-      />
-    </div> -->
-    <!-- <div id="bg-slot-page" v-if="shadowblank" class="text-center">
-      <a href="/">
-        <img id="shadow-icon-place" src="./assets/logos/icon-logo.png" alt="" />
-      </a>
-    </div> -->
-    <NotificationList />
-    <router-view />
+    <Header />
+    <b-row>
+      <b-col class="col-auto">
+        <Nav />
+      </b-col>
+      <b-col>
+        <router-view style="max-height: 100vh; overflow-y: scroll" />
+      </b-col>
+    </b-row>
+    <Footer />
   </div>
 </template>
 
 <script>
-import NotificationList from "./components/NotificationList.vue";
-
-import { mapActions, mapState } from "vuex";
+import Header from "./components/Header.vue";
+import Footer from "./components/Footer.vue";
+import Nav from "./components/Nav.vue";
 
 export default {
   name: "App",
@@ -29,23 +25,11 @@ export default {
     return {};
   },
   components: {
-    NotificationList,
+    Header,
+    Footer,
+    Nav,
   },
 };
 </script>
 
-<style lang="scss">
-#shadow-icon-place {
-  width: 50px;
-  margin: 0 auto;
-  padding-top: 50px;
-}
-
-#bg-slot-page {
-  width: 100vw;
-  height: 100vh;
-  position: absolute;
-  background-color: rgb(255, 255, 255);
-  z-index: 1;
-}
-</style>
+<style lang="scss"></style>

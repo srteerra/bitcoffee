@@ -7,60 +7,14 @@ Vue.use(Router);
 
 const routes = [
   {
-    path: "/home",
+    path: "/",
     name: "home",
     component: () => import(/* webpackChunkName:"home" */ "../views/HomeView"),
-  },
-  { path: "/", redirect: { name: "home" } },
-  {
-    path: "/",
-    redirect: { name: "home" },
   },
   {
     path: "*",
     name: "404",
     component: () => import(/* webpackChunkName:"home" */ "../views/404View"),
-  },
-  {
-    path: "/explore",
-    name: "explore",
-    component: () =>
-      import(/* webpackChunkName:"home" */ "../views/ExploreView"),
-  },
-  {
-    path: "/token",
-    name: "token",
-    component: () =>
-      import(/* webpackChunkName:"home" */ "../views/OurTokenView"),
-  },
-  {
-    path: "/faucet",
-    name: "faucet",
-    component: () =>
-      import(/* webpackChunkName:"home" */ "../views/FaucetView"),
-  },
-  {
-    path: "/about",
-    name: "about",
-    component: () => import(/* webpackChunkName:"home" */ "../views/AboutView"),
-  },
-  {
-    path: "/profile",
-    name: "profile",
-    component: () =>
-      import(/* webpackChunkName:"profile" */ "../views/ProfileView"),
-  },
-  {
-    path: "/:user",
-    name: "bitcoffee",
-    component: () =>
-      import(/* webpackChunkName:"home" */ "../views/BitcoffeeView"),
-  },
-  {
-    path: "/member/:id",
-    name: "member",
-    component: () =>
-      import(/* webpackChunkName:"home" */ "../views/MemberView"),
   },
 ];
 
