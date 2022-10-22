@@ -264,7 +264,7 @@
             class="my-3"
           >
             <b-form-input
-              id="goal-title"
+              id="goal-category"
               type="text"
               placeholder="Enter the goal title"
               v-model="goalTitle"

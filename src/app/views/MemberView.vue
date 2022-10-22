@@ -121,7 +121,7 @@
             </div>
           </b-col>
         </b-row>
-
+        
         <!-- creator goals -->
         <div
           class="text-center text-lg-left"
