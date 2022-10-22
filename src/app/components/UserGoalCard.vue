@@ -10,7 +10,7 @@
         :class="{ blur: goal_status == 100 }"
       >
         <!-- Image collapse -->
-        <b-collapse id="collapse-a" class="my-2">
+        <b-collapse :id="collapse_a" class="my-2">
           <b-card style="border: none">
             <div class="text-center">
               <img
@@ -55,18 +55,32 @@
         </b-row>
 
         <!-- Description collapse -->
-        <b-collapse id="collapse-b" class="mt-2">
+        <b-collapse :id="collapse_b" class="mt-2">
           <b-card style="border: none">
             <p>{{ goal_description }}</p>
           </b-card>
         </b-collapse>
 
         <!-- Counter -->
-        <h3><strong>8 days left</strong></h3>
+        <div v-if="!hide">
+          <div v-if="time">
+            <h3 v-if="DD <= 0" class="font-weight-bold">Only today</h3>
+            <h3 v-else class="font-weight-bold">{{ DD }} days left</h3>
+          </div>
+          <div v-else>
+            <h3 class="font-weight-bold">Finished</h3>
+          </div>
+        </div>
+        <div v-else>
+          <h3 v-if="time" id="timer" class="font-weight-bold">
+            {{ DD }} : {{ HR }} : {{ MN }} : {{ SC }}
+          </h3>
+          <h3 v-else class="font-weight-bold">Finished</h3>
+        </div>
 
         <!-- Time left collapse -->
-        <b-collapse id="collapse-b" class="mt-2">
-          <b-card style="border: none">
+        <b-collapse :id="collapse_c" class="mt-2">
+          <b-card :class="{ hide: !time }" style="border: none">
             <p>to complete the goal.</p>
           </b-card>
         </b-collapse>
@@ -107,33 +121,38 @@
         <p
           class="my-4"
           :class="{ hide: hide }"
-          v-b-toggle="['collapse-a', 'collapse-b', 'collapse-c', 'collapse-d']"
+          v-b-toggle="[
+            this.collapse_a,
+            this.collapse_b,
+            this.collapse_c,
+            this.collapse_d,
+          ]"
           @click="hide_p"
         >
           See details
         </p>
 
         <!-- Buttons collapse -->
-        <b-collapse id="collapse-d" class="mt-2">
+        <b-collapse :id="collapse_d" class="mt-2">
           <b-card style="border: none">
             <b-row align-h="center">
-              <b-col cols="4">
+              <b-col cols="12" md="4" class="my-2">
                 <b-button
                   class="w-100 mx-auto btn btn-dark font-weight-bold"
                   @click="claim"
                   >CLAIM</b-button
                 >
               </b-col>
-              <b-col cols="4">
+              <b-col cols="12" md="4" class="my-2">
                 <b-button
                   class="w-100 mx-auto font-weight-bold"
                   variant="outline-dark"
                   @click="show"
                   v-b-toggle="[
-                    'collapse-a',
-                    'collapse-b',
-                    'collapse-c',
-                    'collapse-d',
+                    this.collapse_a,
+                    this.collapse_b,
+                    this.collapse_c,
+                    this.collapse_d,
                   ]"
                   >CANCEL</b-button
                 >
@@ -142,15 +161,15 @@
           </b-card>
         </b-collapse>
 
-        <b-collapse id="collapse-a" class="mt-2">
+        <b-collapse :id="collapse_a" class="mt-2">
           <b-card style="border: none">
             <b-row align-h="center">
-              <b-col cols="4">
+              <b-col cols="12" md="4" class="my-2">
                 <b-button class="btn btn-dark font-weight-bold w-100 mx-auto"
                   >CONTRIBUTE</b-button
                 >
               </b-col>
-              <b-col cols="4">
+              <b-col cols="12" md="4" class="my-2">
                 <b-button
                   class="w-100 mx-auto font-weight-bold"
                   variant="outline-dark"
@@ -182,10 +201,18 @@
 </template>
 
 <script>
+import { anyTypeAnnotation } from "@babel/types";
+
 export default {
   name: "UserGoalCard",
+
   data() {
     return {
+      DD: 0,
+      HR: 0,
+      MN: 0,
+      SC: 0,
+      time: true,
       goal_title: "A new acustic guitar",
       goal_status: 90,
       goal_description:
@@ -194,8 +221,11 @@ export default {
       categories: ["Music", "RIF"],
       blur: false,
       hide: false,
+      counter: 0,
+      finalDate: "October 28,2022 00:34:00",
     };
   },
+  props: ["collapse_a", "collapse_b", "collapse_c", "collapse_d"],
   methods: {
     claim() {
       this.goal_status = 100;
@@ -206,6 +236,25 @@ export default {
     show() {
       this.hide = false;
     },
+    timer(date) {
+      let deadline = new Date(date).getTime();
+      let now = new Date().getTime();
+      let t = deadline - now;
+      this.DD = Math.floor(t / (1000 * 60 * 60 * 24));
+      this.HR = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      this.MN = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
+      this.SC = Math.floor((t % (1000 * 60)) / 1000);
+      if (t <= 0) {
+        clearInterval(this.counter);
+        this.time = false;
+      }
+    },
+  },
+  created() {
+    var self = this;
+    self.counter = setInterval(function () {
+      self.timer(self.finalDate);
+    }, 1000);
   },
 };
 </script>

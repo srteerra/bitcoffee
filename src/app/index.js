@@ -35,7 +35,9 @@ if (window.ethereum) {
 
   // On Acc change
   ethereum.on("accountsChanged", function (accounts) {
-    window.location.reload();
+    if (store.state.isconnected) {
+      window.location.reload();
+    }
   });
 
   ethereum.on("disconnect", (error) => {

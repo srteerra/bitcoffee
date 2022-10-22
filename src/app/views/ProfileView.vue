@@ -20,7 +20,7 @@
       <div class="user-personal-info__container">
         <div class="user-name__container my-1">
           <p class="font-weight-bold pt-5 px-2">{{ username }}</p>
-          <b-icon icon="patch-check-fill"></b-icon>
+          <b-icon icon="patch-check-fill" v-if="memberVerified"></b-icon>
         </div>
         <b-button
           id="address"
@@ -40,6 +40,11 @@
             ><b-icon icon="box-arrow-up-right"></b-icon
           ></span>
         </a>
+
+        <p class="font-weight-bold" style="opacity: 40%">
+          Member since {{ monthNames[new Date(memberSince).getMonth()] }},
+          {{ new Date(memberSince).getFullYear() }}
+        </p>
 
         <div class="edit-profile my-3">
           <b-button
@@ -155,12 +160,13 @@
 
       <div class="share__button w-100 text-center my-5">
         <b-button
+          pill
           class="w-75 px-4 py-2 my-4"
           variant="outline-dark"
-          @click="copyAddress('https://bitcoffee.site/{{ username }}')"
+          @click="copyAddress('www.bitcoffee.site/#/' + username)"
           v-b-tooltip.click="'Copied'"
-          >bitcoffee.site/ {{ username }}
-          <span class="px-4"><b-icon icon="files"></b-icon></span
+          >www.bitcoffee.site/{{ username }}
+          <span class="pl-1"><b-icon icon="files"></b-icon></span
         ></b-button>
       </div>
 
@@ -251,46 +257,6 @@
             ></b-form-input>
           </b-form-group>
 
-          <b-form-group>
-            <label for="start-datepicker">Choose a start date</label>
-            <b-form-datepicker
-              id="start-datepicker"
-              :min="minStart"
-              :date-disabled-fn="dateDisabledStart"
-              :date-format-options="{ month: 'long', day: '2-digit' }"
-              v-model="goalDateStart"
-              menu-class="w-100"
-              calendar-width="100%"
-              reset-button
-              @context="onContext1"
-              class="mb-2"
-            ></b-form-datepicker>
-          </b-form-group>
-
-          <b-form-group>
-            <label for="end-datepicker">Choose a end date</label>
-            <b-input-group>
-              <b-form-datepicker
-                id="end-datepicker"
-                :date-disabled-fn="dateDisabledEnd"
-                :date-format-options="{ month: 'long', day: '2-digit' }"
-                :disabled="goalDateStart === ''"
-                v-model="goalDateEnd"
-                menu-class="w-100"
-                calendar-width="100%"
-                @context="onContext2"
-                class="mb-2"
-              ></b-form-datepicker>
-              <b-form-group-append>
-                <b-button
-                  v-b-tooltip.hover.top="'Set a 5 minutes goal'"
-                  :disabled="goalDateStart === ''"
-                  ><b-icon icon="clock"></b-icon
-                ></b-button>
-              </b-form-group-append>
-            </b-input-group>
-          </b-form-group>
-
           <b-form-group
             id="goal-title"
             label="Goal title"
@@ -298,7 +264,7 @@
             class="my-3"
           >
             <b-form-input
-              id="goal-title"
+              id="goal-category"
               type="text"
               placeholder="Enter the goal title"
               v-model="goalTitle"
@@ -340,6 +306,49 @@
               ></b-form-input>
             </b-input-group>
           </b-form-group>
+
+          <b-form-group>
+            <label for="start-datepicker">Choose a start date</label>
+            <b-form-datepicker
+              id="start-datepicker"
+              :min="minStart"
+              :date-disabled-fn="dateDisabledStart"
+              :date-format-options="{ month: 'long', day: '2-digit' }"
+              v-model="goalDateStart"
+              menu-class="w-100"
+              calendar-width="100%"
+              reset-button
+              @context="onContext1"
+              class="mb-2"
+            ></b-form-datepicker>
+          </b-form-group>
+
+          <b-form-group>
+            <label for="end-datepicker">Choose a end date</label>
+            <b-input-group>
+              <b-form-datepicker
+                id="end-datepicker"
+                :min="minEnd"
+                :date-disabled-fn="dateDisabledEnd"
+                :date-format-options="{ month: 'long', day: '2-digit' }"
+                :disabled="goalDateStart === ''"
+                v-model="goalDateEnd"
+                menu-class="w-100"
+                calendar-width="100%"
+                @context="onContext2"
+                class="mb-2"
+              ></b-form-datepicker>
+            </b-input-group>
+          </b-form-group>
+
+          <div class="text-center">
+            <b-button
+              v-b-tooltip.hover.top="'Set a 5 minutes goal'"
+              :disabled="goalDateStart === ''"
+              @click="hotGoal"
+              ><b-icon icon="clock"></b-icon
+            ></b-button>
+          </div>
 
           <b-row class="w-75 my-5 mx-auto">
             <b-col class="my-3" cols="12" md="6">
@@ -566,7 +575,7 @@
                       v-model="newSite"
                       type="text"
                       class="w-100 py-2 px-3 mb-4"
-                      placeholder="Enter the link of your site"
+                      placeholder="https://example.com/"
                       required
                     />
                   </b-form-group>
@@ -617,6 +626,105 @@
                   </b-form-group>
                 </section>
               </b-form>
+            </b-col>
+          </b-row>
+          <b-row class="mb-5">
+            <b-col>
+              <div>
+                <label for="InstragramInput" class="text-dark font-weight-bold"
+                  >Instagram</label
+                >
+                <b-input-group
+                  id="InstragramInputGroup"
+                  class="text-dark font-weight-bold mb-4"
+                >
+                  <b-input-group-prepend>
+                    <b-input-group-text>
+                      <b-icon icon="instagram" />
+                    </b-input-group-text>
+                  </b-input-group-prepend>
+                  <b-form-input
+                    id="InstragramInput"
+                    v-model="newInstagram"
+                    type="text"
+                    class="py-2 px-3"
+                    placeholder="https://www.instagram.com/example/"
+                    required
+                  />
+                </b-input-group>
+              </div>
+
+              <div>
+                <label for="TwitterInput" class="text-dark font-weight-bold"
+                  >Twitter</label
+                >
+                <b-input-group
+                  id="TwitterInputGroup"
+                  class="text-dark font-weight-bold mb-4"
+                >
+                  <b-input-group-prepend>
+                    <b-input-group-text>
+                      <b-icon icon="twitter" />
+                    </b-input-group-text>
+                  </b-input-group-prepend>
+                  <b-form-input
+                    id="TwitterInput"
+                    v-model="newTwitter"
+                    type="text"
+                    class="py-2 px-3"
+                    placeholder="https://www.twitter.com/example/"
+                    required
+                  />
+                </b-input-group>
+              </div>
+
+              <div>
+                <label for="TwitchInput" class="text-dark font-weight-bold"
+                  >Twitch</label
+                >
+                <b-input-group
+                  id="TwitchInputGroup"
+                  class="text-dark font-weight-bold mb-4"
+                >
+                  <b-input-group-prepend>
+                    <b-input-group-text>
+                      <b-icon icon="twitch" />
+                    </b-input-group-text>
+                  </b-input-group-prepend>
+                  <b-form-input
+                    id="TwitchInput"
+                    v-model="newTwitch"
+                    type="text"
+                    class="py-2 px-3"
+                    placeholder="https://www.twitch.tv/example/"
+                    required
+                  />
+                </b-input-group>
+              </div>
+
+              <div>
+                <label for="YoutubeInput" class="text-dark font-weight-bold"
+                  >Youtube</label
+                >
+                <b-input-group
+                  id="YoutubeInputGroup"
+                  class="text-dark font-weight-bold mb-4"
+                >
+                  <b-input-group-prepend>
+                    <b-input-group-text>
+                      <b-icon icon="youtube" />
+                    </b-input-group-text>
+                  </b-input-group-prepend>
+                  <b-form-input
+                    id="YoutubeInput"
+                    v-model="newYoutube"
+                    type="text"
+                    class="py-2 px-3"
+                    placeholder="https://www.youtube.com/c/example/"
+                    required
+                  />
+                </b-input-group>
+              </div>
             </b-col>
           </b-row>
           <b-row>
@@ -671,6 +779,7 @@ import UserGoalCard from "../components/UserGoalCard.vue";
 import Header from "../components/Header.vue";
 import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
 import { client } from "../../lib/sanityClient";
+import { log, time } from "console";
 
 export default {
   name: "ProfileView",
@@ -698,6 +807,23 @@ export default {
       pledgeA: null,
       isAvailable: false,
       fetchingPage: false,
+
+      monthNames: [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ],
+      memberSince: "",
+      memberVerified: false,
 
       maxLengthUsername: 35,
       newUsername: "",
@@ -727,6 +853,7 @@ export default {
       formattedStart: "",
       formattedEnd: "",
 
+      goalCategory: "",
       goalDesc: null,
       goalAmount: null,
       goalTitle: null,
@@ -748,6 +875,28 @@ export default {
     } else {
       this.isAvailable = false;
     }
+
+    if (this.username) {
+      const query =
+        '*[_type == "users" && userName == $user] {_createdAt, userVerify}';
+      const params = { user: this.username };
+      client
+        .fetch(query, params)
+        .then((user) => {
+          console.log(user);
+          if (user.length > 0) {
+            this.memberSince = user[0]._createdAt;
+            this.memberVerified = user[0].userVerify;
+          } else {
+            console.log("error");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      console.log("error");
+    }
   },
   methods: {
     ...mapActions([
@@ -765,6 +914,7 @@ export default {
     hideModal() {
       this.$refs["goal-modal"].hide();
     },
+
     copyAddress(add) {
       navigator.clipboard.writeText(add).then(
         () => {
@@ -809,6 +959,27 @@ export default {
 
       // Disabling oll days before
       return day <= selected;
+    },
+    hotGoal() {
+      // Get today date for date-picker
+      const today = new Date();
+      const MM = today.getMonth() + 1;
+      const YYYY = today.getFullYear();
+      const DD = today.getDate();
+
+      // Get the current time
+      let min = new Date().getMinutes() + 5;
+      let hrs = new Date().getHours();
+      let mil = new Date().getSeconds();
+
+      // Set the current date in date-picker
+      this.goalDateEnd = YYYY + "-" + MM + "-" + DD;
+
+      // Send the new unixtime
+      const FDate = new Date(
+        this.formattedEnd + " " + hrs + ":" + min + ":" + mil
+      );
+      this.endUnixtime = FDate.getTime() / 1000;
     },
   },
   computed: {
@@ -909,6 +1080,11 @@ export default {
 </script>
 
 <style lang="scss">
+#verify__badge {
+  position: absolute;
+  top: 55px;
+}
+
 // banner styles
 .user-profile__background {
   width: 100%;

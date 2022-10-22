@@ -34,7 +34,7 @@
               <b-form-select
                 v-model="selectedCategory"
                 :options="categoryOptions"
-                class="ml-0 ml-lg-3"
+                class="ml-0 ml-lg-3 rounded-pill"
               ></b-form-select>
             </b-col>
             <b-col cols="12" lg="3" class="my-auto">
@@ -58,11 +58,35 @@
         <b-col
           class="text-center my-5"
           cols="12"
-          v-if="campaigns_rif.length === 0"
+          v-if="campaigns_rif.length === 0 && !noprovider"
         >
           <p class="py-5 my-5" style="opacity: 40%">
-            <strong>No results.</strong>
+            <strong>No results found.</strong>
           </p>
+        </b-col>
+        <b-col class="text-center my-5" cols="12" v-if="noprovider">
+          <div class="py-5 my-5">
+            <h4 class="pb-3 m-0"><strong>Connect your wallet</strong></h4>
+            <p class="p-0 m-0" style="opacity: 40%">
+              <strong>To explore Bitcoffee's goals</strong>
+            </p>
+            <!-- Connect wallet -->
+            <b-button
+              id="connectWallet"
+              style="
+                max-width: 100%;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+              "
+              :disabled="connectBtnState"
+              @click="connect_wallet()"
+              class="mt-3 px-4 py-2 rounded-pill font-weight-bold"
+              variant="dark"
+            >
+              Connect wallet
+            </b-button>
+          </div>
         </b-col>
         <b-col cols="11" class="mx-auto" v-if="campaigns_rif.length > 0">
           <ul
@@ -143,7 +167,7 @@
               <b-form-select
                 v-model="selectedCategory"
                 :options="categoryOptions"
-                class="ml-0 ml-lg-3"
+                class="ml-0 ml-lg-3 rounded-pill"
               ></b-form-select>
             </b-col>
             <b-col cols="12" lg="3" class="my-auto">
@@ -159,10 +183,16 @@
             </b-col>
             <b-col cols="12" lg="3" class="my-auto">
               <div class="mt-3 mt-lg-0">
-                <b-form-input
-                  v-model="filterSearchInput"
-                  placeholder="Search..."
-                ></b-form-input>
+                <b-input-group>
+                  <b-icon id="searching__icon" icon="search"></b-icon>
+                  <b-form-input
+                    v-model="filterSearchInput"
+                    placeholder="Search..."
+                    style="padding-left: 32px"
+                    class="rounded-pill"
+                  >
+                  </b-form-input>
+                </b-input-group>
               </div>
             </b-col>
           </b-col>
@@ -241,7 +271,15 @@
                           class="category-badge-fill rounded-pill mx-1"
                           v-if="creator.userVerify"
                         >
-                          <p class="m-0">Verified</p>
+                          <p class="m-0">
+                            Verified
+                            <span
+                              ><b-icon
+                                icon="check"
+                                style="color: #ffff"
+                              ></b-icon
+                            ></span>
+                          </p>
                         </div>
                       </div>
                       <b-card-text class="px-3 my-3">
@@ -251,7 +289,6 @@
                       </b-card-text>
                       <b-card-text class="px-3">
                         {{ creator.userSubtitle.slice(0, 30) + "..." }}
-                        {{ new Date(creator._createdAt).getFullYear() }}
                         <span><b-icon icon="box-arrow-up-right"></b-icon></span>
                       </b-card-text>
                     </b-row>
@@ -281,7 +318,7 @@
 <script>
 import Header from "../components/Header.vue";
 import Footer from "../components/Footer.vue";
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 import { client } from "../../lib/sanityClient";
 import imageUrlBuilder from "@sanity/image-url";
 
@@ -309,6 +346,7 @@ export default {
       web3: new Web3(
         Web3.givenProvider || "https://public-node.testnet.rsk.co"
       ),
+      noprovider: false,
       selectedCategory: "All",
       categoryOptions: [
         { value: null, text: "Select your category" },
@@ -325,7 +363,7 @@ export default {
       selectedContract: "rif",
       contractOptions: [
         { value: "rif", text: "RIF" },
-        { value: "bitc", text: "BITC" },
+        { value: "bitc", text: "BITC", disabled: true },
       ],
       filterSearchInput: "",
       creators: [],
@@ -357,6 +395,7 @@ export default {
         this.campaigns_rif.push(await campaign);
       }
     } else {
+      this.noprovider = true;
       console.log("No wallet");
     }
 
@@ -413,6 +452,7 @@ export default {
     this.loading = false;
   },
   computed: {
+    ...mapState(["isconnected", "connectBtnState", "disconnectBtnState"]),
     slicedDesc(givenDesc) {
       if (givenDesc) {
         return givenDesc.slice(0, 11) + "...";
@@ -485,6 +525,7 @@ export default {
     },
   },
   methods: {
+    ...mapActions(["connect_wallet"]),
     getCategory(category) {
       if (!category || category.length === 0) {
         return "Creator";
@@ -527,6 +568,14 @@ export default {
 </script>
 
 <style lang="scss">
+#searching__icon {
+  position: absolute;
+  z-index: 20;
+  left: 11px;
+  top: 11px;
+  opacity: 70%;
+}
+
 #main__card {
   width: 400px;
   height: 350px;
