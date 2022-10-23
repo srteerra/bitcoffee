@@ -135,12 +135,25 @@
           </div>
         </b-container>
       </b-container>
-
-      <div class="user-goals__list">
-        <h1 class="my-4 font-weight-bold">My goals</h1>
-        <UserGoalCard />
-      </div>
     </b-container>
+
+    <div class="user-goals__list text-center">
+      <h1 class="my-4 font-weight-bold">My goals</h1>
+      <b-row class="my-1">
+        <b-col cols="12">
+          <ul class="d-flex justify-content-center flex-wrap p-0 m-0">
+            <li class="w-50" v-for="(card, idx) in cards" :key="idx">
+              <UserGoalCard
+                :collapse_a="'card' + card.id"
+                :collapse_b="'card' + card.id"
+                :collapse_c="'card' + card.id"
+                :collapse_d="'card' + card.id"
+              />
+            </li>
+          </ul>
+        </b-col>
+      </b-row>
+    </div>
 
     <!-- Share modal -->
     <b-modal
@@ -706,6 +719,14 @@ export default {
       pledgeA: null,
       isAvailable: false,
       fetchingPage: false,
+
+      cards: [
+        { id: "g1" },
+        { id: "g2" },
+        { id: "g3" },
+        { id: "g4" },
+        { id: "g4" },
+      ],
 
       monthNames: [
         "January",
