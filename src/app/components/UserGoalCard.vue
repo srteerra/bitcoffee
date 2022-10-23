@@ -19,7 +19,7 @@
                 alt="user-goal"
               />
 
-              <!-- Buttons to change de card view -->
+              <!-- Buttons to change de card view
               <div class="views__button" style="font-size: 4rem">
                 <b-icon
                   icon="card-list"
@@ -31,7 +31,7 @@
                   class="btn-view rounded-circle bg-secondary p-3 m-2"
                   variant="light"
                 ></b-icon>
-              </div>
+              </div> -->
             </div>
           </b-card>
         </b-collapse>

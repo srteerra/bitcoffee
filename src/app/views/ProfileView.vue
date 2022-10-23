@@ -365,12 +365,6 @@
             </b-col>
             <b-col class="my-3" cols="12" md="6">
               <b-button
-                @click="approveSpender()"
-                class="w-100"
-                variant="primary"
-                >Approve 100</b-button
-              >
-              <b-button
                 @click="
                   launchGoal({
                     startDate: goalDateStart,
@@ -383,101 +377,6 @@
                 class="w-100"
                 variant="primary"
                 >Launch goal</b-button
-              >
-              <b-form-input
-                type="text"
-                placeholder="Active campaigns"
-                v-model="activeCam"
-                required
-              ></b-form-input>
-              <b-button
-                @click="activeCampaigns({ campaign: activeCam })"
-                class="w-100"
-                variant="primary"
-                >Campaigns</b-button
-              >
-              <b-form-input
-                type="text"
-                placeholder="Amount to pledge"
-                v-model="pledgeA"
-                required
-              ></b-form-input>
-              <b-form-input
-                type="text"
-                placeholder="Campaign to pledge"
-                v-model="pledgeC"
-                required
-              ></b-form-input>
-              <b-button
-                @click="pledgeCampaign({ campaign: pledgeC, amount: pledgeA })"
-                class="w-100"
-                variant="primary"
-                >pledge</b-button
-              ></b-col
-            >
-          </b-row>
-          <b-row>
-            <h1>RIF</h1>
-            <b-col class="my-3" cols="12" md="6">
-              <p>{{ campaigns_count_rif }}</p>
-              <b-button
-                @click="$store.commit('SET_COUNT_RIF_CAMPAIGNS')"
-                class="w-100"
-                variant="primary"
-                >Update counts</b-button
-              >
-              <b-button
-                @click="approveSpenderRIF()"
-                class="w-100"
-                variant="primary"
-                >Approve 100</b-button
-              >
-              <b-button
-                @click="
-                  launchGoalRIF({
-                    startDate: 1665953417,
-                    endDate: 1665963417,
-                    title: goalTitle,
-                    desc: goalDesc,
-                    amount: goalAmount,
-                    category: goalCategory,
-                  })
-                "
-                class="w-100"
-                variant="primary"
-                >Launch goal</b-button
-              >
-              <b-form-input
-                type="text"
-                placeholder="Active campaigns"
-                v-model="activeCam"
-                required
-              ></b-form-input>
-              <b-button
-                @click="activeCampaignsRIF({ campaign: activeCam })"
-                class="w-100"
-                variant="primary"
-                >Campaigns</b-button
-              >
-              <b-form-input
-                type="text"
-                placeholder="Amount to pledge"
-                v-model="pledgeA"
-                required
-              ></b-form-input>
-              <b-form-input
-                type="text"
-                placeholder="Campaign to pledge"
-                v-model="pledgeC"
-                required
-              ></b-form-input>
-              <b-button
-                @click="
-                  pledgeCampaignRIF({ campaign: pledgeC, amount: pledgeA })
-                "
-                class="w-100"
-                variant="primary"
-                >pledge</b-button
               >
             </b-col>
           </b-row>
