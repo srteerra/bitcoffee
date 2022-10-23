@@ -20,11 +20,7 @@
       <div class="user-personal-info__container">
         <div class="user-name__container my-1">
           <p class="font-weight-bold pt-5 px-2">{{ username }}</p>
-          <b-icon
-            id="verify__badge"
-            icon="patch-check-fill"
-            v-if="memberVerified"
-          ></b-icon>
+          <b-icon icon="patch-check-fill" v-if="memberVerified"></b-icon>
         </div>
         <b-button
           id="address"
@@ -268,7 +264,7 @@
             class="my-3"
           >
             <b-form-input
-              id="goal-title"
+              id="goal-category"
               type="text"
               placeholder="Enter the goal title"
               v-model="goalTitle"
@@ -478,7 +474,7 @@
                       v-model="newSite"
                       type="text"
                       class="w-100 py-2 px-3 mb-4"
-                      placeholder="Enter the link of your site"
+                      placeholder="https://example.com/"
                       required
                     />
                   </b-form-group>
@@ -529,6 +525,105 @@
                   </b-form-group>
                 </section>
               </b-form>
+            </b-col>
+          </b-row>
+          <b-row class="mb-5">
+            <b-col>
+              <div>
+                <label for="InstragramInput" class="text-dark font-weight-bold"
+                  >Instagram</label
+                >
+                <b-input-group
+                  id="InstragramInputGroup"
+                  class="text-dark font-weight-bold mb-4"
+                >
+                  <b-input-group-prepend>
+                    <b-input-group-text>
+                      <b-icon icon="instagram" />
+                    </b-input-group-text>
+                  </b-input-group-prepend>
+                  <b-form-input
+                    id="InstragramInput"
+                    v-model="newInstagram"
+                    type="text"
+                    class="py-2 px-3"
+                    placeholder="https://www.instagram.com/example/"
+                    required
+                  />
+                </b-input-group>
+              </div>
+
+              <div>
+                <label for="TwitterInput" class="text-dark font-weight-bold"
+                  >Twitter</label
+                >
+                <b-input-group
+                  id="TwitterInputGroup"
+                  class="text-dark font-weight-bold mb-4"
+                >
+                  <b-input-group-prepend>
+                    <b-input-group-text>
+                      <b-icon icon="twitter" />
+                    </b-input-group-text>
+                  </b-input-group-prepend>
+                  <b-form-input
+                    id="TwitterInput"
+                    v-model="newTwitter"
+                    type="text"
+                    class="py-2 px-3"
+                    placeholder="https://www.twitter.com/example/"
+                    required
+                  />
+                </b-input-group>
+              </div>
+
+              <div>
+                <label for="TwitchInput" class="text-dark font-weight-bold"
+                  >Twitch</label
+                >
+                <b-input-group
+                  id="TwitchInputGroup"
+                  class="text-dark font-weight-bold mb-4"
+                >
+                  <b-input-group-prepend>
+                    <b-input-group-text>
+                      <b-icon icon="twitch" />
+                    </b-input-group-text>
+                  </b-input-group-prepend>
+                  <b-form-input
+                    id="TwitchInput"
+                    v-model="newTwitch"
+                    type="text"
+                    class="py-2 px-3"
+                    placeholder="https://www.twitch.tv/example/"
+                    required
+                  />
+                </b-input-group>
+              </div>
+
+              <div>
+                <label for="YoutubeInput" class="text-dark font-weight-bold"
+                  >Youtube</label
+                >
+                <b-input-group
+                  id="YoutubeInputGroup"
+                  class="text-dark font-weight-bold mb-4"
+                >
+                  <b-input-group-prepend>
+                    <b-input-group-text>
+                      <b-icon icon="youtube" />
+                    </b-input-group-text>
+                  </b-input-group-prepend>
+                  <b-form-input
+                    id="YoutubeInput"
+                    v-model="newYoutube"
+                    type="text"
+                    class="py-2 px-3"
+                    placeholder="https://www.youtube.com/c/example/"
+                    required
+                  />
+                </b-input-group>
+              </div>
             </b-col>
           </b-row>
           <b-row>

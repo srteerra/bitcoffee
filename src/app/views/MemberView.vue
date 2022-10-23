@@ -46,6 +46,11 @@
             ><b-icon icon="box-arrow-up-right"></b-icon
           ></span>
         </a>
+
+        <p class="font-weight-bold" style="opacity: 40%">
+          Member since {{ monthNames[new Date(memberSince).getMonth()] }},
+          {{ new Date(memberSince).getFullYear() }}
+        </p>
       </div>
 
       <!-- creator information -->
@@ -116,7 +121,7 @@
             </div>
           </b-col>
         </b-row>
-
+        
         <!-- creator goals -->
         <div
           class="text-center text-lg-left"
@@ -297,10 +302,6 @@ export default {
 </script>
 
 <style lang="scss">
-#verify__badge {
-  position: relative;
-}
-
 // banner styles
 .user-profile__background {
   width: 100%;

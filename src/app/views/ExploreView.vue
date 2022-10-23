@@ -363,7 +363,7 @@ export default {
       selectedContract: "rif",
       contractOptions: [
         { value: "rif", text: "RIF" },
-        { value: "bitc", text: "BITC" },
+        { value: "bitc", text: "BITC", disabled: true },
       ],
       filterSearchInput: "",
       creators: [],
