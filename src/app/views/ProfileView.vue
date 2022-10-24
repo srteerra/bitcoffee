@@ -142,12 +142,25 @@
       <b-row class="my-1">
         <b-col cols="12">
           <ul class="d-flex justify-content-center flex-wrap p-0 m-0">
-            <li class="w-50" v-for="(card, idx) in cards" :key="idx">
+            <li
+              class="w-50"
+              v-for="(campaign, idx) in campaigns_rif"
+              :key="idx"
+            >
               <UserGoalCard
-                :collapse_a="'card' + card.id"
-                :collapse_b="'card' + card.id"
-                :collapse_c="'card' + card.id"
-                :collapse_d="'card' + card.id"
+                :collapse_a="'card' + idx"
+                :collapse_b="'card' + idx"
+                :collapse_c="'card' + idx"
+                :collapse_d="'card' + idx"
+                :campCategory="campaign.category"
+                :campCreator="campaign.creator"
+                :campDesc="campaign.description"
+                :campTitle="campaign.title"
+                :campGoal="campaign.goal"
+                :campPledged="campaign.pledged"
+                :campEndAt="campaign.endAt"
+                :campStartAt="campaign.startAt"
+                :campClaimed="campaign.claimed"
               />
             </li>
           </ul>
@@ -375,12 +388,13 @@
             <b-col class="my-3" cols="12" md="6">
               <b-button
                 @click="
-                  launchGoal({
-                    startDate: goalDateStart,
-                    endDate: goalDateEnd,
+                  launchGoalRIF({
+                    amount: goalAmount,
+                    startDate: startUnixtime,
+                    endDate: endUnixtime,
                     title: goalTitle,
                     desc: goalDesc,
-                    amount: goalAmount,
+                    category: goalCategory,
                   })
                 "
                 class="w-100"
@@ -691,7 +705,17 @@ import UserGoalCard from "../components/UserGoalCard.vue";
 import Header from "../components/Header.vue";
 import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
 import { client } from "../../lib/sanityClient";
-import { log, time } from "console";
+
+const Web3 = require("web3");
+const web3 = new Web3(
+  Web3.givenProvider || "https://public-node.testnet.rsk.co"
+);
+
+const provider = window.ethereum;
+
+const artifact_crowdfunding = require("../../../build/contracts/CrowdFund.json");
+const artifact_crowdfunding_rif = require("../../../build/contracts/CrowdFundERC677.json");
+let tokenContract;
 
 export default {
   name: "ProfileView",
@@ -713,7 +737,6 @@ export default {
     minDateEnd.setDate(today.getDate());
 
     return {
-      goals: [],
       activeCam: null,
       pledgeC: null,
       pledgeA: null,
@@ -722,6 +745,7 @@ export default {
 
       cards: [
         { id: "g1" },
+        // { title: "", desc: "", category: "", goal: "" },
         { id: "g2" },
         { id: "g3" },
         { id: "g4" },
@@ -777,11 +801,54 @@ export default {
       goalDesc: null,
       goalAmount: null,
       goalTitle: null,
+
+      campaigns_rif: [],
     };
   },
   components: {
     UserGoalCard,
     Header,
+  },
+  async beforeMount() {
+    if (provider) {
+      const net = await web3.eth.net.getId();
+
+      tokenContract = new web3.eth.Contract(
+        artifact_crowdfunding_rif.abi,
+        artifact_crowdfunding_rif.networks[net].address
+      );
+
+      tokenContract.setProvider(
+        Web3.givenProvider || "https://public-node.testnet.rsk.co"
+      );
+
+      const totalCamps = await tokenContract.methods
+        .creatorCamps(this.currentAccount)
+        .call();
+
+      if (totalCamps < 1) {
+        console.log("No campaigns");
+      } else {
+        for (var i = 0; i <= totalCamps; i++) {
+          const campaign = await tokenContract.methods
+            .campaignsAddress(this.currentAccount, i)
+            .call();
+          // console.log(
+          //   new Date(campaign.endAt * 1000).toLocaleDateString("en-us", {
+          //     weekday: "long",
+          //     year: "numeric",
+          //     month: "long",s
+          //     day: "numeric",
+          //   })
+          // );
+          this.campaigns_rif.push(await campaign);
+        }
+        console.log("User goals: ", this.campaigns_rif);
+      }
+    } else {
+      this.noprovider = true;
+      console.log("No wallet");
+    }
   },
   mounted() {
     this.newUsername = this.username;

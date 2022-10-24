@@ -37,27 +37,22 @@
         </b-collapse>
 
         <!-- Card content -->
-        <h4 class="font-weight-bold">{{ goal_title }}</h4>
+        <h4 class="font-weight-bold">{{ campTitle }}</h4>
         <p class="my-4">
-          by <strong style="color: gray">{{ user_name }}</strong>
+          by <strong style="color: gray">{{ campCreator }}</strong>
         </p>
 
         <!-- Tags section -->
         <b-row class="my-5" align-h="center">
-          <b-col
-            cols="12"
-            sm="4"
-            v-for="category in categories"
-            :key="category"
-          >
-            <p class="category-tag font-weight-bold py-2">{{ category }}</p>
+          <b-col cols="12" sm="4">
+            <p class="category-tag font-weight-bold py-2">{{ campCategory }}</p>
           </b-col>
         </b-row>
 
         <!-- Description collapse -->
         <b-collapse :id="collapse_b" class="mt-2">
           <b-card style="border: none">
-            <p>{{ goal_description }}</p>
+            <p>{{ campDesc }}</p>
           </b-card>
         </b-collapse>
 
@@ -89,7 +84,7 @@
         <div class="progress__container my-5">
           <b-progress
             class="user-goal__progressbar mx-auto my-4"
-            :value="goal_status"
+            :value="getStatus"
             variant="dark"
           ></b-progress>
           <p class="firstValue">0%</p>
@@ -106,12 +101,16 @@
           </b-col>
 
           <b-col class="stats-item__container my-3">
-            <h3 style="color: #594d42"><strong>$233.24</strong></h3>
+            <h3 style="color: #594d42">
+              <strong>{{ campPledged }}</strong>
+            </h3>
             <p>Raised</p>
           </b-col>
           <b-col class="stats-item__container my-3">
             <div>
-              <h3><strong>$350</strong></h3>
+              <h3>
+                <strong>{{ campGoal }}</strong>
+              </h3>
               <p>Goal</p>
             </div>
           </b-col>
@@ -201,8 +200,6 @@
 </template>
 
 <script>
-import { anyTypeAnnotation } from "@babel/types";
-
 export default {
   name: "UserGoalCard",
 
@@ -213,19 +210,29 @@ export default {
       MN: 0,
       SC: 0,
       time: true,
-      goal_title: "A new acustic guitar",
       goal_status: 90,
-      goal_description:
-        "My guitar is nearly to break :( I really need a new one",
-      user_name: "Angel Lopez",
       categories: ["Music", "RIF"],
       blur: false,
       hide: false,
       counter: 0,
-      finalDate: "October 28,2022 00:34:00",
+      finalDate: "October 26, 2022 21:23:23",
     };
   },
-  props: ["collapse_a", "collapse_b", "collapse_c", "collapse_d"],
+  props: [
+    "collapse_a",
+    "collapse_b",
+    "collapse_c",
+    "collapse_d",
+    "campCategory",
+    "campCreator",
+    "campDesc",
+    "campTitle",
+    "campGoal",
+    "campPledged",
+    "campEndAt",
+    "campStartAt",
+    "campClaimed",
+  ],
   methods: {
     claim() {
       this.goal_status = 100;
@@ -250,10 +257,26 @@ export default {
       }
     },
   },
+  computed: {
+    getStatus() {
+      console.log((this.campPledged / this.campGoal) * 100);
+      return (this.campPledged / this.campGoal) * 100;
+    },
+  },
   created() {
     var self = this;
+
+    var fullDate = new Date(self.campEndAt * 1000).toLocaleDateString("en-us", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+
+    console.log(fullDate + " 23:59:59");
+
     self.counter = setInterval(function () {
-      self.timer(self.finalDate);
+      self.timer(fullDate + " 23:59:59");
     }, 1000);
   },
 };
