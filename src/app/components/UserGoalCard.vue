@@ -50,7 +50,7 @@
         <!-- Tags section -->
         <b-row align-h="center">
           <b-col cols="12" sm="4">
-            <p class="category-tag font-weight-regular py-2">
+            <p class="category-tag font-weight-bold py-2 text-white">
               {{ campCategory }}
             </p>
           </b-col>
@@ -67,28 +67,32 @@
         <div v-if="!hide" class="my-3">
           <div v-if="time">
             <h3 v-if="DD <= 0" class="font-weight-bold">Only today</h3>
-            <h3 v-else class="font-weight-bold">{{ DD }} days left</h3>
+            <h3 v-else class="font-weight-bold">
+              <span style="color: rgba(111, 80, 28, 0.38)">{{ DD }} days</span>
+              left
+            </h3>
           </div>
           <div v-else>
             <h3 class="font-weight-bold">Finished</h3>
           </div>
         </div>
         <div v-else>
-          <h2
+          <h1
             v-if="time"
             id="timer"
-            class="font-weight-bold"
-            style="letter-spacing: 3px"
+            style="letter-spacing: 3px; font-weight: 800"
           >
             {{ DD }}:{{ HR }}:{{ MN }}:{{ SC }}
-          </h2>
+          </h1>
           <h3 v-else class="font-weight-bold">Finished</h3>
         </div>
 
         <!-- Time left collapse -->
         <b-collapse :id="collapse_c">
           <b-card :class="{ hide: !time }" style="border: none">
-            <p style="opacity: 60%">to complete the goal.</p>
+            <b-card-body class="p-0">
+              <p class="p-0 m-0" style="opacity: 60%">to complete the goal.</p>
+            </b-card-body>
           </b-card>
         </b-collapse>
 
@@ -112,17 +116,23 @@
             </div>
           </b-col>
 
-          <b-col cols="3" class="stats-item__container my-3">
-            <h3 style="color: #594d42">
-              <strong>{{ campPledged }}</strong>
+          <b-col
+            cols="3"
+            class="stats-item__container my-3"
+            style="color: #615040"
+          >
+            <h3>
+              <strong>${{ pledgedUSD }}</strong>
             </h3>
+            <small>{{ pledgedRIF }} RIF</small>
             <p>Raised</p>
           </b-col>
           <b-col cols="3" class="stats-item__container my-3">
             <div>
               <h3>
-                <strong>{{ campGoalRIF }}</strong>
+                <strong>${{ amountUSD }}</strong>
               </h3>
+              <small>{{ amountRIF }} RIF</small>
               <p>Goal</p>
             </div>
           </b-col>
@@ -156,7 +166,8 @@
             <b-row align-h="center">
               <b-col cols="12" md="4" class="my-2">
                 <b-button
-                  class="w-100 mx-auto btn btn-dark font-weight-bold"
+                  class="w-100 mx-auto btn font-weight-bold"
+                  variant="primary"
                   @click="claim"
                   >CLAIM</b-button
                 >
@@ -264,6 +275,7 @@ export default {
     "campClaimed",
   ],
   methods: {
+    ...mapActions(["getCryptoprice"]),
     claim() {
       this.goal_status = 100;
     },
@@ -288,10 +300,54 @@ export default {
     },
   },
   computed: {
-    ...mapState(["currentAccount"]),
+    ...mapState(["currentAccount", "rifPrice"]),
     getStatus() {
       console.log((this.campPledged / this.campGoal) * 100);
       return (this.campPledged / this.campGoal) * 100;
+    },
+    amountRIF() {
+      const rif = this.campGoalRIF;
+
+      if (rif > 99999) {
+        let str1 = new String(rif);
+        let str2 = str1.slice(0, 3);
+        return str2 + "k";
+      } else {
+        return rif;
+      }
+    },
+    pledgedRIF() {
+      const rif = this.campPledged;
+
+      if (rif > 99999) {
+        let str1 = new String(rif);
+        let str2 = str1.slice(0, 3);
+        return str2 + "k";
+      } else {
+        return rif;
+      }
+    },
+    amountUSD() {
+      const usd = this.campGoalRIF * this.rifPrice;
+
+      if (usd > 99999) {
+        let str1 = new String(usd);
+        let str2 = str1.slice(0, 3);
+        return str2 + "k";
+      } else {
+        return parseFloat(usd).toFixed(2);
+      }
+    },
+    pledgedUSD() {
+      const usd = this.campPledged * this.rifPrice;
+
+      if (usd > 99999) {
+        let str1 = new String(usd);
+        let str2 = str1.slice(0, 3);
+        return str2 + "k";
+      } else {
+        return parseFloat(usd).toFixed(2);
+      }
     },
   },
   async beforeMount() {
@@ -312,6 +368,8 @@ export default {
       });
 
     if (provider) {
+      this.getCryptoprice();
+
       const amountRIF = web3.utils.fromWei(this.campGoal, "ether");
       this.campGoalRIF = amountRIF;
     } else {
@@ -383,7 +441,7 @@ export default {
       }
 
       .progress__badge {
-        background-color: #594d42;
+        background-color: #615040;
       }
     }
 
@@ -415,7 +473,7 @@ export default {
     }
 
     .category-tag {
-      background-color: rgba(189, 189, 189, 0.3);
+      background-color: #615040;
       border-radius: 25px;
     }
 

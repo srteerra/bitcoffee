@@ -139,8 +139,9 @@
 
     <div class="user-goals__list text-center">
       <h1 class="my-4 font-weight-bold">My goals</h1>
-      <b-row class="my-1">
-        <b-col cols="12">
+      <p>Here you can help me to continue my stuff.</p>
+      <b-row class="mt-5">
+        <b-col cols="11" class="mx-auto">
           <ul class="d-flex justify-content-center flex-wrap p-0 m-0">
             <li
               class="w-50"

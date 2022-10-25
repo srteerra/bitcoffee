@@ -14,6 +14,7 @@ export default {
     rskBal: 0,
     tsyBal: 0,
   },
+  rifPrice: null,
   contract: "0x2F395a03820af458AE3e39fcA40C9DC80223492D",
   netID: null,
 

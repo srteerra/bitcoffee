@@ -2,6 +2,7 @@
 /* eslint-disable no-undef */
 import { client } from "../../lib/sanityClient";
 import imageUrlBuilder from "@sanity/image-url";
+import axios from "axios";
 
 // Get a pre-configured url-builder from your sanity client
 const builder = imageUrlBuilder(client);
@@ -41,6 +42,17 @@ export const actions = {
   },
   async disconnectAcc() {
     window.location.reload();
+  },
+  async getCryptoprice({ commit, getters }) {
+    await axios
+      .get(
+        "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=rif-token&order=market_cap_desc&per_page=100&page=1&sparkline=false"
+      )
+      .then((res) => {
+        commit("SET_CRYPTO_PRICE", {
+          USD_price: res.data[Object.keys(res.data)[0]].current_price,
+        });
+      });
   },
   async activeCampaigns({ commit, getters, dispatch }, payload) {
     if (provider) {

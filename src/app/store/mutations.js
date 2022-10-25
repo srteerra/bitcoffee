@@ -11,6 +11,10 @@ export const WINDOW_WIDTH = (state) => {
   state.windowWidth = window.innerWidth;
 };
 
+export const SET_CRYPTO_PRICE = (state, payload) => {
+  state.rifPrice = payload.USD_price;
+};
+
 export const DONATION_CARD_STEPPER_NEXT = (state) => {
   state.donationCardsteps = state.donationCardsteps + 1;
 };
