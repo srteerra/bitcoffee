@@ -716,6 +716,7 @@ import UserGoalCard from "../components/UserGoalCard.vue";
 import Header from "../components/Header.vue";
 import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
 import { client } from "../../lib/sanityClient";
+import { log, time } from "console";
 
 const Web3 = require("web3");
 const web3 = new Web3(
@@ -753,7 +754,6 @@ export default {
       pledgeA: null,
       isAvailable: false,
       fetchingPage: false,
-
       cards: [
         { id: "g1" },
         // { title: "", desc: "", category: "", goal: "" },
@@ -762,7 +762,6 @@ export default {
         { id: "g4" },
         { id: "g4" },
       ],
-
       monthNames: [
         "January",
         "February",
@@ -809,6 +808,7 @@ export default {
       formattedEnd: "",
 
       goalCategory: "Undefined",
+
       goalDesc: null,
       goalAmount: null,
       goalTitle: null,
