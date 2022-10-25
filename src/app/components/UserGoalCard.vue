@@ -6,7 +6,7 @@
       </div>
       <b-container
         id="eff"
-        class="user-goal__card px-4 py-5"
+        class="user-goal__card"
         :class="{ blur: goal_status == 100 }"
       >
         <!-- Image collapse -->
@@ -37,27 +37,34 @@
         </b-collapse>
 
         <!-- Card content -->
-        <h4 class="font-weight-bold">{{ campTitle }}</h4>
-        <p class="my-4">
-          by <strong style="color: gray">{{ campCreator }}</strong>
+        <h4 class="font-weight-bold mx-auto" style="max-width: 45%">
+          {{ campTitle }}
+        </h4>
+        <p class="my-4 font-weight-light">
+          by
+          <span class="font-weight-bold" style="color: gray"
+            ><a :href="'/#/member/' + campUser">{{ campUser }}</a></span
+          >
         </p>
 
         <!-- Tags section -->
-        <b-row class="my-5" align-h="center">
+        <b-row align-h="center">
           <b-col cols="12" sm="4">
-            <p class="category-tag font-weight-bold py-2">{{ campCategory }}</p>
+            <p class="category-tag font-weight-regular py-2">
+              {{ campCategory }}
+            </p>
           </b-col>
         </b-row>
 
         <!-- Description collapse -->
-        <b-collapse :id="collapse_b" class="mt-2">
+        <b-collapse :id="collapse_b">
           <b-card style="border: none">
             <p>{{ campDesc }}</p>
           </b-card>
         </b-collapse>
 
         <!-- Counter -->
-        <div v-if="!hide">
+        <div v-if="!hide" class="my-3">
           <div v-if="time">
             <h3 v-if="DD <= 0" class="font-weight-bold">Only today</h3>
             <h3 v-else class="font-weight-bold">{{ DD }} days left</h3>
@@ -67,21 +74,26 @@
           </div>
         </div>
         <div v-else>
-          <h3 v-if="time" id="timer" class="font-weight-bold">
-            {{ DD }} : {{ HR }} : {{ MN }} : {{ SC }}
-          </h3>
+          <h2
+            v-if="time"
+            id="timer"
+            class="font-weight-bold"
+            style="letter-spacing: 3px"
+          >
+            {{ DD }}:{{ HR }}:{{ MN }}:{{ SC }}
+          </h2>
           <h3 v-else class="font-weight-bold">Finished</h3>
         </div>
 
         <!-- Time left collapse -->
-        <b-collapse :id="collapse_c" class="mt-2">
+        <b-collapse :id="collapse_c">
           <b-card :class="{ hide: !time }" style="border: none">
-            <p>to complete the goal.</p>
+            <p style="opacity: 60%">to complete the goal.</p>
           </b-card>
         </b-collapse>
 
         <!-- Progressbar -->
-        <div class="progress__container my-5">
+        <div class="progress__container mb-5">
           <b-progress
             class="user-goal__progressbar mx-auto my-4"
             :value="getStatus"
@@ -92,21 +104,21 @@
         </div>
 
         <!-- Stats section -->
-        <b-row class="stats">
-          <b-col class="stats-item__container my-3">
+        <b-row class="stats justify-content-center">
+          <b-col cols="3" class="stats-item__container my-3">
             <div>
               <h3><strong>43</strong></h3>
               <p>Supporters</p>
             </div>
           </b-col>
 
-          <b-col class="stats-item__container my-3">
+          <b-col cols="3" class="stats-item__container my-3">
             <h3 style="color: #594d42">
               <strong>{{ campPledged }}</strong>
             </h3>
             <p>Raised</p>
           </b-col>
-          <b-col class="stats-item__container my-3">
+          <b-col cols="3" class="stats-item__container my-3">
             <div>
               <h3>
                 <strong>{{ campGoal }}</strong>
@@ -132,7 +144,14 @@
         </p>
 
         <!-- Buttons collapse -->
-        <b-collapse :id="collapse_d" class="mt-2">
+        <b-collapse
+          :id="collapse_d"
+          class="mt-2"
+          v-if="
+            new String(currentAccount).toUpperCase() ==
+            new String(campCreator).toUpperCase()
+          "
+        >
           <b-card style="border: none">
             <b-row align-h="center">
               <b-col cols="12" md="4" class="my-2">
@@ -160,7 +179,7 @@
           </b-card>
         </b-collapse>
 
-        <b-collapse :id="collapse_a" class="mt-2">
+        <b-collapse :id="collapse_a" class="mt-2" v-else>
           <b-card style="border: none">
             <b-row align-h="center">
               <b-col cols="12" md="4" class="my-2">
@@ -172,7 +191,7 @@
                 <b-button
                   class="w-100 mx-auto font-weight-bold"
                   variant="outline-dark"
-                  >REFOUND</b-button
+                  >REFUND</b-button
                 >
               </b-col>
             </b-row>
@@ -200,6 +219,9 @@
 </template>
 
 <script>
+import { client } from "../../lib/sanityClient";
+import { mapActions, mapState } from "vuex";
+
 export default {
   name: "UserGoalCard",
 
@@ -215,7 +237,7 @@ export default {
       blur: false,
       hide: false,
       counter: 0,
-      finalDate: "October 26, 2022 21:23:23",
+      campUser: "",
     };
   },
   props: [
@@ -258,10 +280,28 @@ export default {
     },
   },
   computed: {
+    ...mapState(["currentAccount"]),
     getStatus() {
       console.log((this.campPledged / this.campGoal) * 100);
       return (this.campPledged / this.campGoal) * 100;
     },
+  },
+  beforeMount() {
+    const query = '*[_type == "users" && _id == $addCreator] {userName}';
+    const params = { addCreator: new String(this.campCreator).toLowerCase() };
+
+    client
+      .fetch(query, params)
+      .then((user) => {
+        if (user.length > 0) {
+          this.campUser = user[0].userName;
+        } else {
+          console.log("error");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   },
   created() {
     var self = this;
@@ -272,8 +312,6 @@ export default {
       month: "long",
       day: "numeric",
     });
-
-    console.log(fullDate + " 23:59:59");
 
     self.counter = setInterval(function () {
       self.timer(fullDate + " 23:59:59");
@@ -306,6 +344,7 @@ export default {
       box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
       border-radius: 20px;
       width: 100%;
+      padding: 80px 60px 40px;
 
       .progress__container {
         width: 100%;
@@ -360,7 +399,7 @@ export default {
     }
 
     .category-tag {
-      background-color: rgba(122, 122, 122, 0.3);
+      background-color: rgba(189, 189, 189, 0.3);
       border-radius: 25px;
     }
 

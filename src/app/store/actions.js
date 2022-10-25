@@ -204,6 +204,8 @@ export const actions = {
     if (provider) {
       console.log(payload.amount);
       console.log(payload.category);
+      console.log(payload.startDate);
+      console.log(payload.endDate);
       const amountRIF = web3.utils.toWei(payload.amount, "ether");
       console.log(amountRIF);
 

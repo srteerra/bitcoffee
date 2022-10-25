@@ -971,7 +971,7 @@ export default {
   },
   computed: {
     // Unixtimestamp for the start date
-    startUnixTime() {
+    startUnixTime2() {
       let min = new Date().getMinutes();
       let hrs = new Date().getHours();
       let mil = new Date().getSeconds();
@@ -982,7 +982,7 @@ export default {
     },
 
     // Unixtimestamp for the start date
-    endUnixTime() {
+    endUnixTime2() {
       const FDate = new Date(this.formattedEnd + " 23:59:59");
       this.endUnixtime = FDate.getTime() / 1000;
     },
