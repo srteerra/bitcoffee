@@ -164,6 +164,7 @@
                 :campEndAt="campaign.endAt"
                 :campStartAt="campaign.startAt"
                 :campClaimed="campaign.claimed"
+                :campContributors="campaign.contributors"
               />
             </li>
           </ul>
@@ -406,7 +407,8 @@
                     title: goalTitle,
                     desc: goalDesc,
                     category: goalCategory,
-                  })
+                  }),
+                    startedCampaigns()
                 "
                 class="w-100"
                 variant="primary"
@@ -856,7 +858,7 @@ export default {
     }
   },
   beforeMount() {
-    this.startCampaigns();
+    this.startedCampaigns();
   },
   methods: {
     ...mapActions([
@@ -872,7 +874,7 @@ export default {
     ]),
     ...mapMutations(["SHOW_EDIT_PROFILE"]),
 
-    async startCampaigns() {
+    async startedCampaigns() {
       if (provider) {
         const net = await web3.eth.net.getId();
         let contributors = [];
@@ -903,8 +905,11 @@ export default {
               .call();
 
             contributors.push(usersOn);
-            console.log(contributors);
-            this.campaigns_rif.push(await campaign);
+
+            var updatedCamp = Object.assign({}, campaign, {
+              contributors: contributors,
+            });
+            this.campaigns_rif.push(await updatedCamp);
           }
         }
       } else {

@@ -112,7 +112,9 @@
         <b-row class="stats justify-content-center">
           <b-col cols="3" class="stats-item__container my-3">
             <div>
-              <h3><strong>43</strong></h3>
+              <h3>
+                <strong>{{ campContributors.length - 1 }}</strong>
+              </h3>
               <p>Supporters</p>
             </div>
           </b-col>
@@ -274,6 +276,7 @@ export default {
     "campEndAt",
     "campStartAt",
     "campClaimed",
+    "campContributors",
   ],
   methods: {
     ...mapActions(["getCryptoprice"]),
