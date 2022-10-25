@@ -59,6 +59,7 @@
 
         <!-- Description collapse -->
         <b-collapse :id="collapse_b">
+
           <b-card style="border: none">
             <p>{{ campDesc }}</p>
           </b-card>
@@ -233,6 +234,7 @@
 </template>
 
 <script>
+
 import { client } from "../../lib/sanityClient";
 import { mapActions, mapState } from "vuex";
 
