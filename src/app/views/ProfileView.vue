@@ -141,10 +141,12 @@
       <h1 class="my-4 font-weight-bold">My goals</h1>
       <p>Here you can help me to continue my stuff.</p>
       <b-row class="mt-5">
-        <b-col cols="11" class="mx-auto">
-          <ul class="d-flex justify-content-center flex-wrap p-0 m-0">
+        <b-col cols="12" md="10" class="mx-auto">
+          <ul
+            class="d-flex justify-content-center justify-content-md-around flex-wrap p-0 m-0"
+          >
             <li
-              class="w-50"
+              id="goal-per"
               v-for="(campaign, idx) in campaigns_rif"
               :key="idx"
             >
@@ -1071,6 +1073,12 @@ export default {
 #verify__badge {
   position: absolute;
   top: 55px;
+}
+
+#goal-per {
+  width: 650px;
+  // min-width: 100%;
+  // max-width: 850px;
 }
 
 // banner styles

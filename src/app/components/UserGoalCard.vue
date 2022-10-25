@@ -49,11 +49,9 @@
 
         <!-- Tags section -->
         <b-row align-h="center">
-          <b-col cols="12" sm="4">
-            <p class="category-tag font-weight-bold py-2 text-white">
-              {{ campCategory }}
-            </p>
-          </b-col>
+          <p class="category-tag font-weight-bold py-2 px-5 text-white">
+            {{ campCategory }}
+          </p>
         </b-row>
 
         <!-- Description collapse -->
@@ -396,11 +394,13 @@ export default {
 
 <style lang="scss">
 .user-goals__container {
-  width: 80%;
+  width: 100%;
+  // max-width: 650px;
   margin: 0 auto 200px;
   .user-goal-card__container {
     width: 100%;
     position: relative;
+
     .goal-completed {
       width: 100%;
       position: absolute;
@@ -419,6 +419,10 @@ export default {
       border-radius: 20px;
       width: 100%;
       padding: 80px 60px 40px;
+
+      @media (max-width: 800px) {
+        padding: 80px 10px 40px;
+      }
 
       .progress__container {
         width: 100%;
@@ -481,6 +485,16 @@ export default {
       margin: 70px 0;
       .stats-item__container {
         border-right: 2px solid rgba(122, 122, 122, 0.4);
+      }
+
+      @media (max-width: 800px) {
+        display: flex;
+        flex-wrap: wrap;
+
+        .stats-item__container {
+          max-width: 350px;
+          border-right: none;
+        }
       }
     }
     .stats-item__container:nth-child(3) {
