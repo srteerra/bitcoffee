@@ -6,7 +6,7 @@
       </div>
       <b-container
         id="eff"
-        class="user-goal__card px-4 py-5"
+        class="user-goal__card"
         :class="{ blur: goal_status == 100 }"
       >
         <!-- Image collapse -->
@@ -19,7 +19,7 @@
                 alt="user-goal"
               />
 
-              <!-- Buttons to change de card view -->
+              <!-- Buttons to change de card view
               <div class="views__button" style="font-size: 4rem">
                 <b-icon
                   icon="card-list"
@@ -31,65 +31,78 @@
                   class="btn-view rounded-circle bg-secondary p-3 m-2"
                   variant="light"
                 ></b-icon>
-              </div>
+              </div> -->
             </div>
           </b-card>
         </b-collapse>
 
         <!-- Card content -->
-        <h4 class="font-weight-bold">{{ goal_title }}</h4>
-        <p class="my-4">
-          by <strong style="color: gray">{{ user_name }}</strong>
+        <h4
+          class="font-weight-bold mx-auto text-capitalize"
+          style="max-width: 45%"
+        >
+          {{ campTitle }}
+        </h4>
+        <p class="my-4 font-weight-light">
+          by
+          <span class="font-weight-bold" style="color: gray"
+            ><a :href="'/#/member/' + campUser">{{ campUser }}</a></span
+          >
         </p>
 
         <!-- Tags section -->
-        <b-row class="my-5" align-h="center">
-          <b-col
-            cols="12"
-            sm="4"
-            v-for="category in categories"
-            :key="category"
-          >
-            <p class="category-tag font-weight-bold py-2">{{ category }}</p>
-          </b-col>
+        <b-row align-h="center">
+          <p class="category-tag font-weight-bold py-2 px-5 text-white">
+            {{ campCategory }}
+          </p>
         </b-row>
 
         <!-- Description collapse -->
-        <b-collapse :id="collapse_b" class="mt-2">
+        <b-collapse :id="collapse_b">
+
           <b-card style="border: none">
-            <p>{{ goal_description }}</p>
+            <p>{{ campDesc }}</p>
           </b-card>
         </b-collapse>
 
         <!-- Counter -->
-        <div v-if="!hide">
+        <div v-if="!hide" class="my-3">
           <div v-if="time">
             <h3 v-if="DD <= 0" class="font-weight-bold">Only today</h3>
-            <h3 v-else class="font-weight-bold">{{ DD }} days left</h3>
+            <h3 v-else class="font-weight-bold">
+              <span style="color: rgba(111, 80, 28, 0.38)">{{ DD }} days</span>
+              left
+            </h3>
           </div>
           <div v-else>
             <h3 class="font-weight-bold">Finished</h3>
           </div>
         </div>
         <div v-else>
-          <h3 v-if="time" id="timer" class="font-weight-bold">
-            {{ DD }} : {{ HR }} : {{ MN }} : {{ SC }}
-          </h3>
+          <h1
+            v-if="time"
+            id="timer"
+            style="letter-spacing: 3px; font-weight: 800"
+          >
+            {{ DD }}:{{ HR }}:{{ MN }}:{{ SC }}
+          </h1>
           <h3 v-else class="font-weight-bold">Finished</h3>
         </div>
 
         <!-- Time left collapse -->
-        <b-collapse :id="collapse_c" class="mt-2">
+        <b-collapse :id="collapse_c">
           <b-card :class="{ hide: !time }" style="border: none">
-            <p>to complete the goal.</p>
+            <b-card-body class="p-0">
+              <p class="p-0 m-0" style="opacity: 60%">to complete the goal.</p>
+            </b-card-body>
           </b-card>
         </b-collapse>
 
         <!-- Progressbar -->
-        <div class="progress__container my-5">
+        <div class="progress__container mb-5">
           <b-progress
             class="user-goal__progressbar mx-auto my-4"
-            :value="goal_status"
+            :value="getStatus"
             variant="dark"
           ></b-progress>
           <p class="firstValue">0%</p>
@@ -97,21 +110,31 @@
         </div>
 
         <!-- Stats section -->
-        <b-row class="stats">
-          <b-col class="stats-item__container my-3">
+        <b-row class="stats justify-content-center">
+          <b-col cols="3" class="stats-item__container my-3">
             <div>
               <h3><strong>43</strong></h3>
               <p>Supporters</p>
             </div>
           </b-col>
 
-          <b-col class="stats-item__container my-3">
-            <h3 style="color: #594d42"><strong>$233.24</strong></h3>
+          <b-col
+            cols="3"
+            class="stats-item__container my-3"
+            style="color: #615040"
+          >
+            <h3>
+              <strong>${{ pledgedUSD }}</strong>
+            </h3>
+            <small>{{ pledgedRIF }} RIF</small>
             <p>Raised</p>
           </b-col>
-          <b-col class="stats-item__container my-3">
+          <b-col cols="3" class="stats-item__container my-3">
             <div>
-              <h3><strong>$350</strong></h3>
+              <h3>
+                <strong>${{ amountUSD }}</strong>
+              </h3>
+              <small>{{ amountRIF }} RIF</small>
               <p>Goal</p>
             </div>
           </b-col>
@@ -133,12 +156,20 @@
         </p>
 
         <!-- Buttons collapse -->
-        <b-collapse :id="collapse_d" class="mt-2">
+        <b-collapse
+          :id="collapse_d"
+          class="mt-2"
+          v-if="
+            new String(currentAccount).toUpperCase() ==
+            new String(campCreator).toUpperCase()
+          "
+        >
           <b-card style="border: none">
             <b-row align-h="center">
               <b-col cols="12" md="4" class="my-2">
                 <b-button
-                  class="w-100 mx-auto btn btn-dark font-weight-bold"
+                  class="w-100 mx-auto btn font-weight-bold"
+                  variant="primary"
                   @click="claim"
                   >CLAIM</b-button
                 >
@@ -161,7 +192,7 @@
           </b-card>
         </b-collapse>
 
-        <b-collapse :id="collapse_a" class="mt-2">
+        <b-collapse :id="collapse_a" class="mt-2" v-else>
           <b-card style="border: none">
             <b-row align-h="center">
               <b-col cols="12" md="4" class="my-2">
@@ -173,7 +204,7 @@
                 <b-button
                   class="w-100 mx-auto font-weight-bold"
                   variant="outline-dark"
-                  >REFOUND</b-button
+                  >REFUND</b-button
                 >
               </b-col>
             </b-row>
@@ -201,7 +232,16 @@
 </template>
 
 <script>
-import { anyTypeAnnotation } from "@babel/types";
+
+import { client } from "../../lib/sanityClient";
+import { mapActions, mapState } from "vuex";
+
+const Web3 = require("web3");
+const web3 = new Web3(
+  Web3.givenProvider || "https://public-node.testnet.rsk.co"
+);
+
+const provider = window.ethereum;
 
 export default {
   name: "UserGoalCard",
@@ -213,20 +253,32 @@ export default {
       MN: 0,
       SC: 0,
       time: true,
-      goal_title: "A new acustic guitar",
       goal_status: 90,
-      goal_description:
-        "My guitar is nearly to break :( I really need a new one",
-      user_name: "Angel Lopez",
       categories: ["Music", "RIF"],
       blur: false,
       hide: false,
       counter: 0,
-      finalDate: "October 28,2022 00:34:00",
+      campUser: "",
+      campGoalRIF: 0,
     };
   },
-  props: ["collapse_a", "collapse_b", "collapse_c", "collapse_d"],
+  props: [
+    "collapse_a",
+    "collapse_b",
+    "collapse_c",
+    "collapse_d",
+    "campCategory",
+    "campCreator",
+    "campDesc",
+    "campTitle",
+    "campGoal",
+    "campPledged",
+    "campEndAt",
+    "campStartAt",
+    "campClaimed",
+  ],
   methods: {
+    ...mapActions(["getCryptoprice"]),
     claim() {
       this.goal_status = 100;
     },
@@ -250,10 +302,96 @@ export default {
       }
     },
   },
+  computed: {
+    ...mapState(["currentAccount", "rifPrice"]),
+    getStatus() {
+      console.log((this.campPledged / this.campGoal) * 100);
+      return (this.campPledged / this.campGoal) * 100;
+    },
+    amountRIF() {
+      const rif = this.campGoalRIF;
+
+      if (rif > 99999) {
+        let str1 = new String(rif);
+        let str2 = str1.slice(0, 3);
+        return str2 + "k";
+      } else {
+        return rif;
+      }
+    },
+    pledgedRIF() {
+      const rif = this.campPledged;
+
+      if (rif > 99999) {
+        let str1 = new String(rif);
+        let str2 = str1.slice(0, 3);
+        return str2 + "k";
+      } else {
+        return rif;
+      }
+    },
+    amountUSD() {
+      const usd = this.campGoalRIF * this.rifPrice;
+
+      if (usd > 99999) {
+        let str1 = new String(usd);
+        let str2 = str1.slice(0, 3);
+        return str2 + "k";
+      } else {
+        return parseFloat(usd).toFixed(2);
+      }
+    },
+    pledgedUSD() {
+      const usd = this.campPledged * this.rifPrice;
+
+      if (usd > 99999) {
+        let str1 = new String(usd);
+        let str2 = str1.slice(0, 3);
+        return str2 + "k";
+      } else {
+        return parseFloat(usd).toFixed(2);
+      }
+    },
+  },
+  async beforeMount() {
+    const query = '*[_type == "users" && _id == $addCreator] {userName}';
+    const params = { addCreator: new String(this.campCreator).toLowerCase() };
+
+    client
+      .fetch(query, params)
+      .then((user) => {
+        if (user.length > 0) {
+          this.campUser = user[0].userName;
+        } else {
+          console.log("error");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    if (provider) {
+      this.getCryptoprice();
+
+      const amountRIF = web3.utils.fromWei(this.campGoal, "ether");
+      this.campGoalRIF = amountRIF;
+    } else {
+      this.noprovider = true;
+      console.log("No wallet");
+    }
+  },
   created() {
     var self = this;
+
+    var fullDate = new Date(self.campEndAt * 1000).toLocaleDateString("en-us", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+
     self.counter = setInterval(function () {
-      self.timer(self.finalDate);
+      self.timer(fullDate + " 23:59:59");
     }, 1000);
   },
 };
@@ -261,11 +399,13 @@ export default {
 
 <style lang="scss">
 .user-goals__container {
-  width: 80%;
+  width: 100%;
+  // max-width: 650px;
   margin: 0 auto 200px;
   .user-goal-card__container {
     width: 100%;
     position: relative;
+
     .goal-completed {
       width: 100%;
       position: absolute;
@@ -283,6 +423,11 @@ export default {
       box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
       border-radius: 20px;
       width: 100%;
+      padding: 80px 60px 40px;
+
+      @media (max-width: 800px) {
+        padding: 80px 10px 40px;
+      }
 
       .progress__container {
         width: 100%;
@@ -305,7 +450,7 @@ export default {
       }
 
       .progress__badge {
-        background-color: #594d42;
+        background-color: #615040;
       }
     }
 
@@ -337,7 +482,7 @@ export default {
     }
 
     .category-tag {
-      background-color: rgba(122, 122, 122, 0.3);
+      background-color: #615040;
       border-radius: 25px;
     }
 
@@ -345,6 +490,16 @@ export default {
       margin: 70px 0;
       .stats-item__container {
         border-right: 2px solid rgba(122, 122, 122, 0.4);
+      }
+
+      @media (max-width: 800px) {
+        display: flex;
+        flex-wrap: wrap;
+
+        .stats-item__container {
+          max-width: 350px;
+          border-right: none;
+        }
       }
     }
     .stats-item__container:nth-child(3) {

@@ -135,12 +135,41 @@
           </div>
         </b-container>
       </b-container>
-
-      <div class="user-goals__list">
-        <h1 class="my-4 font-weight-bold">My goals</h1>
-        <UserGoalCard />
-      </div>
     </b-container>
+
+    <div class="user-goals__list text-center">
+      <h1 class="my-4 font-weight-bold">My goals</h1>
+      <p>Here you can help me to continue my stuff.</p>
+      <b-row class="mt-5">
+        <b-col cols="12" md="10" class="mx-auto">
+          <ul
+            class="d-flex justify-content-center justify-content-md-around flex-wrap p-0 m-0"
+          >
+            <li
+              id="goal-per"
+              v-for="(campaign, idx) in campaigns_rif"
+              :key="idx"
+            >
+              <UserGoalCard
+                :collapse_a="'card' + idx"
+                :collapse_b="'card' + idx"
+                :collapse_c="'card' + idx"
+                :collapse_d="'card' + idx"
+                :campCategory="campaign.category"
+                :campCreator="campaign.creator"
+                :campDesc="campaign.description"
+                :campTitle="campaign.title"
+                :campGoal="campaign.goal"
+                :campPledged="campaign.pledged"
+                :campEndAt="campaign.endAt"
+                :campStartAt="campaign.startAt"
+                :campClaimed="campaign.claimed"
+              />
+            </li>
+          </ul>
+        </b-col>
+      </b-row>
+    </div>
 
     <!-- Share modal -->
     <b-modal
@@ -238,23 +267,25 @@
       no-close-on-backdrop
       no-close-on-esc
     >
-      <b-container class="d-block text-center">
-        <h3 class="my-5">New goal</h3>
+      <b-container class="d-block text-center px-5">
+        <h3 class="mt-5">New goal</h3>
+        <p class="font-weight-light mb-5">
+          Launch a new goal to get supported by other people.
+        </p>
         <b-form class="text-left">
           <b-form-group
             id="goal-category"
             label="Goal Category"
             label-for="goal-category"
-            description="Example (Music, Arts)"
             class="my-3"
           >
-            <b-form-input
+            <b-form-select
               id="goal-category"
-              type="text"
               v-model="goalCategory"
-              placeholder="Enter the goal category"
+              :options="listedCategories"
+              class="rounded-pill pl-4"
               required
-            ></b-form-input>
+            ></b-form-select>
           </b-form-group>
 
           <b-form-group
@@ -262,12 +293,14 @@
             label="Goal title"
             label-for="goal-title"
             class="my-3"
+            description="Example (A new guitar!)"
           >
             <b-form-input
               id="goal-category"
               type="text"
               placeholder="Enter the goal title"
               v-model="goalTitle"
+              class="rounded-pill pl-4"
               required
             ></b-form-input>
           </b-form-group>
@@ -277,12 +310,14 @@
             label="Goal description"
             label-for="goal-description"
             class="my-3"
+            description="Example (I need it to make more music and learn new instruments.)"
           >
             <b-form-input
               id="goal-description"
               type="text"
               placeholder="Enter the goal description"
               v-model="goalDesc"
+              class="rounded-pill pl-4"
               required
             ></b-form-input>
           </b-form-group>
@@ -292,13 +327,15 @@
             label="Needed tokens amount"
             label-for="goal-amount"
             class="my-3"
+            description="How much do you need?"
           >
-            <b-input-group prepend="🪙" class="mb-2 mr-sm-2 mb-sm-0">
+            <b-input-group class="mb-2 mr-sm-2 mb-sm-0">
               <b-form-input
                 id="goal-amount"
                 placeholder="Enter the goal amount"
                 type="number"
                 v-model="goalAmount"
+                class="rounded-pill pl-4"
                 ondrop="return false;"
                 onpaste="return false;"
                 onkeypress="return event.charCode>=48 && event.charCode<=57"
@@ -319,7 +356,7 @@
               calendar-width="100%"
               reset-button
               @context="onContext1"
-              class="mb-2"
+              class="mb-2 rounded-pill pl-3"
             ></b-form-datepicker>
           </b-form-group>
 
@@ -336,7 +373,7 @@
                 menu-class="w-100"
                 calendar-width="100%"
                 @context="onContext2"
-                class="mb-2"
+                class="mb-2 rounded-pill pl-3"
               ></b-form-datepicker>
             </b-input-group>
           </b-form-group>
@@ -361,119 +398,19 @@
             </b-col>
             <b-col class="my-3" cols="12" md="6">
               <b-button
-                @click="approveSpender()"
-                class="w-100"
-                variant="primary"
-                >Approve 100</b-button
-              >
-              <b-button
-                @click="
-                  launchGoal({
-                    startDate: goalDateStart,
-                    endDate: goalDateEnd,
-                    title: goalTitle,
-                    desc: goalDesc,
-                    amount: goalAmount,
-                  })
-                "
-                class="w-100"
-                variant="primary"
-                >Launch goal</b-button
-              >
-              <b-form-input
-                type="text"
-                placeholder="Active campaigns"
-                v-model="activeCam"
-                required
-              ></b-form-input>
-              <b-button
-                @click="activeCampaigns({ campaign: activeCam })"
-                class="w-100"
-                variant="primary"
-                >Campaigns</b-button
-              >
-              <b-form-input
-                type="text"
-                placeholder="Amount to pledge"
-                v-model="pledgeA"
-                required
-              ></b-form-input>
-              <b-form-input
-                type="text"
-                placeholder="Campaign to pledge"
-                v-model="pledgeC"
-                required
-              ></b-form-input>
-              <b-button
-                @click="pledgeCampaign({ campaign: pledgeC, amount: pledgeA })"
-                class="w-100"
-                variant="primary"
-                >pledge</b-button
-              ></b-col
-            >
-          </b-row>
-          <b-row>
-            <h1>RIF</h1>
-            <b-col class="my-3" cols="12" md="6">
-              <p>{{ campaigns_count_rif }}</p>
-              <b-button
-                @click="$store.commit('SET_COUNT_RIF_CAMPAIGNS')"
-                class="w-100"
-                variant="primary"
-                >Update counts</b-button
-              >
-              <b-button
-                @click="approveSpenderRIF()"
-                class="w-100"
-                variant="primary"
-                >Approve 100</b-button
-              >
-              <b-button
                 @click="
                   launchGoalRIF({
-                    startDate: 1665953417,
-                    endDate: 1665963417,
+                    amount: goalAmount,
+                    startDate: startUnixtime,
+                    endDate: endUnixtime,
                     title: goalTitle,
                     desc: goalDesc,
-                    amount: goalAmount,
                     category: goalCategory,
                   })
                 "
                 class="w-100"
                 variant="primary"
                 >Launch goal</b-button
-              >
-              <b-form-input
-                type="text"
-                placeholder="Active campaigns"
-                v-model="activeCam"
-                required
-              ></b-form-input>
-              <b-button
-                @click="activeCampaignsRIF({ campaign: activeCam })"
-                class="w-100"
-                variant="primary"
-                >Campaigns</b-button
-              >
-              <b-form-input
-                type="text"
-                placeholder="Amount to pledge"
-                v-model="pledgeA"
-                required
-              ></b-form-input>
-              <b-form-input
-                type="text"
-                placeholder="Campaign to pledge"
-                v-model="pledgeC"
-                required
-              ></b-form-input>
-              <b-button
-                @click="
-                  pledgeCampaignRIF({ campaign: pledgeC, amount: pledgeA })
-                "
-                class="w-100"
-                variant="primary"
-                >pledge</b-button
               >
             </b-col>
           </b-row>
@@ -781,6 +718,17 @@ import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
 import { client } from "../../lib/sanityClient";
 import { log, time } from "console";
 
+const Web3 = require("web3");
+const web3 = new Web3(
+  Web3.givenProvider || "https://public-node.testnet.rsk.co"
+);
+
+const provider = window.ethereum;
+
+const artifact_crowdfunding = require("../../../build/contracts/CrowdFund.json");
+const artifact_crowdfunding_rif = require("../../../build/contracts/CrowdFundERC677.json");
+let tokenContract;
+
 export default {
   name: "ProfileView",
   data() {
@@ -801,13 +749,19 @@ export default {
     minDateEnd.setDate(today.getDate());
 
     return {
-      goals: [],
       activeCam: null,
       pledgeC: null,
       pledgeA: null,
       isAvailable: false,
       fetchingPage: false,
-
+      cards: [
+        { id: "g1" },
+        // { title: "", desc: "", category: "", goal: "" },
+        { id: "g2" },
+        { id: "g3" },
+        { id: "g4" },
+        { id: "g4" },
+      ],
       monthNames: [
         "January",
         "February",
@@ -853,10 +807,13 @@ export default {
       formattedStart: "",
       formattedEnd: "",
 
-      goalCategory: "",
+      goalCategory: "Undefined",
+
       goalDesc: null,
       goalAmount: null,
       goalTitle: null,
+
+      campaigns_rif: [],
     };
   },
   components: {
@@ -898,6 +855,9 @@ export default {
       console.log("error");
     }
   },
+  beforeMount() {
+    this.startCampaigns();
+  },
   methods: {
     ...mapActions([
       "updateAccount",
@@ -911,6 +871,47 @@ export default {
       "pledgeCampaignRIF",
     ]),
     ...mapMutations(["SHOW_EDIT_PROFILE"]),
+
+    async startCampaigns() {
+      if (provider) {
+        const net = await web3.eth.net.getId();
+        let contributors = [];
+
+        tokenContract = new web3.eth.Contract(
+          artifact_crowdfunding_rif.abi,
+          artifact_crowdfunding_rif.networks[net].address
+        );
+
+        tokenContract.setProvider(
+          Web3.givenProvider || "https://public-node.testnet.rsk.co"
+        );
+
+        const totalCamps = await tokenContract.methods
+          .creatorCamps(this.currentAccount)
+          .call();
+
+        if (totalCamps < 1) {
+          console.log("No campaigns");
+        } else {
+          for (var i = 0; i <= totalCamps; i++) {
+            const campaign = await tokenContract.methods
+              .campaignsAddress(this.currentAccount, i)
+              .call();
+
+            const usersOn = await tokenContract.methods
+              .contributedCampaign(campaign.id, i)
+              .call();
+
+            contributors.push(usersOn);
+            console.log(contributors);
+            this.campaigns_rif.push(await campaign);
+          }
+        }
+      } else {
+        console.log("No wallet");
+      }
+    },
+
     hideModal() {
       this.$refs["goal-modal"].hide();
     },
@@ -983,21 +984,22 @@ export default {
     },
   },
   computed: {
+    ...mapState(["listedCategories"]),
     // Unixtimestamp for the start date
-    startUnixTime() {
+    startUnixTime2() {
       let min = new Date().getMinutes();
       let hrs = new Date().getHours();
       let mil = new Date().getSeconds();
       const FDate = new Date(
         this.formattedStart + " " + hrs + ":" + min + ":" + mil
       );
-      this.startUnixtime = FDate.getTime() / 1000;
+      return (this.startUnixtime = FDate.getTime() / 1000);
     },
 
     // Unixtimestamp for the start date
-    endUnixTime() {
+    endUnixTime2() {
       const FDate = new Date(this.formattedEnd + " 23:59:59");
-      this.endUnixtime = FDate.getTime() / 1000;
+      return (this.endUnixtime = FDate.getTime() / 1000);
     },
     title() {
       if (!this.user_title) {
@@ -1083,6 +1085,12 @@ export default {
 #verify__badge {
   position: absolute;
   top: 55px;
+}
+
+#goal-per {
+  width: 650px;
+  // min-width: 100%;
+  // max-width: 850px;
 }
 
 // banner styles

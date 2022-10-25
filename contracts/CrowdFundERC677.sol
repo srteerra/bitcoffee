@@ -61,6 +61,8 @@ contract CrowdFundERC677 {
     mapping(address => Campaign[]) public campaignsAddress;
     // Mapping from campaign id => pledger => amount pledged
     mapping(uint => mapping(address => uint)) public pledgedAmount;
+    // Mapping for campaings contributors
+    mapping(uint => address[]) public contributedCampaign;
 
     constructor(address _token) {
         token = IERC677(_token);
@@ -104,6 +106,8 @@ contract CrowdFundERC677 {
             claimed: false,
             category: _category
         }));
+        
+        contributedCampaign[count].push(msg.sender);
 
         emit Launch(count, msg.sender, _goal, _title, _description, _startAt, _endAt, _category);
     }
@@ -128,6 +132,7 @@ contract CrowdFundERC677 {
 
         campaign.pledged += _amount;
         pledgedAmount[_id][msg.sender] += _amount;
+        contributedCampaign[_id].push(msg.sender);
         token.transferFrom(msg.sender, address(this), _amount);
 
         emit Pledge(_id, msg.sender, _amount);

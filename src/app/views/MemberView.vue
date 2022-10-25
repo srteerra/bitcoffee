@@ -137,10 +137,10 @@
             <ul class="d-flex justify-content-center flex-wrap p-0 m-0">
               <li class="w-50" v-for="(card, idx) in cards" :key="idx">
                 <UserGoalCard
-                  :collapse_a="'hola' + card.id"
-                  :collapse_b="'hola' + card.id"
-                  :collapse_c="'hola' + card.id"
-                  :collapse_d="'hola' + card.id"
+                  :collapse_a="'card' + card.id"
+                  :collapse_b="'card' + card.id"
+                  :collapse_c="'card' + card.id"
+                  :collapse_d="'card' + card.id"
                 />
               </li>
             </ul>
@@ -169,11 +169,11 @@ export default {
       noDesc: "No description added",
       noBg: "https://images.unsplash.com/photo-1554147090-e1221a04a025?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1148&q=80",
       cards: [
-        { id: "h1" },
-        { id: "h2" },
-        { id: "h3" },
-        { id: "h4" },
-        { id: "h4" },
+        { id: "g1" },
+        { id: "g2" },
+        { id: "g3" },
+        { id: "g4" },
+        { id: "g4" },
       ],
 
       donation: 0,
@@ -193,7 +193,6 @@ export default {
       ],
       memberSince: "",
       memberVerified: false,
-      coll: "",
     };
   },
   components: {

@@ -61,6 +61,8 @@ contract CrowdFund {
     mapping(address => Campaign[]) public campaignsAddress;
     // Mapping from campaign id => pledger => amount pledged
     mapping(uint => mapping(address => uint)) public pledgedAmount;
+    // Mapping for campaings contributors
+    mapping(uint => address[]) public contributedCampaign;
 
     constructor(address _token) {
         token = IERC20(_token);
@@ -104,6 +106,8 @@ contract CrowdFund {
             claimed: false,
             category: _category
         }));
+
+        contributedCampaign[count].push(msg.sender);
 
         emit Launch(count, msg.sender, _goal, _title, _description, _startAt, _endAt, _category);
     }
