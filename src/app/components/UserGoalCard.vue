@@ -121,7 +121,7 @@
           <b-col cols="3" class="stats-item__container my-3">
             <div>
               <h3>
-                <strong>{{ campGoal }}</strong>
+                <strong>{{ campGoalRIF }}</strong>
               </h3>
               <p>Goal</p>
             </div>
@@ -222,6 +222,13 @@
 import { client } from "../../lib/sanityClient";
 import { mapActions, mapState } from "vuex";
 
+const Web3 = require("web3");
+const web3 = new Web3(
+  Web3.givenProvider || "https://public-node.testnet.rsk.co"
+);
+
+const provider = window.ethereum;
+
 export default {
   name: "UserGoalCard",
 
@@ -238,6 +245,7 @@ export default {
       hide: false,
       counter: 0,
       campUser: "",
+      campGoalRIF: 0,
     };
   },
   props: [
@@ -286,7 +294,7 @@ export default {
       return (this.campPledged / this.campGoal) * 100;
     },
   },
-  beforeMount() {
+  async beforeMount() {
     const query = '*[_type == "users" && _id == $addCreator] {userName}';
     const params = { addCreator: new String(this.campCreator).toLowerCase() };
 
@@ -302,6 +310,14 @@ export default {
       .catch((err) => {
         console.log(err);
       });
+
+    if (provider) {
+      const amountRIF = web3.utils.fromWei(this.campGoal, "ether");
+      this.campGoalRIF = amountRIF;
+    } else {
+      this.noprovider = true;
+      console.log("No wallet");
+    }
   },
   created() {
     var self = this;
