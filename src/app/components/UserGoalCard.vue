@@ -37,7 +37,10 @@
         </b-collapse>
 
         <!-- Card content -->
-        <h4 class="font-weight-bold mx-auto" style="max-width: 45%">
+        <h4
+          class="font-weight-bold mx-auto text-capitalize"
+          style="max-width: 45%"
+        >
           {{ campTitle }}
         </h4>
         <p class="my-4 font-weight-light">

@@ -6,6 +6,8 @@ export default {
   error: null,
   windowWidth: window.innerWidth,
 
+  listedCategories: ["Music", "Arts & Culture", "Gaming", "IT", "Personal"],
+
   // Eth or wallet
   provider: null,
   currentAccount: null,

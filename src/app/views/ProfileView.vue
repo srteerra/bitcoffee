@@ -267,23 +267,25 @@
       no-close-on-backdrop
       no-close-on-esc
     >
-      <b-container class="d-block text-center">
-        <h3 class="my-5">New goal</h3>
+      <b-container class="d-block text-center px-5">
+        <h3 class="mt-5">New goal</h3>
+        <p class="font-weight-light mb-5">
+          Launch a new goal to get supported by other people.
+        </p>
         <b-form class="text-left">
           <b-form-group
             id="goal-category"
             label="Goal Category"
             label-for="goal-category"
-            description="Example (Music, Arts)"
             class="my-3"
           >
-            <b-form-input
+            <b-form-select
               id="goal-category"
-              type="text"
               v-model="goalCategory"
-              placeholder="Enter the goal category"
+              :options="listedCategories"
+              class="rounded-pill pl-4"
               required
-            ></b-form-input>
+            ></b-form-select>
           </b-form-group>
 
           <b-form-group
@@ -291,12 +293,14 @@
             label="Goal title"
             label-for="goal-title"
             class="my-3"
+            description="Example (A new guitar!)"
           >
             <b-form-input
               id="goal-category"
               type="text"
               placeholder="Enter the goal title"
               v-model="goalTitle"
+              class="rounded-pill pl-4"
               required
             ></b-form-input>
           </b-form-group>
@@ -306,12 +310,14 @@
             label="Goal description"
             label-for="goal-description"
             class="my-3"
+            description="Example (I need it to make more music and learn new instruments.)"
           >
             <b-form-input
               id="goal-description"
               type="text"
               placeholder="Enter the goal description"
               v-model="goalDesc"
+              class="rounded-pill pl-4"
               required
             ></b-form-input>
           </b-form-group>
@@ -321,13 +327,15 @@
             label="Needed tokens amount"
             label-for="goal-amount"
             class="my-3"
+            description="How much do you need?"
           >
-            <b-input-group prepend="🪙" class="mb-2 mr-sm-2 mb-sm-0">
+            <b-input-group class="mb-2 mr-sm-2 mb-sm-0">
               <b-form-input
                 id="goal-amount"
                 placeholder="Enter the goal amount"
                 type="number"
                 v-model="goalAmount"
+                class="rounded-pill pl-4"
                 ondrop="return false;"
                 onpaste="return false;"
                 onkeypress="return event.charCode>=48 && event.charCode<=57"
@@ -348,7 +356,7 @@
               calendar-width="100%"
               reset-button
               @context="onContext1"
-              class="mb-2"
+              class="mb-2 rounded-pill pl-3"
             ></b-form-datepicker>
           </b-form-group>
 
@@ -365,7 +373,7 @@
                 menu-class="w-100"
                 calendar-width="100%"
                 @context="onContext2"
-                class="mb-2"
+                class="mb-2 rounded-pill pl-3"
               ></b-form-datepicker>
             </b-input-group>
           </b-form-group>
@@ -800,7 +808,7 @@ export default {
       formattedStart: "",
       formattedEnd: "",
 
-      goalCategory: "",
+      goalCategory: "Undefined",
       goalDesc: null,
       goalAmount: null,
       goalTitle: null,
@@ -811,47 +819,6 @@ export default {
   components: {
     UserGoalCard,
     Header,
-  },
-  async beforeMount() {
-    if (provider) {
-      const net = await web3.eth.net.getId();
-
-      tokenContract = new web3.eth.Contract(
-        artifact_crowdfunding_rif.abi,
-        artifact_crowdfunding_rif.networks[net].address
-      );
-
-      tokenContract.setProvider(
-        Web3.givenProvider || "https://public-node.testnet.rsk.co"
-      );
-
-      const totalCamps = await tokenContract.methods
-        .creatorCamps(this.currentAccount)
-        .call();
-
-      if (totalCamps < 1) {
-        console.log("No campaigns");
-      } else {
-        for (var i = 0; i <= totalCamps; i++) {
-          const campaign = await tokenContract.methods
-            .campaignsAddress(this.currentAccount, i)
-            .call();
-          // console.log(
-          //   new Date(campaign.endAt * 1000).toLocaleDateString("en-us", {
-          //     weekday: "long",
-          //     year: "numeric",
-          //     month: "long",s
-          //     day: "numeric",
-          //   })
-          // );
-          this.campaigns_rif.push(await campaign);
-        }
-        console.log("User goals: ", this.campaigns_rif);
-      }
-    } else {
-      this.noprovider = true;
-      console.log("No wallet");
-    }
   },
   mounted() {
     this.newUsername = this.username;
@@ -888,6 +855,9 @@ export default {
       console.log("error");
     }
   },
+  beforeMount() {
+    this.startCampaigns();
+  },
   methods: {
     ...mapActions([
       "updateAccount",
@@ -901,6 +871,47 @@ export default {
       "pledgeCampaignRIF",
     ]),
     ...mapMutations(["SHOW_EDIT_PROFILE"]),
+
+    async startCampaigns() {
+      if (provider) {
+        const net = await web3.eth.net.getId();
+        let contributors = [];
+
+        tokenContract = new web3.eth.Contract(
+          artifact_crowdfunding_rif.abi,
+          artifact_crowdfunding_rif.networks[net].address
+        );
+
+        tokenContract.setProvider(
+          Web3.givenProvider || "https://public-node.testnet.rsk.co"
+        );
+
+        const totalCamps = await tokenContract.methods
+          .creatorCamps(this.currentAccount)
+          .call();
+
+        if (totalCamps < 1) {
+          console.log("No campaigns");
+        } else {
+          for (var i = 0; i <= totalCamps; i++) {
+            const campaign = await tokenContract.methods
+              .campaignsAddress(this.currentAccount, i)
+              .call();
+
+            const usersOn = await tokenContract.methods
+              .contributedCampaign(campaign.id, i)
+              .call();
+
+            contributors.push(usersOn);
+            console.log(contributors);
+            this.campaigns_rif.push(await campaign);
+          }
+        }
+      } else {
+        console.log("No wallet");
+      }
+    },
+
     hideModal() {
       this.$refs["goal-modal"].hide();
     },
@@ -973,6 +984,7 @@ export default {
     },
   },
   computed: {
+    ...mapState(["listedCategories"]),
     // Unixtimestamp for the start date
     startUnixTime2() {
       let min = new Date().getMinutes();
@@ -981,13 +993,13 @@ export default {
       const FDate = new Date(
         this.formattedStart + " " + hrs + ":" + min + ":" + mil
       );
-      this.startUnixtime = FDate.getTime() / 1000;
+      return (this.startUnixtime = FDate.getTime() / 1000);
     },
 
     // Unixtimestamp for the start date
     endUnixTime2() {
       const FDate = new Date(this.formattedEnd + " 23:59:59");
-      this.endUnixtime = FDate.getTime() / 1000;
+      return (this.endUnixtime = FDate.getTime() / 1000);
     },
     title() {
       if (!this.user_title) {
