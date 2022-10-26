@@ -137,7 +137,7 @@
       </b-container>
     </b-container>
 
-    <div class="user-goals__list text-center">
+    <div class="user-goals__list text-center p-0 m-0">
       <h1 class="my-4 font-weight-bold">My goals</h1>
       <p>Here you can help me to continue my stuff.</p>
       <b-row class="mt-5">
@@ -718,7 +718,6 @@ import UserGoalCard from "../components/UserGoalCard.vue";
 import Header from "../components/Header.vue";
 import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
 import { client } from "../../lib/sanityClient";
-import { log, time } from "console";
 
 const Web3 = require("web3");
 const web3 = new Web3(
@@ -1006,6 +1005,7 @@ export default {
       const FDate = new Date(this.formattedEnd + " 23:59:59");
       return (this.endUnixtime = FDate.getTime() / 1000);
     },
+
     title() {
       if (!this.user_title) {
         return this.noTitle;
@@ -1103,10 +1103,6 @@ export default {
   width: 100%;
   height: 300px;
   position: relative;
-}
-
-.user-goals__list {
-  margin: 0 0 300px;
 }
 
 .newUsername__status {

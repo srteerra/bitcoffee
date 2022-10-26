@@ -53,6 +53,7 @@ export default {
 
   // Creator data
   creator_username: null,
+  creator_address: null,
   creator_site: null,
   creator_title: null,
   creator_subtitle: null,

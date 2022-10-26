@@ -59,7 +59,6 @@
 
         <!-- Description collapse -->
         <b-collapse :id="collapse_b">
-
           <b-card style="border: none">
             <p>{{ campDesc }}</p>
           </b-card>
@@ -168,15 +167,30 @@
         >
           <b-card style="border: none">
             <b-row align-h="center">
-              <b-col cols="12" md="4" class="my-2">
+              <b-col cols="12" class="my-2">
+                <b-button
+                  class="btn font-weight-bold w-100 mx-auto"
+                  variant="primary"
+                  @click="connect_wallet()"
+                  v-if="!isconnected"
+                  >CONNECT WALLET</b-button
+                >
                 <b-button
                   class="w-100 mx-auto btn font-weight-bold"
                   variant="primary"
                   @click="claim"
+                  v-else
                   >CLAIM</b-button
                 >
               </b-col>
-              <b-col cols="12" md="4" class="my-2">
+              <b-col cols="12" md="6" class="my-2">
+                <b-button
+                  class="btn font-weight-bold w-100 mx-auto"
+                  variant="outline-danger"
+                  >CANCEL</b-button
+                >
+              </b-col>
+              <b-col cols="12" md="6" class="my-2">
                 <b-button
                   class="w-100 mx-auto font-weight-bold"
                   variant="outline-dark"
@@ -187,7 +201,7 @@
                     this.collapse_c,
                     this.collapse_d,
                   ]"
-                  >CANCEL</b-button
+                  >CLOSE</b-button
                 >
               </b-col>
             </b-row>
@@ -197,16 +211,41 @@
         <b-collapse :id="collapse_a" class="mt-2" v-else>
           <b-card style="border: none">
             <b-row align-h="center">
-              <b-col cols="12" md="4" class="my-2">
-                <b-button class="btn btn-dark font-weight-bold w-100 mx-auto"
+              <b-col cols="12" class="my-2">
+                <b-button
+                  class="btn font-weight-bold w-100 mx-auto"
+                  variant="primary"
+                  @click="connect_wallet()"
+                  v-if="!isconnected"
+                  >CONNECT WALLET</b-button
+                >
+                <b-button
+                  class="btn font-weight-bold w-100 mx-auto"
+                  variant="primary"
+                  :disabled="!isconnected"
+                  v-else
                   >CONTRIBUTE</b-button
                 >
               </b-col>
-              <b-col cols="12" md="4" class="my-2">
+              <b-col cols="12" md="6" class="my-2">
+                <b-button
+                  class="btn font-weight-bold w-100 mx-auto"
+                  variant="outline-dark"
+                  >REFUND</b-button
+                >
+              </b-col>
+              <b-col cols="12" md="6" class="my-2">
                 <b-button
                   class="w-100 mx-auto font-weight-bold"
                   variant="outline-dark"
-                  >REFUND</b-button
+                  @click="show"
+                  v-b-toggle="[
+                    this.collapse_a,
+                    this.collapse_b,
+                    this.collapse_c,
+                    this.collapse_d,
+                  ]"
+                  >CLOSE</b-button
                 >
               </b-col>
             </b-row>
@@ -234,9 +273,9 @@
 </template>
 
 <script>
-
 import { client } from "../../lib/sanityClient";
 import { mapActions, mapState } from "vuex";
+import { isConnected } from "../store/getters";
 
 const Web3 = require("web3");
 const web3 = new Web3(
@@ -281,7 +320,7 @@ export default {
     "campContributors",
   ],
   methods: {
-    ...mapActions(["getCryptoprice"]),
+    ...mapActions(["getCryptoprice", "connect_wallet"]),
     claim() {
       this.goal_status = 100;
     },
@@ -306,7 +345,7 @@ export default {
     },
   },
   computed: {
-    ...mapState(["currentAccount", "rifPrice"]),
+    ...mapState(["currentAccount", "rifPrice", "isconnected"]),
     getStatus() {
       console.log((this.campPledged / this.campGoal) * 100);
       return (this.campPledged / this.campGoal) * 100;

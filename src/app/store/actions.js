@@ -291,6 +291,7 @@ export const actions = {
             users.forEach(async (user) => {
               console.log(`${user.userName} (${user.userAddress})`);
               commit("SET_CREATOR_USERNAME", { name: user.userName });
+              commit("SET_CREATOR_ADDRESS", { address: user.userAddress });
               commit("SET_CREATOR_SITE", { site: user.userSite });
               commit("SET_CREATOR_DESC", { desc: user.userDesc });
               commit("SET_CREATOR_TITLE", { title: user.userTitle });

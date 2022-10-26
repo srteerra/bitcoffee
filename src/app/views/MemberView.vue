@@ -121,31 +121,42 @@
             </div>
           </b-col>
         </b-row>
-        
+
         <!-- creator goals -->
-        <div
-          class="text-center text-lg-left"
-          style="width: 80%; margin: 0 auto"
-        >
-          <h1 class="font-weight-bold">{{ this.$route.params.id }}'s goals</h1>
-          <p class="font-weight-light">
-            Help {{ this.$route.params.id }} with the following goals.
-          </p>
+        <div class="user-goals__list text-center">
+          <h1 class="my-4 font-weight-bold">My goals</h1>
+          <p>Here you can help me to continue my stuff.</p>
+          <b-row class="mt-5">
+            <b-col cols="12" md="12" class="mx-auto">
+              <ul
+                class="d-flex justify-content-center justify-content-md-around flex-wrap p-0 m-0"
+              >
+                <li
+                  id="goal-per"
+                  v-for="(campaign, idx) in campaigns_rif"
+                  :key="idx"
+                >
+                  <UserGoalCard
+                    :collapse_a="'card' + idx"
+                    :collapse_b="'card' + idx"
+                    :collapse_c="'card' + idx"
+                    :collapse_d="'card' + idx"
+                    :campCategory="campaign.category"
+                    :campCreator="campaign.creator"
+                    :campDesc="campaign.description"
+                    :campTitle="campaign.title"
+                    :campGoal="campaign.goal"
+                    :campPledged="campaign.pledged"
+                    :campEndAt="campaign.endAt"
+                    :campStartAt="campaign.startAt"
+                    :campClaimed="campaign.claimed"
+                    :campContributors="campaign.contributors"
+                  />
+                </li>
+              </ul>
+            </b-col>
+          </b-row>
         </div>
-        <b-row class="creator-row my-1">
-          <b-col cols="12">
-            <ul class="d-flex justify-content-center flex-wrap p-0 m-0">
-              <li class="w-50" v-for="(card, idx) in cards" :key="idx">
-                <UserGoalCard
-                  :collapse_a="'card' + card.id"
-                  :collapse_b="'card' + card.id"
-                  :collapse_c="'card' + card.id"
-                  :collapse_d="'card' + card.id"
-                />
-              </li>
-            </ul>
-          </b-col>
-        </b-row>
       </div>
     </div>
   </div>
@@ -157,6 +168,17 @@ import DonateBoxView from "../components/DonateBoxView.vue";
 import Header from "../components/Header.vue";
 import { mapState } from "vuex";
 import { client } from "../../lib/sanityClient";
+
+const Web3 = require("web3");
+const web3 = new Web3(
+  Web3.givenProvider || "https://public-node.testnet.rsk.co"
+);
+
+const provider = window.ethereum;
+
+const artifact_crowdfunding = require("../../../build/contracts/CrowdFund.json");
+const artifact_crowdfunding_rif = require("../../../build/contracts/CrowdFundERC677.json");
+let tokenContract;
 
 export default {
   name: "MemberView",
@@ -193,6 +215,10 @@ export default {
       ],
       memberSince: "",
       memberVerified: false,
+      memberAddress: "",
+
+      campaigns_rif: [],
+      loadingCampaigns: true,
     };
   },
   components: {
@@ -219,6 +245,7 @@ export default {
               user.userAddress.slice(0, 4) + "..." + user.userAddress.slice(36);
             this.memberSince = user._createdAt;
             this.memberVerified = user.userVerify;
+            this.memberAddress = user.userAddress;
           });
         } else {
           console.log("Creator not found");
@@ -227,6 +254,9 @@ export default {
       .catch((err) => {
         console.log(err);
       });
+  },
+  created() {
+    this.startedCampaigns();
   },
   watch: {
     $route(to, from) {
@@ -258,7 +288,93 @@ export default {
         });
     },
   },
+  methods: {
+    async startedCampaigns() {
+      setTimeout(async () => {
+        if (provider) {
+          const net = await web3.eth.net.getId();
+          let contributors = [];
+
+          tokenContract = new web3.eth.Contract(
+            artifact_crowdfunding_rif.abi,
+            artifact_crowdfunding_rif.networks[net].address
+          );
+
+          tokenContract.setProvider(
+            Web3.givenProvider || "https://public-node.testnet.rsk.co"
+          );
+
+          const totalCamps = await tokenContract.methods
+            .creatorCamps(await this.memberAddress)
+            .call();
+
+          if (totalCamps < 1) {
+            console.log("No campaigns");
+          } else {
+            for (var i = 0; i <= totalCamps; i++) {
+              const campaign = await tokenContract.methods
+                .campaignsAddress(this.memberAddress, i)
+                .call();
+
+              const usersOn = await tokenContract.methods
+                .contributedCampaign(campaign.id, i)
+                .call();
+
+              contributors.push(usersOn);
+
+              var updatedCamp = Object.assign({}, campaign, {
+                contributors: contributors,
+              });
+              this.campaigns_rif.push(await updatedCamp);
+            }
+          }
+        } else {
+          console.log("No wallet");
+        }
+      }, 5000);
+    },
+
+    // Date formated
+    onContext1(ctx) {
+      // The date formatted
+      this.formattedStart = ctx.selectedFormatted;
+    },
+    onContext2(ctx) {
+      // The date formatted
+      this.formattedEnd = ctx.selectedFormatted;
+    },
+  },
   computed: {
+    ...mapState([
+      "currentAccount",
+      "creator_username",
+      "creator_site",
+      "creator_subtitle",
+      "creator_avatar",
+      "creator_bg",
+      "fetchingDataWait",
+      "fetchingData",
+      "editProfileModal",
+      "listedCategories",
+    ]),
+
+    // Unixtimestamp for the start date
+    startUnixTime2() {
+      let min = new Date().getMinutes();
+      let hrs = new Date().getHours();
+      let mil = new Date().getSeconds();
+      const FDate = new Date(
+        this.formattedStart + " " + hrs + ":" + min + ":" + mil
+      );
+      return (this.startUnixtime = FDate.getTime() / 1000);
+    },
+
+    // Unixtimestamp for the start date
+    endUnixTime2() {
+      const FDate = new Date(this.formattedEnd + " 23:59:59");
+      return (this.endUnixtime = FDate.getTime() / 1000);
+    },
+
     title() {
       if (!this.creator_title) {
         return this.noTitle;
@@ -287,16 +403,6 @@ export default {
         return this.creator_description;
       }
     },
-    ...mapState([
-      "currentAccount",
-      "creator_username",
-      "creator_site",
-      "creator_subtitle",
-      "creator_avatar",
-      "creator_bg",
-      "fetchingDataWait",
-      "editProfileModal",
-    ]),
   },
 };
 </script>

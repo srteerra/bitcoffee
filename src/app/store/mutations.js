@@ -63,6 +63,10 @@ export const SET_CREATOR_SITE = (state, payload) => {
   state.creator_site = payload.site;
 };
 
+export const SET_CREATOR_ADDRESS = (state, payload) => {
+  state.creator_address = payload.address;
+};
+
 export const SET_CREATOR_TITLE = (state, payload) => {
   state.creator_title = payload.title;
 };
