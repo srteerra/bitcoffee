@@ -379,24 +379,36 @@
             </b-input-group>
           </b-form-group>
 
-          <div class="text-center">
+          <!-- <div class="text-center">
             <b-button
               v-b-tooltip.hover.top="'Set a 5 minutes goal'"
               :disabled="goalDateStart === ''"
               @click="hotGoal"
               ><b-icon icon="clock"></b-icon
             ></b-button>
-          </div>
+          </div> -->
 
-          <b-row class="w-75 my-5 mx-auto">
-            <b-col class="my-3" cols="12" md="6">
-              <b-button
-                class="w-100"
-                @click="hideModal"
-                variant="outline-primary"
-                >Close</b-button
-              >
-            </b-col>
+          <b-form-group
+            v-slot="{ ariaHotgoals }"
+            class="my-5 w-100"
+            label="Hot Goals"
+            label-for="hotGoalsRadios"
+            description="This will launch a short time goal."
+          >
+            <b-form-radio-group
+              id="hotGoalsRadios"
+              v-model="selectedHotGoal"
+              :options="hotGoalOptions"
+              :aria-describedby="ariaHotgoals"
+              button-variant="outline-dark"
+              size="md"
+              name="radio-btn-outline"
+              buttons
+              class="w-100"
+            ></b-form-radio-group>
+          </b-form-group>
+
+          <b-row class="my-5">
             <b-col class="my-3" cols="12" md="6">
               <b-button
                 @click="
@@ -413,6 +425,11 @@
                 class="w-100"
                 variant="primary"
                 >Launch goal</b-button
+              >
+            </b-col>
+            <b-col class="my-3" cols="12" md="6">
+              <b-button class="w-100" @click="hideModal" variant="outline-dark"
+                >Close</b-button
               >
             </b-col>
           </b-row>
@@ -763,6 +780,13 @@ export default {
         { id: "g4" },
         { id: "g4" },
       ],
+      selectedHotGoal: null,
+      hotGoalOptions: [
+        { value: null, text: "Custom" },
+        { value: "5mins", text: "5 mins" },
+        { value: "15mins", text: "15 mins" },
+        { value: "30mins", text: "30 mins" },
+      ],
       monthNames: [
         "January",
         "February",
@@ -1096,6 +1120,12 @@ export default {
   width: 650px;
   // min-width: 100%;
   // max-width: 850px;
+}
+
+#hotGoalsRadios {
+  label {
+    padding: 15px 0;
+  }
 }
 
 // banner styles
