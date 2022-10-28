@@ -50,6 +50,10 @@ export default {
   user_title: "",
   user_subtitle: "",
   user_description: "",
+  user_instagram: "",
+  user_twitter: "",
+  user_twitch: "",
+  user_youtube: "",
 
   // Creator data
   creator_username: null,
@@ -60,6 +64,10 @@ export default {
   creator_avatar: "",
   creator_bg: "",
   creator_description: null,
+  creator_instagram: null,
+  creator_twitter: null,
+  creator_twitch: null,
+  creator_youtube: null,
   creatorFound: false,
 
   // Notification center

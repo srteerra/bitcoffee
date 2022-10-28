@@ -71,9 +71,10 @@
                     pill
                     variant="outline-primary"
                     class="mb-2"
-                    href="https://www.google.com"
+                    :href="creator_instagram"
                     target="_blank"
                     v-b-tooltip.hover.top="'Instagram'"
+                    v-if="creator_instagram"
                   >
                     <b-icon icon="instagram" aria-label="Help"></b-icon>
                   </b-button>
@@ -82,9 +83,10 @@
                     pill
                     variant="outline-primary"
                     class="mb-2"
-                    href="https://www.google.com"
+                    :href="creator_twitter"
                     target="_blank"
                     v-b-tooltip.hover.top="'Twitter'"
+                    v-if="creator_twitter"
                   >
                     <b-icon icon="twitter" aria-label="Help"></b-icon>
                   </b-button>
@@ -93,9 +95,10 @@
                     pill
                     variant="outline-primary"
                     class="mb-2"
-                    href="https://www.google.com"
+                    :href="creator_youtube"
                     target="_blank"
                     v-b-tooltip.hover.top="'YouTube'"
+                    v-if="creator_youtube"
                   >
                     <b-icon icon="youtube" aria-label="Help"></b-icon>
                   </b-button>
@@ -104,9 +107,10 @@
                     pill
                     variant="outline-primary"
                     class="mb-2"
-                    href="https://www.google.com"
+                    :href="creator_twitch"
                     target="_blank"
                     v-b-tooltip.hover.top="'Twitch'"
+                    v-if="creator_twitch"
                   >
                     <b-icon icon="twitch" aria-label="Help"></b-icon>
                   </b-button>
@@ -350,6 +354,10 @@ export default {
       "creator_username",
       "creator_site",
       "creator_subtitle",
+      "creator_instagram",
+      "creator_twitter",
+      "creator_twitch",
+      "creator_youtube",
       "creator_avatar",
       "creator_bg",
       "fetchingDataWait",

@@ -92,8 +92,9 @@
               size="lg"
               pill
               variant="outline-primary"
-              class="mb-2"
-              href="https://www.google.com"
+              class="mb-2 mx-2"
+              :href="user_instagram"
+              v-if="user_instagram"
               target="_blank"
               v-b-tooltip.hover.top="'Instagram'"
             >
@@ -103,8 +104,9 @@
               size="lg"
               pill
               variant="outline-primary"
-              class="mb-2"
-              href="https://www.google.com"
+              class="mb-2 mx-2"
+              :href="user_twitter"
+              v-if="user_twitter"
               target="_blank"
               v-b-tooltip.hover.top="'Twitter'"
             >
@@ -114,8 +116,9 @@
               size="lg"
               pill
               variant="outline-primary"
-              class="mb-2"
-              href="https://www.google.com"
+              class="mb-2 mx-2"
+              :href="user_youtube"
+              v-if="user_youtube"
               target="_blank"
               v-b-tooltip.hover.top="'YouTube'"
             >
@@ -125,8 +128,9 @@
               size="lg"
               pill
               variant="outline-primary"
-              class="mb-2"
-              href="https://www.google.com"
+              class="mb-2 mx-2"
+              :href="user_twitch"
+              v-if="user_twitch"
               target="_blank"
               v-b-tooltip.hover.top="'Twitch'"
             >
@@ -213,7 +217,8 @@
             pill
             variant="outline-primary"
             class="mb-2 mx-2"
-            href="https://www.google.com"
+            :href="user_instagram"
+            v-if="user_instagram"
             target="_blank"
             v-b-tooltip.hover.top="'Instagram'"
           >
@@ -224,7 +229,8 @@
             pill
             variant="outline-primary"
             class="mb-2 mx-2"
-            href="https://www.google.com"
+            :href="user_twitter"
+            v-if="user_twitter"
             target="_blank"
             v-b-tooltip.hover.top="'Twitter'"
           >
@@ -235,7 +241,8 @@
             pill
             variant="outline-primary"
             class="mb-2 mx-2"
-            href="https://www.google.com"
+            :href="user_youtube"
+            v-if="user_youtube"
             target="_blank"
             v-b-tooltip.hover.top="'YouTube'"
           >
@@ -246,7 +253,8 @@
             pill
             variant="outline-primary"
             class="mb-2 mx-2"
-            href="https://www.google.com"
+            :href="user_twitch"
+            v-if="user_twitch"
             target="_blank"
             v-b-tooltip.hover.top="'Twitch'"
           >
@@ -717,6 +725,10 @@
                 title: newTitle,
                 sub: newSub,
                 desc: newDesc,
+                instagram: newInstagram,
+                twitter: newTwitter,
+                twitch: newTwitch,
+                youtube: newYoutube,
                 avatar: newAvatar,
                 bg: newBackground,
               })
@@ -812,6 +824,10 @@ export default {
       newSub: null,
       newDesc: null,
       newSite: null,
+      newInstagram: null,
+      newTwitter: null,
+      newTwitch: null,
+      newYoutube: null,
 
       noSite: "yourSite",
       noTitle: "No title added",
@@ -851,6 +867,10 @@ export default {
     this.newTitle = this.user_title;
     this.newSub = this.user_subtitle;
     this.newDesc = this.user_description;
+    this.newInstagram = this.user_instagram;
+    this.newTwitter = this.user_twitter;
+    this.newTwitch = this.user_twitch;
+    this.newYoutube = this.user_youtube;
 
     if (this.newUsername === this.username) {
       this.isAvailable = true;
@@ -1067,6 +1087,10 @@ export default {
       "user_site",
       "user_subtitle",
       "user_description",
+      "user_instagram",
+      "user_twitter",
+      "user_twitch",
+      "user_youtube",
       "fetchingDataWait",
       "editProfileModal",
       "getCountCampaignsRIF",

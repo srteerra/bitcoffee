@@ -280,7 +280,7 @@ export const actions = {
       commit("LOADING_DATA", true);
       console.log(payload.user);
       const query =
-        '*[_type == "users" && userName == $user] {userName, userAddress, userSite, userTitle, userDesc, userSubtitle, userAvatar, userBg}';
+        '*[_type == "users" && userName == $user] {userName, userAddress, userSite, userTitle, userDesc, userSubtitle, userAvatar, userBg, userInstagram, userTwitter, userTwitch, userYoutube}';
       const params = { user: payload.user };
 
       client
@@ -295,6 +295,12 @@ export const actions = {
               commit("SET_CREATOR_SITE", { site: user.userSite });
               commit("SET_CREATOR_DESC", { desc: user.userDesc });
               commit("SET_CREATOR_TITLE", { title: user.userTitle });
+              commit("SET_CREATOR_INSTAGRAM", {
+                instagram: user.userInstagram,
+              });
+              commit("SET_CREATOR_TWITTER", { twitter: user.userTwitter });
+              commit("SET_CREATOR_TWITCH", { twitch: user.userTwitch });
+              commit("SET_CREATOR_YOUTUBE", { youtube: user.userYoutube });
               commit("SET_CREATOR_SUBTITLE", {
                 subtitle: user.userSubtitle,
               });
@@ -512,6 +518,18 @@ export const actions = {
                               subtitle: users.userSubtitle,
                             });
                             commit("SET_USER_DESC", { desc: users.userDesc });
+                            commit("SET_USER_INSTAGRAM", {
+                              instagram: users.userInstagram,
+                            });
+                            commit("SET_USER_TWITTER", {
+                              twitter: users.userTwitter,
+                            });
+                            commit("SET_USER_TWITCH", {
+                              twitch: users.userTwitch,
+                            });
+                            commit("SET_USER_YOUTUBE", {
+                              youtube: users.userYoutube,
+                            });
 
                             if (users.userAvatar == undefined) {
                               commit("SET_AVATAR", { avatar: undefined });
@@ -560,6 +578,18 @@ export const actions = {
                               subtitle: users.userSubtitle,
                             });
                             commit("SET_USER_DESC", { desc: users.userDesc });
+                            commit("SET_USER_INSTAGRAM", {
+                              instagram: users.userInstagram,
+                            });
+                            commit("SET_USER_TWITTER", {
+                              twitter: users.userTwitter,
+                            });
+                            commit("SET_USER_TWITCH", {
+                              twitch: users.userTwitch,
+                            });
+                            commit("SET_USER_YOUTUBE", {
+                              youtube: users.userYoutube,
+                            });
 
                             if (users.userAvatar == undefined) {
                               commit("SET_AVATAR", { avatar: undefined });
@@ -771,6 +801,10 @@ export const actions = {
               userTitle: nTitle,
               userSubtitle: nSubitle,
               userDesc: nDesc,
+              userInstagram: payload.instagram,
+              userTwitter: payload.twitter,
+              userTwitch: payload.twitch,
+              userYoutube: payload.youtube,
             })
             .commit()
             .then((updatedAcc) => {
@@ -785,6 +819,18 @@ export const actions = {
                 subtitle: updatedAcc.userSubtitle,
               });
               commit("SET_USER_DESC", { desc: updatedAcc.userDesc });
+              commit("SET_USER_INSTAGRAM", {
+                instagram: updatedAcc.userInstagram,
+              });
+              commit("SET_USER_TWITTER", {
+                twitter: updatedAcc.userTwitter,
+              });
+              commit("SET_USER_TWITCH", {
+                twitch: updatedAcc.userTwitch,
+              });
+              commit("SET_USER_YOUTUBE", {
+                youtube: updatedAcc.userYoutube,
+              });
               commit("LOADING_DATA_WAIT");
               commit("SHOW_EDIT_PROFILE");
               dispatch("addNotification", {
@@ -811,6 +857,10 @@ export const actions = {
               userTitle: nTitle,
               userSubtitle: nSubitle,
               userDesc: nDesc,
+              userInstagram: payload.instagram,
+              userTwitter: payload.twitter,
+              userTwitch: payload.twitch,
+              userYoutube: payload.youtube,
             })
             .commit()
             .then((updatedAcc) => {
@@ -825,6 +875,18 @@ export const actions = {
                 subtitle: updatedAcc.userSubtitle,
               });
               commit("SET_USER_DESC", { desc: updatedAcc.userDesc });
+              commit("SET_USER_INSTAGRAM", {
+                instagram: updatedAcc.userInstagram,
+              });
+              commit("SET_USER_TWITTER", {
+                twitter: updatedAcc.userTwitter,
+              });
+              commit("SET_USER_TWITCH", {
+                twitch: updatedAcc.userTwitch,
+              });
+              commit("SET_USER_YOUTUBE", {
+                youtube: updatedAcc.userYoutube,
+              });
               commit("LOADING_DATA_WAIT");
               commit("SHOW_EDIT_PROFILE");
               dispatch("addNotification", {
