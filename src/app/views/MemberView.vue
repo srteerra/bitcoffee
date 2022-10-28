@@ -145,6 +145,7 @@
                     :collapse_b="'card' + idx"
                     :collapse_c="'card' + idx"
                     :collapse_d="'card' + idx"
+                    :campId="campaign.id"
                     :campCategory="campaign.category"
                     :campCreator="campaign.creator"
                     :campDesc="campaign.description"
@@ -154,7 +155,6 @@
                     :campEndAt="campaign.endAt"
                     :campStartAt="campaign.startAt"
                     :campClaimed="campaign.claimed"
-                    :campContributors="campaign.contributors"
                   />
                 </li>
               </ul>

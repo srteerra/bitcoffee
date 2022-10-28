@@ -159,6 +159,7 @@
                 :collapse_b="'card' + idx"
                 :collapse_c="'card' + idx"
                 :collapse_d="'card' + idx"
+                :campId="campaign.id"
                 :campCategory="campaign.category"
                 :campCreator="campaign.creator"
                 :campDesc="campaign.description"
@@ -168,7 +169,6 @@
                 :campEndAt="campaign.endAt"
                 :campStartAt="campaign.startAt"
                 :campClaimed="campaign.claimed"
-                :campContributors="campaign.contributors"
               />
             </li>
           </ul>
@@ -395,26 +395,6 @@
               ><b-icon icon="clock"></b-icon
             ></b-button>
           </div> -->
-
-          <b-form-group
-            v-slot="{ ariaHotgoals }"
-            class="my-5 w-100"
-            label="Hot Goals"
-            label-for="hotGoalsRadios"
-            description="This will launch a short time goal."
-          >
-            <b-form-radio-group
-              id="hotGoalsRadios"
-              v-model="selectedHotGoal"
-              :options="hotGoalOptions"
-              :aria-describedby="ariaHotgoals"
-              button-variant="outline-dark"
-              size="md"
-              name="radio-btn-outline"
-              buttons
-              class="w-100"
-            ></b-form-radio-group>
-          </b-form-group>
 
           <b-row class="my-5">
             <b-col class="my-3" cols="12" md="6">
@@ -920,7 +900,6 @@ export default {
     async startedCampaigns() {
       if (provider) {
         const net = await web3.eth.net.getId();
-        let contributors = [];
 
         tokenContract = new web3.eth.Contract(
           artifact_crowdfunding_rif.abi,
@@ -938,21 +917,13 @@ export default {
         if (totalCamps < 1) {
           console.log("No campaigns");
         } else {
-          for (var i = 0; i <= totalCamps; i++) {
-            const campaign = await tokenContract.methods
+          for (let i = 0; i <= totalCamps; i++) {
+            let campaign = await tokenContract.methods
               .campaignsAddress(this.currentAccount, i)
               .call();
 
-            const usersOn = await tokenContract.methods
-              .contributedCampaign(campaign.id, i)
-              .call();
-
-            contributors.push(usersOn);
-
-            var updatedCamp = Object.assign({}, campaign, {
-              contributors: contributors,
-            });
-            this.campaigns_rif.push(await updatedCamp);
+            this.campaigns_rif.push(await campaign);
+            console.log(this.campaigns_rif);
           }
         }
       } else {

@@ -115,6 +115,10 @@ contract CrowdFund {
     function creatorCamps(address _add) public view returns (uint) {
         return campaignsAddress[_add].length;
     }
+    
+    function totalContributors(uint _camp) public view returns (uint) {
+        return contributedCampaign[_camp].length;
+    }
 
     function cancel(uint _id) external {
         Campaign memory campaign = campaigns[_id];

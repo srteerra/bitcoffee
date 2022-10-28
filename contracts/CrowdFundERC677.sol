@@ -116,6 +116,10 @@ contract CrowdFundERC677 {
         return campaignsAddress[_add].length;
     }
 
+    function totalContributors(uint _camp) public view returns (uint) {
+        return contributedCampaign[_camp].length;
+    }
+
     function cancel(uint _id) external {
         Campaign memory campaign = campaigns[_id];
         require(campaign.creator == msg.sender, "not creator");
