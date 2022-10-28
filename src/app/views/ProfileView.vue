@@ -354,11 +354,15 @@
               :date-format-options="{ month: 'long', day: '2-digit' }"
               v-model="goalDateStart"
               menu-class="w-100"
+              :disabled="pickerDis"
               calendar-width="100%"
+              today-variant="primary"
               reset-button
+              reset-button-variant="primary w-100"
               @context="onContext1"
               class="mb-2 rounded-pill pl-3"
-            ></b-form-datepicker>
+              ><p>Hola</p></b-form-datepicker
+            >
           </b-form-group>
 
           <b-form-group>
@@ -378,15 +382,6 @@
               ></b-form-datepicker>
             </b-input-group>
           </b-form-group>
-
-          <!-- <div class="text-center">
-            <b-button
-              v-b-tooltip.hover.top="'Set a 5 minutes goal'"
-              :disabled="goalDateStart === ''"
-              @click="hotGoal"
-              ><b-icon icon="clock"></b-icon
-            ></b-button>
-          </div> -->
           <div class="text-center mt-5">
             <div v-b-toggle.hotGoals @click="(pickerDis = !pickerDis), reset">
               <p>Or select a hot goal</p>
@@ -465,18 +460,7 @@
             <b-col class="my-3" cols="12" md="6">
               <b-button
                 :disabled="launchValid || !termsValid"
-                @click="
-                  launchGoal(),
-                    launchGoalRIF({
-                      amount: goalAmount,
-                      startDate: startUnixtime,
-                      endDate: endUnixtime,
-                      title: goalTitle,
-                      desc: goalDesc,
-                      category: goalCategory,
-                    }),
-                    startedCampaigns()
-                "
+                @click="launchGoal(), startedCampaigns()"
                 class="w-100"
                 variant="primary"
                 >Launch goal</b-button
@@ -1037,31 +1021,10 @@ export default {
       // Disabling oll days before
       return day <= selected;
     },
-    // hotGoal() {
-    //   // Get today date for date-picker
-    //   const today = new Date();
-    //   const MM = today.getMonth() + 1;
-    //   const YYYY = today.getFullYear();
-    //   const DD = today.getDate();
-
-    //   // Get the current time
-    //   let min = new Date().getMinutes() + 5;
-    //   let hrs = new Date().getHours();
-    //   let mil = new Date().getSeconds();
-
-    //   // Set the current date in date-picker
-    //   this.goalDateEnd = YYYY + "-" + MM + "-" + DD;
-
-    //   // Send the new unixtime
-    //   const FDate = new Date(
-    //     this.formattedEnd + " " + hrs + ":" + min + ":" + mil
-    //   );
-    //   this.endUnixtime = FDate.getTime() / 1000;
-    // },
 
     launchGoal() {
       if (this.selected === "") {
-        let min = new Date().getMinutes();
+        let min = new Date().getMinutes() + 5;
         let hrs = new Date().getHours();
         let mil = new Date().getSeconds();
         const FDate1 = new Date(
@@ -1071,15 +1034,17 @@ export default {
         // Unixtimestamp for the start date
         const FDate2 = new Date(this.formattedEnd + " 23:59:59");
         this.endUnixtime = FDate2.getTime() / 1000;
+        this.launchGoalRIF({
+          amount: this.goalAmount,
+          startDate: FDate1.getTime() / 1000,
+          endDate: FDate2.getTime() / 1000,
+          title: this.goalTitle,
+          desc: this.goalDesc,
+          category: this.goalCategory,
+        });
       } else {
-        // Get today date for date-picker
-        const today = new Date();
-        const MM = today.getMonth() + 1;
-        const YYYY = today.getFullYear();
-        const DD = today.getDate();
-
         // Get the current time
-        let min = new Date().getMinutes();
+        let min = new Date().getMinutes() + 5;
         let hrs = new Date().getHours();
         let mil = new Date().getSeconds();
 
@@ -1089,71 +1054,51 @@ export default {
         this.startUnixtime = FDate1.getTime() / 1000;
 
         switch (this.selected) {
-          case 5:
-            // Set the current date in date-picker
-            this.goalDateEnd = YYYY + "-" + MM + "-" + DD;
-
+          case "5":
             // Send the new unixtime
             const FDate5 = new Date(
-              this.formattedEnd + " " + hrs + ":" + (min + 5) + ":" + mil
+              this.formattedEnd + " " + hrs + ":" + (min + 10) + ":" + mil
             );
             this.endUnixtime = FDate5.getTime() / 1000;
             break;
 
-          case 10:
-            // Set the current date in date-picker
-            this.goalDateEnd = YYYY + "-" + MM + "-" + DD;
-
+          case "10":
             // Send the new unixtime
             const FDate10 = new Date(
-              this.formattedEnd + " " + hrs + ":" + (min + 10) + ":" + mil
+              this.formattedEnd + " " + hrs + ":" + (min + 15) + ":" + mil
             );
             this.endUnixtime = FDate10.getTime() / 1000;
             break;
 
-          case 15:
-            // Set the current date in date-picker
-            this.goalDateEnd = YYYY + "-" + MM + "-" + DD;
-
+          case "15":
             // Send the new unixtime
             const FDate15 = new Date(
-              this.formattedEnd + " " + hrs + ":" + (min + 10) + ":" + mil
+              this.formattedEnd + " " + hrs + ":" + (min + 20) + ":" + mil
             );
             this.endUnixtime = FDate15.getTime() / 1000;
             break;
 
-          case 30:
-            // Set the current date in date-picker
-            this.goalDateEnd = YYYY + "-" + MM + "-" + DD;
-
+          case "30":
             // Send the new unixtime
             const FDate30 = new Date(
-              this.formattedEnd + " " + hrs + ":" + (min + 10) + ":" + mil
+              this.formattedEnd + " " + hrs + ":" + (min + 35) + ":" + mil
             );
             this.endUnixtime = FDate30.getTime() / 1000;
             break;
         }
+        this.launchGoalRIF({
+          amount: this.goalAmount,
+          startDate: this.startUnixtime,
+          endDate: this.endUnixtime,
+          title: this.goalTitle,
+          desc: this.goalDesc,
+          category: this.goalCategory,
+        });
       }
     },
   },
   computed: {
     ...mapState(["listedCategories"]),
-    // Unixtimestamp for the start date
-    // startUnixTime2() {
-    //   let min = new Date().getMinutes();
-    //   let hrs = new Date().getHours();
-    //   let mil = new Date().getSeconds();
-    //   const FDate = new Date(
-    //     this.formattedStart + " " + hrs + ":" + min + ":" + mil
-    //   );
-    //   return (this.startUnixtime = FDate.getTime() / 1000);
-    // },
-
-    // // Unixtimestamp for the start date
-    // endUnixTime2() {
-    //   const FDate = new Date(this.formattedEnd + " 23:59:59");
-    //   return (this.endUnixtime = FDate.getTime() / 1000);
-    // },
 
     title() {
       if (!this.user_title) {
@@ -1211,13 +1156,17 @@ export default {
         const YYYY = today.getFullYear();
         const DD = today.getDate();
         // Set the current date in date-picker
+        this.goalDateStart = YYYY + "-" + MM + "-" + DD;
         this.goalDateEnd = YYYY + "-" + MM + "-" + DD;
       } else {
         this.selected = "";
       }
     },
     launchValid() {
-      if (this.goalDateEnd === "" && this.selected === "") {
+      if (
+        this.goalDateEnd === "" ||
+        (this.pickerDis === true && this.selected === "")
+      ) {
         return true;
       } else {
         return false;
