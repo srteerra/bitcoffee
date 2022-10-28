@@ -113,7 +113,7 @@
           <b-col cols="3" class="stats-item__container my-3">
             <div>
               <h3>
-                <!-- <strong>{{ campId }}</strong> -->
+                <strong>{{ contributors.length - 1 }}</strong>
               </h3>
               <p>Supporters</p>
             </div>
@@ -363,14 +363,15 @@ export default {
       );
 
       const totalContributors = await tokenContract.methods
-        .creatorCamps(this.campId)
+        .totalContributors(this.campId)
         .call();
 
-      for (let i = 0; i <= totalContributors; i++) {
+      console.log(totalContributors);
+
+      for (let i = 0; i < totalContributors; i++) {
         this.contributors.push(
           await tokenContract.methods.contributedCampaign(this.campId, i).call()
         );
-        console.log("const: " + this.contributors);
       }
     },
   },

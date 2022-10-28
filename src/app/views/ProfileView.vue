@@ -468,7 +468,7 @@
             <b-col class="my-3" cols="12" md="6">
               <b-button
                 :disabled="launchValid || !termsValid"
-                @click="launchGoal(), startedCampaigns()"
+                @click="launchGoal()"
                 class="w-100"
                 variant="primary"
                 >Launch goal</b-button
@@ -981,7 +981,7 @@ export default {
         if (totalCamps < 1) {
           console.log("No campaigns");
         } else {
-          for (let i = 0; i <= totalCamps; i++) {
+          for (let i = 0; i < totalCamps; i++) {
             let campaign = await tokenContract.methods
               .campaignsAddress(this.currentAccount, i)
               .call();
