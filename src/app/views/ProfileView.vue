@@ -92,8 +92,9 @@
               size="lg"
               pill
               variant="outline-primary"
-              class="mb-2"
-              href="https://www.google.com"
+              class="mb-2 mx-2"
+              :href="user_instagram"
+              v-if="user_instagram"
               target="_blank"
               v-b-tooltip.hover.top="'Instagram'"
             >
@@ -103,8 +104,9 @@
               size="lg"
               pill
               variant="outline-primary"
-              class="mb-2"
-              href="https://www.google.com"
+              class="mb-2 mx-2"
+              :href="user_twitter"
+              v-if="user_twitter"
               target="_blank"
               v-b-tooltip.hover.top="'Twitter'"
             >
@@ -114,8 +116,9 @@
               size="lg"
               pill
               variant="outline-primary"
-              class="mb-2"
-              href="https://www.google.com"
+              class="mb-2 mx-2"
+              :href="user_youtube"
+              v-if="user_youtube"
               target="_blank"
               v-b-tooltip.hover.top="'YouTube'"
             >
@@ -125,8 +128,9 @@
               size="lg"
               pill
               variant="outline-primary"
-              class="mb-2"
-              href="https://www.google.com"
+              class="mb-2 mx-2"
+              :href="user_twitch"
+              v-if="user_twitch"
               target="_blank"
               v-b-tooltip.hover.top="'Twitch'"
             >
@@ -155,6 +159,7 @@
                 :collapse_b="'card' + idx"
                 :collapse_c="'card' + idx"
                 :collapse_d="'card' + idx"
+                :campId="campaign.id"
                 :campCategory="campaign.category"
                 :campCreator="campaign.creator"
                 :campDesc="campaign.description"
@@ -164,7 +169,6 @@
                 :campEndAt="campaign.endAt"
                 :campStartAt="campaign.startAt"
                 :campClaimed="campaign.claimed"
-                :campContributors="campaign.contributors"
               />
             </li>
           </ul>
@@ -213,7 +217,8 @@
             pill
             variant="outline-primary"
             class="mb-2 mx-2"
-            href="https://www.google.com"
+            :href="user_instagram"
+            v-if="user_instagram"
             target="_blank"
             v-b-tooltip.hover.top="'Instagram'"
           >
@@ -224,7 +229,8 @@
             pill
             variant="outline-primary"
             class="mb-2 mx-2"
-            href="https://www.google.com"
+            :href="user_twitter"
+            v-if="user_twitter"
             target="_blank"
             v-b-tooltip.hover.top="'Twitter'"
           >
@@ -235,7 +241,8 @@
             pill
             variant="outline-primary"
             class="mb-2 mx-2"
-            href="https://www.google.com"
+            :href="user_youtube"
+            v-if="user_youtube"
             target="_blank"
             v-b-tooltip.hover.top="'YouTube'"
           >
@@ -246,7 +253,8 @@
             pill
             variant="outline-primary"
             class="mb-2 mx-2"
-            href="https://www.google.com"
+            :href="user_twitch"
+            v-if="user_twitch"
             target="_blank"
             v-b-tooltip.hover.top="'Twitch'"
           >
@@ -460,10 +468,15 @@
             <b-col class="my-3" cols="12" md="6">
               <b-button
                 :disabled="launchValid || !termsValid"
-                @click="launchGoal(), startedCampaigns()"
+                @click="launchGoal()"
                 class="w-100"
                 variant="primary"
                 >Launch goal</b-button
+              >
+            </b-col>
+            <b-col class="my-3" cols="12" md="6">
+              <b-button class="w-100" @click="hideModal" variant="outline-dark"
+                >Close</b-button
               >
             </b-col>
           </b-row>
@@ -751,6 +764,10 @@
                 title: newTitle,
                 sub: newSub,
                 desc: newDesc,
+                instagram: newInstagram,
+                twitter: newTwitter,
+                twitch: newTwitch,
+                youtube: newYoutube,
                 avatar: newAvatar,
                 bg: newBackground,
               })
@@ -816,6 +833,13 @@ export default {
         { id: "g4" },
         { id: "g4" },
       ],
+      selectedHotGoal: null,
+      hotGoalOptions: [
+        { value: null, text: "Custom" },
+        { value: "5mins", text: "5 mins" },
+        { value: "15mins", text: "15 mins" },
+        { value: "30mins", text: "30 mins" },
+      ],
       monthNames: [
         "January",
         "February",
@@ -841,6 +865,10 @@ export default {
       newSub: null,
       newDesc: null,
       newSite: null,
+      newInstagram: null,
+      newTwitter: null,
+      newTwitch: null,
+      newYoutube: null,
       holea: 1,
 
       noSite: "yourSite",
@@ -883,6 +911,10 @@ export default {
     this.newTitle = this.user_title;
     this.newSub = this.user_subtitle;
     this.newDesc = this.user_description;
+    this.newInstagram = this.user_instagram;
+    this.newTwitter = this.user_twitter;
+    this.newTwitch = this.user_twitch;
+    this.newYoutube = this.user_youtube;
 
     if (this.newUsername === this.username) {
       this.isAvailable = true;
@@ -932,7 +964,6 @@ export default {
     async startedCampaigns() {
       if (provider) {
         const net = await web3.eth.net.getId();
-        let contributors = [];
 
         tokenContract = new web3.eth.Contract(
           artifact_crowdfunding_rif.abi,
@@ -950,21 +981,13 @@ export default {
         if (totalCamps < 1) {
           console.log("No campaigns");
         } else {
-          for (var i = 0; i <= totalCamps; i++) {
-            const campaign = await tokenContract.methods
+          for (let i = 0; i < totalCamps; i++) {
+            let campaign = await tokenContract.methods
               .campaignsAddress(this.currentAccount, i)
               .call();
 
-            const usersOn = await tokenContract.methods
-              .contributedCampaign(campaign.id, i)
-              .call();
-
-            contributors.push(usersOn);
-
-            var updatedCamp = Object.assign({}, campaign, {
-              contributors: contributors,
-            });
-            this.campaigns_rif.push(await updatedCamp);
+            this.campaigns_rif.push(await campaign);
+            console.log(this.campaigns_rif);
           }
         }
       } else {
@@ -1137,6 +1160,10 @@ export default {
       "user_site",
       "user_subtitle",
       "user_description",
+      "user_instagram",
+      "user_twitter",
+      "user_twitch",
+      "user_youtube",
       "fetchingDataWait",
       "editProfileModal",
       "getCountCampaignsRIF",
@@ -1222,6 +1249,12 @@ export default {
   width: 650px;
   // min-width: 100%;
   // max-width: 850px;
+}
+
+#hotGoalsRadios {
+  label {
+    padding: 15px 0;
+  }
 }
 
 // banner styles

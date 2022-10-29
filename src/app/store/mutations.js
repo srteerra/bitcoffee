@@ -59,8 +59,40 @@ export const SET_USER_SITE = (state, payload) => {
   state.user_site = payload.site;
 };
 
+export const SET_USER_INSTAGRAM = (state, payload) => {
+  state.user_instagram = payload.instagram;
+};
+
+export const SET_USER_TWITTER = (state, payload) => {
+  state.user_twitter = payload.twitter;
+};
+
+export const SET_USER_TWITCH = (state, payload) => {
+  state.user_twitch = payload.twitch;
+};
+
+export const SET_USER_YOUTUBE = (state, payload) => {
+  state.user_youtube = payload.youtube;
+};
+
 export const SET_CREATOR_SITE = (state, payload) => {
   state.creator_site = payload.site;
+};
+
+export const SET_CREATOR_INSTAGRAM = (state, payload) => {
+  state.creator_instagram = payload.instagram;
+};
+
+export const SET_CREATOR_TWITTER = (state, payload) => {
+  state.creator_twitter = payload.twitter;
+};
+
+export const SET_CREATOR_TWITCH = (state, payload) => {
+  state.creator_twitch = payload.twitch;
+};
+
+export const SET_CREATOR_YOUTUBE = (state, payload) => {
+  state.creator_youtube = payload.youtube;
 };
 
 export const SET_CREATOR_ADDRESS = (state, payload) => {

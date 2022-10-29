@@ -113,7 +113,7 @@
           <b-col class="stats-item__container my-3">
             <div>
               <h3>
-                <strong>{{ campContributors.length - 1 }}</strong>
+                <strong>{{ contributors.length - 1 }}</strong>
               </h3>
               <p>Supporters</p>
             </div>
@@ -280,6 +280,10 @@ const web3 = new Web3(
 
 const provider = window.ethereum;
 
+const artifact_crowdfunding = require("../../../build/contracts/CrowdFund.json");
+const artifact_crowdfunding_rif = require("../../../build/contracts/CrowdFundERC677.json");
+let tokenContract;
+
 export default {
   name: "UserGoalCard",
 
@@ -297,6 +301,9 @@ export default {
       counter: 0,
       campUser: "",
       campGoalRIF: 0,
+      campUserAddress: null,
+      supporters: 0,
+      contributors: [],
     };
   },
   props: [
@@ -313,7 +320,7 @@ export default {
     "campEndAt",
     "campStartAt",
     "campClaimed",
-    "campContributors",
+    "campId",
   ],
   methods: {
     ...mapActions(["getCryptoprice", "connect_wallet"]),
@@ -337,6 +344,30 @@ export default {
       if (t <= 0) {
         clearInterval(this.counter);
         this.time = false;
+      }
+    },
+    async getSupporters() {
+      const net = await web3.eth.net.getId();
+
+      tokenContract = new web3.eth.Contract(
+        artifact_crowdfunding_rif.abi,
+        artifact_crowdfunding_rif.networks[net].address
+      );
+
+      tokenContract.setProvider(
+        Web3.givenProvider || "https://public-node.testnet.rsk.co"
+      );
+
+      const totalContributors = await tokenContract.methods
+        .totalContributors(this.campId)
+        .call();
+
+      console.log(totalContributors);
+
+      for (let i = 0; i < totalContributors; i++) {
+        this.contributors.push(
+          await tokenContract.methods.contributedCampaign(this.campId, i).call()
+        );
       }
     },
   },
@@ -392,7 +423,9 @@ export default {
     },
   },
   async beforeMount() {
-    const query = '*[_type == "users" && _id == $addCreator] {userName}';
+    this.getSupporters();
+    const query =
+      '*[_type == "users" && _id == $addCreator] {userName, userAddress}';
     const params = { addCreator: new String(this.campCreator).toLowerCase() };
 
     client
@@ -400,6 +433,7 @@ export default {
       .then((user) => {
         if (user.length > 0) {
           this.campUser = user[0].userName;
+          this.campUserAddress = user[0].userAddress;
         } else {
           console.log("error");
         }
