@@ -165,6 +165,12 @@
             new String(campCreator).toUpperCase()
           "
         >
+          <b-row v-if="userContribution > 0">
+            <b-col class="text-center">
+              <h5><strong>My contribution</strong></h5>
+              <p>{{ convertedRIFContribution }} RIF</p>
+            </b-col>
+          </b-row>
           <b-card style="border: none">
             <b-row align-h="center">
               <b-col cols="12" class="my-2">
@@ -228,6 +234,12 @@
         </b-collapse>
 
         <b-collapse :id="collapse_a" class="mt-2" v-else>
+          <b-row v-if="userContribution > 0">
+            <b-col class="text-center">
+              <h5><strong>My contribution</strong></h5>
+              <p>{{ convertedRIFContribution }} RIF</p>
+            </b-col>
+          </b-row>
           <b-card style="border: none">
             <b-row align-h="center">
               <b-col cols="12" class="my-2">
@@ -274,21 +286,32 @@
                     class="btn font-weight-bold w-100 mx-auto"
                     variant="primary"
                     @click="pledgeRIF({ id: campId, amount: pledgeAmount })"
-                    :disabled="!isClaimed"
+                    :disabled="isClaimed"
                     v-else
                     >CONTRIBUTE</b-button
                   >
                 </div>
               </b-col>
-              <b-col cols="12" md="6" class="my-2">
+              <b-col class="my-2" v-if="userOnCampaign">
+                <b-button
+                  class="btn font-weight-bold w-100 mx-auto"
+                  variant="dark"
+                  v-if="userContribution == 0"
+                  disabled
+                  ><span
+                    ><b-icon icon="check-circle-fill" class="pr-1"></b-icon
+                  ></span>
+                  REFUNDED</b-button
+                >
                 <b-button
                   class="btn font-weight-bold w-100 mx-auto"
                   variant="outline-dark"
-                  :disabled="isClaimed"
+                  v-else
+                  @click="refundRIF({ id: campId })"
                   >REFUND</b-button
                 >
               </b-col>
-              <b-col cols="12" md="6" class="my-2">
+              <b-col class="my-2">
                 <b-button
                   class="w-100 mx-auto font-weight-bold"
                   variant="outline-dark"
@@ -365,6 +388,8 @@ export default {
       pledgeAmount: "",
       pledgedTotal: 0,
       isClaimed: false,
+      userOnCampaign: false,
+      userContribution: 0,
     };
   },
   props: [
@@ -389,6 +414,7 @@ export default {
       "connect_wallet",
       "pledgeRIF",
       "claimRIF",
+      "refundRIF",
     ]),
     claim() {
       this.goal_status = 100;
@@ -431,25 +457,44 @@ export default {
       console.log(totalContributors);
 
       for (let i = 0; i < totalContributors; i++) {
-        this.contributors.push(
-          await tokenContract.methods.contributedCampaign(this.campId, i).call()
-        );
+        let contributor = await tokenContract.methods
+          .contributedCampaign(this.campId, i)
+          .call();
 
         let campaign = await tokenContract.methods
           .campaigns(this.campId)
           .call();
 
+        let pledgedAmount = await tokenContract.methods
+          .pledgedAmount(this.campId, ethereum.selectedAddress)
+          .call();
+        console.log(pledgedAmount);
+
         let amountRaised = web3.utils.fromWei(campaign.pledged, "ether");
+
+        if (
+          new String(contributor).toLowerCase() ===
+          new String(ethereum.selectedAddress).toLowerCase()
+        ) {
+          this.userOnCampaign = true;
+        }
+
+        this.contributors.push(contributor);
         this.pledgedTotal = amountRaised;
+        this.userContribution = pledgedAmount;
         this.isClaimed = campaign.claimed;
       }
     },
   },
   computed: {
     ...mapState(["currentAccount", "rifPrice", "isconnected"]),
+    convertedRIFContribution() {
+      return web3.utils.fromWei(this.userContribution, "ether");
+    },
     getStatus() {
-      console.log((this.campPledged / this.campGoal) * 100);
-      return (this.campPledged / this.campGoal) * 100;
+      let amountConvt = web3.utils.fromWei(this.campGoal, "ether");
+
+      return (this.pledgedTotal / amountConvt) * 100;
     },
     amountRIF() {
       const rif = this.campGoalRIF;

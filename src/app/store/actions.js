@@ -304,6 +304,22 @@ export const actions = {
       console.log("install a wallet");
     }
   },
+  async refundRIF({ commit, getters, dispatch }, payload) {
+    if (provider) {
+      const net = await web3.eth.net.getId();
+
+      tokenContract = new web3.eth.Contract(
+        artifact_crowdfunding_rif.abi,
+        artifact_crowdfunding_rif.networks[net].address
+      );
+
+      tokenContract.methods
+        .refund(payload.id)
+        .send({ from: ethereum.selectedAddress });
+    } else {
+      console.log("install a wallet");
+    }
+  },
   async updateBalance({ commit }) {
     if (provider) {
       const net = await web3.eth.net.getId();
