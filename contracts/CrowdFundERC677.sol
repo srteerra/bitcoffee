@@ -126,6 +126,7 @@ contract CrowdFundERC677 {
         require(block.timestamp < campaign.startAt, "started");
 
         delete campaigns[_id];
+        delete campaignsAddress[msg.sender];
         emit Cancel(_id);
     }
 

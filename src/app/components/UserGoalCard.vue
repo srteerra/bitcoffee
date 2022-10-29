@@ -178,6 +178,7 @@
                   <b-button
                     class="btn font-weight-bold w-100 mx-auto"
                     variant="primary"
+                    pill
                     @click="connect_wallet()"
                     v-if="!isconnected"
                     >CONNECT WALLET</b-button
@@ -185,8 +186,10 @@
                   <b-button
                     class="w-100 mx-auto btn font-weight-bold"
                     variant="primary"
+                    pill
                     @click="claimRIF({ id: campId })"
                     v-else
+                    ><span class="pr-2"><b-icon icon="cash"></b-icon></span
                     >CLAIM</b-button
                   >
                 </div>
@@ -194,6 +197,7 @@
                   <b-button
                     class="btn font-weight-bold w-100 mx-auto"
                     variant="primary"
+                    pill
                     @click="connect_wallet()"
                     v-if="!isconnected"
                     >CONNECT WALLET</b-button
@@ -201,8 +205,11 @@
                   <b-button
                     class="w-100 mx-auto btn font-weight-bold"
                     variant="primary"
+                    pill
                     disabled
                     v-else
+                    ><span class="pr-2"
+                      ><b-icon icon="check-circle-fill"></b-icon></span
                     >CLAIMED</b-button
                   >
                 </div>
@@ -210,8 +217,11 @@
               <b-col cols="12" md="6" class="my-2">
                 <b-button
                   class="btn font-weight-bold w-100 mx-auto"
-                  variant="outline-danger"
+                  pill
                   :disabled="isClaimed"
+                  v-b-modal.cancel-goal-modal
+                  variant="outline-danger"
+                  ><span class="pr-2"><b-icon icon="trash-fill"></b-icon></span
                   >CANCEL</b-button
                 >
               </b-col>
@@ -219,6 +229,7 @@
                 <b-button
                   class="w-100 mx-auto font-weight-bold"
                   variant="outline-dark"
+                  pill
                   @click="show"
                   v-b-toggle="[
                     this.collapse_a,
@@ -262,6 +273,7 @@
                   <b-button
                     class="btn font-weight-bold w-100 mx-auto"
                     variant="primary"
+                    pill
                     @click="connect_wallet()"
                     v-if="!isconnected"
                     >CONNECT WALLET</b-button
@@ -269,6 +281,7 @@
                   <b-button
                     class="btn font-weight-bold w-100 mx-auto"
                     variant="primary"
+                    pill
                     :disabled="isClaimed"
                     v-else
                     >GOAL ENDED</b-button
@@ -278,6 +291,7 @@
                   <b-button
                     class="btn font-weight-bold w-100 mx-auto"
                     variant="primary"
+                    pill
                     @click="connect_wallet()"
                     v-if="!isconnected"
                     >CONNECT WALLET</b-button
@@ -285,6 +299,7 @@
                   <b-button
                     class="btn font-weight-bold w-100 mx-auto"
                     variant="primary"
+                    pill
                     @click="pledgeRIF({ id: campId, amount: pledgeAmount })"
                     :disabled="isClaimed"
                     v-else
@@ -296,6 +311,7 @@
                 <b-button
                   class="btn font-weight-bold w-100 mx-auto"
                   variant="dark"
+                  pill
                   v-if="userContribution == 0"
                   disabled
                   ><span
@@ -306,6 +322,7 @@
                 <b-button
                   class="btn font-weight-bold w-100 mx-auto"
                   variant="outline-dark"
+                  pill
                   v-else
                   @click="refundRIF({ id: campId })"
                   >REFUND</b-button
@@ -315,6 +332,7 @@
                 <b-button
                   class="w-100 mx-auto font-weight-bold"
                   variant="outline-dark"
+                  pill
                   @click="show"
                   v-b-toggle="[
                     this.collapse_a,
@@ -346,6 +364,43 @@
         </b-row> -->
       </b-container>
     </div>
+
+    <!-- Cancel modal -->
+    <b-modal
+      id="cancel-goal-modal"
+      ref="cancel-goal-modal"
+      size="md"
+      :header-bg-variant="primary"
+      :header-text-variant="primary"
+      title="Cancel Goal"
+      centered
+      no-close-on-backdrop
+      no-close-on-esc
+      class="cancel__modal"
+      button-size="md"
+    >
+      <template #modal-header>
+        <h5 class="font-weight-bold m-0 py-2">
+          <span class="pr-2"><b-icon icon="trash-fill"></b-icon></span>Are you
+          sure?
+        </h5>
+      </template>
+      <b-container class="d-block text-center my-4">
+        <small>This will delete this goal.</small>
+      </b-container>
+      <template #modal-footer>
+        <div class="w-100 text-right">
+          <b-button variant="outline-dark"> No, keep it </b-button>
+          <b-button
+            variant="danger"
+            class="mr-3"
+            @click="cancelRIF({ id: campId })"
+          >
+            Yes, cancel
+          </b-button>
+        </div>
+      </template>
+    </b-modal>
   </b-container>
 </template>
 
@@ -415,6 +470,7 @@ export default {
       "pledgeRIF",
       "claimRIF",
       "refundRIF",
+      "cancelRIF",
     ]),
     claim() {
       this.goal_status = 100;

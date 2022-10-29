@@ -18,7 +18,6 @@ let ethereum = window.ethereum;
 const net = await web3.eth.net.getId();
 
 const artifact = require("../../../build/contracts/Bitcoffee.json");
-const artifactERC20 = require("../../../build/contracts/erc20.abi.json");
 const artifact_crowdfunding = require("../../../build/contracts/CrowdFund.json");
 const artifact_crowdfunding_rif = require("../../../build/contracts/CrowdFundERC677.json");
 let tokenContract;
@@ -315,6 +314,22 @@ export const actions = {
 
       tokenContract.methods
         .refund(payload.id)
+        .send({ from: ethereum.selectedAddress });
+    } else {
+      console.log("install a wallet");
+    }
+  },
+  async cancelRIF({ commit, getters, dispatch }, payload) {
+    if (provider) {
+      const net = await web3.eth.net.getId();
+
+      tokenContract = new web3.eth.Contract(
+        artifact_crowdfunding_rif.abi,
+        artifact_crowdfunding_rif.networks[net].address
+      );
+
+      tokenContract.methods
+        .cancel(payload.id)
         .send({ from: ethereum.selectedAddress });
     } else {
       console.log("install a wallet");
