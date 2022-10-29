@@ -1,6 +1,10 @@
 <template>
   <b-container class="user-goals__container my-5">
-    <div class="user-goal-card__container">
+    <div
+      class="user-goal-card__container"
+      data-aos="zoom-in"
+      data-aos-duration="1000"
+    >
       <div class="goal-completed" v-if="goal_status == 100">
         <p class="bg-dark font-weight-bold p-3">COMPLETED</p>
       </div>
@@ -12,9 +16,9 @@
         <!-- Image collapse -->
         <b-collapse :id="collapse_a" class="my-2">
           <b-card style="border: none">
-            <div class="text-center">
+            <div class="image__container text-center">
               <img
-                class="w-50 mx-auto"
+                class="image-img mx-auto"
                 src="../assets/images/user-goal.png"
                 alt="user-goal"
               />
@@ -497,6 +501,15 @@ export default {
       width: 100%;
       padding: 80px 60px 40px;
 
+      .image__container {
+        .image-img {
+          width: 50%;
+          @media (max-width: 460px) {
+            width: 100%;
+          }
+        }
+      }
+
       @media (max-width: 800px) {
         padding: 80px 10px 40px;
       }
@@ -565,12 +578,8 @@ export default {
       }
 
       @media (max-width: 800px) {
-        display: flex;
-        flex-wrap: wrap;
-
         .stats-item__container {
           max-width: 350px;
-          border-right: none;
         }
       }
     }
@@ -578,17 +587,7 @@ export default {
       border: none;
     }
 
-    @media (max-width: 580px) {
-      .stats-item__container:nth-child(2) {
-        border: none;
-      }
-    }
-
     @media (max-width: 428px) {
-      .stats-item__container:nth-child(1) {
-        border: none;
-      }
-
       .stats-item__container:nth-child(2) {
         border-right: 2px solid rgba(122, 122, 122, 0.4);
       }
@@ -597,6 +596,15 @@ export default {
     @media (max-width: 380px) {
       .stats-item__container:nth-child(2) {
         border: none;
+      }
+    }
+
+    @media (max-width: 280px) {
+      .stats-item__container:nth-child(1) {
+        border: none;
+      }
+      .stats-item__container:nth-child(2) {
+        border-right: 2px solid rgba(122, 122, 122, 0.4);
       }
     }
   }

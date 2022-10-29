@@ -1,9 +1,7 @@
 <template>
-  <div class="donate-card p-4">
+  <div class="donate-card">
     <div class="donate-card-title w-50 mx-auto my-4">
-      <h4 class="font-weight-bold my-3 p-0 mx-auto" style="width: 80%">
-        Buy me a coffee
-      </h4>
+      <h4 class="font-weight-bold my-3 p-0 mx-auto">Buy me a coffee</h4>
     </div>
     <div class="px-4">
       <section>
@@ -113,7 +111,7 @@
             </b-form-group>
           </div>
 
-          <p class="px-5">
+          <p class="px-0 px-sm-5">
             I appreciate all the support, with this donation I’ll keep doing
             what I love.
           </p>
@@ -368,6 +366,7 @@ export default {
   border-radius: 25px;
   width: 70%;
   margin: 0 auto;
+  padding: 30px;
 
   @media (max-width: 1300px) {
     width: 90%;
@@ -375,6 +374,10 @@ export default {
 
   @media (max-width: 992px) {
     width: 80%;
+  }
+  @media (max-width: 500px) {
+    width: 100%;
+    padding: 30px 10px;
   }
 
   .coffee2 {
@@ -438,6 +441,11 @@ export default {
       border-radius: 50px;
       border: 3px solid #000;
       outline: none;
+
+      @media (max-width: 680px) {
+        width: 80%;
+        margin: 0 auto;
+      }
     }
 
     .amountSelection-item {

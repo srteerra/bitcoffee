@@ -58,7 +58,7 @@
         <b-row class="creator-row">
           <b-col cols="12" md="12" lg="6" xl="7" class="p-0">
             <div class="creator-description__container">
-              <div class="creator-description__card px-5 py-4">
+              <div class="creator-description__card px-3 py-4">
                 <h3 class="font-weight-bold">{{ title }}</h3>
                 <p class="font-weight-bold">{{ subtitle }}</p>
                 <hr />
@@ -118,7 +118,7 @@
               </div>
             </div>
           </b-col>
-          <b-col cols="12" md="12" lg="6" xl="5">
+          <b-col cols="12" md="12" lg="6" xl="5" class="p-0">
             <!-- donation box -->
             <div class="donation-box__container">
               <DonateBoxView />
@@ -127,7 +127,7 @@
         </b-row>
 
         <!-- creator goals -->
-        <div class="user-goals__list">
+        <div class="user-goals__list p-0 m-0">
           <h1 class="my-4 font-weight-bold">My goals</h1>
           <p>Here you can help me to continue my stuff.</p>
           <b-row class="mt-5">
@@ -467,6 +467,10 @@ export default {
     .creator-description__container {
       width: 80%;
       margin: 0 auto 200px;
+
+      @media (max-width: 500px) {
+        width: 100%;
+      }
       .creator-description__card {
         box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
         border-radius: 20px;
