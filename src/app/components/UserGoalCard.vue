@@ -208,7 +208,7 @@
           </b-card>
         </b-collapse>
 
-        <b-collapse :id="collapse_a" class="mt-2" v-else>
+        <b-collapse :id="collapse_a" class="mt-2">
           <b-card style="border: none">
             <b-row align-h="center">
               <b-col cols="12" class="my-2">
@@ -216,14 +216,13 @@
                   class="btn font-weight-bold w-100 mx-auto"
                   variant="primary"
                   @click="connect_wallet()"
-                  v-if="!isconnected"
+                  v-if="false"
                   >CONNECT WALLET</b-button
                 >
                 <b-button
                   class="btn font-weight-bold w-100 mx-auto"
                   variant="primary"
-                  :disabled="!isconnected"
-                  v-else
+                  @click="pledgeRIF({ id: pledgeID, amount: pledgeAmount })"
                   >CONTRIBUTE</b-button
                 >
               </b-col>
@@ -308,6 +307,9 @@ export default {
       campUserAddress: null,
       supporters: 0,
       contributors: [],
+      pledgeID: "2",
+      pledgeAmount: "10",
+      pledgedTotal: 0,
     };
   },
   props: [
@@ -327,7 +329,7 @@ export default {
     "campId",
   ],
   methods: {
-    ...mapActions(["getCryptoprice", "connect_wallet"]),
+    ...mapActions(["getCryptoprice", "connect_wallet", "pledgeRIF"]),
     claim() {
       this.goal_status = 100;
     },
@@ -372,6 +374,11 @@ export default {
         this.contributors.push(
           await tokenContract.methods.contributedCampaign(this.campId, i).call()
         );
+
+        let total = await tokenContract.methods.campaigns(this.campId).call();
+
+        let amountRaised = web3.utils.fromWei(total.pledged, "ether");
+        this.pledgedTotal = amountRaised;
       }
     },
   },
@@ -389,18 +396,18 @@ export default {
         let str2 = str1.slice(0, 3);
         return str2 + "k";
       } else {
-        return rif;
+        return Number(rif).toFixed();
       }
     },
     pledgedRIF() {
-      const rif = this.campPledged;
+      const rif = this.pledgedTotal;
 
       if (rif > 99999) {
         let str1 = new String(rif);
         let str2 = str1.slice(0, 3);
         return str2 + "k";
       } else {
-        return rif;
+        return Number(rif).toFixed();
       }
     },
     amountUSD() {
@@ -415,7 +422,7 @@ export default {
       }
     },
     pledgedUSD() {
-      const usd = this.campPledged * this.rifPrice;
+      const usd = this.pledgedTotal * this.rifPrice;
 
       if (usd > 99999) {
         let str1 = new String(usd);

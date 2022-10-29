@@ -309,27 +309,19 @@ export default {
           );
 
           const totalCamps = await tokenContract.methods
-            .creatorCamps(await this.memberAddress)
+            .creatorCamps(this.memberAddress)
             .call();
 
           if (totalCamps < 1) {
             console.log("No campaigns");
           } else {
-            for (var i = 0; i <= totalCamps; i++) {
-              const campaign = await tokenContract.methods
+            for (let i = 0; i < totalCamps; i++) {
+              let campaign = await tokenContract.methods
                 .campaignsAddress(this.memberAddress, i)
                 .call();
 
-              const usersOn = await tokenContract.methods
-                .contributedCampaign(campaign.id, i)
-                .call();
-
-              contributors.push(usersOn);
-
-              var updatedCamp = Object.assign({}, campaign, {
-                contributors: contributors,
-              });
-              this.campaigns_rif.push(await updatedCamp);
+              this.campaigns_rif.push(await campaign);
+              console.log(this.campaigns_rif);
             }
           }
         } else {
