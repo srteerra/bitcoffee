@@ -18,9 +18,11 @@ let ethereum = window.ethereum;
 const net = await web3.eth.net.getId();
 
 const artifact = require("../../../build/contracts/Bitcoffee.json");
+const artifactERC20 = require("../../../build/contracts/erc20.abi.json");
 const artifact_crowdfunding = require("../../../build/contracts/CrowdFund.json");
 const artifact_crowdfunding_rif = require("../../../build/contracts/CrowdFundERC677.json");
 let tokenContract;
+let rifContract;
 
 // let tokenContract = new web3.eth.Contract(artifact.abi, artifact.networks[netID].address)
 
@@ -247,6 +249,43 @@ export const actions = {
 
       console.log(tokenContract);
       launch;
+    } else {
+      console.log("install a wallet");
+    }
+  },
+  async pledgeRIF({ commit, getters, dispatch }, payload) {
+    console.log(payload.id);
+    console.log(payload.amount);
+    if (provider) {
+      const amountRIF = web3.utils.toWei(payload.amount, "ether");
+      console.log(amountRIF);
+
+      const net = await web3.eth.net.getId();
+
+      tokenContract = new web3.eth.Contract(
+        artifact_crowdfunding_rif.abi,
+        artifact_crowdfunding_rif.networks[net].address
+      );
+
+      console.log(artifact_crowdfunding_rif.networks[net].address);
+
+      rifContract = new web3.eth.Contract(
+        artifact.abi,
+        "0x19f64674d8a5b4e652319f5e239efd3bc969a1fe"
+      );
+
+      rifContract.methods
+        .approve(artifact_crowdfunding_rif.networks[net].address, amountRIF)
+        .send({
+          from: ethereum.selectedAddress,
+        })
+        .on("receipt", function (receipt) {
+          console.log(receipt);
+        });
+
+      tokenContract.methods
+        .pledge(payload.id, amountRIF)
+        .send({ from: ethereum.selectedAddress });
     } else {
       console.log("install a wallet");
     }
