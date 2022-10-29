@@ -267,8 +267,6 @@ export const actions = {
         artifact_crowdfunding_rif.networks[net].address
       );
 
-      console.log(artifact_crowdfunding_rif.networks[net].address);
-
       rifContract = new web3.eth.Contract(
         artifact.abi,
         "0x19f64674d8a5b4e652319f5e239efd3bc969a1fe"
@@ -285,6 +283,22 @@ export const actions = {
 
       tokenContract.methods
         .pledge(payload.id, amountRIF)
+        .send({ from: ethereum.selectedAddress });
+    } else {
+      console.log("install a wallet");
+    }
+  },
+  async claimRIF({ commit, getters, dispatch }, payload) {
+    if (provider) {
+      const net = await web3.eth.net.getId();
+
+      tokenContract = new web3.eth.Contract(
+        artifact_crowdfunding_rif.abi,
+        artifact_crowdfunding_rif.networks[net].address
+      );
+
+      tokenContract.methods
+        .claim(payload.id)
         .send({ from: ethereum.selectedAddress });
     } else {
       console.log("install a wallet");

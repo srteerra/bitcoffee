@@ -168,25 +168,44 @@
           <b-card style="border: none">
             <b-row align-h="center">
               <b-col cols="12" class="my-2">
-                <b-button
-                  class="btn font-weight-bold w-100 mx-auto"
-                  variant="primary"
-                  @click="connect_wallet()"
-                  v-if="!isconnected"
-                  >CONNECT WALLET</b-button
-                >
-                <b-button
-                  class="w-100 mx-auto btn font-weight-bold"
-                  variant="primary"
-                  @click="claim"
-                  v-else
-                  >CLAIM</b-button
-                >
+                <div v-if="!isClaimed">
+                  <b-button
+                    class="btn font-weight-bold w-100 mx-auto"
+                    variant="primary"
+                    @click="connect_wallet()"
+                    v-if="!isconnected"
+                    >CONNECT WALLET</b-button
+                  >
+                  <b-button
+                    class="w-100 mx-auto btn font-weight-bold"
+                    variant="primary"
+                    @click="claimRIF({ id: campId })"
+                    v-else
+                    >CLAIM</b-button
+                  >
+                </div>
+                <div v-else>
+                  <b-button
+                    class="btn font-weight-bold w-100 mx-auto"
+                    variant="primary"
+                    @click="connect_wallet()"
+                    v-if="!isconnected"
+                    >CONNECT WALLET</b-button
+                  >
+                  <b-button
+                    class="w-100 mx-auto btn font-weight-bold"
+                    variant="primary"
+                    disabled
+                    v-else
+                    >CLAIMED</b-button
+                  >
+                </div>
               </b-col>
               <b-col cols="12" md="6" class="my-2">
                 <b-button
                   class="btn font-weight-bold w-100 mx-auto"
                   variant="outline-danger"
+                  :disabled="isClaimed"
                   >CANCEL</b-button
                 >
               </b-col>
@@ -208,28 +227,64 @@
           </b-card>
         </b-collapse>
 
-        <b-collapse :id="collapse_a" class="mt-2">
+        <b-collapse :id="collapse_a" class="mt-2" v-else>
           <b-card style="border: none">
             <b-row align-h="center">
               <b-col cols="12" class="my-2">
-                <b-button
-                  class="btn font-weight-bold w-100 mx-auto"
-                  variant="primary"
-                  @click="connect_wallet()"
-                  v-if="false"
-                  >CONNECT WALLET</b-button
+                <b-form-group
+                  id="PledgeAmountInputGroup"
+                  class="text-dark font-weight-bold"
+                  v-if="isconnected"
                 >
-                <b-button
-                  class="btn font-weight-bold w-100 mx-auto"
-                  variant="primary"
-                  @click="pledgeRIF({ id: pledgeID, amount: pledgeAmount })"
-                  >CONTRIBUTE</b-button
-                >
+                  <b-form-input
+                    id="PledgeAmountInput"
+                    v-model="pledgeAmount"
+                    type="text"
+                    class="w-100 py-2 px-3 mb-1"
+                    placeholder="Enter the amount..."
+                    :disabled="isClaimed"
+                    required
+                  />
+                </b-form-group>
+                <div v-if="isClaimed">
+                  <b-button
+                    class="btn font-weight-bold w-100 mx-auto"
+                    variant="primary"
+                    @click="connect_wallet()"
+                    v-if="!isconnected"
+                    >CONNECT WALLET</b-button
+                  >
+                  <b-button
+                    class="btn font-weight-bold w-100 mx-auto"
+                    variant="primary"
+                    :disabled="isClaimed"
+                    v-else
+                    >GOAL ENDED</b-button
+                  >
+                </div>
+                <div v-else>
+                  <b-button
+                    class="btn font-weight-bold w-100 mx-auto"
+                    variant="primary"
+                    @click="connect_wallet()"
+                    v-if="!isconnected"
+                    >CONNECT WALLET</b-button
+                  >
+                  <b-button
+                    class="btn font-weight-bold w-100 mx-auto"
+                    variant="primary"
+                    @click="pledgeRIF({ id: campId, amount: pledgeAmount })"
+                    :disabled="!isClaimed"
+                    v-else
+                    >CONTRIBUTE</b-button
+                  >
+                </div>
               </b-col>
               <b-col cols="12" md="6" class="my-2">
                 <b-button
                   class="btn font-weight-bold w-100 mx-auto"
                   variant="outline-dark"
+                  :disabled="isClaimed"
                   >REFUND</b-button
                 >
               </b-col>
@@ -307,9 +362,9 @@ export default {
       campUserAddress: null,
       supporters: 0,
       contributors: [],
-      pledgeID: "2",
-      pledgeAmount: "10",
+      pledgeAmount: "",
       pledgedTotal: 0,
+      isClaimed: false,
     };
   },
   props: [
@@ -329,7 +384,12 @@ export default {
     "campId",
   ],
   methods: {
-    ...mapActions(["getCryptoprice", "connect_wallet", "pledgeRIF"]),
+    ...mapActions([
+      "getCryptoprice",
+      "connect_wallet",
+      "pledgeRIF",
+      "claimRIF",
+    ]),
     claim() {
       this.goal_status = 100;
     },
@@ -375,10 +435,13 @@ export default {
           await tokenContract.methods.contributedCampaign(this.campId, i).call()
         );
 
-        let total = await tokenContract.methods.campaigns(this.campId).call();
+        let campaign = await tokenContract.methods
+          .campaigns(this.campId)
+          .call();
 
-        let amountRaised = web3.utils.fromWei(total.pledged, "ether");
+        let amountRaised = web3.utils.fromWei(campaign.pledged, "ether");
         this.pledgedTotal = amountRaised;
+        this.isClaimed = campaign.claimed;
       }
     },
   },
