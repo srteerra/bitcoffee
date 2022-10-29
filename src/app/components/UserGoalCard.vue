@@ -110,7 +110,7 @@
 
         <!-- Stats section -->
         <b-row class="stats justify-content-center">
-          <b-col cols="3" class="stats-item__container my-3">
+          <b-col class="stats-item__container my-3">
             <div>
               <h3>
                 <strong>{{ campContributors.length - 1 }}</strong>
@@ -119,18 +119,14 @@
             </div>
           </b-col>
 
-          <b-col
-            cols="3"
-            class="stats-item__container my-3"
-            style="color: #615040"
-          >
+          <b-col class="stats-item__container my-3" style="color: #615040">
             <h3>
               <strong>${{ pledgedUSD }}</strong>
             </h3>
             <small>{{ pledgedRIF }} RIF</small>
             <p>Raised</p>
           </b-col>
-          <b-col cols="3" class="stats-item__container my-3">
+          <b-col class="stats-item__container my-3">
             <div>
               <h3>
                 <strong>${{ amountUSD }}</strong>

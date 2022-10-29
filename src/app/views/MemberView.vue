@@ -123,7 +123,7 @@
         </b-row>
 
         <!-- creator goals -->
-        <div class="user-goals__list text-center">
+        <div class="user-goals__list">
           <h1 class="my-4 font-weight-bold">My goals</h1>
           <p>Here you can help me to continue my stuff.</p>
           <b-row class="mt-5">
