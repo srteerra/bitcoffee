@@ -27,10 +27,11 @@
           pill
           variant="outline-dark"
           class="px-5 font-weight-bold"
+          @click="copyAddress(currentAccount)"
           >{{ myaddress }} <b-icon icon="files"></b-icon
         ></b-button>
         <a
-          :href="'https://' + site"
+          :href="site"
           target="_blank"
           style="display: block"
           class="user-site my-4"
@@ -64,7 +65,10 @@
             ><span class="px-2"><b-icon icon="share"></b-icon></span
           ></b-button>
 
-          <b-button class="edit-add p-0 m-0" v-b-modal.goal-modal
+          <b-button
+            class="edit-add p-0 m-0"
+            variant="primary"
+            v-b-modal.goal-modal
             ><b-icon icon="plus" font-scale="1" class="p-0 m-0"></b-icon
           ></b-button>
         </div>
@@ -143,9 +147,9 @@
 
     <div class="user-goals__list text-center p-0 m-0">
       <h1 class="my-4 font-weight-bold">My goals</h1>
-      <p>Here you can help me to continue my stuff.</p>
+      <p>See your goals here.</p>
       <b-row class="mt-5">
-        <b-col cols="12" md="10" class="mx-auto">
+        <b-col cols="12" md="10" class="mx-auto" v-if="!noCampaigns">
           <ul
             class="d-flex justify-content-center justify-content-md-around flex-wrap p-0 m-0"
           >
@@ -173,6 +177,21 @@
             </li>
           </ul>
         </b-col>
+        <b-col
+          cols="12"
+          class="mx-auto text-center"
+          style="height: 500px"
+          v-else
+        >
+          <b-button
+            v-b-modal.goal-modal
+            variant="dark"
+            class="mt-3 px-5 py-2"
+            pill
+            ><span class="mr-1"><b-icon icon="plus"></b-icon></span> Launch a
+            new goal</b-button
+          >
+        </b-col>
       </b-row>
     </div>
 
@@ -189,13 +208,14 @@
       class="share__modal"
     >
       <b-container class="d-block text-center">
-        <h3 class="my-5">Share your profile</h3>
+        <h3 class="mt-5">Share your profile</h3>
+        <p>So new users will find you.</p>
       </b-container>
 
-      <div class="share__button w-100 text-center my-5">
+      <div class="share__button w-100 text-center mt-5">
         <b-button
           pill
-          class="w-75 px-4 py-2 my-4"
+          class="w-75 px-4 py-2 mt-4"
           variant="outline-dark"
           @click="copyAddress('www.bitcoffee.site/#/' + username)"
           v-b-tooltip.click="'Copied'"
@@ -203,8 +223,11 @@
           <span class="pl-1"><b-icon icon="files"></b-icon></span
         ></b-button>
       </div>
+      <div class="text-center mt-4">
+        <small>You can share this URL, is unique, is yours.</small>
+      </div>
 
-      <b-row class="mt-5 text-center">
+      <!-- <b-row class="mt-5 text-center">
         <p class="font-weight-bold mx-auto" style="color: gray">
           Or share in your social networks
         </p>
@@ -261,7 +284,7 @@
             <b-icon icon="twitch" aria-label="Help"></b-icon>
           </b-button>
         </div>
-      </b-row>
+      </b-row> -->
     </b-modal>
 
     <!-- Edit goals modal -->
@@ -899,6 +922,7 @@ export default {
       selected: "",
 
       campaigns_rif: [],
+      noCampaigns: false,
     };
   },
   components: {
@@ -980,6 +1004,7 @@ export default {
 
         if (totalCamps < 1) {
           console.log("No campaigns");
+          this.noCampaigns = true;
         } else {
           for (let i = 0; i < totalCamps; i++) {
             let campaign = await tokenContract.methods
