@@ -68,7 +68,7 @@
           <b-button
             class="edit-add p-0 m-0"
             variant="primary"
-            v-b-modal.goal-modal
+            @click="SHOW_EDIT_LAUNCH()"
             ><b-icon icon="plus" font-scale="1" class="p-0 m-0"></b-icon
           ></b-button>
         </div>
@@ -290,7 +290,7 @@
     <!-- Edit goals modal -->
     <b-modal
       id="goal-modal"
-      ref="goal-modal"
+      v-model="launchGoalModal"
       size="lg"
       hide-footer
       hide-header
@@ -299,214 +299,218 @@
       no-close-on-backdrop
       no-close-on-esc
     >
-      <b-container class="d-block text-center px-5">
-        <h3 class="mt-5">New goal</h3>
-        <p class="font-weight-light mb-5">
-          Launch a new goal to get supported by other people.
-        </p>
-        <b-form class="text-left">
-          <b-form-group
-            id="goal-category"
-            label="Goal Category"
-            label-for="goal-category"
-            class="my-3"
-          >
-            <b-form-select
+      <b-overlay :show="fetchingLaunch" rounded="sm">
+        <b-container class="d-block text-center px-5">
+          <h3 class="mt-5">New goal</h3>
+          <p class="font-weight-light mb-5">
+            Launch a new goal to get supported by other people.
+          </p>
+          <b-form class="text-left">
+            <b-form-group
               id="goal-category"
-              v-model="goalCategory"
-              :options="listedCategories"
-              class="rounded-pill pl-4"
-              required
-            ></b-form-select>
-          </b-form-group>
-
-          <b-form-group
-            id="goal-title"
-            label="Goal title"
-            label-for="goal-title"
-            class="my-3"
-            description="Example (A new guitar!)"
-          >
-            <b-form-input
-              id="goal-category"
-              type="text"
-              placeholder="Enter the goal title"
-              v-model="goalTitle"
-              class="rounded-pill pl-4"
-              required
-            ></b-form-input>
-          </b-form-group>
-
-          <b-form-group
-            id="goal-description"
-            label="Goal description"
-            label-for="goal-description"
-            class="my-3"
-            description="Example (I need it to make more music and learn new instruments.)"
-          >
-            <b-form-input
-              id="goal-description"
-              type="text"
-              placeholder="Enter the goal description"
-              v-model="goalDesc"
-              class="rounded-pill pl-4"
-              required
-            ></b-form-input>
-          </b-form-group>
-
-          <b-form-group
-            id="goal-amount"
-            label="Needed tokens amount"
-            label-for="goal-amount"
-            class="my-3"
-            description="How much do you need?"
-          >
-            <b-input-group class="mb-2 mr-sm-2 mb-sm-0">
-              <b-form-input
-                id="goal-amount"
-                placeholder="Enter the goal amount"
-                type="number"
-                v-model="goalAmount"
+              label="Goal Category"
+              label-for="goal-category"
+              class="my-3"
+            >
+              <b-form-select
+                id="goal-category"
+                v-model="goalCategory"
+                :options="listedCategories"
                 class="rounded-pill pl-4"
-                ondrop="return false;"
-                onpaste="return false;"
-                onkeypress="return event.charCode>=48 && event.charCode<=57"
+                required
+              ></b-form-select>
+            </b-form-group>
+
+            <b-form-group
+              id="goal-title"
+              label="Goal title"
+              label-for="goal-title"
+              class="my-3"
+              description="Example (A new guitar!)"
+            >
+              <b-form-input
+                id="goal-category"
+                type="text"
+                placeholder="Enter the goal title"
+                v-model="goalTitle"
+                class="rounded-pill pl-4"
                 required
               ></b-form-input>
-            </b-input-group>
-          </b-form-group>
+            </b-form-group>
 
-          <b-form-group>
-            <label for="start-datepicker">Choose a start date</label>
-            <b-form-datepicker
-              id="start-datepicker"
-              :min="minStart"
-              :date-disabled-fn="dateDisabledStart"
-              :date-format-options="{ month: 'long', day: '2-digit' }"
-              v-model="goalDateStart"
-              menu-class="w-100"
-              :disabled="pickerDis"
-              calendar-width="100%"
-              today-variant="primary"
-              reset-button
-              reset-button-variant="primary w-100"
-              @context="onContext1"
-              class="mb-2 rounded-pill pl-3"
-              ><p>Hola</p></b-form-datepicker
+            <b-form-group
+              id="goal-description"
+              label="Goal description"
+              label-for="goal-description"
+              class="my-3"
+              description="Example (I need it to make more music and learn new instruments.)"
             >
-          </b-form-group>
+              <b-form-input
+                id="goal-description"
+                type="text"
+                placeholder="Enter the goal description"
+                v-model="goalDesc"
+                class="rounded-pill pl-4"
+                required
+              ></b-form-input>
+            </b-form-group>
 
-          <b-form-group>
-            <label for="end-datepicker">Choose a end date</label>
-            <b-input-group>
+            <b-form-group
+              id="goal-amount"
+              label="Needed tokens amount"
+              label-for="goal-amount"
+              class="my-3"
+              description="How much do you need?"
+            >
+              <b-input-group class="mb-2 mr-sm-2 mb-sm-0">
+                <b-form-input
+                  id="goal-amount"
+                  placeholder="Enter the goal amount"
+                  type="number"
+                  v-model="goalAmount"
+                  class="rounded-pill pl-4"
+                  ondrop="return false;"
+                  onpaste="return false;"
+                  onkeypress="return event.charCode>=48 && event.charCode<=57"
+                  required
+                ></b-form-input>
+              </b-input-group>
+            </b-form-group>
+
+            <b-form-group>
+              <label for="start-datepicker">Choose a start date</label>
               <b-form-datepicker
-                id="end-datepicker"
-                :min="minEnd"
-                :date-disabled-fn="dateDisabledEnd"
+                id="start-datepicker"
+                :min="minStart"
+                :date-disabled-fn="dateDisabledStart"
                 :date-format-options="{ month: 'long', day: '2-digit' }"
-                :disabled="goalDateStart === '' || pickerDis"
-                v-model="goalDateEnd"
+                v-model="goalDateStart"
                 menu-class="w-100"
+                :disabled="pickerDis"
                 calendar-width="100%"
-                @context="onContext2"
+                today-variant="primary"
+                reset-button
+                reset-button-variant="primary w-100"
+                @context="onContext1"
                 class="mb-2 rounded-pill pl-3"
-              ></b-form-datepicker>
-            </b-input-group>
-          </b-form-group>
-          <div class="text-center my-5">
-            <div v-b-toggle.hotGoals @click="(pickerDis = !pickerDis), reset">
-              <p>Or select a <span class="font-weight-bold">Hot Goal</span></p>
-              <span><b-icon icon="caret-down-fill"></b-icon></span>
+                ><p>Hola</p></b-form-datepicker
+              >
+            </b-form-group>
+
+            <b-form-group>
+              <label for="end-datepicker">Choose a end date</label>
+              <b-input-group>
+                <b-form-datepicker
+                  id="end-datepicker"
+                  :min="minEnd"
+                  :date-disabled-fn="dateDisabledEnd"
+                  :date-format-options="{ month: 'long', day: '2-digit' }"
+                  :disabled="goalDateStart === '' || pickerDis"
+                  v-model="goalDateEnd"
+                  menu-class="w-100"
+                  calendar-width="100%"
+                  @context="onContext2"
+                  class="mb-2 rounded-pill pl-3"
+                ></b-form-datepicker>
+              </b-input-group>
+            </b-form-group>
+            <div class="text-center my-5">
+              <div v-b-toggle.hotGoals @click="(pickerDis = !pickerDis), reset">
+                <p>
+                  Or select a <span class="font-weight-bold">Hot Goal</span>
+                </p>
+                <span><b-icon icon="caret-down-fill"></b-icon></span>
+              </div>
+
+              <!-- Hot goals section -->
+              <b-collapse id="hotGoals" class="my-4 w-100">
+                <b-card class="w-100" style="border: none">
+                  <b-form-group v-slot="{ ariaDescribedby }" class="w-100">
+                    <b-form-radio-group
+                      id="btn-radios-1"
+                      v-model="selected"
+                      :aria-describedby="ariaDescribedby"
+                      name="radios-btn"
+                      class="d-flex flex-wrap"
+                      button-variant="outline-primary"
+                      buttons
+                    >
+                      <b-form-radio
+                        v-model="selected"
+                        :aria-describedby="ariaDescribedby"
+                        name="some-radios"
+                        value="5"
+                        class="m-1"
+                        style="min-width: 150px"
+                        >5 mins</b-form-radio
+                      >
+                      <b-form-radio
+                        v-model="selected"
+                        :aria-describedby="ariaDescribedby"
+                        name="some-radios"
+                        value="10"
+                        class="m-1"
+                        style="min-width: 150px"
+                        >10 mins</b-form-radio
+                      >
+                      <b-form-radio
+                        v-model="selected"
+                        :aria-describedby="ariaDescribedby"
+                        name="some-radios"
+                        value="15"
+                        class="m-1"
+                        style="min-width: 150px"
+                        >15 mins</b-form-radio
+                      >
+                      <b-form-radio
+                        v-model="selected"
+                        :aria-describedby="ariaDescribedby"
+                        name="some-radios"
+                        value="30"
+                        class="m-1"
+                        style="min-width: 150px"
+                        >30 mins</b-form-radio
+                      >
+                    </b-form-radio-group>
+                  </b-form-group>
+                </b-card>
+              </b-collapse>
             </div>
 
-            <!-- Hot goals section -->
-            <b-collapse id="hotGoals" class="my-4 w-100">
-              <b-card class="w-100" style="border: none">
-                <b-form-group v-slot="{ ariaDescribedby }" class="w-100">
-                  <b-form-radio-group
-                    id="btn-radios-1"
-                    v-model="selected"
-                    :aria-describedby="ariaDescribedby"
-                    name="radios-btn"
-                    class="d-flex flex-wrap"
-                    button-variant="outline-primary"
-                    buttons
-                  >
-                    <b-form-radio
-                      v-model="selected"
-                      :aria-describedby="ariaDescribedby"
-                      name="some-radios"
-                      value="5"
-                      class="m-1"
-                      style="min-width: 150px"
-                      >5 mins</b-form-radio
-                    >
-                    <b-form-radio
-                      v-model="selected"
-                      :aria-describedby="ariaDescribedby"
-                      name="some-radios"
-                      value="10"
-                      class="m-1"
-                      style="min-width: 150px"
-                      >10 mins</b-form-radio
-                    >
-                    <b-form-radio
-                      v-model="selected"
-                      :aria-describedby="ariaDescribedby"
-                      name="some-radios"
-                      value="15"
-                      class="m-1"
-                      style="min-width: 150px"
-                      >15 mins</b-form-radio
-                    >
-                    <b-form-radio
-                      v-model="selected"
-                      :aria-describedby="ariaDescribedby"
-                      name="some-radios"
-                      value="30"
-                      class="m-1"
-                      style="min-width: 150px"
-                      >30 mins</b-form-radio
-                    >
-                  </b-form-radio-group>
-                </b-form-group>
-              </b-card>
-            </b-collapse>
-          </div>
+            <b-form-checkbox
+              id="checkbox-1"
+              v-model="terms"
+              name="checkbox-1"
+              value="true"
+              unchecked-value="false"
+            >
+              I accept that everything is correct
+            </b-form-checkbox>
 
-          <b-form-checkbox
-            id="checkbox-1"
-            v-model="terms"
-            name="checkbox-1"
-            value="true"
-            unchecked-value="false"
-          >
-            I accept that everything is correct
-          </b-form-checkbox>
-
-          <b-row class="w-100 my-5 mx-auto">
-            <b-col class="my-3" cols="12" md="6">
-              <b-button
-                class="w-100"
-                @click="hideModal"
-                pill
-                variant="outline-primary"
-                >Close</b-button
-              >
-            </b-col>
-            <b-col class="my-3" cols="12" md="6">
-              <b-button
-                :disabled="launchValid || !termsValid"
-                @click="launchGoal()"
-                class="w-100 font-weight-bold"
-                pill
-                variant="primary"
-                >Launch goal</b-button
-              >
-            </b-col>
-          </b-row>
-        </b-form>
-      </b-container>
+            <b-row class="w-100 my-5 mx-auto">
+              <b-col class="my-3" cols="12" md="6">
+                <b-button
+                  class="w-100"
+                  @click="SHOW_EDIT_LAUNCH()"
+                  pill
+                  variant="outline-primary"
+                  >Close</b-button
+                >
+              </b-col>
+              <b-col class="my-3" cols="12" md="6">
+                <b-button
+                  :disabled="launchValid || !termsValid"
+                  @click="launchGoal()"
+                  class="w-100 font-weight-bold"
+                  pill
+                  variant="primary"
+                  >Launch goal</b-button
+                >
+              </b-col>
+            </b-row>
+          </b-form>
+        </b-container>
+      </b-overlay>
     </b-modal>
 
     <!-- Edit profile modal -->
@@ -977,7 +981,7 @@ export default {
       "activeCampaignsRIF",
       "approveSpenderRIF",
     ]),
-    ...mapMutations(["SHOW_EDIT_PROFILE"]),
+    ...mapMutations(["SHOW_EDIT_PROFILE", "SHOW_EDIT_LAUNCH"]),
 
     async startedCampaigns() {
       if (provider) {
@@ -1140,7 +1144,7 @@ export default {
     },
   },
   computed: {
-    ...mapState(["listedCategories"]),
+    ...mapState(["listedCategories", "launchGoalModal", "fetchingLaunch"]),
 
     title() {
       if (!this.user_title) {

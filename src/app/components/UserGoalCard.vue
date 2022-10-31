@@ -219,7 +219,7 @@
                   class="btn font-weight-bold w-100 mx-auto"
                   pill
                   :disabled="isClaimed"
-                  v-b-modal.cancel-goal-modal
+                  @click="SHOW_CANCEL_GOAL()"
                   variant="outline-danger"
                   ><span class="pr-2"><b-icon icon="trash-fill"></b-icon></span
                   >CANCEL</b-button
@@ -421,11 +421,14 @@
       ref="cancel-goal-modal"
       size="md"
       title="Cancel Goal"
+      v-model="cancelGoalModal"
       centered
       no-close-on-backdrop
       no-close-on-esc
       class="cancel__modal"
       button-size="md"
+      footer-bg-variant="light"
+      footer-text-variant="dark"
     >
       <template #modal-header>
         <h5 class="font-weight-bold m-0 py-2">
@@ -433,16 +436,25 @@
           sure?
         </h5>
       </template>
-      <b-container class="d-block text-center my-4">
-        <small>This will delete this goal.</small>
-      </b-container>
+      <b-overlay :show="fetchingCancel" rounded="sm">
+        <b-container class="d-block text-center my-4">
+          <small>This will delete this goal.</small>
+        </b-container>
+      </b-overlay>
       <template #modal-footer>
         <div class="w-100 text-right">
-          <b-button variant="outline-dark"> No, keep it </b-button>
+          <b-button
+            variant="outline-dark"
+            @click="SHOW_CANCEL_GOAL()"
+            :disabled="fetchingCancel"
+          >
+            No, keep it
+          </b-button>
           <b-button
             variant="danger"
             class="mr-3"
             @click="cancelRIF({ id: campId })"
+            :disabled="fetchingCancel"
           >
             Yes, cancel
           </b-button>
@@ -514,7 +526,7 @@ export default {
     "campId",
   ],
   methods: {
-    ...mapMutations(["CHECK_ALLOWANCE"]),
+    ...mapMutations(["SHOW_CANCEL_GOAL"]),
     ...mapActions([
       "getCryptoprice",
       "connect_wallet",
@@ -605,6 +617,8 @@ export default {
       "fetchingPledge",
       "fetchingApprove",
       "allowedSpend",
+      "fetchingCancel",
+      "cancelGoalModal",
     ]),
     convertedRIFContribution() {
       return web3.utils.fromWei(this.userContribution, "ether");

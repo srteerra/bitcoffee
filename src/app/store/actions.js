@@ -196,6 +196,8 @@ export const actions = {
       console.log(payload.category);
       console.log(payload.startDate);
       console.log(payload.endDate);
+      commit("LOADING_LAUNCH");
+
       const amountRIF = web3.utils.toWei(payload.amount, "ether");
       console.log(amountRIF);
 
@@ -224,10 +226,10 @@ export const actions = {
         .send({ from: ethereum.selectedAddress })
         .on("receipt", function (receipt) {
           console.log(receipt);
-          commit("LOADING_LAUNCH");
+          commit("SHOW_EDIT_LAUNCH");
           dispatch("addNotification", {
             type: "success",
-            message: "Successfully Contributed!.",
+            message: "🚀 Launched!.",
           });
         })
         .on("error", function (err, receipt) {
@@ -242,6 +244,7 @@ export const actions = {
               message: "Oh no, something went wrong.",
             });
           }
+          commit("SHOW_EDIT_LAUNCH");
           commit("LOADING_LAUNCH");
         });
 
@@ -330,6 +333,7 @@ export const actions = {
   },
   async cancelRIF({ commit, getters, dispatch }, payload) {
     if (provider) {
+      commit("LOADING_CANCEL");
       const net = await web3.eth.net.getId();
 
       tokenContract = new web3.eth.Contract(
@@ -339,7 +343,31 @@ export const actions = {
 
       tokenContract.methods
         .cancel(payload.id)
-        .send({ from: ethereum.selectedAddress });
+        .send({ from: ethereum.selectedAddress })
+        .on("receipt", function (receipt) {
+          console.log(receipt);
+          commit("SHOW_CANCEL_GOAL");
+          commit("LOADING_CANCEL");
+          dispatch("addNotification", {
+            type: "success",
+            message: "🗑️ Successfully Deleted!.",
+          });
+        })
+        .on("error", function (err, receipt) {
+          if (err.code === 4001) {
+            dispatch("addNotification", {
+              type: "danger",
+              message: "Request denied.",
+            });
+          } else {
+            dispatch("addNotification", {
+              type: "danger",
+              message: "Oh no, something went wrong.",
+            });
+          }
+          commit("SHOW_CANCEL_GOAL");
+          commit("LOADING_CANCEL");
+        });
     } else {
       console.log("install a wallet");
     }

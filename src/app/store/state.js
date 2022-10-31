@@ -5,6 +5,7 @@ export default {
   fetchingPledge: false,
   fetchingApprove: false,
   fetchingLaunch: false,
+  fetchingCancel: false,
 
   allowedSpend: false,
 
@@ -38,6 +39,8 @@ export default {
   // Modals
   showinstallMetaModalState: false,
   editProfileModal: false,
+  launchGoalModal: false,
+  cancelGoalModal: false,
   showpleaseChangeNetState: false,
 
   // Notification Ex

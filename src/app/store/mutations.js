@@ -198,6 +198,14 @@ export const SET_NET = (state, payload) => {
   state.netID = payload;
 };
 
+export const SHOW_EDIT_LAUNCH = (state) => {
+  state.launchGoalModal = !state.launchGoalModal;
+};
+
+export const SHOW_CANCEL_GOAL = (state) => {
+  state.cancelGoalModal = !state.cancelGoalModal;
+};
+
 export const LOADING_DATA = (state, status) => {
   state.fetchingData = status;
 };
@@ -220,6 +228,9 @@ export const LOADING_APPROVE = (state) => {
 
 export const LOADING_LAUNCH = (state) => {
   state.fetchingLaunch = !state.fetchingLaunch;
+};
+export const LOADING_CANCEL = (state) => {
+  state.fetchingCancel = !state.fetchingCancel;
 };
 
 export const ALLOW_SPEND = (state, payload) => {
