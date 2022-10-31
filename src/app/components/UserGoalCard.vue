@@ -82,14 +82,19 @@
           </div>
         </div>
         <div v-else>
-          <h1
-            v-if="time"
-            id="timer"
-            style="letter-spacing: 3px; font-weight: 800"
-          >
-            {{ DD }}:{{ HR }}:{{ MN }}:{{ SC }}
-          </h1>
-          <h3 v-else class="font-weight-bold">Finished</h3>
+          <div v-if="!timeStart1">
+            <h3 class="font-weight-bold">Starting soon...</h3>
+          </div>
+          <div v-else>
+            <h1
+              v-if="time"
+              id="timer"
+              style="letter-spacing: 3px; font-weight: 800"
+            >
+              {{ DD }}:{{ HR }}:{{ MN }}:{{ SC }}
+            </h1>
+            <h3 v-else class="font-weight-bold">Finished</h3>
+          </div>
         </div>
 
         <!-- Time left collapse -->
@@ -178,8 +183,14 @@
                 <b-button
                   class="w-100 mx-auto btn font-weight-bold"
                   variant="primary"
-                  @click="claim"
-                  v-else
+                  @click="claim && show"
+                  v-if="isconnected && !time"
+                  v-b-toggle="[
+                    this.collapse_a,
+                    this.collapse_b,
+                    this.collapse_c,
+                    this.collapse_d,
+                  ]"
                   >CLAIM</b-button
                 >
               </b-col>
@@ -310,6 +321,8 @@ export default {
       pledgeID: "2",
       pledgeAmount: "10",
       pledgedTotal: 0,
+
+      timerStart1: false,
     };
   },
   props: [
@@ -339,7 +352,7 @@ export default {
     show() {
       this.hide = false;
     },
-    timer(date) {
+    timer(date, start) {
       let deadline = new Date(date).getTime();
       let now = new Date().getTime();
       let t = deadline - now;
@@ -347,6 +360,12 @@ export default {
       this.HR = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       this.MN = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
       this.SC = Math.floor((t % (1000 * 60)) / 1000);
+      if (now / 1000 >= start) {
+        this.timerStart1 = true;
+      } else {
+        this.timerStart1 = false;
+      }
+
       if (t <= 0) {
         clearInterval(this.counter);
         this.time = false;
@@ -381,6 +400,24 @@ export default {
         this.pledgedTotal = amountRaised;
       }
     },
+    // starTimer() {
+    //   let MM = new Date().getMonth();
+    //   let DD = new Date().getDate();
+    //   let YYYY = new Date().getFullYear();
+    //   let min = new Date().getMinutes();
+    //   let hrs = new Date().getHours();
+    //   let mil = new Date().getSeconds();
+    //   const now =
+    //     new Date(
+    //       MM + "/" + DD + "/" + YYYY + " " + hrs + ":" + min + ":" + mil
+    //     ).getTime() / 1000;
+
+    //   if (now < this.campStartAt) {
+    //     this.timerStart1 = false;
+    //   } else {
+    //     this.timerStart1 = true;
+    //   }
+    // },
   },
   computed: {
     ...mapState(["currentAccount", "rifPrice", "isconnected"]),
@@ -465,16 +502,16 @@ export default {
   },
   created() {
     var self = this;
-
     var fullDate = new Date(self.campEndAt * 1000).toLocaleDateString("en-us", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
     });
 
+    const startDate = parseInt(this.campStartAt);
+
     self.counter = setInterval(function () {
-      self.timer(fullDate + " 23:59:59");
+      self.timer(fullDate, startDate);
     }, 1000);
   },
 };
@@ -612,6 +649,12 @@ export default {
       }
       .stats-item__container:nth-child(2) {
         border-right: 2px solid rgba(122, 122, 122, 0.4);
+      }
+    }
+
+    @media (max-width: 270px) {
+      .stats-item__container:nth-child(2) {
+        border: none;
       }
     }
   }

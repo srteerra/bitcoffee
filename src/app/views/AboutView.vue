@@ -49,7 +49,7 @@
             <MemberCard
               nickName="Carlos Sanchez"
               position="Frontend"
-              githubURL="https://www.instagram.com/"
+              githubURL="https://github.com/Guapura89"
               twitterURL="https://www.instagram.com/"
               instaURL="https://www.instagram.com/"
             />
@@ -67,7 +67,7 @@
             <MemberCard
               nickName="Angel Lopez"
               position="Full-stack"
-              githubURL="https://www.instagram.com/"
+              githubURL="https://github.com/srteerra"
               twitterURL="https://www.instagram.com/"
               instaURL="https://www.instagram.com/"
             />
@@ -85,7 +85,7 @@
             <MemberCard
               nickName="Jonathan Ocampo"
               position="CSO"
-              githubURL="https://www.instagram.com/"
+              githubURL="https://github.com/jonocrod12"
               twitterURL="https://www.instagram.com/"
               instaURL="https://www.instagram.com/"
             />
