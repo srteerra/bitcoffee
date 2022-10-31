@@ -84,6 +84,7 @@
         <div v-else>
           <div v-if="!timerStart1">
             <h3 class="font-weight-bold">Starting soon...</h3>
+            <p>{{ MN2 }}:{{ SC2 }}</p>
           </div>
           <div v-else>
             <h1
@@ -193,7 +194,7 @@
                     variant="primary"
                     pill
                     @click="claimRIF({ id: campId })"
-                    v-else
+                    v-if="!time"
                     ><span class="pr-2"><b-icon icon="cash"></b-icon></span
                     >CLAIM</b-button
                   >
@@ -212,7 +213,7 @@
                     variant="primary"
                     pill
                     disabled
-                    v-else
+                    v-else-if="!time"
                     ><span class="pr-2"
                       ><b-icon icon="check-circle-fill"></b-icon></span
                     >CLAIMED</b-button
@@ -223,7 +224,7 @@
                 <b-button
                   class="btn font-weight-bold w-100 mx-auto"
                   pill
-                  :disabled="isClaimed"
+                  :disabled="timerStart1 || isClaimed"
                   @click="SHOW_CANCEL_GOAL()"
                   variant="outline-danger"
                   ><span class="pr-2"><b-icon icon="trash-fill"></b-icon></span
@@ -270,12 +271,7 @@
                     class="text-dark font-weight-bold mb-4"
                   >
                     <b-input-group-prepend>
-                      <b-input-group-text
-                        style="
-                          background-color: transparent;
-                          border-right: none;
-                        "
-                      >
+                      <b-input-group-text id="append">
                         <img
                           style="width: 20px"
                           src="../assets/logos/rif-token-logo.png"
@@ -479,6 +475,8 @@ export default {
       HR: 0,
       MN: 0,
       SC: 0,
+      MN2: 0,
+      SC2: 0,
       time: true,
       goal_status: 90,
       categories: ["Music", "RIF"],
@@ -536,14 +534,19 @@ export default {
     show() {
       this.hide = false;
     },
-    timer(date, start) {
+    timer(date, start, toStartA) {
       let deadline = new Date(date).getTime();
+      let toStart = new Date(toStartA).getTime();
       let now = new Date().getTime();
       let t = deadline - now;
+      let t2 = toStart - now;
       this.DD = Math.floor(t / (1000 * 60 * 60 * 24));
       this.HR = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       this.MN = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
       this.SC = Math.floor((t % (1000 * 60)) / 1000);
+
+      this.MN2 = Math.floor((t2 % (1000 * 60 * 60)) / (1000 * 60));
+      this.SC2 = Math.floor((t2 % (1000 * 60)) / 1000);
       if (now / 1000 >= start) {
         this.timerStart1 = true;
       } else {
@@ -605,24 +608,6 @@ export default {
         this.isClaimed = campaign.claimed;
       }
     },
-    // starTimer() {
-    //   let MM = new Date().getMonth();
-    //   let DD = new Date().getDate();
-    //   let YYYY = new Date().getFullYear();
-    //   let min = new Date().getMinutes();
-    //   let hrs = new Date().getHours();
-    //   let mil = new Date().getSeconds();
-    //   const now =
-    //     new Date(
-    //       MM + "/" + DD + "/" + YYYY + " " + hrs + ":" + min + ":" + mil
-    //     ).getTime() / 1000;
-
-    //   if (now < this.campStartAt) {
-    //     this.timerStart1 = false;
-    //   } else {
-    //     this.timerStart1 = true;
-    //   }
-    // },
   },
   computed: {
     ...mapState([
@@ -727,16 +712,29 @@ export default {
       second: "numeric",
     });
 
+    var fullDate2 = new Date(self.campStartAt * 1000).toLocaleDateString(
+      "en-us",
+      {
+        hour: "numeric",
+        minute: "numeric",
+        second: "numeric",
+      }
+    );
+
     const startDate = parseInt(this.campStartAt);
 
     self.counter = setInterval(function () {
-      self.timer(fullDate, startDate);
+      self.timer(fullDate, startDate, fullDate2);
     }, 1000);
   },
 };
 </script>
 
 <style lang="scss">
+#append {
+  background-color: transparent;
+  border-right: none;
+}
 .user-goals__container {
   width: 100%;
   // max-width: 650px;
