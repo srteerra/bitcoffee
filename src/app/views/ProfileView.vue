@@ -977,11 +977,9 @@ export default {
       "launchGoal",
       "activeCampaigns",
       "approveSpender",
-      "pledgeCampaign",
       "launchGoalRIF",
       "activeCampaignsRIF",
       "approveSpenderRIF",
-      "pledgeCampaignRIF",
     ]),
     ...mapMutations(["SHOW_EDIT_PROFILE"]),
 

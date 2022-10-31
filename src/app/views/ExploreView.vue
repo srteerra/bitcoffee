@@ -392,15 +392,20 @@ export default {
 
       for (var i = 1; i <= count; i++) {
         const campaign = await tokenContract.methods.campaigns(i).call();
-        console.log(
-          new Date(campaign.endAt * 1000).toLocaleDateString("en-us", {
-            weekday: "long",
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          })
-        );
-        this.campaigns_rif.push(await campaign);
+        if (campaign.id !== "0") {
+          this.campaigns_rif.push(await campaign);
+        } else {
+          console.log("There's an deleted campaign");
+        }
+        // console.log(
+        //   new Date(campaign.endAt * 1000).toLocaleDateString("en-us", {
+        //     weekday: "long",
+        //     year: "numeric",
+        //     month: "long",
+        //     day: "numeric",
+        //   })
+        // );
+        console.log(this.campaigns_rif);
       }
     } else {
       this.noprovider = true;

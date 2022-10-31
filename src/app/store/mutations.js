@@ -210,6 +210,14 @@ export const TRANSACTION_WAIT = (state) => {
   state.transactionWait = !state.transactionWait;
 };
 
+export const LOADING_PLEDGE = (state) => {
+  state.fetchingPledge = !state.fetchingPledge;
+};
+
+export const LOADING_APPROVE = (state) => {
+  state.fetchingApprove = !state.fetchingApprove;
+};
+
 export const SHOW_NOWALLET_NOTIFICATION = (state) => {
   state.noWalletNoti = !state.noWalletNoti;
 };
