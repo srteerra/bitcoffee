@@ -139,12 +139,14 @@ export const actions = {
         .on("receipt", function (receipt) {
           console.log(receipt);
           commit("LOADING_APPROVE");
+          commit("ALLOW_SPEND", { allow: true });
           dispatch("addNotification", {
             type: "success",
             message: "Approved!.",
           });
         })
         .on("error", function (err, receipt) {
+          commit("ALLOW_SPEND", { allow: false });
           if (err.code === 4001) {
             dispatch("addNotification", {
               type: "danger",
@@ -219,7 +221,29 @@ export const actions = {
           payload.desc,
           payload.category
         )
-        .send({ from: ethereum.selectedAddress });
+        .send({ from: ethereum.selectedAddress })
+        .on("receipt", function (receipt) {
+          console.log(receipt);
+          commit("LOADING_LAUNCH");
+          dispatch("addNotification", {
+            type: "success",
+            message: "Successfully Contributed!.",
+          });
+        })
+        .on("error", function (err, receipt) {
+          if (err.code === 4001) {
+            dispatch("addNotification", {
+              type: "danger",
+              message: "Request denied.",
+            });
+          } else {
+            dispatch("addNotification", {
+              type: "danger",
+              message: "Oh no, something went wrong.",
+            });
+          }
+          commit("LOADING_LAUNCH");
+        });
 
       console.log(tokenContract);
       launch;
@@ -245,7 +269,29 @@ export const actions = {
 
       tokenContract.methods
         .pledge(payload.id, amountRIF)
-        .send({ from: ethereum.selectedAddress });
+        .send({ from: ethereum.selectedAddress })
+        .on("receipt", function (receipt) {
+          console.log(receipt);
+          commit("LOADING_PLEDGE");
+          dispatch("addNotification", {
+            type: "success",
+            message: "Successfully Contributed!.",
+          });
+        })
+        .on("error", function (err, receipt) {
+          if (err.code === 4001) {
+            dispatch("addNotification", {
+              type: "danger",
+              message: "Request denied.",
+            });
+          } else {
+            dispatch("addNotification", {
+              type: "danger",
+              message: "Oh no, something went wrong.",
+            });
+          }
+          commit("LOADING_PLEDGE");
+        });
     } else {
       console.log("install a wallet");
     }

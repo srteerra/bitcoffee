@@ -413,21 +413,22 @@
               ></b-form-datepicker>
             </b-input-group>
           </b-form-group>
-          <div class="text-center mt-5">
+          <div class="text-center my-5">
             <div v-b-toggle.hotGoals @click="(pickerDis = !pickerDis), reset">
-              <p>Or select a hot goal</p>
+              <p>Or select a <span class="font-weight-bold">Hot Goal</span></p>
               <span><b-icon icon="caret-down-fill"></b-icon></span>
             </div>
 
             <!-- Hot goals section -->
-            <b-collapse id="hotGoals" class="mb-4">
-              <b-card style="border: none">
-                <b-form-group v-slot="{ ariaDescribedby }">
+            <b-collapse id="hotGoals" class="my-4 w-100">
+              <b-card class="w-100" style="border: none">
+                <b-form-group v-slot="{ ariaDescribedby }" class="w-100">
                   <b-form-radio-group
                     id="btn-radios-1"
                     v-model="selected"
                     :aria-describedby="ariaDescribedby"
                     name="radios-btn"
+                    class="d-flex flex-wrap"
                     button-variant="outline-primary"
                     buttons
                   >
@@ -437,7 +438,8 @@
                       name="some-radios"
                       value="5"
                       class="m-1"
-                      >5</b-form-radio
+                      style="min-width: 150px"
+                      >5 mins</b-form-radio
                     >
                     <b-form-radio
                       v-model="selected"
@@ -445,7 +447,8 @@
                       name="some-radios"
                       value="10"
                       class="m-1"
-                      >10</b-form-radio
+                      style="min-width: 150px"
+                      >10 mins</b-form-radio
                     >
                     <b-form-radio
                       v-model="selected"
@@ -453,7 +456,8 @@
                       name="some-radios"
                       value="15"
                       class="m-1"
-                      >15</b-form-radio
+                      style="min-width: 150px"
+                      >15 mins</b-form-radio
                     >
                     <b-form-radio
                       v-model="selected"
@@ -461,7 +465,8 @@
                       name="some-radios"
                       value="30"
                       class="m-1"
-                      >30</b-form-radio
+                      style="min-width: 150px"
+                      >30 mins</b-form-radio
                     >
                   </b-form-radio-group>
                 </b-form-group>
@@ -476,14 +481,15 @@
             value="true"
             unchecked-value="false"
           >
-            I accept the dates are correct
+            I accept that everything is correct
           </b-form-checkbox>
 
-          <b-row class="w-75 my-5 mx-auto">
+          <b-row class="w-100 my-5 mx-auto">
             <b-col class="my-3" cols="12" md="6">
               <b-button
                 class="w-100"
                 @click="hideModal"
+                pill
                 variant="outline-primary"
                 >Close</b-button
               >
@@ -492,14 +498,10 @@
               <b-button
                 :disabled="launchValid || !termsValid"
                 @click="launchGoal()"
-                class="w-100"
+                class="w-100 font-weight-bold"
+                pill
                 variant="primary"
                 >Launch goal</b-button
-              >
-            </b-col>
-            <b-col class="my-3" cols="12" md="6">
-              <b-button class="w-100" @click="hideModal" variant="outline-dark"
-                >Close</b-button
               >
             </b-col>
           </b-row>
@@ -857,12 +859,6 @@ export default {
         { id: "g4" },
       ],
       selectedHotGoal: null,
-      hotGoalOptions: [
-        { value: null, text: "Custom" },
-        { value: "5mins", text: "5 mins" },
-        { value: "15mins", text: "15 mins" },
-        { value: "30mins", text: "30 mins" },
-      ],
       monthNames: [
         "January",
         "February",

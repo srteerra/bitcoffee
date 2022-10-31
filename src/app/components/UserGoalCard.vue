@@ -328,9 +328,15 @@
                       class="btn font-weight-bold w-100 mx-auto"
                       variant="primary"
                       pill
-                      v-if="allowance > 0"
+                      v-if="allowedSpend"
                       @click="pledgeRIF({ id: campId, amount: pledgeAmount })"
-                      :disabled="isClaimed"
+                      :disabled="isClaimed || fetchingPledge"
+                      ><b-icon
+                        icon="arrow-clockwise"
+                        animation="spin"
+                        font-scale="1"
+                        v-if="fetchingPledge"
+                      ></b-icon
                       >CONTRIBUTE</b-button
                     >
                     <b-button
@@ -448,7 +454,7 @@
 
 <script>
 import { client } from "../../lib/sanityClient";
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapMutations, mapState } from "vuex";
 import { isConnected } from "../store/getters";
 
 const Web3 = require("web3");
@@ -488,6 +494,7 @@ export default {
       isClaimed: false,
       userOnCampaign: false,
       userContribution: 0,
+      allowed: false,
     };
   },
   props: [
@@ -507,6 +514,7 @@ export default {
     "campId",
   ],
   methods: {
+    ...mapMutations(["CHECK_ALLOWANCE"]),
     ...mapActions([
       "getCryptoprice",
       "connect_wallet",
@@ -538,22 +546,8 @@ export default {
         this.time = false;
       }
     },
-    async allowance() {
-      const net = await web3.eth.net.getId();
-      tokenContract = new web3.eth.Contract(
-        artifact.abi,
-        "0x19f64674d8a5b4e652319f5e239efd3bc969a1fe"
-      );
-
-      let allow = await tokenContract.methods
-        .allowance(
-          this.currentAccount,
-          artifact_crowdfunding_rif.networks[net].address
-        )
-        .call();
-
-      console.log("allow: ", allow);
-      return allow;
+    approve() {
+      this.allowed = true;
     },
     async getSupporters() {
       const net = await web3.eth.net.getId();
@@ -610,6 +604,7 @@ export default {
       "isconnected",
       "fetchingPledge",
       "fetchingApprove",
+      "allowedSpend",
     ]),
     convertedRIFContribution() {
       return web3.utils.fromWei(this.userContribution, "ether");
@@ -666,7 +661,7 @@ export default {
   },
   async beforeMount() {
     this.getSupporters();
-    // this.allowance();
+    this.CHECK_ALLOWANCE();
     const query =
       '*[_type == "users" && _id == $addCreator] {userName, userAddress}';
     const params = { addCreator: new String(this.campCreator).toLowerCase() };

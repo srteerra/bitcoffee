@@ -4,6 +4,9 @@ export default {
   transactionWait: false,
   fetchingPledge: false,
   fetchingApprove: false,
+  fetchingLaunch: false,
+
+  allowedSpend: false,
 
   shadowblank: false,
   error: null,

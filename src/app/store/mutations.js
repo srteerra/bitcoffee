@@ -218,6 +218,14 @@ export const LOADING_APPROVE = (state) => {
   state.fetchingApprove = !state.fetchingApprove;
 };
 
+export const LOADING_LAUNCH = (state) => {
+  state.fetchingLaunch = !state.fetchingLaunch;
+};
+
+export const ALLOW_SPEND = (state, payload) => {
+  state.allowedSpend = payload.allow;
+};
+
 export const SHOW_NOWALLET_NOTIFICATION = (state) => {
   state.noWalletNoti = !state.noWalletNoti;
 };
