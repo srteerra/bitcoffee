@@ -82,7 +82,7 @@
           </div>
         </div>
         <div v-else>
-          <div v-if="!timeStart1">
+          <div v-if="!timerStart1">
             <h3 class="font-weight-bold">Starting soon...</h3>
           </div>
           <div v-else>
@@ -401,22 +401,6 @@
             </b-row>
           </b-card>
         </b-collapse>
-
-        <!-- <b-row>
-          <b-col cols="12" md="6" class="mx-auto">
-            <b-button
-              v-if="goal_status == 99"
-              class="w-100"
-              pill
-              @click="claim"
-              variant="outline-primary"
-              >Claim</b-button
-            >
-            <b-button v-else class="w-100" pill variant="outline-primary"
-              >Refound</b-button
-            >
-          </b-col>
-        </b-row> -->
       </b-container>
     </div>
 
