@@ -2,19 +2,22 @@
   <div class="user">
     <Header />
     <!-- Banner -->
-    <div
-      class="user-profile__background"
-      :style="{
-        'background-repeat': 'no-repeat',
-        'background-position': 'center',
-        'background-size': 'cover',
-        'background-image': 'url(' + user_bg + ')',
-      }"
-    />
-    <!-- User avatar -->
-    <div class="user-avatar__container text-center">
-      <b-avatar :src="`${avatar}`" size="9rem" />
+    <div class="head-profile">
+      <div
+        class="user-profile__background1"
+        :style="{
+          'background-repeat': 'no-repeat',
+          'background-position': 'center',
+          'background-size': 'cover',
+          'background-image': 'url(' + user_bg + ')',
+        }"
+      />
+      <!-- User avatar -->
+      <div class="user-avatar__container1 text-center">
+        <b-avatar :src="`${avatar}`" size="9rem" />
+      </div>
     </div>
+
     <b-container class="user-information__container text-center my-4">
       <!-- personal information -->
       <div class="user-personal-info__container">
@@ -1279,12 +1282,28 @@ export default {
     padding: 15px 0;
   }
 }
-
-// banner styles
-.user-profile__background {
-  width: 100%;
-  height: 300px;
+.head-profile {
   position: relative;
+  .user-profile__background1 {
+    width: 100%;
+    height: 300px;
+  }
+
+  // avatar styles
+  .user-avatar__container1 {
+    width: 100%;
+    height: auto;
+    position: absolute;
+    bottom: -60px;
+    img {
+      width: 150px;
+      border-radius: 50%;
+    }
+
+    // @media (max-width: 991px) {
+    //   top: 315px;
+    // }
+  }
 }
 
 .newUsername__status {

@@ -2,19 +2,22 @@
   <div class="pub-profile">
     <Header />
     <!-- Banner -->
-    <div
-      class="user-profile__background"
-      :style="{
-        'background-repeat': 'no-repeat',
-        'background-position': 'center',
-        'background-size': 'cover',
-        'background-image': 'url(' + creator_bg + ')',
-      }"
-    />
-    <!-- User avatar -->
-    <div class="user-avatar__container text-center">
-      <b-avatar :src="`${creator_avatar}`" size="9rem" />
+    <div class="head">
+      <div
+        class="user-profile__background2"
+        :style="{
+          'background-repeat': 'no-repeat',
+          'background-position': 'center',
+          'background-size': 'cover',
+          'background-image': 'url(' + creator_bg + ')',
+        }"
+      />
+      <!-- User avatar -->
+      <div class="user-avatar__container2 text-center">
+        <b-avatar :src="`${creator_avatar}`" size="9rem" />
+      </div>
     </div>
+
     <div class="creator-information__container text-center">
       <!-- personal information -->
       <div class="creator-personal-info__container">
@@ -409,25 +412,27 @@ export default {
 
 <style lang="scss">
 // banner styles
-.user-profile__background {
-  width: 100%;
-  height: 300px;
+.head {
   position: relative;
-}
-
-// avatar styles
-.user-avatar__container {
-  width: 100%;
-  height: 200px;
-  position: absolute;
-  img {
-    width: 150px;
-    border-radius: 50%;
+  .user-profile__background2 {
+    width: 100%;
+    height: 300px;
   }
-  top: 320px;
 
-  @media (max-width: 991px) {
-    top: 315px;
+  // avatar styles
+  .user-avatar__container2 {
+    width: 100%;
+    height: auto;
+    position: absolute;
+    bottom: -60px;
+    img {
+      width: 150px;
+      border-radius: 50%;
+    }
+
+    // @media (max-width: 991px) {
+    //   top: 315px;
+    // }
   }
 }
 
@@ -438,9 +443,13 @@ export default {
     width: 90%;
     margin: 20px auto;
     .user-name__container {
+      position: relative;
       font-size: 30px;
       p {
         display: inline-block;
+      }
+      #verify__badge {
+        position: static;
       }
     }
     .user-site {
