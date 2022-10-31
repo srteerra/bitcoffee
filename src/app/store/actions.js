@@ -18,7 +18,6 @@ let ethereum = window.ethereum;
 const net = await web3.eth.net.getId();
 
 const artifact = require("../../../build/contracts/Bitcoffee.json");
-const artifactERC20 = require("../../../build/contracts/erc20.abi.json");
 const artifact_crowdfunding = require("../../../build/contracts/CrowdFund.json");
 const artifact_crowdfunding_rif = require("../../../build/contracts/CrowdFundERC677.json");
 let tokenContract;
@@ -121,72 +120,49 @@ export const actions = {
       console.log("install a wallet");
     }
   },
-  async approveSpenderRIF({ commit, getters, dispatch }) {
+  async approveSpenderRIF({ commit, getters, dispatch }, payload) {
+    commit("LOADING_APPROVE");
     if (provider) {
       const net = await web3.eth.net.getId();
+      const amountRIF = web3.utils.toWei(payload.amount, "ether");
+
       tokenContract = new web3.eth.Contract(
         artifact.abi,
         "0x19f64674d8a5b4e652319f5e239efd3bc969a1fe"
       );
 
-      tokenContract.setProvider(
-        Web3.givenProvider || "https://public-node.testnet.rsk.co"
-      );
-
-      const approval = await tokenContract.methods
-        .approve(
-          artifact_crowdfunding_rif.networks[net].address,
-          "50000000000000000000"
-        )
-        .send({ from: ethereum.selectedAddress });
-
-      approval;
+      tokenContract.methods
+        .approve(artifact_crowdfunding_rif.networks[net].address, amountRIF)
+        .send({
+          from: ethereum.selectedAddress,
+        })
+        .on("receipt", function (receipt) {
+          console.log(receipt);
+          commit("LOADING_APPROVE");
+          commit("ALLOW_SPEND", { allow: true });
+          dispatch("addNotification", {
+            type: "success",
+            message: "Approved!.",
+          });
+        })
+        .on("error", function (err, receipt) {
+          commit("ALLOW_SPEND", { allow: false });
+          if (err.code === 4001) {
+            dispatch("addNotification", {
+              type: "danger",
+              message: "Request denied. You need to approve it to continue.",
+            });
+          } else {
+            dispatch("addNotification", {
+              type: "danger",
+              message: "Oh no, something went wrong.",
+            });
+          }
+          commit("LOADING_APPROVE");
+        });
     } else {
       console.log("install a wallet");
-    }
-  },
-  async pledgeCampaign({ commit, getters, dispatch }, payload) {
-    if (provider) {
-      console.log("pledge:", payload.campaign);
-      const net = await web3.eth.net.getId();
-      tokenContract = new web3.eth.Contract(
-        artifact_crowdfunding.abi,
-        artifact_crowdfunding.networks[net].address
-      );
-
-      tokenContract.setProvider(
-        Web3.givenProvider || "https://public-node.testnet.rsk.co"
-      );
-
-      const campaigns = await tokenContract.methods
-        .pledge(payload.campaign, payload.amount)
-        .send({ from: ethereum.selectedAddress });
-
-      campaigns;
-    } else {
-      console.log("install a wallet");
-    }
-  },
-  async pledgeCampaignRIF({ commit, getters, dispatch }, payload) {
-    if (provider) {
-      console.log("pledge:", payload.campaign);
-      const net = await web3.eth.net.getId();
-      tokenContract = new web3.eth.Contract(
-        artifact_crowdfunding_rif.abi,
-        artifact_crowdfunding_rif.networks[net].address
-      );
-
-      tokenContract.setProvider(
-        Web3.givenProvider || "https://public-node.testnet.rsk.co"
-      );
-
-      const campaigns = await tokenContract.methods
-        .pledge(payload.campaign, "50000000000000000000")
-        .send({ from: ethereum.selectedAddress });
-
-      campaigns;
-    } else {
-      console.log("install a wallet");
+      commit("LOADING_APPROVE");
     }
   },
   async launchGoal({ commit, getters, dispatch }, payload) {
@@ -245,7 +221,29 @@ export const actions = {
           payload.desc,
           payload.category
         )
-        .send({ from: ethereum.selectedAddress });
+        .send({ from: ethereum.selectedAddress })
+        .on("receipt", function (receipt) {
+          console.log(receipt);
+          commit("LOADING_LAUNCH");
+          dispatch("addNotification", {
+            type: "success",
+            message: "Successfully Contributed!.",
+          });
+        })
+        .on("error", function (err, receipt) {
+          if (err.code === 4001) {
+            dispatch("addNotification", {
+              type: "danger",
+              message: "Request denied.",
+            });
+          } else {
+            dispatch("addNotification", {
+              type: "danger",
+              message: "Oh no, something went wrong.",
+            });
+          }
+          commit("LOADING_LAUNCH");
+        });
 
       console.log(tokenContract);
       launch;
@@ -256,6 +254,8 @@ export const actions = {
   async pledgeRIF({ commit, getters, dispatch }, payload) {
     console.log(payload.id);
     console.log(payload.amount);
+    commit("LOADING_PLEDGE");
+
     if (provider) {
       const amountRIF = web3.utils.toWei(payload.amount, "ether");
       console.log(amountRIF);
@@ -267,24 +267,78 @@ export const actions = {
         artifact_crowdfunding_rif.networks[net].address
       );
 
-      console.log(artifact_crowdfunding_rif.networks[net].address);
-
-      rifContract = new web3.eth.Contract(
-        artifact.abi,
-        "0x19f64674d8a5b4e652319f5e239efd3bc969a1fe"
-      );
-
-      rifContract.methods
-        .approve(artifact_crowdfunding_rif.networks[net].address, amountRIF)
-        .send({
-          from: ethereum.selectedAddress,
-        })
-        .on("receipt", function (receipt) {
-          console.log(receipt);
-        });
-
       tokenContract.methods
         .pledge(payload.id, amountRIF)
+        .send({ from: ethereum.selectedAddress })
+        .on("receipt", function (receipt) {
+          console.log(receipt);
+          commit("LOADING_PLEDGE");
+          dispatch("addNotification", {
+            type: "success",
+            message: "Successfully Contributed!.",
+          });
+        })
+        .on("error", function (err, receipt) {
+          if (err.code === 4001) {
+            dispatch("addNotification", {
+              type: "danger",
+              message: "Request denied.",
+            });
+          } else {
+            dispatch("addNotification", {
+              type: "danger",
+              message: "Oh no, something went wrong.",
+            });
+          }
+          commit("LOADING_PLEDGE");
+        });
+    } else {
+      console.log("install a wallet");
+    }
+  },
+  async claimRIF({ commit, getters, dispatch }, payload) {
+    if (provider) {
+      const net = await web3.eth.net.getId();
+
+      tokenContract = new web3.eth.Contract(
+        artifact_crowdfunding_rif.abi,
+        artifact_crowdfunding_rif.networks[net].address
+      );
+
+      tokenContract.methods
+        .claim(payload.id)
+        .send({ from: ethereum.selectedAddress });
+    } else {
+      console.log("install a wallet");
+    }
+  },
+  async refundRIF({ commit, getters, dispatch }, payload) {
+    if (provider) {
+      const net = await web3.eth.net.getId();
+
+      tokenContract = new web3.eth.Contract(
+        artifact_crowdfunding_rif.abi,
+        artifact_crowdfunding_rif.networks[net].address
+      );
+
+      tokenContract.methods
+        .refund(payload.id)
+        .send({ from: ethereum.selectedAddress });
+    } else {
+      console.log("install a wallet");
+    }
+  },
+  async cancelRIF({ commit, getters, dispatch }, payload) {
+    if (provider) {
+      const net = await web3.eth.net.getId();
+
+      tokenContract = new web3.eth.Contract(
+        artifact_crowdfunding_rif.abi,
+        artifact_crowdfunding_rif.networks[net].address
+      );
+
+      tokenContract.methods
+        .cancel(payload.id)
         .send({ from: ethereum.selectedAddress });
     } else {
       console.log("install a wallet");

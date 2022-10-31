@@ -2,6 +2,12 @@ export default {
   fetchingData: false,
   fetchingDataWait: false,
   transactionWait: false,
+  fetchingPledge: false,
+  fetchingApprove: false,
+  fetchingLaunch: false,
+
+  allowedSpend: false,
+
   shadowblank: false,
   error: null,
   windowWidth: window.innerWidth,

@@ -170,34 +170,63 @@
             new String(campCreator).toUpperCase()
           "
         >
+          <b-row v-if="userContribution > 0">
+            <b-col class="text-center">
+              <h5><strong>My contribution</strong></h5>
+              <p>{{ convertedRIFContribution }} RIF</p>
+            </b-col>
+          </b-row>
           <b-card style="border: none">
             <b-row align-h="center">
               <b-col cols="12" class="my-2">
-                <b-button
-                  class="btn font-weight-bold w-100 mx-auto"
-                  variant="primary"
-                  @click="connect_wallet()"
-                  v-if="!isconnected"
-                  >CONNECT WALLET</b-button
-                >
-                <b-button
-                  class="w-100 mx-auto btn font-weight-bold"
-                  variant="primary"
-                  @click="claim && show"
-                  v-if="isconnected && !time"
-                  v-b-toggle="[
-                    this.collapse_a,
-                    this.collapse_b,
-                    this.collapse_c,
-                    this.collapse_d,
-                  ]"
-                  >CLAIM</b-button
-                >
+                <div v-if="!isClaimed">
+                  <b-button
+                    class="btn font-weight-bold w-100 mx-auto"
+                    variant="primary"
+                    pill
+                    @click="connect_wallet()"
+                    v-if="!isconnected"
+                    >CONNECT WALLET</b-button
+                  >
+                  <b-button
+                    class="w-100 mx-auto btn font-weight-bold"
+                    variant="primary"
+                    pill
+                    @click="claimRIF({ id: campId })"
+                    v-else
+                    ><span class="pr-2"><b-icon icon="cash"></b-icon></span
+                    >CLAIM</b-button
+                  >
+                </div>
+                <div v-else>
+                  <b-button
+                    class="btn font-weight-bold w-100 mx-auto"
+                    variant="primary"
+                    pill
+                    @click="connect_wallet()"
+                    v-if="!isconnected"
+                    >CONNECT WALLET</b-button
+                  >
+                  <b-button
+                    class="w-100 mx-auto btn font-weight-bold"
+                    variant="primary"
+                    pill
+                    disabled
+                    v-else
+                    ><span class="pr-2"
+                      ><b-icon icon="check-circle-fill"></b-icon></span
+                    >CLAIMED</b-button
+                  >
+                </div>
               </b-col>
               <b-col cols="12" md="6" class="my-2">
                 <b-button
                   class="btn font-weight-bold w-100 mx-auto"
+                  pill
+                  :disabled="isClaimed"
+                  v-b-modal.cancel-goal-modal
                   variant="outline-danger"
+                  ><span class="pr-2"><b-icon icon="trash-fill"></b-icon></span
                   >CANCEL</b-button
                 >
               </b-col>
@@ -205,6 +234,7 @@
                 <b-button
                   class="w-100 mx-auto font-weight-bold"
                   variant="outline-dark"
+                  pill
                   @click="show"
                   v-b-toggle="[
                     this.collapse_a,
@@ -219,35 +249,145 @@
           </b-card>
         </b-collapse>
 
-        <b-collapse :id="collapse_a" class="mt-2">
+        <b-collapse :id="collapse_a" class="mt-2" v-else>
+          <b-row v-if="userContribution > 0">
+            <b-col class="text-center">
+              <h5><strong>My contribution</strong></h5>
+              <p>{{ convertedRIFContribution }} RIF</p>
+            </b-col>
+          </b-row>
           <b-card style="border: none">
             <b-row align-h="center">
-              <b-col cols="12" class="my-2">
-                <b-button
-                  class="btn font-weight-bold w-100 mx-auto"
-                  variant="primary"
-                  @click="connect_wallet()"
-                  v-if="false"
-                  >CONNECT WALLET</b-button
-                >
-                <b-button
-                  class="btn font-weight-bold w-100 mx-auto"
-                  variant="primary"
-                  @click="pledgeRIF({ id: pledgeID, amount: pledgeAmount })"
-                  >CONTRIBUTE</b-button
-                >
+              <b-col cols="12" class="my-2 text-left">
+                <div v-if="isconnected">
+                  <label
+                    for="PledgeAmountInput"
+                    class="text-dark font-weight-bold"
+                    >Contribute</label
+                  >
+                  <b-input-group
+                    id="PledgeAmountInputGroup"
+                    class="text-dark font-weight-bold mb-4"
+                  >
+                    <b-input-group-prepend>
+                      <b-input-group-text
+                        style="
+                          background-color: transparent;
+                          border-right: none;
+                        "
+                      >
+                        <img
+                          style="width: 20px"
+                          src="../assets/logos/rif-token-logo.png"
+                          alt=""
+                        />
+                      </b-input-group-text>
+                    </b-input-group-prepend>
+                    <b-form-input
+                      id="PledgeAmountInput"
+                      v-model="pledgeAmount"
+                      type="text"
+                      class="py-2 px-2 border-left-0 border-right-0"
+                      placeholder="Enter the amount..."
+                      :disabled="isClaimed"
+                      required
+                    />
+                    <b-input-group-append>
+                      <b-input-group-text
+                        style="background-color: transparent; border-left: none"
+                        >tRIF</b-input-group-text
+                      >
+                    </b-input-group-append>
+                  </b-input-group>
+                </div>
+                <div v-if="isClaimed">
+                  <b-button
+                    class="btn font-weight-bold w-100 mx-auto"
+                    variant="primary"
+                    pill
+                    @click="connect_wallet()"
+                    v-if="!isconnected"
+                    >CONNECT WALLET</b-button
+                  >
+                  <b-button
+                    class="btn font-weight-bold w-100 mx-auto"
+                    variant="primary"
+                    pill
+                    :disabled="isClaimed"
+                    v-else
+                    >GOAL ENDED</b-button
+                  >
+                </div>
+                <div v-else>
+                  <div v-if="!isconnected">
+                    <b-button
+                      class="btn font-weight-bold w-100 mx-auto"
+                      variant="primary"
+                      pill
+                      @click="connect_wallet()"
+                      >CONNECT WALLET</b-button
+                    >
+                  </div>
+                  <div v-else>
+                    <b-button
+                      class="btn font-weight-bold w-100 mx-auto"
+                      variant="primary"
+                      pill
+                      v-if="allowedSpend"
+                      @click="pledgeRIF({ id: campId, amount: pledgeAmount })"
+                      :disabled="isClaimed || fetchingPledge"
+                      ><b-icon
+                        icon="arrow-clockwise"
+                        animation="spin"
+                        font-scale="1"
+                        v-if="fetchingPledge"
+                      ></b-icon
+                      >CONTRIBUTE</b-button
+                    >
+                    <b-button
+                      class="btn font-weight-bold w-100 mx-auto"
+                      variant="primary"
+                      pill
+                      v-else-if="pledgeAmount"
+                      @click="approveSpenderRIF({ amount: pledgeAmount })"
+                      :disabled="fetchingApprove"
+                      ><b-icon
+                        icon="arrow-clockwise"
+                        animation="spin"
+                        font-scale="1"
+                        v-if="fetchingApprove"
+                      ></b-icon>
+                      APPROVE</b-button
+                    >
+                  </div>
+                </div>
               </b-col>
-              <b-col cols="12" md="6" class="my-2">
+              <b-col class="my-2" v-if="userOnCampaign">
+                <b-button
+                  class="btn font-weight-bold w-100 mx-auto"
+                  variant="dark"
+                  pill
+                  v-if="userContribution == 0"
+                  disabled
+                  ><span
+                    ><b-icon icon="check-circle-fill" class="pr-1"></b-icon
+                  ></span>
+                  REFUNDED</b-button
+                >
                 <b-button
                   class="btn font-weight-bold w-100 mx-auto"
                   variant="outline-dark"
+                  pill
+                  v-else
+                  @click="refundRIF({ id: campId })"
                   >REFUND</b-button
                 >
               </b-col>
-              <b-col cols="12" md="6" class="my-2">
+              <b-col class="my-2">
                 <b-button
                   class="w-100 mx-auto font-weight-bold"
                   variant="outline-dark"
+                  pill
                   @click="show"
                   v-b-toggle="[
                     this.collapse_a,
@@ -279,12 +419,47 @@
         </b-row> -->
       </b-container>
     </div>
+
+    <!-- Cancel modal -->
+    <b-modal
+      id="cancel-goal-modal"
+      ref="cancel-goal-modal"
+      size="md"
+      title="Cancel Goal"
+      centered
+      no-close-on-backdrop
+      no-close-on-esc
+      class="cancel__modal"
+      button-size="md"
+    >
+      <template #modal-header>
+        <h5 class="font-weight-bold m-0 py-2">
+          <span class="pr-2"><b-icon icon="trash-fill"></b-icon></span>Are you
+          sure?
+        </h5>
+      </template>
+      <b-container class="d-block text-center my-4">
+        <small>This will delete this goal.</small>
+      </b-container>
+      <template #modal-footer>
+        <div class="w-100 text-right">
+          <b-button variant="outline-dark"> No, keep it </b-button>
+          <b-button
+            variant="danger"
+            class="mr-3"
+            @click="cancelRIF({ id: campId })"
+          >
+            Yes, cancel
+          </b-button>
+        </div>
+      </template>
+    </b-modal>
   </b-container>
 </template>
 
 <script>
 import { client } from "../../lib/sanityClient";
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapMutations, mapState } from "vuex";
 import { isConnected } from "../store/getters";
 
 const Web3 = require("web3");
@@ -294,6 +469,7 @@ const web3 = new Web3(
 
 const provider = window.ethereum;
 
+const artifact = require("../../../build/contracts/Bitcoffee.json");
 const artifact_crowdfunding = require("../../../build/contracts/CrowdFund.json");
 const artifact_crowdfunding_rif = require("../../../build/contracts/CrowdFundERC677.json");
 let tokenContract;
@@ -318,11 +494,14 @@ export default {
       campUserAddress: null,
       supporters: 0,
       contributors: [],
-      pledgeID: "2",
-      pledgeAmount: "10",
+      pledgeAmount: null,
       pledgedTotal: 0,
 
       timerStart1: false,
+      isClaimed: false,
+      userOnCampaign: false,
+      userContribution: 0,
+      allowed: false,
     };
   },
   props: [
@@ -342,7 +521,16 @@ export default {
     "campId",
   ],
   methods: {
-    ...mapActions(["getCryptoprice", "connect_wallet", "pledgeRIF"]),
+    ...mapMutations(["CHECK_ALLOWANCE"]),
+    ...mapActions([
+      "getCryptoprice",
+      "connect_wallet",
+      "pledgeRIF",
+      "claimRIF",
+      "refundRIF",
+      "cancelRIF",
+      "approveSpenderRIF",
+    ]),
     claim() {
       this.goal_status = 100;
     },
@@ -371,6 +559,9 @@ export default {
         this.time = false;
       }
     },
+    approve() {
+      this.allowed = true;
+    },
     async getSupporters() {
       const net = await web3.eth.net.getId();
 
@@ -390,14 +581,32 @@ export default {
       console.log(totalContributors);
 
       for (let i = 0; i < totalContributors; i++) {
-        this.contributors.push(
-          await tokenContract.methods.contributedCampaign(this.campId, i).call()
-        );
+        let contributor = await tokenContract.methods
+          .contributedCampaign(this.campId, i)
+          .call();
 
-        let total = await tokenContract.methods.campaigns(this.campId).call();
+        let campaign = await tokenContract.methods
+          .campaigns(this.campId)
+          .call();
 
-        let amountRaised = web3.utils.fromWei(total.pledged, "ether");
+        let pledgedAmount = await tokenContract.methods
+          .pledgedAmount(this.campId, ethereum.selectedAddress)
+          .call();
+        console.log(pledgedAmount);
+
+        let amountRaised = web3.utils.fromWei(campaign.pledged, "ether");
+
+        if (
+          new String(contributor).toLowerCase() ===
+          new String(ethereum.selectedAddress).toLowerCase()
+        ) {
+          this.userOnCampaign = true;
+        }
+
+        this.contributors.push(contributor);
         this.pledgedTotal = amountRaised;
+        this.userContribution = pledgedAmount;
+        this.isClaimed = campaign.claimed;
       }
     },
     // starTimer() {
@@ -420,10 +629,21 @@ export default {
     // },
   },
   computed: {
-    ...mapState(["currentAccount", "rifPrice", "isconnected"]),
+    ...mapState([
+      "currentAccount",
+      "rifPrice",
+      "isconnected",
+      "fetchingPledge",
+      "fetchingApprove",
+      "allowedSpend",
+    ]),
+    convertedRIFContribution() {
+      return web3.utils.fromWei(this.userContribution, "ether");
+    },
     getStatus() {
-      console.log((this.campPledged / this.campGoal) * 100);
-      return (this.campPledged / this.campGoal) * 100;
+      let amountConvt = web3.utils.fromWei(this.campGoal, "ether");
+
+      return (this.pledgedTotal / amountConvt) * 100;
     },
     amountRIF() {
       const rif = this.campGoalRIF;
@@ -472,6 +692,7 @@ export default {
   },
   async beforeMount() {
     this.getSupporters();
+    this.CHECK_ALLOWANCE();
     const query =
       '*[_type == "users" && _id == $addCreator] {userName, userAddress}';
     const params = { addCreator: new String(this.campCreator).toLowerCase() };
