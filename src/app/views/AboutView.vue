@@ -50,6 +50,7 @@
               nickName="Carlos Sanchez"
               position="Frontend"
               githubURL="https://github.com/Guapura89"
+              avatar="charlie"
             />
           </b-col>
           <b-col
@@ -66,6 +67,7 @@
               nickName="Angel Lopez"
               position="Full-stack"
               githubURL="https://github.com/srteerra"
+              avatar="terra"
             />
           </b-col>
           <b-col
@@ -82,6 +84,7 @@
               nickName="Jonathan Ocampo"
               position="CSO"
               githubURL="https://github.com/jonocrod12"
+              avatar="john"
             />
           </b-col>
         </b-row>

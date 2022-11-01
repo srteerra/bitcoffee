@@ -4,7 +4,21 @@
     <b-card id="member-card" class="text-center p-5" border-variant="light">
       <div class="px-4">
         <div class="pb-4">
-          <b-avatar src="https://i.pravatar.cc/300?4" size="4rem" />
+          <b-avatar
+            v-if="avatar === 'john'"
+            src="../assets/images/john.jpg"
+            size="4rem"
+          />
+          <b-avatar
+            v-else-if="avatar === 'charlie'"
+            src="../assets/images/charlie.jpg"
+            size="4rem"
+          />
+          <b-avatar
+            v-else-if="avatar === 'terra'"
+            src="../assets/images/unnamed.jpg"
+            size="4rem"
+          />
         </div>
         <b-card-title>{{ nickName }}</b-card-title>
         <b-card-text>{{ position }}</b-card-text>
@@ -24,7 +38,7 @@ export default {
   data() {
     return {};
   },
-  props: ["nickName", "position", "githubURL"],
+  props: ["nickName", "position", "githubURL", "avatar"],
 };
 </script>
 
