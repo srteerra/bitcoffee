@@ -7,9 +7,48 @@ Vue.use(Router);
 
 const routes = [
   {
-    path: "/",
+    path: "/home",
     name: "home",
     component: () => import(/* webpackChunkName:"home" */ "../views/HomeView"),
+  },
+  { path: "/", redirect: { name: "home" } },
+  {
+    path: "/",
+    redirect: { name: "home" },
+  },
+  {
+    path: "*",
+    name: "404",
+    component: () => import(/* webpackChunkName:"home" */ "../views/404View"),
+  },
+  {
+    path: "/explore",
+    name: "explore",
+    component: () =>
+      import(/* webpackChunkName:"home" */ "../views/ExploreView"),
+  },
+  {
+    path: "/token",
+    name: "token",
+    component: () =>
+      import(/* webpackChunkName:"home" */ "../views/OurTokenView"),
+  },
+  {
+    path: "/faucet",
+    name: "faucet",
+    component: () =>
+      import(/* webpackChunkName:"home" */ "../views/FaucetView"),
+  },
+  {
+    path: "/about",
+    name: "about",
+    component: () => import(/* webpackChunkName:"home" */ "../views/AboutView"),
+  },
+  {
+    path: "/profile",
+    name: "profile",
+    component: () =>
+      import(/* webpackChunkName:"profile" */ "../views/ProfileView"),
   },
   {
     path: "/:user",
@@ -18,10 +57,10 @@ const routes = [
       import(/* webpackChunkName:"home" */ "../views/BitcoffeeView"),
   },
   {
-    path: "/creator/",
-    name: "creator",
+    path: "/member/:id",
+    name: "member",
     component: () =>
-      import(/* webpackChunkName:"home" */ "../views/ProfileView"),
+      import(/* webpackChunkName:"home" */ "../views/MemberView"),
   },
 ];
 
@@ -35,12 +74,12 @@ const router = new Router({
   },
 });
 
-// router.beforeEach((to, from, next) => {
-// 	if (to.name === 'profile' && store.state.isconnected === false) {
-// 		next({ name: 'home' })
-// 	} else {
-// 		next()
-// 	}
-// })
+router.beforeEach((to, from, next) => {
+  if (to.name === "profile" && store.state.isconnected === false) {
+    next({ name: "home" });
+  } else {
+    next();
+  }
+});
 
 export default router;

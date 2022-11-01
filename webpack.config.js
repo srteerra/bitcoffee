@@ -118,5 +118,5 @@ module.exports = {
     port: 8000,
     historyApiFallback: true,
   },
-  devtool: "eval",
+  // devtool: "eval",
 };

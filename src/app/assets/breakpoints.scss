@@ -1,4 +1,15 @@
 @media (max-width: 790px) {
+  .first-section {
+    .search-creator {
+      .search-creator-input__container {
+        display: none;
+      }
+      .alternativeBtn {
+        display: block;
+      }
+    }
+  }
+
   .solid-back {
     display: none;
   }
@@ -7,7 +18,15 @@
   .coffee-cupVector,
   .membershipVector1,
   .membershipVector2,
-  .membershipVector3 {
+  .membershipVector3,
+  .firstValue,
+  .lastValue,
+  .coffee2,
+  #cat-2 {
     display: none;
+  }
+
+  .donate-card {
+    width: 90%;
   }
 }

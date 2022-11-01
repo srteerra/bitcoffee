@@ -1,22 +1,27 @@
 <!-- eslint-disable vue/attribute-hyphenation -->
 <template>
   <div>
+    <!-- <div id="fetchingData__screen" v-if="fetchingData" style="z-index: 100">
+      <img
+        src="./assets/logos/icon-logo.png"
+        alt=""
+        style="width: 100px; height: 100px"
+      />
+    </div> -->
     <!-- <div id="bg-slot-page" v-if="shadowblank" class="text-center">
       <a href="/">
         <img id="shadow-icon-place" src="./assets/logos/icon-logo.png" alt="" />
       </a>
     </div> -->
-    <Header />
+    <NotificationList />
     <router-view />
-    <Footer />
   </div>
 </template>
 
 <script>
-import Header from "./components/Header.vue";
-import Footer from "./components/Footer.vue";
+import NotificationList from "./components/NotificationList.vue";
 
-import { mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 export default {
   name: "App",
@@ -24,11 +29,7 @@ export default {
     return {};
   },
   components: {
-    Header,
-    Footer,
-  },
-  computed: {
-    ...mapState(["shadowblank"]),
+    NotificationList,
   },
 };
 </script>
