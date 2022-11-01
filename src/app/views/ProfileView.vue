@@ -1003,6 +1003,8 @@ export default {
           .creatorCamps(this.currentAccount)
           .call();
 
+        console.log(totalCamps);
+
         if (totalCamps < 1) {
           console.log("No campaigns");
           this.noCampaigns = true;
@@ -1012,7 +1014,16 @@ export default {
               .campaignsAddress(this.currentAccount, i)
               .call();
 
-            this.campaigns_rif.push(await campaign);
+            let newCampaign = await tokenContract.methods
+              .campaigns(await campaign.id)
+              .call();
+
+            if ((await newCampaign.id) !== "0") {
+              this.campaigns_rif.push(await newCampaign);
+            } else {
+              console.log("There's an deleted campaign");
+            }
+
             console.log(this.campaigns_rif);
           }
         }

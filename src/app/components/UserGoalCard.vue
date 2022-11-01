@@ -690,7 +690,6 @@ export default {
   },
   async beforeMount() {
     this.getSupporters();
-    this.CHECK_ALLOWANCE();
     const query =
       '*[_type == "users" && _id == $addCreator] {userName, userAddress}';
     const params = { addCreator: new String(this.campCreator).toLowerCase() };
