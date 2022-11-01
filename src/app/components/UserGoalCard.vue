@@ -141,7 +141,7 @@
             <small>{{ pledgedRIF }} RIF</small>
             <p>Raised</p>
           </b-col>
-          <b-col cols="3" class="stats-item__container my-3">
+          <b-col class="stats-item__container my-3">
             <div>
               <h3>
                 <strong>${{ amountUSD }}</strong>
@@ -747,84 +747,6 @@ export default {
         if (user.length > 0) {
           this.campUser = user[0].userName;
           this.campUserAddress = user[0].userAddress;
-        } else {
-          console.log("error");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
-    if (provider) {
-      this.getCryptoprice();
-
-      const amountRIF = web3.utils.fromWei(this.campGoal, "ether");
-      this.campGoalRIF = amountRIF;
-    } else {
-      this.noprovider = true;
-      console.log("No wallet");
-    }
-  },
-  computed: {
-    ...mapState(["currentAccount", "rifPrice"]),
-    getStatus() {
-      console.log((this.campPledged / this.campGoal) * 100);
-      return (this.campPledged / this.campGoal) * 100;
-    },
-    amountRIF() {
-      const rif = this.campGoalRIF;
-
-      if (rif > 99999) {
-        let str1 = new String(rif);
-        let str2 = str1.slice(0, 3);
-        return str2 + "k";
-      } else {
-        return rif;
-      }
-    },
-    pledgedRIF() {
-      const rif = this.campPledged;
-
-      if (rif > 99999) {
-        let str1 = new String(rif);
-        let str2 = str1.slice(0, 3);
-        return str2 + "k";
-      } else {
-        return rif;
-      }
-    },
-    amountUSD() {
-      const usd = this.campGoalRIF * this.rifPrice;
-
-      if (usd > 99999) {
-        let str1 = new String(usd);
-        let str2 = str1.slice(0, 3);
-        return str2 + "k";
-      } else {
-        return parseFloat(usd).toFixed(2);
-      }
-    },
-    pledgedUSD() {
-      const usd = this.campPledged * this.rifPrice;
-
-      if (usd > 99999) {
-        let str1 = new String(usd);
-        let str2 = str1.slice(0, 3);
-        return str2 + "k";
-      } else {
-        return parseFloat(usd).toFixed(2);
-      }
-    },
-  },
-  async beforeMount() {
-    const query = '*[_type == "users" && _id == $addCreator] {userName}';
-    const params = { addCreator: new String(this.campCreator).toLowerCase() };
-
-    client
-      .fetch(query, params)
-      .then((user) => {
-        if (user.length > 0) {
-          this.campUser = user[0].userName;
         } else {
           console.log("error");
         }

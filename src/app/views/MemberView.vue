@@ -147,31 +147,51 @@
         </b-row>
 
         <!-- creator goals -->
-        <div
-          class="text-center text-lg-left"
-          style="width: 80%; margin: 0 auto"
-        >
-          <h1 class="font-weight-bold">{{ this.$route.params.id }}'s goals</h1>
-          <p class="font-weight-light">
-            Help {{ this.$route.params.id }} with the following goals.
-          </p>
+        <div class="user-goals__list p-0 m-0">
+          <h1 class="my-4 font-weight-bold">My goals</h1>
+          <p>Here you can help me to continue my stuff.</p>
+          <b-row class="mt-5">
+            <b-col cols="12" md="12" class="mx-auto" v-if="!noCampaigns">
+              <ul
+                class="d-flex justify-content-center justify-content-md-around flex-wrap p-0 m-0"
+              >
+                <li
+                  id="goal-per"
+                  v-for="(campaign, idx) in campaigns_rif"
+                  :key="idx"
+                >
+                  <UserGoalCard
+                    :collapse_a="'card' + idx"
+                    :collapse_b="'card' + idx"
+                    :collapse_c="'card' + idx"
+                    :collapse_d="'card' + idx"
+                    :campId="campaign.id"
+                    :campCategory="campaign.category"
+                    :campCreator="campaign.creator"
+                    :campDesc="campaign.description"
+                    :campTitle="campaign.title"
+                    :campGoal="campaign.goal"
+                    :campPledged="campaign.pledged"
+                    :campEndAt="campaign.endAt"
+                    :campStartAt="campaign.startAt"
+                    :campClaimed="campaign.claimed"
+                  />
+                </li>
+              </ul>
+            </b-col>
+            <b-col
+              cols="12"
+              class="mx-auto text-center mt-5"
+              style="height: 500px"
+              v-else
+            >
+              <p style="opacity: 40%"><strong>No results</strong></p>
+            </b-col>
+          </b-row>
         </div>
-        <b-row class="creator-row my-1">
-          <b-col cols="12">
-            <ul class="d-flex justify-content-center flex-wrap p-0 m-0">
-              <li class="w-50" v-for="(card, idx) in cards" :key="idx">
-                <UserGoalCard
-                  :collapse_a="'hola' + card.id"
-                  :collapse_b="'hola' + card.id"
-                  :collapse_c="'hola' + card.id"
-                  :collapse_d="'hola' + card.id"
-                />
-              </li>
-            </ul>
-          </b-col>
-        </b-row>
       </div>
     </div>
+    <Footer />
   </div>
 </template>
 
@@ -205,11 +225,11 @@ export default {
       noDesc: "No description added",
       noBg: "https://images.unsplash.com/photo-1554147090-e1221a04a025?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1148&q=80",
       cards: [
-        { id: "h1" },
-        { id: "h2" },
-        { id: "h3" },
-        { id: "h4" },
-        { id: "h4" },
+        { id: "g1" },
+        { id: "g2" },
+        { id: "g3" },
+        { id: "g4" },
+        { id: "g4" },
       ],
 
       donation: 0,
@@ -229,7 +249,11 @@ export default {
       ],
       memberSince: "",
       memberVerified: false,
-      coll: "",
+      memberAddress: "",
+
+      campaigns_rif: [],
+      noCampaigns: false,
+      loadingCampaigns: true,
     };
   },
   components: {
