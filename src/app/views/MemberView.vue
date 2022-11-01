@@ -61,7 +61,7 @@
         <b-row class="creator-row">
           <b-col cols="12" md="12" lg="6" xl="7" class="p-0">
             <div class="creator-description__container">
-              <div class="creator-description__card px-3 py-4">
+              <div class="creator-description__card p-5">
                 <h3 class="font-weight-bold">{{ title }}</h3>
                 <p class="font-weight-bold">{{ subtitle }}</p>
                 <hr />
@@ -315,16 +315,42 @@ export default {
             .creatorCamps(this.memberAddress)
             .call();
 
+          // if (totalCamps < 1) {
+          //   console.log("No campaigns");
+          // } else {
+          //   for (let i = 0; i < totalCamps; i++) {
+          //     let campaign = await tokenContract.methods
+          //       .campaignsAddress(this.memberAddress, i)
+          //       .call();
+
+          //     this.campaigns_rif.push(await campaign);
+          //     console.log(this.campaigns_rif);
+          //   }
+          // }
+
           if (totalCamps < 1) {
             console.log("No campaigns");
+            this.noCampaigns = true;
           } else {
             for (let i = 0; i < totalCamps; i++) {
               let campaign = await tokenContract.methods
                 .campaignsAddress(this.memberAddress, i)
                 .call();
 
-              this.campaigns_rif.push(await campaign);
-              console.log(this.campaigns_rif);
+              let newCampaign = await tokenContract.methods
+                .campaigns(await campaign.id)
+                .call();
+
+              if ((await newCampaign.id) !== "0") {
+                this.campaigns_rif.push(await newCampaign);
+              } else {
+                console.log("There's an deleted campaign");
+              }
+
+              if (this.campaigns_rif.length === 0) {
+                console.log("No campaigns");
+                this.noCampaigns = true;
+              }
             }
           }
         } else {

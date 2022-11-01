@@ -1003,8 +1003,6 @@ export default {
           .creatorCamps(this.currentAccount)
           .call();
 
-        console.log(totalCamps);
-
         if (totalCamps < 1) {
           console.log("No campaigns");
           this.noCampaigns = true;
@@ -1024,16 +1022,15 @@ export default {
               console.log("There's an deleted campaign");
             }
 
-            console.log(this.campaigns_rif);
+            if (this.campaigns_rif.length === 0) {
+              console.log("No campaigns");
+              this.noCampaigns = true;
+            }
           }
         }
       } else {
         console.log("No wallet");
       }
-    },
-
-    hideModal() {
-      this.$refs["goal-modal"].hide();
     },
 
     copyAddress(add) {
@@ -1158,7 +1155,27 @@ export default {
     },
   },
   computed: {
-    ...mapState(["listedCategories", "launchGoalModal", "fetchingLaunch"]),
+    ...mapState([
+      "username",
+      "currentAccount",
+      "avatar",
+      "user_bg",
+      "user_title",
+      "user_site",
+      "user_subtitle",
+      "user_description",
+      "user_instagram",
+      "user_twitter",
+      "user_twitch",
+      "user_youtube",
+      "fetchingDataWait",
+      "editProfileModal",
+      "getCountCampaignsRIF",
+      "campaigns_count_rif",
+      "listedCategories",
+      "launchGoalModal",
+      "fetchingLaunch",
+    ]),
 
     title() {
       if (!this.user_title) {
@@ -1188,24 +1205,6 @@ export default {
         return this.user_description;
       }
     },
-    ...mapState([
-      "username",
-      "currentAccount",
-      "avatar",
-      "user_bg",
-      "user_title",
-      "user_site",
-      "user_subtitle",
-      "user_description",
-      "user_instagram",
-      "user_twitter",
-      "user_twitch",
-      "user_youtube",
-      "fetchingDataWait",
-      "editProfileModal",
-      "getCountCampaignsRIF",
-      "campaigns_count_rif",
-    ]),
 
     myaddress() {
       return (
