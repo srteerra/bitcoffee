@@ -123,11 +123,19 @@
 
             <!-- category desc -->
             <div class="category-description__container">
-              <div class="category-description__card p-5">
-                <h3 class="font-weight-bold">Category</h3>
-                <p class="font-weight-bold">Music</p>
-                <p class="py-3">Explore more</p>
-              </div>
+              <router-link to="/explore" id="category-card">
+                <div class="category-description__card p-5">
+                  <h3 class="font-weight-bold">Category</h3>
+                  <p class="font-weight-bold">Music</p>
+                  <p class="pt-3 pb-1 border-top">
+                    <span class="mr-2"
+                      ><b-icon icon="arrow-right-circle-fill"></b-icon
+                    ></span>
+                    Explore more
+                  </p>
+                  <small>You can find more people with the same hobbies.</small>
+                </div>
+              </router-link>
             </div>
           </b-col>
           <b-col cols="12" md="12" lg="6" xl="5" class="p-0">
@@ -445,6 +453,13 @@ export default {
 </script>
 
 <style lang="scss">
+#category-card {
+  transition: ease-in-out 0.2s;
+  &:hover {
+    color: white;
+    filter: brightness(70%);
+  }
+}
 // banner styles
 .head {
   position: relative;
@@ -528,14 +543,19 @@ export default {
     .category-description__container {
       width: 80%;
       margin: 0 auto 50px;
+      color: white;
 
       @media (max-width: 500px) {
         width: 100%;
       }
 
       .category-description__card {
-        color: white;
-        background-image: url("https://images.unsplash.com/photo-1566242784921-acfbcc5beceb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1171&q=80");
+        background-image: linear-gradient(
+            to bottom,
+            rgba(113, 113, 113, 0.63),
+            rgba(0, 0, 0, 0.69)
+          ),
+          url("../assets/images/chill-back.jpg");
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
