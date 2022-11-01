@@ -28,18 +28,29 @@
               white-space: nowrap;
               text-overflow: ellipsis;
             "
-            to="/token"
+            @click="changeSelection()"
             class="ml-0 mt-3 mt-lg-0 ml-lg-4 px-4 py-2 rounded-pill font-weight-bold"
             variant="outline-dark"
             ><span v-if="isconnected"
               ><span class="font-weight-light">Your balance: </span
-              >{{ balanceOf.tsyBal.toLocaleString()
-              }}<span class="pl-2"
-                ><img
+              ><span class="pl-2" v-if="selectedCypto === 'BITC'">
+                {{ balanceOf.bitcBal.toLocaleString() }}
+                <img
                   src="../assets/icons/BITC.png"
                   style="width: 20px; height: 20px"
-                  alt="" /></span></span
-            ><span v-else class="font-weight-regular"
+                  alt=""
+                />
+              </span>
+              <span class="pl-2" v-else>
+                {{ balanceOf.rifBal.toLocaleString() }}
+                <img
+                  src="../assets/icons/RIF.png"
+                  style="width: 20px; height: 20px"
+                  alt=""
+                />
+              </span>
+            </span>
+            <span v-else class="font-weight-regular"
               >GET <span class="font-weight-bold">$BITC</span></span
             ></b-button
           >
@@ -165,7 +176,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapMutations, mapState } from "vuex";
 export default {
   name: "AltHeader",
   data() {
@@ -191,10 +202,19 @@ export default {
       "creator_avatar",
       "avatar",
       "balanceOf",
+      "selectedCypto",
     ]),
   },
   methods: {
+    ...mapMutations(["SET_SELECTED_CRYPTO"]),
     ...mapActions(["showinstallMetaModal", "connect_wallet", "disconnectAcc"]),
+    changeSelection() {
+      if (this.selectedCypto === "RIF") {
+        this.SET_SELECTED_CRYPTO({ crypto: "BITC" });
+      } else {
+        this.SET_SELECTED_CRYPTO({ crypto: "RIF" });
+      }
+    },
   },
 };
 </script>

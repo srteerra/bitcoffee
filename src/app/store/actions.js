@@ -21,6 +21,7 @@ const artifact = require("../../../build/contracts/Bitcoffee.json");
 const artifact_crowdfunding = require("../../../build/contracts/CrowdFund.json");
 const artifact_crowdfunding_rif = require("../../../build/contracts/CrowdFundERC677.json");
 let tokenContract;
+let rifContract;
 
 // let tokenContract = new web3.eth.Contract(artifact.abi, artifact.networks[netID].address)
 
@@ -119,72 +120,49 @@ export const actions = {
       console.log("install a wallet");
     }
   },
-  async approveSpenderRIF({ commit, getters, dispatch }) {
+  async approveSpenderRIF({ commit, getters, dispatch }, payload) {
+    commit("LOADING_APPROVE");
     if (provider) {
       const net = await web3.eth.net.getId();
-      tokenContract = new web3.eth.Contract(
+      const amountRIF = web3.utils.toWei(payload.amount, "ether");
+
+      const riftokenContract = new web3.eth.Contract(
         artifact.abi,
-        "0x19f64674d8a5b4e652319f5e239efd3bc969a1fe"
+        "0x19F64674D8A5B4E652319F5e239eFd3bc969A1fE"
       );
 
-      tokenContract.setProvider(
-        Web3.givenProvider || "https://public-node.testnet.rsk.co"
-      );
-
-      const approval = await tokenContract.methods
-        .approve(
-          artifact_crowdfunding_rif.networks[net].address,
-          "50000000000000000000"
-        )
-        .send({ from: ethereum.selectedAddress });
-
-      approval;
+      riftokenContract.methods
+        .approve(artifact_crowdfunding_rif.networks[net].address, amountRIF)
+        .send({
+          from: ethereum.selectedAddress,
+        })
+        .on("receipt", function (receipt) {
+          console.log(receipt);
+          commit("LOADING_APPROVE");
+          commit("ALLOW_SPEND", { allow: true });
+          dispatch("addNotification", {
+            type: "success",
+            message: "Approved!.",
+          });
+        })
+        .on("error", function (err, receipt) {
+          commit("ALLOW_SPEND", { allow: false });
+          if (err.code === 4001) {
+            dispatch("addNotification", {
+              type: "danger",
+              message: "Request denied. You need to approve it to continue.",
+            });
+          } else {
+            dispatch("addNotification", {
+              type: "danger",
+              message: "Oh no, something went wrong.",
+            });
+          }
+          commit("LOADING_APPROVE");
+        });
     } else {
       console.log("install a wallet");
-    }
-  },
-  async pledgeCampaign({ commit, getters, dispatch }, payload) {
-    if (provider) {
-      console.log("pledge:", payload.campaign);
-      const net = await web3.eth.net.getId();
-      tokenContract = new web3.eth.Contract(
-        artifact_crowdfunding.abi,
-        artifact_crowdfunding.networks[net].address
-      );
-
-      tokenContract.setProvider(
-        Web3.givenProvider || "https://public-node.testnet.rsk.co"
-      );
-
-      const campaigns = await tokenContract.methods
-        .pledge(payload.campaign, payload.amount)
-        .send({ from: ethereum.selectedAddress });
-
-      campaigns;
-    } else {
-      console.log("install a wallet");
-    }
-  },
-  async pledgeCampaignRIF({ commit, getters, dispatch }, payload) {
-    if (provider) {
-      console.log("pledge:", payload.campaign);
-      const net = await web3.eth.net.getId();
-      tokenContract = new web3.eth.Contract(
-        artifact_crowdfunding_rif.abi,
-        artifact_crowdfunding_rif.networks[net].address
-      );
-
-      tokenContract.setProvider(
-        Web3.givenProvider || "https://public-node.testnet.rsk.co"
-      );
-
-      const campaigns = await tokenContract.methods
-        .pledge(payload.campaign, "50000000000000000000")
-        .send({ from: ethereum.selectedAddress });
-
-      campaigns;
-    } else {
-      console.log("install a wallet");
+      commit("LOADING_APPROVE");
     }
   },
   async launchGoal({ commit, getters, dispatch }, payload) {
@@ -218,6 +196,8 @@ export const actions = {
       console.log(payload.category);
       console.log(payload.startDate);
       console.log(payload.endDate);
+      commit("LOADING_LAUNCH");
+
       const amountRIF = web3.utils.toWei(payload.amount, "ether");
       console.log(amountRIF);
 
@@ -243,10 +223,155 @@ export const actions = {
           payload.desc,
           payload.category
         )
-        .send({ from: ethereum.selectedAddress });
+        .send({ from: ethereum.selectedAddress })
+        .on("receipt", function (receipt) {
+          console.log(receipt);
+          commit("SHOW_EDIT_LAUNCH");
+          commit("LOADING_LAUNCH");
+          dispatch("addNotification", {
+            type: "success",
+            message: "🚀 Launched!.",
+          });
+        })
+        .on("error", function (err, receipt) {
+          if (err.code === 4001) {
+            dispatch("addNotification", {
+              type: "danger",
+              message: "Request denied.",
+            });
+          } else {
+            dispatch("addNotification", {
+              type: "danger",
+              message: "Oh no, something went wrong.",
+            });
+          }
+          commit("SHOW_EDIT_LAUNCH");
+          commit("LOADING_LAUNCH");
+        });
 
       console.log(tokenContract);
       launch;
+    } else {
+      console.log("install a wallet");
+    }
+  },
+  async pledgeRIF({ commit, getters, dispatch }, payload) {
+    console.log(payload.id);
+    console.log(payload.amount);
+    commit("LOADING_PLEDGE");
+
+    if (provider) {
+      const amountRIF = web3.utils.toWei(payload.amount, "ether");
+      console.log(amountRIF);
+
+      const net = await web3.eth.net.getId();
+
+      tokenContract = new web3.eth.Contract(
+        artifact_crowdfunding_rif.abi,
+        artifact_crowdfunding_rif.networks[net].address
+      );
+
+      tokenContract.methods
+        .pledge(payload.id, amountRIF)
+        .send({ from: ethereum.selectedAddress })
+        .on("transactionHash", function (hash) {
+          console.log(hash);
+        })
+        .on("receipt", function (receipt) {
+          console.log(receipt);
+          commit("LOADING_PLEDGE");
+          dispatch("addNotification", {
+            type: "success",
+            message: "Successfully Contributed!.",
+          });
+        })
+        .on("error", function (err, receipt) {
+          if (err.code === 4001) {
+            dispatch("addNotification", {
+              type: "danger",
+              message: "Request denied.",
+            });
+          } else {
+            dispatch("addNotification", {
+              type: "danger",
+              message: "Oh no, something went wrong.",
+            });
+          }
+          commit("LOADING_PLEDGE");
+        });
+    } else {
+      console.log("install a wallet");
+    }
+  },
+  async claimRIF({ commit, getters, dispatch }, payload) {
+    if (provider) {
+      const net = await web3.eth.net.getId();
+
+      tokenContract = new web3.eth.Contract(
+        artifact_crowdfunding_rif.abi,
+        artifact_crowdfunding_rif.networks[net].address
+      );
+
+      tokenContract.methods
+        .claim(payload.id)
+        .send({ from: ethereum.selectedAddress });
+    } else {
+      console.log("install a wallet");
+    }
+  },
+  async refundRIF({ commit, getters, dispatch }, payload) {
+    if (provider) {
+      const net = await web3.eth.net.getId();
+
+      tokenContract = new web3.eth.Contract(
+        artifact_crowdfunding_rif.abi,
+        artifact_crowdfunding_rif.networks[net].address
+      );
+
+      tokenContract.methods
+        .refund(payload.id)
+        .send({ from: ethereum.selectedAddress });
+    } else {
+      console.log("install a wallet");
+    }
+  },
+  async cancelRIF({ commit, getters, dispatch }, payload) {
+    if (provider) {
+      commit("LOADING_CANCEL");
+      const net = await web3.eth.net.getId();
+
+      tokenContract = new web3.eth.Contract(
+        artifact_crowdfunding_rif.abi,
+        artifact_crowdfunding_rif.networks[net].address
+      );
+
+      tokenContract.methods
+        .cancel(payload.id)
+        .send({ from: ethereum.selectedAddress })
+        .on("receipt", function (receipt) {
+          console.log(receipt);
+          commit("SHOW_CANCEL_GOAL");
+          commit("LOADING_CANCEL");
+          dispatch("addNotification", {
+            type: "success",
+            message: "🗑️ Successfully Deleted!.",
+          });
+        })
+        .on("error", function (err, receipt) {
+          if (err.code === 4001) {
+            dispatch("addNotification", {
+              type: "danger",
+              message: "Request denied.",
+            });
+          } else {
+            dispatch("addNotification", {
+              type: "danger",
+              message: "Oh no, something went wrong.",
+            });
+          }
+          commit("SHOW_CANCEL_GOAL");
+          commit("LOADING_CANCEL");
+        });
     } else {
       console.log("install a wallet");
     }
@@ -259,17 +384,24 @@ export const actions = {
         artifact.networks[net].address
       );
 
-      const balanceRSK = await web3.eth.getBalance(ethereum.selectedAddress);
-      const balanceTSY = await tokenContract.methods
+      const rifContract = new web3.eth.Contract(
+        artifact.abi,
+        "0x19F64674D8A5B4E652319F5e239eFd3bc969A1fE"
+      );
+
+      const balanceRIF = await rifContract.methods
+        .balanceOf(ethereum.selectedAddress)
+        .call();
+      const balanceBITC = await tokenContract.methods
         .balanceOf(ethereum.selectedAddress)
         .call();
 
-      console.log(balanceRSK);
-      console.log(balanceTSY);
-      var adjustedBalance = (await balanceTSY) / Math.pow(10, 3);
+      let adjustedRIF = await web3.utils.fromWei(balanceRIF, "ether");
+      let adjustedBITC = await web3.utils.fromWei(balanceBITC, "kwei");
+
       commit("SET_BALANCE", {
-        balanceRSK: balanceRSK,
-        balanceTSY: adjustedBalance,
+        balanceRIF: adjustedRIF,
+        balanceBITC: adjustedBITC,
       });
     } else {
       console.log("install a wallet");
@@ -280,7 +412,7 @@ export const actions = {
       commit("LOADING_DATA", true);
       console.log(payload.user);
       const query =
-        '*[_type == "users" && userName == $user] {userName, userAddress, userSite, userTitle, userDesc, userSubtitle, userAvatar, userBg}';
+        '*[_type == "users" && userName == $user] {userName, userAddress, userSite, userTitle, userDesc, userSubtitle, userAvatar, userBg, userInstagram, userTwitter, userTwitch, userYoutube}';
       const params = { user: payload.user };
 
       client
@@ -291,9 +423,16 @@ export const actions = {
             users.forEach(async (user) => {
               console.log(`${user.userName} (${user.userAddress})`);
               commit("SET_CREATOR_USERNAME", { name: user.userName });
+              commit("SET_CREATOR_ADDRESS", { address: user.userAddress });
               commit("SET_CREATOR_SITE", { site: user.userSite });
               commit("SET_CREATOR_DESC", { desc: user.userDesc });
               commit("SET_CREATOR_TITLE", { title: user.userTitle });
+              commit("SET_CREATOR_INSTAGRAM", {
+                instagram: user.userInstagram,
+              });
+              commit("SET_CREATOR_TWITTER", { twitter: user.userTwitter });
+              commit("SET_CREATOR_TWITCH", { twitch: user.userTwitch });
+              commit("SET_CREATOR_YOUTUBE", { youtube: user.userYoutube });
               commit("SET_CREATOR_SUBTITLE", {
                 subtitle: user.userSubtitle,
               });
@@ -447,6 +586,76 @@ export const actions = {
       console.log("install a wallet");
     }
   },
+  async sendSingleDonationRIF({ dispatch, commit }, payload) {
+    if (provider) {
+      const amountRIF = web3.utils.toWei(payload.amount, "ether");
+      const rifContract = new web3.eth.Contract(
+        artifact.abi,
+        "0x19F64674D8A5B4E652319F5e239eFd3bc969A1fE"
+      );
+
+      const query =
+        '*[_type == "users" && userName == $user] {userName, userAddress}';
+      const params = { user: payload.creator };
+
+      client
+        .fetch(query, params)
+        .then((users) => {
+          console.log(users);
+          if (users.length > 0) {
+            users.forEach((user) => {
+              console.log(`${user.userName} (${user.userAddress})`);
+              commit("TRANSACTION_WAIT");
+              rifContract.methods
+                .transfer(user.userAddress, amountRIF)
+                .send({
+                  from: ethereum.selectedAddress,
+                })
+                .on("transactionHash", (hash) => {
+                  console.log(hash);
+                  commit("DONATION_MAIN_STEPPER_NEXT");
+                  commit("SET_TRANSACTION_HASH", { hash: hash });
+                })
+                .on("receipt", (receipt) => {
+                  // Receipt
+                  console.log(receipt);
+                  commit("TRANSACTION_WAIT");
+                  commit("DONATION_MAIN_STEPPER_NEXT");
+                  dispatch("updateBalance");
+                  dispatch("addNotification", {
+                    type: "success",
+                    message: "Successful transaction!",
+                  });
+                })
+                .catch((err) => {
+                  if (err.code === 4001) {
+                    console.log("Request denied.");
+                    commit("TRANSACTION_WAIT");
+                    commit("DONATION_MAIN_STEPPER_INITIAL");
+                    dispatch("addNotification", {
+                      type: "danger",
+                      message: "Request denied.",
+                    });
+                  }
+                });
+            });
+          } else {
+            dispatch("addNotification", {
+              type: "danger",
+              message: "Error with the address.",
+            });
+          }
+        })
+        .catch((err) => {
+          dispatch("addNotification", {
+            type: "danger",
+            message: err,
+          });
+        });
+    } else {
+      console.log("install a wallet");
+    }
+  },
   async connect_wallet({ commit, dispatch }) {
     if (provider) {
       commit("CONNECT_BUTTON", true); // Button disabled
@@ -511,6 +720,18 @@ export const actions = {
                               subtitle: users.userSubtitle,
                             });
                             commit("SET_USER_DESC", { desc: users.userDesc });
+                            commit("SET_USER_INSTAGRAM", {
+                              instagram: users.userInstagram,
+                            });
+                            commit("SET_USER_TWITTER", {
+                              twitter: users.userTwitter,
+                            });
+                            commit("SET_USER_TWITCH", {
+                              twitch: users.userTwitch,
+                            });
+                            commit("SET_USER_YOUTUBE", {
+                              youtube: users.userYoutube,
+                            });
 
                             if (users.userAvatar == undefined) {
                               commit("SET_AVATAR", { avatar: undefined });
@@ -559,6 +780,18 @@ export const actions = {
                               subtitle: users.userSubtitle,
                             });
                             commit("SET_USER_DESC", { desc: users.userDesc });
+                            commit("SET_USER_INSTAGRAM", {
+                              instagram: users.userInstagram,
+                            });
+                            commit("SET_USER_TWITTER", {
+                              twitter: users.userTwitter,
+                            });
+                            commit("SET_USER_TWITCH", {
+                              twitch: users.userTwitch,
+                            });
+                            commit("SET_USER_YOUTUBE", {
+                              youtube: users.userYoutube,
+                            });
 
                             if (users.userAvatar == undefined) {
                               commit("SET_AVATAR", { avatar: undefined });
@@ -770,6 +1003,10 @@ export const actions = {
               userTitle: nTitle,
               userSubtitle: nSubitle,
               userDesc: nDesc,
+              userInstagram: payload.instagram,
+              userTwitter: payload.twitter,
+              userTwitch: payload.twitch,
+              userYoutube: payload.youtube,
             })
             .commit()
             .then((updatedAcc) => {
@@ -784,6 +1021,18 @@ export const actions = {
                 subtitle: updatedAcc.userSubtitle,
               });
               commit("SET_USER_DESC", { desc: updatedAcc.userDesc });
+              commit("SET_USER_INSTAGRAM", {
+                instagram: updatedAcc.userInstagram,
+              });
+              commit("SET_USER_TWITTER", {
+                twitter: updatedAcc.userTwitter,
+              });
+              commit("SET_USER_TWITCH", {
+                twitch: updatedAcc.userTwitch,
+              });
+              commit("SET_USER_YOUTUBE", {
+                youtube: updatedAcc.userYoutube,
+              });
               commit("LOADING_DATA_WAIT");
               commit("SHOW_EDIT_PROFILE");
               dispatch("addNotification", {
@@ -810,6 +1059,10 @@ export const actions = {
               userTitle: nTitle,
               userSubtitle: nSubitle,
               userDesc: nDesc,
+              userInstagram: payload.instagram,
+              userTwitter: payload.twitter,
+              userTwitch: payload.twitch,
+              userYoutube: payload.youtube,
             })
             .commit()
             .then((updatedAcc) => {
@@ -824,6 +1077,18 @@ export const actions = {
                 subtitle: updatedAcc.userSubtitle,
               });
               commit("SET_USER_DESC", { desc: updatedAcc.userDesc });
+              commit("SET_USER_INSTAGRAM", {
+                instagram: updatedAcc.userInstagram,
+              });
+              commit("SET_USER_TWITTER", {
+                twitter: updatedAcc.userTwitter,
+              });
+              commit("SET_USER_TWITCH", {
+                twitch: updatedAcc.userTwitch,
+              });
+              commit("SET_USER_YOUTUBE", {
+                youtube: updatedAcc.userYoutube,
+              });
               commit("LOADING_DATA_WAIT");
               commit("SHOW_EDIT_PROFILE");
               dispatch("addNotification", {

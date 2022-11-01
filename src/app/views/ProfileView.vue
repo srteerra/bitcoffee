@@ -2,19 +2,22 @@
   <div class="user">
     <Header />
     <!-- Banner -->
-    <div
-      class="user-profile__background"
-      :style="{
-        'background-repeat': 'no-repeat',
-        'background-position': 'center',
-        'background-size': 'cover',
-        'background-image': 'url(' + user_bg + ')',
-      }"
-    />
-    <!-- User avatar -->
-    <div class="user-avatar__container text-center">
-      <b-avatar :src="`${avatar}`" size="9rem" />
+    <div class="head-profile">
+      <div
+        class="user-profile__background1"
+        :style="{
+          'background-repeat': 'no-repeat',
+          'background-position': 'center',
+          'background-size': 'cover',
+          'background-image': 'url(' + user_bg + ')',
+        }"
+      />
+      <!-- User avatar -->
+      <div class="user-avatar__container1 text-center">
+        <b-avatar :src="`${avatar}`" size="9rem" />
+      </div>
     </div>
+
     <b-container class="user-information__container text-center my-4">
       <!-- personal information -->
       <div class="user-personal-info__container">
@@ -27,10 +30,11 @@
           pill
           variant="outline-dark"
           class="px-5 font-weight-bold"
+          @click="copyAddress(currentAccount)"
           >{{ myaddress }} <b-icon icon="files"></b-icon
         ></b-button>
         <a
-          :href="'https://' + site"
+          :href="site"
           target="_blank"
           style="display: block"
           class="user-site my-4"
@@ -48,7 +52,7 @@
 
         <div class="edit-profile my-3">
           <b-button
-            class="edit-btn font-weight-bold mr-2"
+            class="edit-btn font-weight-bold mr-2 my-2"
             pill
             variant="outline-dark"
             @click="SHOW_EDIT_PROFILE()"
@@ -57,14 +61,17 @@
             >Edit profile</b-button
           >
           <b-button
-            class="share-btn font-weight-bold mr-2"
+            class="share-btn font-weight-bold mr-0 mr-sm-2 my-2"
             pill
             v-b-modal.share-modal
             variant="dark"
             ><span class="px-2"><b-icon icon="share"></b-icon></span
           ></b-button>
 
-          <b-button class="edit-add p-0 m-0" v-b-modal.goal-modal
+          <b-button
+            class="edit-add p-0 my-2"
+            variant="primary"
+            @click="SHOW_EDIT_LAUNCH()"
             ><b-icon icon="plus" font-scale="1" class="p-0 m-0"></b-icon
           ></b-button>
         </div>
@@ -73,27 +80,48 @@
       <!-- user description -->
       <b-container class="user-description__container">
         <h1 class="my-5 font-weight-bold">About me</h1>
-        <b-container
+        <div
           data-aos="fade-up"
           data-aos-duration="1000"
-          class="user-description__card px-5 py-5"
+          class="user-description__card mx-auto px-2 px-md-5 py-5"
         >
           <h3 class="font-weight-bold">{{ title }}</h3>
           <p class="font-weight-bold">
             {{ subtitle }}
           </p>
           <hr />
-          <p>
+          <p class="pt-3">
             {{ description }}
           </p>
 
-          <div class="social__section mx-auto">
+          <div
+            class="mt-5 mb-3 mx-auto"
+            v-if="
+              !user_instagram ||
+              !user_instagram ||
+              !user_youtube ||
+              !user_twitch
+            "
+          >
+            <b-button
+              @click="SHOW_EDIT_PROFILE()"
+              variant="dark"
+              class="px-5 py-2"
+              pill
+              ><span class="mr-2"
+                ><b-icon icon="heart-fill" class="pr-1"></b-icon
+              ></span>
+              Edit your social media</b-button
+            >
+          </div>
+          <div class="social__section mx-auto" v-else>
             <b-button
               size="lg"
               pill
               variant="outline-primary"
-              class="mb-2"
-              href="https://www.google.com"
+              class="mb-2 mx-2"
+              :href="user_instagram"
+              v-if="user_instagram"
               target="_blank"
               v-b-tooltip.hover.top="'Instagram'"
             >
@@ -103,8 +131,9 @@
               size="lg"
               pill
               variant="outline-primary"
-              class="mb-2"
-              href="https://www.google.com"
+              class="mb-2 mx-2"
+              :href="user_twitter"
+              v-if="user_instagram"
               target="_blank"
               v-b-tooltip.hover.top="'Twitter'"
             >
@@ -114,8 +143,9 @@
               size="lg"
               pill
               variant="outline-primary"
-              class="mb-2"
-              href="https://www.google.com"
+              class="mb-2 mx-2"
+              :href="user_youtube"
+              v-if="user_youtube"
               target="_blank"
               v-b-tooltip.hover.top="'YouTube'"
             >
@@ -125,23 +155,24 @@
               size="lg"
               pill
               variant="outline-primary"
-              class="mb-2"
-              href="https://www.google.com"
+              class="mb-2 mx-2"
+              :href="user_twitch"
+              v-if="user_twitch"
               target="_blank"
               v-b-tooltip.hover.top="'Twitch'"
             >
               <b-icon icon="twitch" aria-label="Help"></b-icon>
             </b-button>
           </div>
-        </b-container>
+        </div>
       </b-container>
     </b-container>
 
-    <div class="user-goals__list text-center">
+    <div class="user-goals__list text-center p-0 m-0">
       <h1 class="my-4 font-weight-bold">My goals</h1>
-      <p>Here you can help me to continue my stuff.</p>
+      <p>See your goals here.</p>
       <b-row class="mt-5">
-        <b-col cols="12" md="10" class="mx-auto">
+        <b-col cols="12" md="10" class="mx-auto" v-if="!noCampaigns">
           <ul
             class="d-flex justify-content-center justify-content-md-around flex-wrap p-0 m-0"
           >
@@ -155,6 +186,7 @@
                 :collapse_b="'card' + idx"
                 :collapse_c="'card' + idx"
                 :collapse_d="'card' + idx"
+                :campId="campaign.id"
                 :campCategory="campaign.category"
                 :campCreator="campaign.creator"
                 :campDesc="campaign.description"
@@ -168,8 +200,25 @@
             </li>
           </ul>
         </b-col>
+        <b-col
+          cols="12"
+          class="mx-auto text-center"
+          style="height: 500px"
+          v-else
+        >
+          <b-button
+            v-b-modal.goal-modal
+            variant="dark"
+            class="mt-3 px-5 py-2"
+            pill
+            ><span class="mr-1"><b-icon icon="plus"></b-icon></span> Launch a
+            new goal</b-button
+          >
+        </b-col>
       </b-row>
     </div>
+
+    <Footer />
 
     <!-- Share modal -->
     <b-modal
@@ -184,13 +233,14 @@
       class="share__modal"
     >
       <b-container class="d-block text-center">
-        <h3 class="my-5">Share your profile</h3>
+        <h3 class="mt-5">Share your profile</h3>
+        <p>So new users will find you.</p>
       </b-container>
 
-      <div class="share__button w-100 text-center my-5">
+      <div class="share__button w-100 text-center mt-5">
         <b-button
           pill
-          class="w-75 px-4 py-2 my-4"
+          class="w-75 px-4 py-2 mt-4"
           variant="outline-dark"
           @click="copyAddress('www.bitcoffee.site/#/' + username)"
           v-b-tooltip.click="'Copied'"
@@ -198,8 +248,11 @@
           <span class="pl-1"><b-icon icon="files"></b-icon></span
         ></b-button>
       </div>
+      <div class="text-center mt-4">
+        <small>You can share this URL, is unique, is yours.</small>
+      </div>
 
-      <b-row class="mt-5 text-center">
+      <!-- <b-row class="mt-5 text-center">
         <p class="font-weight-bold mx-auto" style="color: gray">
           Or share in your social networks
         </p>
@@ -212,7 +265,8 @@
             pill
             variant="outline-primary"
             class="mb-2 mx-2"
-            href="https://www.google.com"
+            :href="user_instagram"
+            v-if="user_instagram"
             target="_blank"
             v-b-tooltip.hover.top="'Instagram'"
           >
@@ -223,7 +277,8 @@
             pill
             variant="outline-primary"
             class="mb-2 mx-2"
-            href="https://www.google.com"
+            :href="user_twitter"
+            v-if="user_twitter"
             target="_blank"
             v-b-tooltip.hover.top="'Twitter'"
           >
@@ -234,7 +289,8 @@
             pill
             variant="outline-primary"
             class="mb-2 mx-2"
-            href="https://www.google.com"
+            :href="user_youtube"
+            v-if="user_youtube"
             target="_blank"
             v-b-tooltip.hover.top="'YouTube'"
           >
@@ -245,20 +301,21 @@
             pill
             variant="outline-primary"
             class="mb-2 mx-2"
-            href="https://www.google.com"
+            :href="user_twitch"
+            v-if="user_twitch"
             target="_blank"
             v-b-tooltip.hover.top="'Twitch'"
           >
             <b-icon icon="twitch" aria-label="Help"></b-icon>
           </b-button>
         </div>
-      </b-row>
+      </b-row> -->
     </b-modal>
 
     <!-- Edit goals modal -->
     <b-modal
       id="goal-modal"
-      ref="goal-modal"
+      v-model="launchGoalModal"
       size="lg"
       hide-footer
       hide-header
@@ -267,155 +324,226 @@
       no-close-on-backdrop
       no-close-on-esc
     >
-      <b-container class="d-block text-center px-5">
-        <h3 class="mt-5">New goal</h3>
-        <p class="font-weight-light mb-5">
-          Launch a new goal to get supported by other people.
-        </p>
-        <b-form class="text-left">
-          <b-form-group
-            id="goal-category"
-            label="Goal Category"
-            label-for="goal-category"
-            class="my-3"
-          >
-            <b-form-select
+      <b-overlay :show="fetchingLaunch" rounded="sm">
+        <b-container class="d-block text-center px-5">
+          <h3 class="mt-5">New goal</h3>
+          <p class="font-weight-light mb-5">
+            Launch a new goal to get supported by other people.
+          </p>
+          <b-form class="text-left">
+            <b-form-group
               id="goal-category"
-              v-model="goalCategory"
-              :options="listedCategories"
-              class="rounded-pill pl-4"
-              required
-            ></b-form-select>
-          </b-form-group>
-
-          <b-form-group
-            id="goal-title"
-            label="Goal title"
-            label-for="goal-title"
-            class="my-3"
-            description="Example (A new guitar!)"
-          >
-            <b-form-input
-              id="goal-category"
-              type="text"
-              placeholder="Enter the goal title"
-              v-model="goalTitle"
-              class="rounded-pill pl-4"
-              required
-            ></b-form-input>
-          </b-form-group>
-
-          <b-form-group
-            id="goal-description"
-            label="Goal description"
-            label-for="goal-description"
-            class="my-3"
-            description="Example (I need it to make more music and learn new instruments.)"
-          >
-            <b-form-input
-              id="goal-description"
-              type="text"
-              placeholder="Enter the goal description"
-              v-model="goalDesc"
-              class="rounded-pill pl-4"
-              required
-            ></b-form-input>
-          </b-form-group>
-
-          <b-form-group
-            id="goal-amount"
-            label="Needed tokens amount"
-            label-for="goal-amount"
-            class="my-3"
-            description="How much do you need?"
-          >
-            <b-input-group class="mb-2 mr-sm-2 mb-sm-0">
-              <b-form-input
-                id="goal-amount"
-                placeholder="Enter the goal amount"
-                type="number"
-                v-model="goalAmount"
+              label="Goal Category"
+              label-for="goal-category"
+              class="my-3"
+            >
+              <b-form-select
+                id="goal-category"
+                v-model="goalCategory"
+                :options="listedCategories"
                 class="rounded-pill pl-4"
-                ondrop="return false;"
-                onpaste="return false;"
-                onkeypress="return event.charCode>=48 && event.charCode<=57"
+                required
+              ></b-form-select>
+            </b-form-group>
+
+            <b-form-group
+              id="goal-title"
+              label="Goal title"
+              label-for="goal-title"
+              class="my-3"
+              description="Example (A new guitar!)"
+            >
+              <b-form-input
+                id="goal-category"
+                type="text"
+                placeholder="Enter the goal title"
+                v-model="goalTitle"
+                class="rounded-pill pl-4"
                 required
               ></b-form-input>
-            </b-input-group>
-          </b-form-group>
+            </b-form-group>
 
-          <b-form-group>
-            <label for="start-datepicker">Choose a start date</label>
-            <b-form-datepicker
-              id="start-datepicker"
-              :min="minStart"
-              :date-disabled-fn="dateDisabledStart"
-              :date-format-options="{ month: 'long', day: '2-digit' }"
-              v-model="goalDateStart"
-              menu-class="w-100"
-              calendar-width="100%"
-              reset-button
-              @context="onContext1"
-              class="mb-2 rounded-pill pl-3"
-            ></b-form-datepicker>
-          </b-form-group>
+            <b-form-group
+              id="goal-description"
+              label="Goal description"
+              label-for="goal-description"
+              class="my-3"
+              description="Example (I need it to make more music and learn new instruments.)"
+            >
+              <b-form-input
+                id="goal-description"
+                type="text"
+                placeholder="Enter the goal description"
+                v-model="goalDesc"
+                class="rounded-pill pl-4"
+                required
+              ></b-form-input>
+            </b-form-group>
 
-          <b-form-group>
-            <label for="end-datepicker">Choose a end date</label>
-            <b-input-group>
+            <b-form-group
+              id="goal-amount"
+              label="Needed tokens amount"
+              label-for="goal-amount"
+              class="my-3"
+              description="How much do you need?"
+            >
+              <b-input-group class="mb-2 mr-sm-2 mb-sm-0">
+                <b-form-input
+                  id="goal-amount"
+                  placeholder="Enter the goal amount"
+                  type="number"
+                  v-model="goalAmount"
+                  class="rounded-pill pl-4"
+                  ondrop="return false;"
+                  onpaste="return false;"
+                  onkeypress="return event.charCode>=48 && event.charCode<=57"
+                  required
+                ></b-form-input>
+              </b-input-group>
+            </b-form-group>
+
+            <b-form-group>
+              <label for="start-datepicker">Choose a start date</label>
               <b-form-datepicker
-                id="end-datepicker"
-                :min="minEnd"
-                :date-disabled-fn="dateDisabledEnd"
+                id="start-datepicker"
+                :min="minStart"
+                :date-disabled-fn="dateDisabledStart"
                 :date-format-options="{ month: 'long', day: '2-digit' }"
-                :disabled="goalDateStart === ''"
-                v-model="goalDateEnd"
+                v-model="goalDateStart"
                 menu-class="w-100"
+                :disabled="pickerDis"
                 calendar-width="100%"
-                @context="onContext2"
+                today-variant="primary"
+                reset-button
+                reset-button-variant="primary w-100"
+                @context="onContext1"
                 class="mb-2 rounded-pill pl-3"
-              ></b-form-datepicker>
-            </b-input-group>
-          </b-form-group>
-
-          <div class="text-center">
-            <b-button
-              v-b-tooltip.hover.top="'Set a 5 minutes goal'"
-              :disabled="goalDateStart === ''"
-              @click="hotGoal"
-              ><b-icon icon="clock"></b-icon
-            ></b-button>
-          </div>
-
-          <b-row class="w-75 my-5 mx-auto">
-            <b-col class="my-3" cols="12" md="6">
-              <b-button
-                class="w-100"
-                @click="hideModal"
-                variant="outline-primary"
-                >Close</b-button
+                ><p>Hola</p></b-form-datepicker
               >
-            </b-col>
-            <b-col class="my-3" cols="12" md="6">
-              <b-button
-                @click="
-                  launchGoalRIF({
-                    amount: goalAmount,
-                    startDate: startUnixtime,
-                    endDate: endUnixtime,
-                    title: goalTitle,
-                    desc: goalDesc,
-                    category: goalCategory,
-                  })
-                "
-                class="w-100"
-                variant="primary"
-                >Launch goal</b-button
-              >
-            </b-col>
-          </b-row>
-        </b-form>
-      </b-container>
+            </b-form-group>
+
+            <b-form-group>
+              <label for="end-datepicker">Choose a end date</label>
+              <b-input-group>
+                <b-form-datepicker
+                  id="end-datepicker"
+                  :min="minEnd"
+                  :date-disabled-fn="dateDisabledEnd"
+                  :date-format-options="{ month: 'long', day: '2-digit' }"
+                  :disabled="goalDateStart === '' || pickerDis"
+                  v-model="goalDateEnd"
+                  menu-class="w-100"
+                  calendar-width="100%"
+                  @context="onContext2"
+                  class="mb-2 rounded-pill pl-3"
+                ></b-form-datepicker>
+              </b-input-group>
+            </b-form-group>
+            <div class="text-center my-5">
+              <div v-b-toggle.hotGoals @click="(pickerDis = !pickerDis), reset">
+                <p>
+                  Or select a
+                  <span class="font-weight-bold"
+                    ><span
+                      ><b-icon
+                        icon="lightning-fill"
+                        class="mx-1"
+                      ></b-icon></span
+                    >Hot Goal</span
+                  >
+                </p>
+                <span><b-icon icon="caret-down-fill"></b-icon></span>
+              </div>
+
+              <!-- Hot goals section -->
+              <b-collapse id="hotGoals" class="my-4 w-100">
+                <b-card class="w-100" style="border: none">
+                  <b-form-group v-slot="{ ariaDescribedby }" class="w-100">
+                    <b-form-radio-group
+                      id="btn-radios-1"
+                      v-model="selected"
+                      :aria-describedby="ariaDescribedby"
+                      name="radios-btn"
+                      class="d-flex flex-wrap"
+                      button-variant="outline-primary"
+                      buttons
+                    >
+                      <b-form-radio
+                        v-model="selected"
+                        :aria-describedby="ariaDescribedby"
+                        name="some-radios"
+                        value="5"
+                        class="m-1"
+                        style="min-width: 150px"
+                        >5 mins</b-form-radio
+                      >
+                      <b-form-radio
+                        v-model="selected"
+                        :aria-describedby="ariaDescribedby"
+                        name="some-radios"
+                        value="10"
+                        class="m-1"
+                        style="min-width: 150px"
+                        >10 mins</b-form-radio
+                      >
+                      <b-form-radio
+                        v-model="selected"
+                        :aria-describedby="ariaDescribedby"
+                        name="some-radios"
+                        value="15"
+                        class="m-1"
+                        style="min-width: 150px"
+                        >15 mins</b-form-radio
+                      >
+                      <b-form-radio
+                        v-model="selected"
+                        :aria-describedby="ariaDescribedby"
+                        name="some-radios"
+                        value="30"
+                        class="m-1"
+                        style="min-width: 150px"
+                        >30 mins</b-form-radio
+                      >
+                    </b-form-radio-group>
+                  </b-form-group>
+                </b-card>
+              </b-collapse>
+            </div>
+
+            <b-form-checkbox
+              id="checkbox-1"
+              v-model="terms"
+              name="checkbox-1"
+              value="true"
+              unchecked-value="false"
+            >
+              I accept that everything is correct
+            </b-form-checkbox>
+
+            <b-row class="w-100 my-5 mx-auto">
+              <b-col class="my-3" cols="12" md="6">
+                <b-button
+                  class="w-100"
+                  @click="SHOW_EDIT_LAUNCH()"
+                  pill
+                  variant="outline-primary"
+                  >Close</b-button
+                >
+              </b-col>
+              <b-col class="my-3" cols="12" md="6">
+                <b-button
+                  :disabled="launchValid || !termsValid"
+                  @click="launchGoal()"
+                  class="w-100 font-weight-bold"
+                  pill
+                  variant="primary"
+                  >Launch goal</b-button
+                >
+              </b-col>
+            </b-row>
+          </b-form>
+        </b-container>
+      </b-overlay>
     </b-modal>
 
     <!-- Edit profile modal -->
@@ -698,6 +826,10 @@
                 title: newTitle,
                 sub: newSub,
                 desc: newDesc,
+                instagram: newInstagram,
+                twitter: newTwitter,
+                twitch: newTwitch,
+                youtube: newYoutube,
                 avatar: newAvatar,
                 bg: newBackground,
               })
@@ -714,9 +846,9 @@
 <script>
 import UserGoalCard from "../components/UserGoalCard.vue";
 import Header from "../components/Header.vue";
+import Footer from "../components/Footer.vue";
 import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
 import { client } from "../../lib/sanityClient";
-import { log, time } from "console";
 
 const Web3 = require("web3");
 const web3 = new Web3(
@@ -749,11 +881,13 @@ export default {
     minDateEnd.setDate(today.getDate());
 
     return {
+      pickerDis: false,
       activeCam: null,
       pledgeC: null,
       pledgeA: null,
       isAvailable: false,
       fetchingPage: false,
+      terms: false,
       cards: [
         { id: "g1" },
         // { title: "", desc: "", category: "", goal: "" },
@@ -762,6 +896,7 @@ export default {
         { id: "g4" },
         { id: "g4" },
       ],
+      selectedHotGoal: null,
       monthNames: [
         "January",
         "February",
@@ -787,6 +922,11 @@ export default {
       newSub: null,
       newDesc: null,
       newSite: null,
+      newInstagram: null,
+      newTwitter: null,
+      newTwitch: null,
+      newYoutube: null,
+      holea: 1,
 
       noSite: "yourSite",
       noTitle: "No title added",
@@ -813,12 +953,16 @@ export default {
       goalAmount: null,
       goalTitle: null,
 
+      selected: "",
+
       campaigns_rif: [],
+      noCampaigns: false,
     };
   },
   components: {
     UserGoalCard,
     Header,
+    Footer,
   },
   mounted() {
     this.newUsername = this.username;
@@ -826,6 +970,10 @@ export default {
     this.newTitle = this.user_title;
     this.newSub = this.user_subtitle;
     this.newDesc = this.user_description;
+    this.newInstagram = this.user_instagram;
+    this.newTwitter = this.user_twitter;
+    this.newTwitch = this.user_twitch;
+    this.newYoutube = this.user_youtube;
 
     if (this.newUsername === this.username) {
       this.isAvailable = true;
@@ -856,7 +1004,7 @@ export default {
     }
   },
   beforeMount() {
-    this.startCampaigns();
+    this.startedCampaigns();
   },
   methods: {
     ...mapActions([
@@ -864,18 +1012,15 @@ export default {
       "launchGoal",
       "activeCampaigns",
       "approveSpender",
-      "pledgeCampaign",
       "launchGoalRIF",
       "activeCampaignsRIF",
       "approveSpenderRIF",
-      "pledgeCampaignRIF",
     ]),
-    ...mapMutations(["SHOW_EDIT_PROFILE"]),
+    ...mapMutations(["SHOW_EDIT_PROFILE", "SHOW_EDIT_LAUNCH"]),
 
-    async startCampaigns() {
+    async startedCampaigns() {
       if (provider) {
         const net = await web3.eth.net.getId();
-        let contributors = [];
 
         tokenContract = new web3.eth.Contract(
           artifact_crowdfunding_rif.abi,
@@ -892,28 +1037,32 @@ export default {
 
         if (totalCamps < 1) {
           console.log("No campaigns");
+          this.noCampaigns = true;
         } else {
-          for (var i = 0; i <= totalCamps; i++) {
-            const campaign = await tokenContract.methods
+          for (let i = 0; i < totalCamps; i++) {
+            let campaign = await tokenContract.methods
               .campaignsAddress(this.currentAccount, i)
               .call();
 
-            const usersOn = await tokenContract.methods
-              .contributedCampaign(campaign.id, i)
+            let newCampaign = await tokenContract.methods
+              .campaigns(await campaign.id)
               .call();
 
-            contributors.push(usersOn);
-            console.log(contributors);
-            this.campaigns_rif.push(await campaign);
+            if ((await newCampaign.id) !== "0") {
+              this.campaigns_rif.push(await newCampaign);
+            } else {
+              console.log("There's an deleted campaign");
+            }
+          }
+
+          if (this.campaigns_rif.length === 0) {
+            console.log("No campaigns");
+            this.noCampaigns = true;
           }
         }
       } else {
         console.log("No wallet");
       }
-    },
-
-    hideModal() {
-      this.$refs["goal-modal"].hide();
     },
 
     copyAddress(add) {
@@ -950,7 +1099,7 @@ export default {
     dateDisabledEnd(ymd, date) {
       // get the selected start date
       let min = new Date().getMinutes();
-      let hrs = new Date().getHours();
+      let hrs = new Date().getUTCHours();
       let mil = new Date().getSeconds();
       const SDate = new Date(
         this.formattedStart + " " + hrs + ":" + min + ":" + mil
@@ -961,46 +1110,105 @@ export default {
       // Disabling oll days before
       return day <= selected;
     },
-    hotGoal() {
-      // Get today date for date-picker
-      const today = new Date();
-      const MM = today.getMonth() + 1;
-      const YYYY = today.getFullYear();
-      const DD = today.getDate();
 
-      // Get the current time
-      let min = new Date().getMinutes() + 5;
-      let hrs = new Date().getHours();
-      let mil = new Date().getSeconds();
+    launchGoal() {
+      if (this.selected === "") {
+        let min = new Date().getMinutes() + 5;
+        let hrs = new Date().getUTCHours();
+        let mil = new Date().getSeconds();
+        const FDate1 = new Date(
+          this.formattedStart + " " + hrs + ":" + min + ":" + mil
+        );
+        this.startUnixtime = FDate1.getTime() / 1000;
+        // Unixtimestamp for the start date
+        const FDate2 = new Date(this.formattedEnd + " 23:59:59");
+        this.endUnixtime = FDate2.getTime() / 1000;
+        this.launchGoalRIF({
+          amount: this.goalAmount,
+          startDate: FDate1.getTime() / 1000,
+          endDate: FDate2.getTime() / 1000,
+          title: this.goalTitle,
+          desc: this.goalDesc,
+          category: this.goalCategory,
+        });
+      } else {
+        // Get the current time
+        let min = new Date().getMinutes() + 5;
+        let hrs = new Date().getUTCHours();
+        let mil = new Date().getSeconds();
 
-      // Set the current date in date-picker
-      this.goalDateEnd = YYYY + "-" + MM + "-" + DD;
+        const FDate1 = new Date(
+          this.formattedStart + " " + hrs + ":" + min + ":" + mil
+        );
+        this.startUnixtime = FDate1.getTime() / 1000;
 
-      // Send the new unixtime
-      const FDate = new Date(
-        this.formattedEnd + " " + hrs + ":" + min + ":" + mil
-      );
-      this.endUnixtime = FDate.getTime() / 1000;
+        switch (this.selected) {
+          case "5":
+            // Send the new unixtime
+            const FDate5 = new Date(
+              this.formattedEnd + " " + hrs + ":" + (min + 5) + ":" + mil
+            );
+            this.endUnixtime = FDate5.getTime() / 1000;
+            break;
+
+          case "10":
+            // Send the new unixtime
+            const FDate10 = new Date(
+              this.formattedEnd + " " + hrs + ":" + (min + 10) + ":" + mil
+            );
+            this.endUnixtime = FDate10.getTime() / 1000;
+            break;
+
+          case "15":
+            // Send the new unixtime
+            const FDate15 = new Date(
+              this.formattedEnd + " " + hrs + ":" + (min + 15) + ":" + mil
+            );
+            this.endUnixtime = FDate15.getTime() / 1000;
+            break;
+
+          case "30":
+            // Send the new unixtime
+            const FDate30 = new Date(
+              this.formattedEnd + " " + hrs + ":" + (min + 30) + ":" + mil
+            );
+            this.endUnixtime = FDate30.getTime() / 1000;
+            break;
+        }
+        this.launchGoalRIF({
+          amount: this.goalAmount,
+          startDate: this.startUnixtime,
+          endDate: this.endUnixtime,
+          title: this.goalTitle,
+          desc: this.goalDesc,
+          category: this.goalCategory,
+        });
+      }
     },
   },
   computed: {
-    ...mapState(["listedCategories"]),
-    // Unixtimestamp for the start date
-    startUnixTime2() {
-      let min = new Date().getMinutes();
-      let hrs = new Date().getHours();
-      let mil = new Date().getSeconds();
-      const FDate = new Date(
-        this.formattedStart + " " + hrs + ":" + min + ":" + mil
-      );
-      return (this.startUnixtime = FDate.getTime() / 1000);
-    },
+    ...mapState([
+      "username",
+      "currentAccount",
+      "avatar",
+      "user_bg",
+      "user_title",
+      "user_site",
+      "user_subtitle",
+      "user_description",
+      "user_instagram",
+      "user_twitter",
+      "user_twitch",
+      "user_youtube",
+      "fetchingDataWait",
+      "editProfileModal",
+      "getCountCampaignsRIF",
+      "campaigns_count_rif",
+      "listedCategories",
+      "launchGoalModal",
+      "fetchingLaunch",
+    ]),
 
-    // Unixtimestamp for the start date
-    endUnixTime2() {
-      const FDate = new Date(this.formattedEnd + " 23:59:59");
-      return (this.endUnixtime = FDate.getTime() / 1000);
-    },
     title() {
       if (!this.user_title) {
         return this.noTitle;
@@ -1029,25 +1237,43 @@ export default {
         return this.user_description;
       }
     },
-    ...mapState([
-      "username",
-      "currentAccount",
-      "avatar",
-      "user_bg",
-      "user_title",
-      "user_site",
-      "user_subtitle",
-      "user_description",
-      "fetchingDataWait",
-      "editProfileModal",
-      "getCountCampaignsRIF",
-      "campaigns_count_rif",
-    ]),
 
     myaddress() {
       return (
         this.currentAccount.slice(0, 4) + "..." + this.currentAccount.slice(36)
       );
+    },
+    reset() {
+      if (this.pickerDis === true) {
+        // Get today date for date-picker
+        const today = new Date();
+        const MM = today.getMonth() + 1;
+        const YYYY = today.getFullYear();
+        const DD = today.getDate();
+        // Set the current date in date-picker
+        this.goalDateStart = YYYY + "-" + MM + "-" + DD;
+        this.goalDateEnd = YYYY + "-" + MM + "-" + DD;
+      } else {
+        this.selected = "";
+      }
+    },
+    launchValid() {
+      if (
+        this.goalDateEnd === "" ||
+        (this.pickerDis === true && this.selected === "")
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    termsValid() {
+      if (this.terms === "false") {
+        return false;
+      }
+      if (this.terms === "true") {
+        return true;
+      }
     },
   },
   watch: {
@@ -1093,15 +1319,33 @@ export default {
   // max-width: 850px;
 }
 
-// banner styles
-.user-profile__background {
-  width: 100%;
-  height: 300px;
-  position: relative;
+#hotGoalsRadios {
+  label {
+    padding: 15px 0;
+  }
 }
+.head-profile {
+  position: relative;
+  .user-profile__background1 {
+    width: 100%;
+    height: 300px;
+  }
 
-.user-goals__list {
-  margin: 0 0 300px;
+  // avatar styles
+  .user-avatar__container1 {
+    width: 100%;
+    height: auto;
+    position: absolute;
+    bottom: -60px;
+    img {
+      width: 150px;
+      border-radius: 50%;
+    }
+
+    // @media (max-width: 991px) {
+    //   top: 315px;
+    // }
+  }
 }
 
 .newUsername__status {
@@ -1193,6 +1437,12 @@ export default {
       width: 60%;
       margin: 100px 0 20px;
     }
+    @media (max-width: 580px) {
+      width: 100%;
+    }
+  }
+  @media (max-width: 580px) {
+    padding: 0;
   }
 }
 
@@ -1207,6 +1457,25 @@ export default {
       }
       .edit-add {
         border-radius: 50%;
+      }
+    }
+  }
+}
+@media (max-width: 500px) {
+  .user-personal-info__container {
+    .edit-profile {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      .edit-btn {
+        width: 90%;
+      }
+      .share-btn {
+        width: 90%;
+      }
+      .edit-add {
+        width: 90%;
+        border-radius: 25px;
       }
     }
   }

@@ -5,6 +5,6 @@ module.exports = function (deployer) {
   deployer.deploy(CrowdFund, "0x2f395a03820af458ae3e39fca40c9dc80223492d");
   deployer.deploy(
     CrowdFundERC677,
-    "0x19f64674d8a5b4e652319f5e239efd3bc969a1fe"
+    "0x19F64674D8A5B4E652319F5e239eFd3bc969A1fE"
   );
 };

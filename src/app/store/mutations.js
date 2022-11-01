@@ -59,8 +59,44 @@ export const SET_USER_SITE = (state, payload) => {
   state.user_site = payload.site;
 };
 
+export const SET_USER_INSTAGRAM = (state, payload) => {
+  state.user_instagram = payload.instagram;
+};
+
+export const SET_USER_TWITTER = (state, payload) => {
+  state.user_twitter = payload.twitter;
+};
+
+export const SET_USER_TWITCH = (state, payload) => {
+  state.user_twitch = payload.twitch;
+};
+
+export const SET_USER_YOUTUBE = (state, payload) => {
+  state.user_youtube = payload.youtube;
+};
+
 export const SET_CREATOR_SITE = (state, payload) => {
   state.creator_site = payload.site;
+};
+
+export const SET_CREATOR_INSTAGRAM = (state, payload) => {
+  state.creator_instagram = payload.instagram;
+};
+
+export const SET_CREATOR_TWITTER = (state, payload) => {
+  state.creator_twitter = payload.twitter;
+};
+
+export const SET_CREATOR_TWITCH = (state, payload) => {
+  state.creator_twitch = payload.twitch;
+};
+
+export const SET_CREATOR_YOUTUBE = (state, payload) => {
+  state.creator_youtube = payload.youtube;
+};
+
+export const SET_CREATOR_ADDRESS = (state, payload) => {
+  state.creator_address = payload.address;
 };
 
 export const SET_CREATOR_TITLE = (state, payload) => {
@@ -108,7 +144,7 @@ export const SET_AVATAR = (state, payload) => {
 export const SET_BACKGROUND = (state, payload) => {
   if (payload.bg == undefined) {
     state.user_bg =
-      "https://images.unsplash.com/photo-1554147090-e1221a04a025?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1148&q=80";
+      "https://ipfs.io/ipfs/QmNb6xdPs5bC1f11hTRVgYR9KYkcD2h9ktqCbyiDhgM5Cz?filename=afe97292f0d4ebd20d2e0f2360e968b4.jpg";
   } else {
     state.user_bg = payload.bg;
   }
@@ -117,7 +153,7 @@ export const SET_BACKGROUND = (state, payload) => {
 export const SET_CREATOR_BACKGROUND = (state, payload) => {
   if (payload.bg == undefined) {
     state.creator_bg =
-      "https://images.unsplash.com/photo-1554147090-e1221a04a025?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1148&q=80";
+      "https://ipfs.io/ipfs/QmNb6xdPs5bC1f11hTRVgYR9KYkcD2h9ktqCbyiDhgM5Cz?filename=afe97292f0d4ebd20d2e0f2360e968b4.jpg";
   } else {
     state.creator_bg = payload.bg;
   }
@@ -149,8 +185,8 @@ export const IS_CONNECTED = (state, status) => {
 
 export const SET_BALANCE = (state, payload) => {
   state.balanceOf = {
-    rskBal: payload.balanceRSK,
-    tsyBal: payload.balanceTSY,
+    rifBal: payload.balanceRIF,
+    bitcBal: payload.balanceBITC,
   };
 };
 
@@ -160,6 +196,18 @@ export const CLEAR_BALANCE = (state) => {
 
 export const SET_NET = (state, payload) => {
   state.netID = payload;
+};
+
+export const SET_SELECTED_CRYPTO = (state, payload) => {
+  state.selectedCypto = payload.crypto;
+};
+
+export const SHOW_EDIT_LAUNCH = (state) => {
+  state.launchGoalModal = !state.launchGoalModal;
+};
+
+export const SHOW_CANCEL_GOAL = (state) => {
+  state.cancelGoalModal = !state.cancelGoalModal;
 };
 
 export const LOADING_DATA = (state, status) => {
@@ -172,6 +220,25 @@ export const LOADING_DATA_WAIT = (state) => {
 
 export const TRANSACTION_WAIT = (state) => {
   state.transactionWait = !state.transactionWait;
+};
+
+export const LOADING_PLEDGE = (state) => {
+  state.fetchingPledge = !state.fetchingPledge;
+};
+
+export const LOADING_APPROVE = (state) => {
+  state.fetchingApprove = !state.fetchingApprove;
+};
+
+export const LOADING_LAUNCH = (state) => {
+  state.fetchingLaunch = !state.fetchingLaunch;
+};
+export const LOADING_CANCEL = (state) => {
+  state.fetchingCancel = !state.fetchingCancel;
+};
+
+export const ALLOW_SPEND = (state, payload) => {
+  state.allowedSpend = payload.allow;
 };
 
 export const SHOW_NOWALLET_NOTIFICATION = (state) => {

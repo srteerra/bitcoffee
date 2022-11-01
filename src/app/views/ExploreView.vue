@@ -30,7 +30,7 @@
             cols="8"
             class="d-initial d-lg-flex justify-content-lg-center mx-auto"
           >
-            <b-col cols="12" lg="3" class="d-flex my-auto">
+            <b-col cols="12" lg="3" class="d-flex my-auto pb-3 pb-lg-0">
               <b-form-select
                 v-model="selectedCategory"
                 :options="categoryOptions"
@@ -38,8 +38,8 @@
               ></b-form-select>
             </b-col>
             <b-col cols="12" lg="3" class="my-auto">
-              <div class="mt-3 mt-lg-0 my-auto">
-                <b-form-group v-slot="{ ariaCoinby }" class="my-auto">
+              <div class="w-100 mt-3 mt-lg-0 my-auto">
+                <b-form-group v-slot="{ ariaCoinby }" class="w-100 my-auto">
                   <b-form-radio-group
                     id="ContractRadios"
                     v-model="selectedContract"
@@ -47,6 +47,7 @@
                     :aria-describedby="ariaCoinby"
                     button-variant="outline-primary"
                     size="md"
+                    class="w-100"
                     name="radio-btn-outline"
                     buttons
                   ></b-form-radio-group>
@@ -88,60 +89,71 @@
             </b-button>
           </div>
         </b-col>
-        <b-col cols="11" class="mx-auto" v-if="campaigns_rif.length > 0">
+        <b-col
+          cols="12"
+          md="11"
+          class="mx-auto mt-5"
+          v-if="campaigns_rif.length > 0"
+        >
           <ul
-            id="creatorsList"
-            class="d-flex justify-content-center flex-wrap p-0 m-0"
+            class="d-flex text-center justify-content-center justify-content-md-around flex-wrap p-0 m-0"
           >
             <li v-for="(campaign, index) in campaigns_rif" v-bind:key="index">
-              <b-skeleton-wrapper :loading="loading">
-                <template #loading>
-                  <b-card id="main__card">
-                    <b-skeleton type="avatar" size="5rem"></b-skeleton>
-                    <b-skeleton width="50%" class="mx-auto"></b-skeleton>
-                    <b-skeleton width="70%" class="mx-auto my-3"></b-skeleton>
-                    <b-skeleton width="90%" class="mx-auto my-3"></b-skeleton>
-                  </b-card>
-                </template>
-                <router-link
-                  :to="`/member/Terra`"
-                  class="px-2 my-auto"
-                  active-class="activeLink"
-                >
-                  <b-card id="main__card">
-                    <b-row class="creator__desc text-center">
-                      <b-avatar
-                        class="mx-auto"
-                        size="5rem"
-                        :src="`${builder
-                          .image(campaign.userAvatar || defaultAvatar)
-                          .url()}`"
-                      />
-                      <b-card-text class="mt-3">
-                        <h4>
-                          <strong>{{ campaign.title }}</strong>
-                        </h4>
-                      </b-card-text>
-                      <div class="d-flex justify-content-center">
-                        <div class="category-badge rounded-pill mx-1">
-                          <p class="m-0">
-                            {{ campaign.category }}
-                          </p>
-                        </div>
+              <UserGoalCard
+                :collapse_a="'card' + index"
+                :collapse_b="'card' + index"
+                :collapse_c="'card' + index"
+                :collapse_d="'card' + index"
+                :campId="campaign.id"
+                :campCategory="campaign.category"
+                :campCreator="campaign.creator"
+                :campDesc="campaign.description"
+                :campTitle="campaign.title"
+                :campGoal="campaign.goal"
+                :campPledged="campaign.pledged"
+                :campEndAt="campaign.endAt"
+                :campStartAt="campaign.startAt"
+                :campClaimed="campaign.claimed"
+              />
+              <!-- <router-link
+                :to="`/member/Terra`"
+                class="px-2 my-auto"
+                active-class="activeLink"
+              > -->
+
+              <!-- <b-card id="main__card">
+                  <b-row class="creator__desc text-center">
+                    <b-avatar
+                      class="mx-auto"
+                      size="5rem"
+                      :src="`${builder
+                        .image(campaign.userAvatar || defaultAvatar)
+                        .url()}`"
+                    />
+                    <b-card-text class="mt-3">
+                      <h4>
+                        <strong>{{ campaign.title }}</strong>
+                      </h4>
+                    </b-card-text>
+                    <div class="d-flex justify-content-center">
+                      <div class="category-badge rounded-pill mx-1">
+                        <p class="m-0">
+                          {{ campaign.category }}
+                        </p>
                       </div>
-                      <b-card-text class="px-3 my-3">
-                        <strong style="opacity: 50%">
-                          {{ web3.utils.fromWei(campaign.goal, "ether") }}
-                        </strong>
-                      </b-card-text>
-                      <b-card-text class="px-3">
-                        {{ campaign.description }}
-                      </b-card-text>
-                      <p>{{ new Date(campaign.endAt * 1000) }}</p>
-                    </b-row>
-                  </b-card>
-                </router-link>
-              </b-skeleton-wrapper>
+                    </div>
+                    <b-card-text class="px-3 my-3">
+                      <strong style="opacity: 50%">
+                        {{ web3.utils.fromWei(campaign.goal, "ether") }}
+                      </strong>
+                    </b-card-text>
+                    <b-card-text class="px-3">
+                      {{ campaign.description }}
+                    </b-card-text>
+                    <p>{{ new Date(campaign.endAt * 1000) }}</p>
+                  </b-row>
+                </b-card> -->
+              <!-- </router-link> -->
             </li>
           </ul>
           <b-pagination
@@ -316,6 +328,7 @@
 </template>
 
 <script>
+import UserGoalCard from "../components/UserGoalCard.vue";
 import Header from "../components/Header.vue";
 import Footer from "../components/Footer.vue";
 import { mapActions, mapState } from "vuex";
@@ -340,8 +353,10 @@ export default {
       loading: true,
       isSearching: false,
       creatorVerify: false,
-      defaultAvatar: undefined,
-      defaultBackground: undefined,
+      defaultAvatar:
+        "image-3ae59984424be3e4e7119b62ac1a29df46525312-1000x1000-jpg",
+      defaultBackground:
+        "image-21440068fd03cfe711bf6cd8a7f7d07c0936f6df-1002x564-jpg",
       builder: imageUrlBuilder(client),
       web3: new Web3(
         Web3.givenProvider || "https://public-node.testnet.rsk.co"
@@ -392,16 +407,21 @@ export default {
 
       for (var i = 1; i <= count; i++) {
         const campaign = await tokenContract.methods.campaigns(i).call();
-        console.log(
-          new Date(campaign.endAt * 1000).toLocaleDateString("en-us", {
-            weekday: "long",
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          })
-        );
-        this.campaigns_rif.push(await campaign);
+        if (campaign.id !== "0") {
+          this.campaigns_rif.push(await campaign);
+        } else {
+          console.log("There's an deleted campaign");
+        }
+        // console.log(
+        // new Date(campaign.endAt * 1000).toLocaleDateString("en-us", {
+        //   weekday: "long",
+        //   year: "numeric",
+        //   month: "long",
+        //   day: "numeric",
+        // })
+        // );
       }
+      console.log(this.campaigns_rif);
     } else {
       this.noprovider = true;
       console.log("No wallet");
@@ -571,6 +591,7 @@ export default {
   components: {
     Header,
     Footer,
+    UserGoalCard,
   },
 };
 </script>

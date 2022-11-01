@@ -79,7 +79,7 @@
           v-if="isconnected"
           right
           toggle-class="text-decoration-none"
-          class="m-md-2 pl-1"
+          class="mx-auto m-md-2 pl-1 text-center"
           variant="light"
           no-caret="true"
         >

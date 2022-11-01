@@ -1,9 +1,7 @@
 <template>
-  <div class="donate-card p-4">
+  <div class="donate-card">
     <div class="donate-card-title w-50 mx-auto my-4">
-      <h4 class="font-weight-bold my-3 p-0 mx-auto" style="width: 80%">
-        Buy me a coffee
-      </h4>
+      <h4 class="font-weight-bold my-3 p-0 mx-auto">Buy me a coffee</h4>
     </div>
     <div class="px-4">
       <section>
@@ -26,18 +24,17 @@
                 {{ selectedCypto }}
               </template>
               <b-dropdown-item-button
-                v-if="selectedCypto !== 'RBTC'"
+                v-if="selectedCypto !== 'RIF'"
                 class="py-1"
-                @click="selectedCypto = 'RBTC'"
-                disabled="true"
+                @click="selectedCypto = 'RIF'"
               >
                 <span class="pr-1"
                   ><img
-                    src="../assets/icons/RBTC.png"
+                    src="../assets/logos/rif-token-logo.png"
                     alt="RBTC"
                     style="max-width: 25px"
                 /></span>
-                RBTC
+                RIF
               </b-dropdown-item-button>
               <b-dropdown-item-button
                 v-if="selectedCypto !== 'BITC'"
@@ -113,7 +110,7 @@
             </b-form-group>
           </div>
 
-          <p class="px-5">
+          <p class="px-0 px-sm-5">
             I appreciate all the support, with this donation I’ll keep doing
             what I love.
           </p>
@@ -143,10 +140,28 @@
                   <div class="w-75 py-4">
                     <p class="text-dark font-weight-bold">Summary</p>
                     <p class="text-dark font-weight-bold" style="opacity: 50%">
-                      {{ amountSelected }} TSY
+                      <span class="pl-2 pr-1" v-if="selectedCypto === 'RIF'"
+                        ><img
+                          src="../assets/icons/RIF.png"
+                          style="width: 20px; height: 20px"
+                          alt=""
+                      /></span>
+                      <span class="pl-2 pr-1" v-else
+                        ><img
+                          src="../assets/icons/BITC.png"
+                          style="width: 20px; height: 20px"
+                          alt=""
+                      /></span>
+                      {{ amountSelected }} {{ selectedCypto }}
                     </p>
-                    <p class="text-dark font-weight-light">
+                    <p
+                      class="text-dark font-weight-light"
+                      v-if="selectedCypto === 'BITC'"
+                    >
                       = ☕ {{ amountSelected }} coffees
+                    </p>
+                    <p class="text-dark font-weight-light" v-else>
+                      = $ {{ amountUSD }} USD
                     </p>
                     <b-form-checkbox
                       id="approveCheck"
@@ -159,7 +174,10 @@
                     </b-form-checkbox>
                   </div>
                   <div>
-                    <p class="font-weight-light">
+                    <p
+                      class="font-weight-light"
+                      v-if="selectedCypto === 'BITC'"
+                    >
                       Your coffees:
                       <span class="pl-2 pr-1"
                         ><img
@@ -168,7 +186,19 @@
                           alt=""
                       /></span>
                       <span class="font-weight-bold">{{
-                        balanceOf.tsyBal.toLocaleString()
+                        balanceOf.bitcBal.toLocaleString()
+                      }}</span>
+                    </p>
+                    <p class="font-weight-light" v-else>
+                      Your tRIF balance:
+                      <span class="pl-2 pr-1"
+                        ><img
+                          src="../assets/icons/RIF.png"
+                          style="width: 20px; height: 20px"
+                          alt=""
+                      /></span>
+                      <span class="font-weight-bold">{{
+                        balanceOf.rifBal.toLocaleString()
                       }}</span>
                     </p>
                   </div>
@@ -177,7 +207,8 @@
                     block
                     :disabled="approvedCheck"
                     variant="dark"
-                    class="rounded-pill bg-dark w-100 px-3 font-weight-bold my-3"
+                    class="rounded-pill bg-dark w-100 px-3 font-weight-bold mt-5 mb-3"
+                    v-if="selectedCypto === 'BITC'"
                     @click="
                       sendSingleDonation({
                         creator: $route.params.id,
@@ -185,7 +216,24 @@
                       })
                     "
                   >
-                    <p class="p-0 m-0">Next</p>
+                    <p class="p-0 m-0">Send</p>
+                  </b-button>
+
+                  <b-button
+                    size="lg"
+                    block
+                    :disabled="approvedCheck"
+                    variant="dark"
+                    class="rounded-pill bg-dark w-100 px-3 font-weight-bold mt-5 mb-3"
+                    v-else
+                    @click="
+                      sendSingleDonationRIF({
+                        creator: $route.params.id,
+                        amount: amountSelected,
+                      })
+                    "
+                  >
+                    <p class="p-0 m-0">Send</p>
                   </b-button>
                   <b-button
                     id="backStepButton"
@@ -215,7 +263,7 @@
                         font-scale="4"
                       ></b-icon>
                     </b-col>
-                    <h4 class="font-weight-bold">Tranfering funds...</h4>
+                    <h4 class="font-weight-bold">Transfering funds...</h4>
                     <p class="text-dark font-weight-light">
                       Please wait until the transaction is completed.
                     </p>
@@ -301,7 +349,7 @@ export default {
       amountSelectedInput: 0,
       amountSelectedCustomInput: 0,
       approved: "",
-      selectedCypto: "BITC",
+      selectedCypto: "RIF",
     };
   },
   computed: {
@@ -311,6 +359,7 @@ export default {
       "isconnected",
       "balanceOf",
       "donationSteps",
+      "rifPrice",
     ]),
 
     approvedCheck() {
@@ -325,6 +374,19 @@ export default {
       return "https://explorer.testnet.rsk.co/tx/" + this.transactionHash;
     },
 
+    amountUSD() {
+      const usd = this.amountSelected * this.rifPrice;
+      console.log(usd);
+
+      if (usd > 99999) {
+        let str1 = new String(usd);
+        let str2 = str1.slice(0, 3);
+        return str2 + "k";
+      } else {
+        return parseFloat(usd).toFixed(2);
+      }
+    },
+
     shortHash() {
       return (
         this.transactionHash.slice(0, 4) +
@@ -333,8 +395,16 @@ export default {
       );
     },
   },
+  beforeMount() {
+    this.getCryptoprice();
+  },
   methods: {
-    ...mapActions(["sendSingleDonation", "connect_wallet"]),
+    ...mapActions([
+      "sendSingleDonation",
+      "connect_wallet",
+      "sendSingleDonationRIF",
+      "getCryptoprice",
+    ]),
     ...mapMutations([
       "DONATION_MAIN_STEPPER_NEXT",
       "DONATION_MAIN_STEPPER_BACK",
@@ -368,6 +438,7 @@ export default {
   border-radius: 25px;
   width: 70%;
   margin: 0 auto;
+  padding: 30px;
 
   @media (max-width: 1300px) {
     width: 90%;
@@ -375,6 +446,10 @@ export default {
 
   @media (max-width: 992px) {
     width: 80%;
+  }
+  @media (max-width: 500px) {
+    width: 100%;
+    padding: 30px 10px;
   }
 
   .coffee2 {
@@ -438,6 +513,11 @@ export default {
       border-radius: 50px;
       border: 3px solid #000;
       outline: none;
+
+      @media (max-width: 680px) {
+        width: 80%;
+        margin: 0 auto;
+      }
     }
 
     .amountSelection-item {
