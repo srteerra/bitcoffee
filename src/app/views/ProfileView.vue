@@ -168,7 +168,7 @@
       </b-container>
     </b-container>
 
-    <div class="user-goals__list text-center p-0 m-0">
+    <div class="user-goals__list text-center p-0 m-0 mb-5">
       <h1 class="my-4 font-weight-bold">My goals</h1>
       <p>See your goals here.</p>
       <b-row class="mt-5">
