@@ -151,7 +151,7 @@
           <h1 class="my-4 font-weight-bold">My goals</h1>
           <p>Here you can help me to continue my stuff.</p>
           <b-row class="mt-5">
-            <b-col cols="12" md="12" class="mx-auto">
+            <b-col cols="12" md="12" class="mx-auto" v-if="!noCampaigns">
               <ul
                 class="d-flex justify-content-center justify-content-md-around flex-wrap p-0 m-0"
               >
@@ -179,10 +179,19 @@
                 </li>
               </ul>
             </b-col>
+            <b-col
+              cols="12"
+              class="mx-auto text-center mt-5"
+              style="height: 500px"
+              v-else
+            >
+              <p style="opacity: 40%"><strong>No results</strong></p>
+            </b-col>
           </b-row>
         </div>
       </div>
     </div>
+    <Footer />
   </div>
 </template>
 
@@ -190,6 +199,7 @@
 import UserGoalCard from "../components/UserGoalCard.vue";
 import DonateBoxView from "../components/DonateBoxView.vue";
 import Header from "../components/Header.vue";
+import Footer from "../components/Footer.vue";
 import { mapState } from "vuex";
 import { client } from "../../lib/sanityClient";
 
@@ -242,6 +252,7 @@ export default {
       memberAddress: "",
 
       campaigns_rif: [],
+      noCampaigns: false,
       loadingCampaigns: true,
     };
   },
@@ -249,6 +260,7 @@ export default {
     UserGoalCard,
     DonateBoxView,
     Header,
+    Footer,
   },
   beforeMount() {
     this.$store.dispatch("getCreatorPage", {

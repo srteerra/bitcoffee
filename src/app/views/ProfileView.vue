@@ -218,6 +218,8 @@
       </b-row>
     </div>
 
+    <Footer />
+
     <!-- Share modal -->
     <b-modal
       id="share-modal"
@@ -844,6 +846,7 @@
 <script>
 import UserGoalCard from "../components/UserGoalCard.vue";
 import Header from "../components/Header.vue";
+import Footer from "../components/Footer.vue";
 import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
 import { client } from "../../lib/sanityClient";
 
@@ -959,6 +962,7 @@ export default {
   components: {
     UserGoalCard,
     Header,
+    Footer,
   },
   mounted() {
     this.newUsername = this.username;
