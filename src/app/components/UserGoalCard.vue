@@ -76,7 +76,7 @@
         <!-- Counter -->
         <div v-if="!hide" class="my-3">
           <div v-if="time">
-            <h3 v-if="DD <= 0" class="font-weight-bold">Only today</h3>
+            <h3 v-if="DDd <= 0" class="font-weight-bold">Only today</h3>
             <h3 v-else class="font-weight-bold">
               <span style="color: rgba(111, 80, 28, 0.38)">{{ DD }} days</span>
               left
@@ -97,7 +97,7 @@
               id="timer"
               style="letter-spacing: 3px; font-weight: 800"
             >
-              {{ DD }}:{{ HR }}:{{ MN }}:{{ SC }}
+              {{ DD }}{{ HR }}{{ MN }}{{ SC }}
             </h1>
             <h3 v-else class="font-weight-bold">Finished</h3>
           </div>
@@ -504,6 +504,7 @@ export default {
   data() {
     return {
       DD: 0,
+      DDd: 0,
       HR: 0,
       MN: 0,
       SC: 0,
@@ -572,10 +573,36 @@ export default {
       let now = new Date().setHours(new Date().getUTCHours());
       let t = deadline - now;
       let t2 = toStart - now;
-      this.DD = Math.floor(t / (1000 * 60 * 60 * 24));
-      this.HR = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      this.MN = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
-      this.SC = Math.floor((t % (1000 * 60)) / 1000);
+      let Days = Math.floor(t / (1000 * 60 * 60 * 24));
+      let Hour = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      let Min = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
+      let Sec = Math.floor((t % (1000 * 60)) / 1000);
+
+      if (Days !== 0) {
+        this.DD = Days + ":";
+        this.DDd = Days;
+      } else {
+        this.DD = "";
+        this.DDd = Days;
+      }
+
+      if (Hour !== 0) {
+        this.HR = Hour + ":";
+      } else {
+        this.HR = "";
+      }
+
+      if (Min.toString().length === 1) {
+        this.MN = "0" + Min + ":";
+      } else {
+        this.MN = Min + ":";
+      }
+
+      if (Sec.toString().length === 1) {
+        this.SC = "0" + Sec;
+      } else {
+        this.SC = Sec;
+      }
 
       this.MN2 = Math.floor((t2 % (1000 * 60 * 60)) / (1000 * 60));
       this.SC2 = Math.floor((t2 % (1000 * 60)) / 1000);
