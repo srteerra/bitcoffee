@@ -52,7 +52,7 @@
 
         <div class="edit-profile my-3">
           <b-button
-            class="edit-btn font-weight-bold mr-2"
+            class="edit-btn font-weight-bold mr-2 my-2"
             pill
             variant="outline-dark"
             @click="SHOW_EDIT_PROFILE()"
@@ -61,7 +61,7 @@
             >Edit profile</b-button
           >
           <b-button
-            class="share-btn font-weight-bold mr-2"
+            class="share-btn font-weight-bold mr-0 mr-sm-2 my-2"
             pill
             v-b-modal.share-modal
             variant="dark"
@@ -69,7 +69,7 @@
           ></b-button>
 
           <b-button
-            class="edit-add p-0 m-0"
+            class="edit-add p-0 my-2"
             variant="primary"
             @click="SHOW_EDIT_LAUNCH()"
             ><b-icon icon="plus" font-scale="1" class="p-0 m-0"></b-icon
@@ -80,10 +80,10 @@
       <!-- user description -->
       <b-container class="user-description__container">
         <h1 class="my-5 font-weight-bold">About me</h1>
-        <b-container
+        <div
           data-aos="fade-up"
           data-aos-duration="1000"
-          class="user-description__card px-5 py-5"
+          class="user-description__card mx-auto px-2 px-md-5 py-5"
         >
           <h3 class="font-weight-bold">{{ title }}</h3>
           <p class="font-weight-bold">
@@ -164,7 +164,7 @@
               <b-icon icon="twitch" aria-label="Help"></b-icon>
             </b-button>
           </div>
-        </b-container>
+        </div>
       </b-container>
     </b-container>
 
@@ -1433,6 +1433,12 @@ export default {
       width: 60%;
       margin: 100px 0 20px;
     }
+    @media (max-width: 580px) {
+      width: 100%;
+    }
+  }
+  @media (max-width: 580px) {
+    padding: 0;
   }
 }
 
@@ -1447,6 +1453,25 @@ export default {
       }
       .edit-add {
         border-radius: 50%;
+      }
+    }
+  }
+}
+@media (max-width: 500px) {
+  .user-personal-info__container {
+    .edit-profile {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      .edit-btn {
+        width: 90%;
+      }
+      .share-btn {
+        width: 90%;
+      }
+      .edit-add {
+        width: 90%;
+        border-radius: 25px;
       }
     }
   }
