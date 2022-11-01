@@ -1117,7 +1117,7 @@ export default {
           case "5":
             // Send the new unixtime
             const FDate5 = new Date(
-              this.formattedEnd + " " + hrs + ":" + (min + 10) + ":" + mil
+              this.formattedEnd + " " + hrs + ":" + (min + 5) + ":" + mil
             );
             this.endUnixtime = FDate5.getTime() / 1000;
             break;
@@ -1125,7 +1125,7 @@ export default {
           case "10":
             // Send the new unixtime
             const FDate10 = new Date(
-              this.formattedEnd + " " + hrs + ":" + (min + 15) + ":" + mil
+              this.formattedEnd + " " + hrs + ":" + (min + 10) + ":" + mil
             );
             this.endUnixtime = FDate10.getTime() / 1000;
             break;
@@ -1133,7 +1133,7 @@ export default {
           case "15":
             // Send the new unixtime
             const FDate15 = new Date(
-              this.formattedEnd + " " + hrs + ":" + (min + 20) + ":" + mil
+              this.formattedEnd + " " + hrs + ":" + (min + 15) + ":" + mil
             );
             this.endUnixtime = FDate15.getTime() / 1000;
             break;
@@ -1141,7 +1141,7 @@ export default {
           case "30":
             // Send the new unixtime
             const FDate30 = new Date(
-              this.formattedEnd + " " + hrs + ":" + (min + 35) + ":" + mil
+              this.formattedEnd + " " + hrs + ":" + (min + 30) + ":" + mil
             );
             this.endUnixtime = FDate30.getTime() / 1000;
             break;
