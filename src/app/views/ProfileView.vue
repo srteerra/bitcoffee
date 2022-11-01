@@ -90,11 +90,31 @@
             {{ subtitle }}
           </p>
           <hr />
-          <p>
+          <p class="pt-3">
             {{ description }}
           </p>
 
-          <div class="social__section mx-auto">
+          <div
+            class="mt-5 mb-3 mx-auto"
+            v-if="
+              !user_instagram ||
+              !user_instagram ||
+              !user_youtube ||
+              !user_twitch
+            "
+          >
+            <b-button
+              @click="SHOW_EDIT_PROFILE()"
+              variant="dark"
+              class="px-5 py-2"
+              pill
+              ><span class="mr-2"
+                ><b-icon icon="heart-fill" class="pr-1"></b-icon
+              ></span>
+              Edit your social media</b-button
+            >
+          </div>
+          <div class="social__section mx-auto" v-else>
             <b-button
               size="lg"
               pill
@@ -113,7 +133,7 @@
               variant="outline-primary"
               class="mb-2 mx-2"
               :href="user_twitter"
-              v-if="user_twitter"
+              v-if="user_instagram"
               target="_blank"
               v-b-tooltip.hover.top="'Twitter'"
             >
@@ -420,7 +440,15 @@
             <div class="text-center my-5">
               <div v-b-toggle.hotGoals @click="(pickerDis = !pickerDis), reset">
                 <p>
-                  Or select a <span class="font-weight-bold">Hot Goal</span>
+                  Or select a
+                  <span class="font-weight-bold"
+                    ><span
+                      ><b-icon
+                        icon="lightning-fill"
+                        class="mx-1"
+                      ></b-icon></span
+                    >Hot Goal</span
+                  >
                 </p>
                 <span><b-icon icon="caret-down-fill"></b-icon></span>
               </div>
@@ -1021,11 +1049,11 @@ export default {
             } else {
               console.log("There's an deleted campaign");
             }
+          }
 
-            if (this.campaigns_rif.length === 0) {
-              console.log("No campaigns");
-              this.noCampaigns = true;
-            }
+          if (this.campaigns_rif.length === 0) {
+            console.log("No campaigns");
+            this.noCampaigns = true;
           }
         }
       } else {

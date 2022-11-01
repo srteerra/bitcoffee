@@ -346,11 +346,10 @@ export default {
               } else {
                 console.log("There's an deleted campaign");
               }
-
-              if (this.campaigns_rif.length === 0) {
-                console.log("No campaigns");
-                this.noCampaigns = true;
-              }
+            }
+            if (this.campaigns_rif.length === 0) {
+              console.log("No campaigns");
+              this.noCampaigns = true;
             }
           }
         } else {

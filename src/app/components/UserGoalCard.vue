@@ -64,7 +64,12 @@
         <!-- Description collapse -->
         <b-collapse :id="collapse_b">
           <b-card style="border: none">
-            <p>{{ campDesc }}</p>
+            <p
+              class="px-2 py-3 w-100 w-lg-75 mx-auto text-capitalize"
+              style="background-color: rgb(249, 249, 249)"
+            >
+              {{ campDesc }}
+            </p>
           </b-card>
         </b-collapse>
 
@@ -123,7 +128,7 @@
           <b-col class="stats-item__container my-3">
             <div>
               <h3>
-                <strong>{{ contributors.length - 1 }}</strong>
+                <strong>{{ contributors.length }}</strong>
               </h3>
               <p>Supporters</p>
             </div>
@@ -261,42 +266,65 @@
             <b-row align-h="center">
               <b-col cols="12" class="my-2 text-left">
                 <div v-if="isconnected">
-                  <label
-                    for="PledgeAmountInput"
-                    class="text-dark font-weight-bold"
-                    >Contribute</label
-                  >
-                  <b-input-group
-                    id="PledgeAmountInputGroup"
-                    class="text-dark font-weight-bold mb-4"
-                  >
-                    <b-input-group-prepend>
-                      <b-input-group-text id="append">
-                        <img
-                          style="width: 20px"
-                          src="../assets/logos/rif-token-logo.png"
-                          alt=""
-                        />
-                      </b-input-group-text>
-                    </b-input-group-prepend>
-                    <b-form-input
-                      id="PledgeAmountInput"
-                      v-model="pledgeAmount"
-                      type="text"
-                      class="py-2 px-2 border-left-0 border-right-0"
-                      placeholder="Enter the amount..."
-                      :disabled="isClaimed"
-                      required
-                    />
-                    <b-input-group-append>
-                      <b-input-group-text
-                        style="background-color: transparent; border-left: none"
-                        >tRIF</b-input-group-text
+                  <div v-if="timerStart1">
+                    <div v-if="time">
+                      <label
+                        for="PledgeAmountInput"
+                        class="text-dark font-weight-bold"
+                        >Contribute</label
                       >
-                    </b-input-group-append>
-                  </b-input-group>
+                      <b-input-group
+                        id="PledgeAmountInputGroup"
+                        class="text-dark font-weight-bold mb-4"
+                      >
+                        <b-input-group-prepend>
+                          <b-input-group-text id="append">
+                            <img
+                              style="width: 20px"
+                              src="../assets/logos/rif-token-logo.png"
+                              alt=""
+                            />
+                          </b-input-group-text>
+                        </b-input-group-prepend>
+                        <b-form-input
+                          id="PledgeAmountInput"
+                          v-model="pledgeAmount"
+                          type="text"
+                          class="py-2 px-2 border-left-0 border-right-0"
+                          placeholder="Enter the amount..."
+                          :disabled="isClaimed"
+                          required
+                        />
+                        <b-input-group-append>
+                          <b-input-group-text
+                            style="
+                              background-color: transparent;
+                              border-left: none;
+                            "
+                            >tRIF</b-input-group-text
+                          >
+                        </b-input-group-append>
+                      </b-input-group>
+                    </div>
+                  </div>
+                  <div v-else>
+                    <p>
+                      Starts at
+                      <span class="font-weight-bold">{{
+                        new Date(campStartAt * 1000).toLocaleDateString(
+                          "en-us",
+                          {
+                            weekday: "long",
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                          }
+                        )
+                      }}</span>
+                    </p>
+                  </div>
                 </div>
-                <div v-if="isClaimed">
+                <div v-if="!time">
                   <b-button
                     class="btn font-weight-bold w-100 mx-auto"
                     variant="primary"
@@ -309,8 +337,13 @@
                     class="btn font-weight-bold w-100 mx-auto"
                     variant="primary"
                     pill
-                    :disabled="isClaimed"
+                    disabled
                     v-else
+                    ><span
+                      ><b-icon
+                        icon="flag-fill"
+                        class="mr-2 pr-1"
+                      ></b-icon></span
                     >GOAL ENDED</b-button
                   >
                 </div>
@@ -595,14 +628,17 @@ export default {
 
         let amountRaised = web3.utils.fromWei(campaign.pledged, "ether");
 
-        if (
-          new String(contributor).toLowerCase() ===
-          new String(ethereum.selectedAddress).toLowerCase()
-        ) {
-          this.userOnCampaign = true;
+        if (i > 0) {
+          if (
+            new String(contributor).toLowerCase() ===
+            new String(ethereum.selectedAddress).toLowerCase()
+          ) {
+            this.userOnCampaign = true;
+          }
+
+          this.contributors.push(contributor);
         }
 
-        this.contributors.push(contributor);
         this.pledgedTotal = amountRaised;
         this.userContribution = pledgedAmount;
         this.isClaimed = campaign.claimed;

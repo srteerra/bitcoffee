@@ -126,12 +126,12 @@ export const actions = {
       const net = await web3.eth.net.getId();
       const amountRIF = web3.utils.toWei(payload.amount, "ether");
 
-      tokenContract = new web3.eth.Contract(
+      const riftokenContract = new web3.eth.Contract(
         artifact.abi,
-        "0x19f64674d8a5b4e652319f5e239efd3bc969a1fe"
+        "0x19F64674D8A5B4E652319F5e239eFd3bc969A1fE"
       );
 
-      tokenContract.methods
+      riftokenContract.methods
         .approve(artifact_crowdfunding_rif.networks[net].address, amountRIF)
         .send({
           from: ethereum.selectedAddress,
@@ -227,6 +227,7 @@ export const actions = {
         .on("receipt", function (receipt) {
           console.log(receipt);
           commit("SHOW_EDIT_LAUNCH");
+          commit("LOADING_LAUNCH");
           dispatch("addNotification", {
             type: "success",
             message: "🚀 Launched!.",
@@ -269,6 +270,8 @@ export const actions = {
         artifact_crowdfunding_rif.abi,
         artifact_crowdfunding_rif.networks[net].address
       );
+
+      console.log(new Date().getTime() / 1000);
 
       tokenContract.methods
         .pledge(payload.id, amountRIF)
@@ -380,17 +383,24 @@ export const actions = {
         artifact.networks[net].address
       );
 
-      const balanceRSK = await web3.eth.getBalance(ethereum.selectedAddress);
-      const balanceTSY = await tokenContract.methods
+      const rifContract = new web3.eth.Contract(
+        artifact.abi,
+        "0x19f64674d8a5b4e652319f5e239efd3bc969a1fe"
+      );
+
+      const balanceRIF = await rifContract.methods
+        .balanceOf(ethereum.selectedAddress)
+        .call();
+      const balanceBITC = await tokenContract.methods
         .balanceOf(ethereum.selectedAddress)
         .call();
 
-      console.log(balanceRSK);
-      console.log(balanceTSY);
-      var adjustedBalance = (await balanceTSY) / Math.pow(10, 3);
+      let adjustedRIF = await web3.utils.fromWei(balanceRIF, "ether");
+      let adjustedBITC = await web3.utils.fromWei(balanceBITC, "kwei");
+
       commit("SET_BALANCE", {
-        balanceRSK: balanceRSK,
-        balanceTSY: adjustedBalance,
+        balanceRIF: adjustedRIF,
+        balanceBITC: adjustedBITC,
       });
     } else {
       console.log("install a wallet");
@@ -529,6 +539,76 @@ export const actions = {
                 .transfer(user.userAddress, amount)
                 .send({
                   from,
+                })
+                .on("transactionHash", (hash) => {
+                  console.log(hash);
+                  commit("DONATION_MAIN_STEPPER_NEXT");
+                  commit("SET_TRANSACTION_HASH", { hash: hash });
+                })
+                .on("receipt", (receipt) => {
+                  // Receipt
+                  console.log(receipt);
+                  commit("TRANSACTION_WAIT");
+                  commit("DONATION_MAIN_STEPPER_NEXT");
+                  dispatch("updateBalance");
+                  dispatch("addNotification", {
+                    type: "success",
+                    message: "Successful transaction!",
+                  });
+                })
+                .catch((err) => {
+                  if (err.code === 4001) {
+                    console.log("Request denied.");
+                    commit("TRANSACTION_WAIT");
+                    commit("DONATION_MAIN_STEPPER_INITIAL");
+                    dispatch("addNotification", {
+                      type: "danger",
+                      message: "Request denied.",
+                    });
+                  }
+                });
+            });
+          } else {
+            dispatch("addNotification", {
+              type: "danger",
+              message: "Error with the address.",
+            });
+          }
+        })
+        .catch((err) => {
+          dispatch("addNotification", {
+            type: "danger",
+            message: err,
+          });
+        });
+    } else {
+      console.log("install a wallet");
+    }
+  },
+  async sendSingleDonationRIF({ dispatch, commit }, payload) {
+    if (provider) {
+      const amountRIF = web3.utils.toWei(payload.amount, "ether");
+      const rifContract = new web3.eth.Contract(
+        artifact.abi,
+        "0x19f64674d8a5b4e652319f5e239efd3bc969a1fe"
+      );
+
+      const query =
+        '*[_type == "users" && userName == $user] {userName, userAddress}';
+      const params = { user: payload.creator };
+
+      client
+        .fetch(query, params)
+        .then((users) => {
+          console.log(users);
+          if (users.length > 0) {
+            users.forEach((user) => {
+              console.log(`${user.userName} (${user.userAddress})`);
+              commit("TRANSACTION_WAIT");
+              rifContract.methods
+                .transfer(user.userAddress, amountRIF)
+                .send({
+                  from: ethereum.selectedAddress,
                 })
                 .on("transactionHash", (hash) => {
                   console.log(hash);

@@ -163,18 +163,17 @@
                         {{ selectedCypto }}
                       </template>
                       <b-dropdown-item-button
-                        v-if="selectedCypto !== 'RBTC'"
+                        v-if="selectedCypto !== 'RIF'"
                         class="py-1"
-                        @click="selectedCypto = 'RBTC'"
-                        disabled="true"
+                        @click="selectedCypto = 'RIF'"
                       >
                         <span class="pr-1"
                           ><img
-                            src="../assets/icons/RBTC.png"
-                            alt="RBTC"
+                            src="../assets/logos/rif-token-logo.png"
+                            alt="RIF"
                             style="max-width: 25px"
                         /></span>
-                        RBTC
+                        RIF
                       </b-dropdown-item-button>
                       <b-dropdown-item-button
                         v-if="selectedCypto !== 'BITC'"
@@ -280,10 +279,28 @@
                   <div class="w-50 mx-auto py-4">
                     <p class="text-dark font-weight-bold">Summary</p>
                     <p class="text-dark font-weight-bold" style="opacity: 50%">
-                      {{ amountSelected }} TSY
+                      <span class="pl-2 pr-1" v-if="selectedCypto === 'RIF'"
+                        ><img
+                          src="../assets/icons/RIF.png"
+                          style="width: 20px; height: 20px"
+                          alt=""
+                      /></span>
+                      <span class="pl-2 pr-1" v-else
+                        ><img
+                          src="../assets/icons/BITC.png"
+                          style="width: 20px; height: 20px"
+                          alt=""
+                      /></span>
+                      {{ amountSelected }} {{ selectedCypto }}
                     </p>
-                    <p class="text-dark font-weight-light">
+                    <p
+                      class="text-dark font-weight-light"
+                      v-if="selectedCypto === 'BITC'"
+                    >
                       = ☕ {{ amountSelected }} coffees
+                    </p>
+                    <p class="text-dark font-weight-light" v-else>
+                      = $ {{ amountUSD }} USD
                     </p>
                     <b-form-checkbox
                       id="approveCheck"
@@ -301,6 +318,7 @@
                     variant="dark"
                     :disabled="approvedCheck"
                     class="rounded-pill font-weight-bold w-50 mx-auto"
+                    v-if="selectedCypto === 'BITC'"
                     @click="
                       sendSingleDonation({
                         creator: $route.params.user,
@@ -308,7 +326,23 @@
                       })
                     "
                   >
-                    <p class="p-0 m-0">Approve</p>
+                    <p class="p-0 m-0">Send</p>
+                  </b-button>
+                  <b-button
+                    size="lg"
+                    block
+                    variant="dark"
+                    :disabled="approvedCheck"
+                    class="rounded-pill font-weight-bold w-50 mx-auto"
+                    v-else
+                    @click="
+                      sendSingleDonationRIF({
+                        creator: $route.params.user,
+                        amount: amountSelected,
+                      })
+                    "
+                  >
+                    <p class="p-0 m-0">Send</p>
                   </b-button>
                   <b-button
                     id="backStepButton"
@@ -338,7 +372,7 @@
                         font-scale="4"
                       ></b-icon>
                     </b-col>
-                    <h4 class="font-weight-bold">Tranfering funds...</h4>
+                    <h4 class="font-weight-bold">Transfering funds...</h4>
                     <p class="text-dark font-weight-light">
                       Please wait until the transaction is completed.
                     </p>
@@ -423,10 +457,27 @@ export default {
       amountSelectedInput: 0,
       amountSelectedCustomInput: 0,
       approved: "",
-      selectedCypto: "BITC",
+      selectedCypto: "RIF",
     };
   },
   computed: {
+    ...mapState([
+      "donator",
+      "isconnected",
+      "username",
+      "balanceOf",
+      "donationSteps",
+      "creator_username",
+      "creator_site",
+      "creator_subtitle",
+      "creator_avatar",
+      "creator_bg",
+      "transactionWait",
+      "transactionHash",
+      "rifPrice",
+    ]),
+    ...mapGetters(["getCreatorUsername", "getCreatorAvatar"]),
+
     progress() {
       return Math.round(100 / this.max_step) * this.currentStep;
     },
@@ -467,27 +518,32 @@ export default {
       }
     },
 
-    ...mapState([
-      "donator",
-      "isconnected",
-      "username",
-      "balanceOf",
-      "donationSteps",
-      "creator_username",
-      "creator_site",
-      "creator_subtitle",
-      "creator_avatar",
-      "creator_bg",
-      "transactionWait",
-      "transactionHash",
-    ]),
-    ...mapGetters(["getCreatorUsername", "getCreatorAvatar"]),
+    amountUSD() {
+      const usd = this.amountSelected * this.rifPrice;
+      console.log(usd);
+
+      if (usd > 99999) {
+        let str1 = new String(usd);
+        let str2 = str1.slice(0, 3);
+        return str2 + "k";
+      } else {
+        return parseFloat(usd).toFixed(2);
+      }
+    },
+
     google() {
       return "https://www.google.com";
     },
   },
+  beforeMount() {
+    this.getCryptoprice();
+  },
   methods: {
-    ...mapActions(["sendSingleDonation"]),
+    ...mapActions([
+      "sendSingleDonation",
+      "sendSingleDonationRIF",
+      "getCryptoprice",
+    ]),
     ...mapMutations([
       "DONATION_MAIN_STEPPER_NEXT",
       "DONATION_MAIN_STEPPER_BACK",

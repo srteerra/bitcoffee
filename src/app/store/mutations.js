@@ -185,8 +185,8 @@ export const IS_CONNECTED = (state, status) => {
 
 export const SET_BALANCE = (state, payload) => {
   state.balanceOf = {
-    rskBal: payload.balanceRSK,
-    tsyBal: payload.balanceTSY,
+    rifBal: payload.balanceRIF,
+    bitcBal: payload.balanceBITC,
   };
 };
 
@@ -196,6 +196,10 @@ export const CLEAR_BALANCE = (state) => {
 
 export const SET_NET = (state, payload) => {
   state.netID = payload;
+};
+
+export const SET_SELECTED_CRYPTO = (state, payload) => {
+  state.selectedCypto = payload.crypto;
 };
 
 export const SHOW_EDIT_LAUNCH = (state) => {
