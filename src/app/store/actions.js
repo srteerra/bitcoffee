@@ -271,11 +271,12 @@ export const actions = {
         artifact_crowdfunding_rif.networks[net].address
       );
 
-      console.log(new Date().getTime() / 1000);
-
       tokenContract.methods
         .pledge(payload.id, amountRIF)
         .send({ from: ethereum.selectedAddress })
+        .on("transactionHash", function (hash) {
+          console.log(hash);
+        })
         .on("receipt", function (receipt) {
           console.log(receipt);
           commit("LOADING_PLEDGE");
@@ -385,7 +386,7 @@ export const actions = {
 
       const rifContract = new web3.eth.Contract(
         artifact.abi,
-        "0x19f64674d8a5b4e652319f5e239efd3bc969a1fe"
+        "0x19F64674D8A5B4E652319F5e239eFd3bc969A1fE"
       );
 
       const balanceRIF = await rifContract.methods
@@ -590,7 +591,7 @@ export const actions = {
       const amountRIF = web3.utils.toWei(payload.amount, "ether");
       const rifContract = new web3.eth.Contract(
         artifact.abi,
-        "0x19f64674d8a5b4e652319f5e239efd3bc969a1fe"
+        "0x19F64674D8A5B4E652319F5e239eFd3bc969A1fE"
       );
 
       const query =

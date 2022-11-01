@@ -120,6 +120,15 @@
                 </div>
               </div>
             </div>
+
+            <!-- category desc -->
+            <div class="category-description__container">
+              <div class="category-description__card p-5">
+                <h3 class="font-weight-bold">Category</h3>
+                <p class="font-weight-bold">Music</p>
+                <p class="py-3">Explore more</p>
+              </div>
+            </div>
           </b-col>
           <b-col cols="12" md="12" lg="6" xl="5" class="p-0">
             <!-- donation box -->
@@ -489,10 +498,11 @@ export default {
     .creator-row {
       margin: 200px 0;
     }
+
     // creator description styles
     .creator-description__container {
       width: 80%;
-      margin: 0 auto 200px;
+      margin: 0 auto 50px;
 
       @media (max-width: 500px) {
         width: 100%;
@@ -511,6 +521,28 @@ export default {
           width: 60%;
           margin: 100px auto 20px;
         }
+      }
+    }
+
+    // category description styles
+    .category-description__container {
+      width: 80%;
+      margin: 0 auto 50px;
+
+      @media (max-width: 500px) {
+        width: 100%;
+      }
+
+      .category-description__card {
+        color: white;
+        background-image: url("https://images.unsplash.com/photo-1566242784921-acfbcc5beceb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1171&q=80");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+        border-radius: 20px;
+        text-align: justify;
+        width: 100%;
       }
     }
   }

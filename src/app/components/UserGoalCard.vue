@@ -296,11 +296,7 @@
                           required
                         />
                         <b-input-group-append>
-                          <b-input-group-text
-                            style="
-                              background-color: transparent;
-                              border-left: none;
-                            "
+                          <b-input-group-text id="RIFappend"
                             >tRIF</b-input-group-text
                           >
                         </b-input-group-append>
@@ -371,7 +367,8 @@
                         font-scale="1"
                         v-if="fetchingPledge"
                       ></b-icon
-                      >CONTRIBUTE</b-button
+                      ><span v-if="fetchingPledge">PROCESSING</span>
+                      <span v-else>CONTRIBUTE</span></b-button
                     >
                     <b-button
                       class="btn font-weight-bold w-100 mx-auto"
@@ -386,7 +383,8 @@
                         font-scale="1"
                         v-if="fetchingApprove"
                       ></b-icon>
-                      APPROVE</b-button
+                      <span v-if="fetchingApprove">APPROVING</span>
+                      <span v-else>APPROVE</span></b-button
                     >
                   </div>
                 </div>
@@ -770,6 +768,12 @@ export default {
   background-color: transparent;
   border-right: none;
 }
+
+#RIFappend {
+  background-color: transparent;
+  border-left: none;
+}
+
 .user-goals__container {
   width: 100%;
   // max-width: 650px;
