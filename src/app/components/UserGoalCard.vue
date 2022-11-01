@@ -365,6 +365,7 @@
                         icon="arrow-clockwise"
                         animation="spin"
                         font-scale="1"
+                        class="mr-2"
                         v-if="fetchingPledge"
                       ></b-icon
                       ><span v-if="fetchingPledge">PROCESSING</span>

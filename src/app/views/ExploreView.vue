@@ -353,8 +353,10 @@ export default {
       loading: true,
       isSearching: false,
       creatorVerify: false,
-      defaultAvatar: undefined,
-      defaultBackground: undefined,
+      defaultAvatar:
+        "image-3ae59984424be3e4e7119b62ac1a29df46525312-1000x1000-jpg",
+      defaultBackground:
+        "image-21440068fd03cfe711bf6cd8a7f7d07c0936f6df-1002x564-jpg",
       builder: imageUrlBuilder(client),
       web3: new Web3(
         Web3.givenProvider || "https://public-node.testnet.rsk.co"

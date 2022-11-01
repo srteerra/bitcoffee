@@ -12,12 +12,6 @@
           <a :href="githubURL">
             <b-icon-github></b-icon-github>
           </a>
-          <a :href="twitterURL">
-            <b-icon-twitter />
-          </a>
-          <a :href="instaURL">
-            <b-icon-instagram />
-          </a>
         </div>
       </div>
     </b-card>
@@ -30,7 +24,7 @@ export default {
   data() {
     return {};
   },
-  props: ["nickName", "position", "githubURL", "twitterURL", "instaURL"],
+  props: ["nickName", "position", "githubURL"],
 };
 </script>
 
