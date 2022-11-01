@@ -73,8 +73,12 @@ This is possible with the [SDK](https://developers.rsk.co/rif/scheduler/sdk/) of
 ## 🏁 Phase 3
 - Smart contract for Crowdfunding.
 - Rebranding essentials.
-- Cross-chain support.
+- rLogin implementation (Still in progress).
 - Dapp v2 Launch.
+
+## 🛠 Incomming Features
+- Leadboard for Direct Transactions: This component will list the top donators every month on each profile.
+
 
 # Our Contracts
 See our token and the Crowdfunding smart contract on the RSK Explorer.
@@ -92,6 +96,8 @@ both already deployed on RSK Testnet and implemented in the application.
 ![Slide 16_9 - 9](https://user-images.githubusercontent.com/74383100/192911090-927e92ff-3d8b-453b-be1e-4775e61ab2d9.png)
 ### Public Profile View:
 ![Slide 16_9 - 2](https://user-images.githubusercontent.com/74383100/192911120-e5eeef0e-8a5c-4607-b59e-ee9eee16f7ba.png)
+### Explore View:
+![Screenshot 2022-11-01 082637](https://user-images.githubusercontent.com/74383100/199310957-fef69dd0-deb3-4a19-bd8e-f2024483fe09.png)
 
 # Authors
 
@@ -147,8 +153,10 @@ http:/localhost:8080/
     ├── build:
     │    ├── contracts/:                         # Folder for Smart Contracts JSON.
     ├── contracts/:  
-    |    ├── Migrations.sol:                    # Migrations contract.
-    │    └── Bitcoffee.sol:                     # Bitcoffee Smart Contract ERC-20 token.
+    |    ├── Bitcoffee.sol:                     # Bitcoffee Smart Contract ERC-20 token.
+    │    ├── CrowdFund.sol:                     # CrowdFunding Smart Contract for Bitcoffee token.
+    │    ├── CrowdFundERC677.sol:               # CrowdFunding Smart Contract for tRif.
+    │    └── Migrations.sol:                    # Migrations contract.
     ├── src/:                                   # Folder for development content.
     │    ├──app/:                               # Folder for Front-end.
     │    │    ├──assets/:                       # Folder for project assets.

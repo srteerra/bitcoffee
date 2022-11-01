@@ -1095,7 +1095,7 @@ export default {
     dateDisabledEnd(ymd, date) {
       // get the selected start date
       let min = new Date().getMinutes();
-      let hrs = new Date().getHours();
+      let hrs = new Date().getUTCHours();
       let mil = new Date().getSeconds();
       const SDate = new Date(
         this.formattedStart + " " + hrs + ":" + min + ":" + mil
@@ -1110,7 +1110,7 @@ export default {
     launchGoal() {
       if (this.selected === "") {
         let min = new Date().getMinutes() + 5;
-        let hrs = new Date().getHours();
+        let hrs = new Date().getUTCHours();
         let mil = new Date().getSeconds();
         const FDate1 = new Date(
           this.formattedStart + " " + hrs + ":" + min + ":" + mil
@@ -1130,7 +1130,7 @@ export default {
       } else {
         // Get the current time
         let min = new Date().getMinutes() + 5;
-        let hrs = new Date().getHours();
+        let hrs = new Date().getUTCHours();
         let mil = new Date().getSeconds();
 
         const FDate1 = new Date(
