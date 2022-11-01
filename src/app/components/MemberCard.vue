@@ -4,20 +4,26 @@
     <b-card id="member-card" class="text-center p-5" border-variant="light">
       <div class="px-4">
         <div class="pb-4">
-          <b-avatar
+          <img
             v-if="avatar === 'john'"
             src="../assets/images/john.jpg"
-            size="4rem"
+            style="width: 80px; height: 80px"
+            class="rounded-circle"
+            alt=""
           />
-          <b-avatar
+          <img
             v-else-if="avatar === 'charlie'"
             src="../assets/images/charlie.jpg"
-            size="4rem"
+            style="width: 80px; height: 80px"
+            class="rounded-circle"
+            alt=""
           />
-          <b-avatar
+          <img
             v-else-if="avatar === 'terra'"
             src="../assets/images/unnamed.jpg"
-            size="4rem"
+            style="width: 80px; height: 80px"
+            class="rounded-circle"
+            alt=""
           />
         </div>
         <b-card-title>{{ nickName }}</b-card-title>
