@@ -199,7 +199,7 @@
                     variant="primary"
                     pill
                     @click="claimRIF({ id: campId })"
-                    v-if="!time"
+                    v-if="!time && this.campPledged === this.campGoal"
                     ><span class="pr-2"><b-icon icon="cash"></b-icon></span
                     >CLAIM</b-button
                   >
@@ -568,7 +568,7 @@ export default {
     timer(date, start, toStartA) {
       let deadline = new Date(date).getTime();
       let toStart = new Date(toStartA).getTime();
-      let now = new Date().getTime();
+      let now = new Date().setHours(new Date().getUTCHours());
       let t = deadline - now;
       let t2 = toStart - now;
       this.DD = Math.floor(t / (1000 * 60 * 60 * 24));
@@ -739,21 +739,18 @@ export default {
   },
   created() {
     var self = this;
-    var fullDate = new Date(self.campEndAt * 1000).toLocaleDateString("en-us", {
+    console.log(self.campStartAt);
+    var fullDate = new Date(self.campEndAt * 1000).toUTCString({
       hour: "numeric",
       minute: "numeric",
       second: "numeric",
     });
 
-    var fullDate2 = new Date(self.campStartAt * 1000).toLocaleDateString(
-      "en-us",
-      {
-        hour: "numeric",
-        minute: "numeric",
-        second: "numeric",
-      }
-    );
-
+    var fullDate2 = new Date(self.campStartAt * 1000).toUTCString({
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+    });
     const startDate = parseInt(this.campStartAt);
 
     self.counter = setInterval(function () {
