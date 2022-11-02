@@ -42,6 +42,7 @@ export default {
   launchGoalModal: false,
   cancelGoalModal: false,
   showpleaseChangeNetState: false,
+  walletModal: false,
 
   // Notification Ex
   noWalletNoti: false,

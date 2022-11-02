@@ -197,6 +197,10 @@ export const SHOW_EDIT_LAUNCH = (state) => {
   state.launchGoalModal = !state.launchGoalModal;
 };
 
+export const SHOW_INSTALL_WALLET = (state) => {
+  state.walletModal = !state.walletModal;
+};
+
 export const SHOW_CANCEL_GOAL = (state) => {
   state.cancelGoalModal = !state.cancelGoalModal;
 };

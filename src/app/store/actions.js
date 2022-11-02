@@ -411,99 +411,95 @@ export const actions = {
     }
   },
   async getCreatorPage({ commit, getters }, payload) {
-    if (provider) {
-      commit("LOADING_DATA", true);
-      console.log(payload.user);
-      const query =
-        '*[_type == "users" && userName == $user] {userName, userAddress, userSite, userTitle, userDesc, userSubtitle, userAvatar, userBg, userInstagram, userTwitter, userTwitch, userYoutube}';
-      const params = { user: payload.user };
+    commit("LOADING_DATA", true);
+    console.log(payload.user);
+    const query =
+      '*[_type == "users" && userName == $user] {userName, userAddress, userSite, userTitle, userDesc, userSubtitle, userAvatar, userBg, userInstagram, userTwitter, userTwitch, userYoutube}';
+    const params = { user: payload.user };
 
-      client
-        .fetch(query, params)
-        .then((users) => {
-          console.log(users);
-          if (users.length > 0) {
-            users.forEach(async (user) => {
-              console.log(`${user.userName} (${user.userAddress})`);
-              commit("SET_CREATOR_USERNAME", { name: user.userName });
-              commit("SET_CREATOR_ADDRESS", { address: user.userAddress });
-              commit("SET_CREATOR_SITE", { site: user.userSite });
-              commit("SET_CREATOR_DESC", { desc: user.userDesc });
-              commit("SET_CREATOR_TITLE", { title: user.userTitle });
-              commit("SET_CREATOR_INSTAGRAM", {
-                instagram: user.userInstagram,
-              });
-              commit("SET_CREATOR_TWITTER", { twitter: user.userTwitter });
-              commit("SET_CREATOR_TWITCH", { twitch: user.userTwitch });
-              commit("SET_CREATOR_YOUTUBE", { youtube: user.userYoutube });
-              commit("SET_CREATOR_SUBTITLE", {
-                subtitle: user.userSubtitle,
-              });
-
-              if (user.userAvatar == undefined) {
-                client
-                  .fetch(
-                    '*[_type == "assets" && assetName == "DefaultAvatar"] {assetProvider}'
-                  )
-                  .then((assets) => {
-                    if (assets.length > 0) {
-                      commit("SET_CREATOR_AVATAR", {
-                        avatar: builder
-                          .image(assets[0].assetProvider.asset._ref)
-                          .url(),
-                      });
-                    } else {
-                      console.log("Avatar not found");
-                    }
-                  })
-                  .catch((err) => {
-                    console.log(err);
-                  });
-              } else {
-                commit("SET_CREATOR_AVATAR", {
-                  avatar: builder.image(user.userAvatar).url(),
-                });
-              }
-
-              if (user.userBg == undefined) {
-                client
-                  .fetch(
-                    '*[_type == "assets" && assetName == "DefaultBackground"] {assetProvider}'
-                  )
-                  .then((assets) => {
-                    if (assets.length > 0) {
-                      commit("SET_CREATOR_BACKGROUND", {
-                        bg: builder
-                          .image(assets[0].assetProvider.asset._ref)
-                          .url(),
-                      });
-                    } else {
-                      console.log("Background not found");
-                    }
-                  })
-                  .catch((err) => {
-                    console.log(err);
-                  });
-              } else {
-                commit("SET_CREATOR_BACKGROUND", {
-                  bg: builder.image(user.userBg).url(),
-                });
-              }
-              commit("CREATOR_FOUND", { status: true });
-              commit("LOADING_DATA", false);
+    client
+      .fetch(query, params)
+      .then((users) => {
+        console.log(users);
+        if (users.length > 0) {
+          users.forEach(async (user) => {
+            console.log(`${user.userName} (${user.userAddress})`);
+            commit("SET_CREATOR_USERNAME", { name: user.userName });
+            commit("SET_CREATOR_ADDRESS", { address: user.userAddress });
+            commit("SET_CREATOR_SITE", { site: user.userSite });
+            commit("SET_CREATOR_DESC", { desc: user.userDesc });
+            commit("SET_CREATOR_TITLE", { title: user.userTitle });
+            commit("SET_CREATOR_INSTAGRAM", {
+              instagram: user.userInstagram,
             });
-          } else {
-            console.log("Creator not found");
-            commit("CREATOR_FOUND", { status: false });
+            commit("SET_CREATOR_TWITTER", { twitter: user.userTwitter });
+            commit("SET_CREATOR_TWITCH", { twitch: user.userTwitch });
+            commit("SET_CREATOR_YOUTUBE", { youtube: user.userYoutube });
+            commit("SET_CREATOR_SUBTITLE", {
+              subtitle: user.userSubtitle,
+            });
+
+            if (user.userAvatar == undefined) {
+              client
+                .fetch(
+                  '*[_type == "assets" && assetName == "DefaultAvatar"] {assetProvider}'
+                )
+                .then((assets) => {
+                  if (assets.length > 0) {
+                    commit("SET_CREATOR_AVATAR", {
+                      avatar: builder
+                        .image(assets[0].assetProvider.asset._ref)
+                        .url(),
+                    });
+                  } else {
+                    console.log("Avatar not found");
+                  }
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+            } else {
+              commit("SET_CREATOR_AVATAR", {
+                avatar: builder.image(user.userAvatar).url(),
+              });
+            }
+
+            if (user.userBg == undefined) {
+              client
+                .fetch(
+                  '*[_type == "assets" && assetName == "DefaultBackground"] {assetProvider}'
+                )
+                .then((assets) => {
+                  if (assets.length > 0) {
+                    commit("SET_CREATOR_BACKGROUND", {
+                      bg: builder
+                        .image(assets[0].assetProvider.asset._ref)
+                        .url(),
+                    });
+                  } else {
+                    console.log("Background not found");
+                  }
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+            } else {
+              commit("SET_CREATOR_BACKGROUND", {
+                bg: builder.image(user.userBg).url(),
+              });
+            }
+            commit("CREATOR_FOUND", { status: true });
             commit("LOADING_DATA", false);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } else {
-      console.log("install a wallet");
-    }
+          });
+        } else {
+          console.log("Creator not found");
+          commit("CREATOR_FOUND", { status: false });
+          commit("LOADING_DATA", false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   },
   async sendSingleDonation({ dispatch, commit }, payload) {
     if (provider) {
@@ -1027,12 +1023,13 @@ export const actions = {
           });
       } else {
         console.log("Please install a wallet!");
-        commit("SHOW_INSTALL_METAMASK");
+        commit("SHOW_INSTALL_WALLET");
         commit("CONNECT_BUTTON", false); // Button enabled
         commit("DISCONNECT_BUTTON", true); // Disconnect button disabled on nav
         commit("LOADING_DATA_WAIT", false); // Loading data off
       }
     } else {
+      commit("SHOW_INSTALL_WALLET");
       console.log("install a wallet");
     }
   },
