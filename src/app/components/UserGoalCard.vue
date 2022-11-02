@@ -770,7 +770,6 @@ export default {
   },
   created() {
     var self = this;
-    console.log(self.campStartAt);
     var fullDate = new Date(self.campEndAt * 1000).toLocaleString({
       month: "long",
       day: "numeric",

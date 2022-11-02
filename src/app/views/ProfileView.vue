@@ -31,12 +31,12 @@
           variant="outline-dark"
           class="px-5 font-weight-bold"
           @click="copyAddress(currentAccount)"
-          >{{ myaddress }} <b-icon icon="files"></b-icon
-        ></b-button>
+          >{{ myaddress }} <b-icon icon="files"></b-icon></b-button
+        ><br />
         <a
           :href="site"
           target="_blank"
-          style="display: block"
+          style="display: inline-block"
           class="user-site my-4"
         >
           {{ site

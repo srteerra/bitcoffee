@@ -198,6 +198,12 @@
         <p>See more</p>
       </div>
     </b-container>
+
+    <b-container>
+      <div class="w-100 d-flex justify-content-center">
+        <h1><strong>Videos</strong></h1>
+      </div>
+    </b-container>
     <Footer />
   </div>
 </template>
