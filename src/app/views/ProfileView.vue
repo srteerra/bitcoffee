@@ -915,6 +915,7 @@ export default {
       newTitle: null,
       newSub: null,
       newDesc: null,
+      newCategory: null,
       newSite: null,
       newInstagram: null,
       newTwitter: null,
@@ -964,6 +965,7 @@ export default {
     this.newTitle = this.user_title;
     this.newSub = this.user_subtitle;
     this.newDesc = this.user_description;
+    this.newCategory = this.user_category;
     this.newInstagram = this.user_instagram;
     this.newTwitter = this.user_twitter;
     this.newTwitch = this.user_twitch;
@@ -1182,6 +1184,7 @@ export default {
       "user_site",
       "user_subtitle",
       "user_description",
+      "user_category",
       "user_instagram",
       "user_twitter",
       "user_twitch",
