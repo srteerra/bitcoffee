@@ -168,7 +168,7 @@
       </b-container>
     </b-container>
 
-    <div class="user-goals__list text-center p-0 m-0">
+    <div class="user-goals__list text-center p-0 m-0 mb-5">
       <h1 class="my-4 font-weight-bold">My goals</h1>
       <p>See your goals here.</p>
       <b-row class="mt-5">
@@ -217,6 +217,8 @@
         </b-col>
       </b-row>
     </div>
+
+    <Footer />
 
     <!-- Share modal -->
     <b-modal
@@ -844,6 +846,7 @@
 <script>
 import UserGoalCard from "../components/UserGoalCard.vue";
 import Header from "../components/Header.vue";
+import Footer from "../components/Footer.vue";
 import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
 import { client } from "../../lib/sanityClient";
 
@@ -959,6 +962,7 @@ export default {
   components: {
     UserGoalCard,
     Header,
+    Footer,
   },
   mounted() {
     this.newUsername = this.username;
