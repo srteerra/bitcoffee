@@ -24,7 +24,7 @@
               </router-link>
             </li>
             <li class="py-2">
-              <router-link to="/how" class="footer__link"> Q&A </router-link>
+              <router-link to="/faq" class="footer__link"> Q&A </router-link>
             </li>
           </ul>
         </b-col>
