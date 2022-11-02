@@ -241,7 +241,7 @@ import UserGoalCard from "../components/UserGoalCard.vue";
 import DonateBoxView from "../components/DonateBoxView.vue";
 import Header from "../components/Header.vue";
 import Footer from "../components/Footer.vue";
-import { mapState } from "vuex";
+import { mapMutations, mapState } from "vuex";
 import { client } from "../../lib/sanityClient";
 
 const Web3 = require("web3");
@@ -361,66 +361,70 @@ export default {
     },
   },
   methods: {
-    async startedCampaigns() {
-      setTimeout(async () => {
-        if (provider) {
-          const net = await web3.eth.net.getId();
-          let contributors = [];
+    ...mapMutations(["ALLOW_SPEND"]),
+    async fetchCamps() {
+      if (provider) {
+        const net = await web3.eth.net.getId();
+        let contributors = [];
 
-          tokenContract = new web3.eth.Contract(
-            artifact_crowdfunding_rif.abi,
-            artifact_crowdfunding_rif.networks[net].address
-          );
+        tokenContract = new web3.eth.Contract(
+          artifact_crowdfunding_rif.abi,
+          artifact_crowdfunding_rif.networks[net].address
+        );
 
-          tokenContract.setProvider(
-            Web3.givenProvider || "https://public-node.testnet.rsk.co"
-          );
+        tokenContract.setProvider(
+          Web3.givenProvider || "https://public-node.testnet.rsk.co"
+        );
 
-          const totalCamps = await tokenContract.methods
-            .creatorCamps(this.memberAddress)
-            .call();
+        const totalCamps = await tokenContract.methods
+          .creatorCamps(this.memberAddress)
+          .call();
 
-          // if (totalCamps < 1) {
-          //   console.log("No campaigns");
-          // } else {
-          //   for (let i = 0; i < totalCamps; i++) {
-          //     let campaign = await tokenContract.methods
-          //       .campaignsAddress(this.memberAddress, i)
-          //       .call();
+        // if (totalCamps < 1) {
+        //   console.log("No campaigns");
+        // } else {
+        //   for (let i = 0; i < totalCamps; i++) {
+        //     let campaign = await tokenContract.methods
+        //       .campaignsAddress(this.memberAddress, i)
+        //       .call();
 
-          //     this.campaigns_rif.push(await campaign);
-          //     console.log(this.campaigns_rif);
-          //   }
-          // }
+        //     this.campaigns_rif.push(await campaign);
+        //     console.log(this.campaigns_rif);
+        //   }
+        // }
 
-          if (totalCamps < 1) {
-            console.log("No campaigns");
-            this.noCampaigns = true;
-          } else {
-            this.skeler = true;
-            for (let i = 0; i < totalCamps; i++) {
-              let campaign = await tokenContract.methods
-                .campaignsAddress(this.memberAddress, i)
-                .call();
+        if (totalCamps < 1) {
+          console.log("No campaigns");
+          this.noCampaigns = true;
+        } else {
+          this.skeler = true;
+          for (let i = 0; i < totalCamps; i++) {
+            let campaign = await tokenContract.methods
+              .campaignsAddress(this.memberAddress, i)
+              .call();
 
-              let newCampaign = await tokenContract.methods
-                .campaigns(await campaign.id)
-                .call();
+            let newCampaign = await tokenContract.methods
+              .campaigns(await campaign.id)
+              .call();
 
-              if ((await newCampaign.id) !== "0") {
-                this.campaigns_rif.push(await newCampaign);
-              } else {
-                console.log("There's an deleted campaign");
-              }
-            }
-            if (this.campaigns_rif.length === 0) {
-              console.log("No campaigns");
-              this.noCampaigns = true;
+            if ((await newCampaign.id) !== "0") {
+              this.campaigns_rif.push(await newCampaign);
+            } else {
+              console.log("There's an deleted campaign");
             }
           }
-        } else {
-          console.log("No wallet");
+          if (this.campaigns_rif.length === 0) {
+            console.log("No campaigns");
+            this.noCampaigns = true;
+          }
         }
+      } else {
+        console.log("No wallet");
+      }
+    },
+    startedCampaigns() {
+      setTimeout(async () => {
+        this.fetchCamps();
       }, 5000);
     },
 
@@ -451,6 +455,9 @@ export default {
       "fetchingData",
       "editProfileModal",
       "listedCategories",
+      "fetchingPledge",
+      "fetchingCancel",
+      "refreshCamps",
     ]),
 
     // Unixtimestamp for the start date
@@ -496,6 +503,30 @@ export default {
         return this.noDesc;
       } else {
         return this.creator_description;
+      }
+    },
+  },
+  watch: {
+    fetchingPledge(newValue, oldValue) {
+      console.log(newValue);
+      if (!newValue) {
+        this.ALLOW_SPEND({ allow: false });
+        this.campaigns_rif = [];
+        this.fetchCamps();
+      }
+    },
+    fetchingCancel(newValue, oldValue) {
+      console.log(newValue);
+      if (!newValue) {
+        this.campaigns_rif = [];
+        this.fetchCamps();
+      }
+    },
+    refreshCamps(newValue, oldValue) {
+      console.log(newValue);
+      if (!newValue) {
+        this.campaigns_rif = [];
+        this.fetchCamps();
       }
     },
   },

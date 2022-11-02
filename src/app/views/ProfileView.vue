@@ -980,9 +980,9 @@ export default {
       newUsername: "",
       newAvatar: null,
       newBackground: null,
-      newTitle: null,
-      newSub: null,
-      newDesc: null,
+      newTitle: "",
+      newSub: "",
+      newDesc: "",
       newCategory: null,
       newSite: null,
       newInstagram: null,
@@ -1340,6 +1340,9 @@ export default {
     },
   },
   watch: {
+    launchGoalModal() {
+      this.startedCampaigns();
+    },
     newUsername() {
       if (this.newUsername) {
         this.fetchingPage = true;

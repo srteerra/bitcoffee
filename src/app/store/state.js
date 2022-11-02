@@ -7,6 +7,8 @@ export default {
   fetchingLaunch: false,
   fetchingCancel: false,
 
+  refreshCamps: false,
+
   allowedSpend: false,
 
   shadowblank: false,
