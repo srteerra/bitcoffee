@@ -1098,12 +1098,7 @@ export default {
     },
     dateDisabledEnd(ymd, date) {
       // get the selected start date
-      let min = new Date().getMinutes();
-      let hrs = new Date().getUTCHours();
-      let mil = new Date().getSeconds();
-      const SDate = new Date(
-        this.formattedStart + " " + hrs + ":" + min + ":" + mil
-      );
+      const SDate = new Date(this.formattedStart + " 00:00:00");
       const selected = new Date(SDate).getDate();
       const day = date.getDate();
 
@@ -1112,13 +1107,9 @@ export default {
     },
 
     launchGoal() {
+      // Only God know how this works
       if (this.selected === "") {
-        let min = new Date().getMinutes() + 5;
-        let hrs = new Date().getUTCHours();
-        let mil = new Date().getSeconds();
-        const FDate1 = new Date(
-          this.formattedStart + " " + hrs + ":" + min + ":" + mil
-        );
+        const FDate1 = new Date(this.formattedStart + " 00:00:00");
         this.startUnixtime = FDate1.getTime() / 1000;
         // Unixtimestamp for the start date
         const FDate2 = new Date(this.formattedEnd + " 23:59:59");
@@ -1132,47 +1123,45 @@ export default {
           category: this.goalCategory,
         });
       } else {
-        // Get the current time
-        let min = new Date().getMinutes() + 5;
-        let hrs = new Date().getUTCHours();
-        let mil = new Date().getSeconds();
-
-        const FDate1 = new Date(
-          this.formattedStart + " " + hrs + ":" + min + ":" + mil
+        const nowDate = new Date();
+        const today = new Date(
+          nowDate.getUTCFullYear(),
+          nowDate.getUTCMonth(),
+          nowDate.getUTCDate(),
+          nowDate.getUTCHours(),
+          nowDate.getUTCMinutes() + 5,
+          nowDate.getUTCSeconds()
         );
-        this.startUnixtime = FDate1.getTime() / 1000;
+
+        this.startUnixtime = today.getTime() / 1000;
 
         switch (this.selected) {
           case "5":
-            // Send the new unixtime
-            const FDate5 = new Date(
-              this.formattedEnd + " " + hrs + ":" + (min + 5) + ":" + mil
-            );
-            this.endUnixtime = FDate5.getTime() / 1000;
+            const v5 = today.setUTCMinutes(nowDate.getUTCMinutes() + 10);
+            var timeNow1 = v5.toString();
+            var v5t = parseInt(timeNow1.slice(0, 10));
+            this.endUnixtime = v5t;
             break;
 
           case "10":
-            // Send the new unixtime
-            const FDate10 = new Date(
-              this.formattedEnd + " " + hrs + ":" + (min + 10) + ":" + mil
-            );
-            this.endUnixtime = FDate10.getTime() / 1000;
+            const v10 = today.setUTCMinutes(nowDate.getUTCMinutes() + 15);
+            var timeNow2 = v10.toString();
+            var v10t = parseInt(timeNow2.slice(0, 10));
+            this.endUnixtime = v10t;
             break;
 
           case "15":
-            // Send the new unixtime
-            const FDate15 = new Date(
-              this.formattedEnd + " " + hrs + ":" + (min + 15) + ":" + mil
-            );
-            this.endUnixtime = FDate15.getTime() / 1000;
+            const v15 = today.setUTCMinutes(nowDate.getUTCMinutes() + 20);
+            var timeNow3 = v15.toString();
+            var v15t = parseInt(timeNow3.slice(0, 10));
+            this.endUnixtime = v15t;
             break;
 
           case "30":
-            // Send the new unixtime
-            const FDate30 = new Date(
-              this.formattedEnd + " " + hrs + ":" + (min + 30) + ":" + mil
-            );
-            this.endUnixtime = FDate30.getTime() / 1000;
+            const v30 = today.setUTCMinutes(nowDate.getUTCMinutes() + 35);
+            var timeNow4 = v30.toString();
+            var v30t = parseInt(timeNow4.slice(0, 10));
+            this.endUnixtime = v30t;
             break;
         }
         this.launchGoalRIF({
