@@ -237,7 +237,7 @@ export default {
     flex-direction: column;
     justify-content: center;
     width: 70%;
-    margin: 100px 0;
+    margin: 50px 0 100px;
     #faq__desc {
       width: 70%;
       margin: 0 auto;
@@ -252,7 +252,7 @@ export default {
   }
   .question__section {
     width: 70%;
-    margin: 200px 0;
+    margin: 100px 0 200px;
     .question-item {
       border-radius: 50px;
       .question__icon {

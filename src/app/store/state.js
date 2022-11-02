@@ -42,6 +42,7 @@ export default {
   launchGoalModal: false,
   cancelGoalModal: false,
   showpleaseChangeNetState: false,
+  walletModal: false,
 
   // Notification Ex
   noWalletNoti: false,
@@ -81,6 +82,4 @@ export default {
 
   // Notification center
   notifications: [],
-
-  campaigns_count_rif: 0,
 };

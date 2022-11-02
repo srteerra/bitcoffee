@@ -50,12 +50,20 @@
                   </p>
                 </div>
                 <div class="donate__button">
-                  <div class="social__section py-2">
+                  <div
+                    class="social__section py-2"
+                    v-if="
+                      !creator_twitter &&
+                      !creator_instagram &&
+                      !creator_youtube &&
+                      !creator_twitch
+                    "
+                  >
                     <b-button
                       size="sm"
                       variant="outline-primary"
                       class="social__button mb-2 mx-2"
-                      href="https://www.google.com"
+                      :href="creator_instagram"
                       target="_blank"
                       v-b-tooltip.hover.top="'Instagram'"
                     >
@@ -65,7 +73,7 @@
                       size="sm"
                       variant="outline-primary"
                       class="social__button mb-2 mx-2"
-                      href="https://www.google.com"
+                      :href="creator_twitter"
                       target="_blank"
                       v-b-tooltip.hover.top="'Twitter'"
                     >
@@ -75,7 +83,7 @@
                       size="sm"
                       variant="outline-primary"
                       class="social__button mb-2 mx-2"
-                      href="https://www.google.com"
+                      :href="creator_youtube"
                       target="_blank"
                       v-b-tooltip.hover.top="'YouTube'"
                     >
@@ -85,7 +93,7 @@
                       size="sm"
                       variant="outline-primary"
                       class="social__button mb-2 mx-2"
-                      href="https://www.google.com"
+                      :href="creator_twitch"
                       target="_blank"
                       v-b-tooltip.hover.top="'Twitch'"
                     >
@@ -102,7 +110,8 @@
                       class="rounded-pill font-weight-bold w-50 mx-auto"
                       @click="DONATION_MAIN_STEPPER_NEXT()"
                     >
-                      <p class="p-0 m-0">Donate</p>
+                      <p class="p-0 m-0" v-if="!isconnected">Connect Wallet</p>
+                      <p class="p-0 m-0" v-else>Donate</p>
                     </b-button>
                     <b-button
                       size="lg"
@@ -472,6 +481,10 @@ export default {
       "creator_subtitle",
       "creator_avatar",
       "creator_bg",
+      "creator_instagram",
+      "creator_twitter",
+      "creator_youtube",
+      "creator_twitch",
       "transactionWait",
       "transactionHash",
       "rifPrice",

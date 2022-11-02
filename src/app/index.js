@@ -11,6 +11,11 @@ import "bootstrap";
 import { BootstrapVue, BootstrapVueIcons } from "bootstrap-vue";
 import "./assets/style.scss";
 
+const Web3 = require("web3");
+const web3 = new Web3(
+  Web3.givenProvider || "https://public-node.testnet.rsk.co"
+);
+
 Vue.use(BootstrapVue);
 Vue.use(BootstrapVueIcons);
 
@@ -34,7 +39,7 @@ if (window.ethereum) {
   const ethereum = window.ethereum;
 
   // On Acc change
-  ethereum.on("accountsChanged", function (accounts) {
+  ethereum.on("accountsChanged", async function (accounts) {
     if (store.state.isconnected) {
       window.location.reload();
     }
@@ -57,7 +62,6 @@ if (window.ethereum) {
     } else {
       window.location.reload();
     }
-    // window.location.reload()
   });
 } else {
   console.log("install a wallet");

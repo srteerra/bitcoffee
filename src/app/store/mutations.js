@@ -1,12 +1,3 @@
-const Web3 = require("web3");
-
-const web3 = new Web3(
-  Web3.givenProvider || "https://public-node.testnet.rsk.co"
-);
-
-const artifact_crowdfunding_rif = require("../../../build/contracts/CrowdFundERC677.json");
-let tokenContract;
-
 export const WINDOW_WIDTH = (state) => {
   state.windowWidth = window.innerWidth;
 };
@@ -206,6 +197,10 @@ export const SHOW_EDIT_LAUNCH = (state) => {
   state.launchGoalModal = !state.launchGoalModal;
 };
 
+export const SHOW_INSTALL_WALLET = (state) => {
+  state.walletModal = !state.walletModal;
+};
+
 export const SHOW_CANCEL_GOAL = (state) => {
   state.cancelGoalModal = !state.cancelGoalModal;
 };
@@ -272,26 +267,4 @@ export const REMOVE_NOTIFICATION = (state, NotificationToRemove) => {
 
 export const SET_TRANSACTION_HASH = (state, payload) => {
   state.transactionHash = payload.hash;
-};
-
-export const SET_COUNT_RIF_CAMPAIGNS = async (state) => {
-  if (window.ethereum) {
-    const net = await web3.eth.net.getId();
-    tokenContract = new web3.eth.Contract(
-      artifact_crowdfunding_rif.abi,
-      artifact_crowdfunding_rif.networks[net].address
-    );
-
-    tokenContract.setProvider(
-      Web3.givenProvider || "https://public-node.testnet.rsk.co"
-    );
-
-    const count = await tokenContract.methods.count.call().call();
-
-    console.log(await count);
-
-    state.campaigns_count_rif = await count;
-  } else {
-    console.log("No wallet");
-  }
 };

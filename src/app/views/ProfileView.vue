@@ -1189,7 +1189,6 @@ export default {
       "fetchingDataWait",
       "editProfileModal",
       "getCountCampaignsRIF",
-      "campaigns_count_rif",
       "listedCategories",
       "launchGoalModal",
       "fetchingLaunch",
