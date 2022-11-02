@@ -97,7 +97,8 @@ both already deployed on RSK Testnet and implemented in the application.
 ### Public Profile View:
 ![Slide 16_9 - 2](https://user-images.githubusercontent.com/74383100/192911120-e5eeef0e-8a5c-4607-b59e-ee9eee16f7ba.png)
 ### Explore View:
-![Screenshot 2022-11-01 082637](https://user-images.githubusercontent.com/74383100/199310957-fef69dd0-deb3-4a19-bd8e-f2024483fe09.png)
+![Web capture_1-11-2022_14028_www bitcoffee site](https://user-images.githubusercontent.com/74383100/199596780-6910f69a-fd81-43db-a682-f74282e49eea.jpeg)
+
 
 # Authors
 

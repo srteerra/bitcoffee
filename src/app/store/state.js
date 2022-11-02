@@ -7,19 +7,45 @@ export default {
   fetchingLaunch: false,
   fetchingCancel: false,
 
+  refreshCamps: false,
+
   allowedSpend: false,
 
   shadowblank: false,
   error: null,
   windowWidth: window.innerWidth,
 
-  listedCategories: ["Music", "Arts & Culture", "Gaming", "IT", "Personal"],
-  listedCategoriesUsers: [
+  listedCategories: [
+    { value: undefined, text: "Select an option" },
     "Music",
     "Arts & Culture",
     "Gaming",
     "IT",
     "Personal",
+    "Business",
+    "Development",
+    "Podcast",
+    "Community",
+    "Streamer",
+    "Education",
+    "Cosplay",
+  ],
+  listedCategoriesUsers: [
+    { value: undefined, text: "Select an option" },
+    "Music",
+    "Arts & Culture",
+    "Gaming",
+    "IT",
+    "Personal",
+    "Artist",
+    "Writer",
+    "Development",
+    "Podcast",
+    "Community",
+    "Streamer",
+    "Dance",
+    "Education",
+    "Cosplay",
   ],
 
   // Eth or wallet

@@ -365,16 +365,22 @@
               label="Goal title"
               label-for="goal-title"
               class="my-3"
-              description="Example (A new guitar!)"
             >
               <b-form-input
-                id="goal-category"
+                id="goal-title"
+                :maxlength="maxLength30"
                 type="text"
                 placeholder="Enter the goal title"
                 v-model="goalTitle"
                 class="rounded-pill pl-4"
                 required
               ></b-form-input>
+              <div class="d-flex justify-content-between mt-1">
+                <small style="opacity: 70%">Example (A new guitar!)</small>
+                <p class="font-weight-light">
+                  {{ goalTitle.length }} / {{ maxLength50 }}
+                </p>
+              </div>
             </b-form-group>
 
             <b-form-group
@@ -382,16 +388,25 @@
               label="Goal description"
               label-for="goal-description"
               class="my-3"
-              description="Example (I need it to make more music and learn new instruments.)"
             >
               <b-form-input
                 id="goal-description"
+                :maxlength="maxLength70"
                 type="text"
                 placeholder="Enter the goal description"
                 v-model="goalDesc"
                 class="rounded-pill pl-4"
                 required
               ></b-form-input>
+              <div class="d-flex justify-content-between mt-1">
+                <small style="opacity: 70%"
+                  >Example (I need it to make more music and learn new
+                  instruments.)</small
+                >
+                <p class="font-weight-light">
+                  {{ goalDesc.length }} / {{ maxLength70 }}
+                </p>
+              </div>
             </b-form-group>
 
             <b-form-group
@@ -674,48 +689,66 @@
                   </b-form-group>
                   <b-form-group
                     id="TitleInputGroup"
-                    class="text-dark font-weight-bold"
+                    class="text-dark font-weight-bold mb-4"
                     label="Title"
                     label-for="TitleInput"
                   >
                     <b-form-input
                       id="TitleInput"
+                      :maxlength="maxLength20"
                       v-model="newTitle"
                       type="text"
-                      class="w-100 py-2 px-3 mb-4"
+                      class="w-100 py-2 px-3"
                       placeholder="Enter the title"
                       required
                     />
+                    <div class="text-right mt-1">
+                      <p class="font-weight-light">
+                        {{ newTitle.length }} / {{ maxLength20 }}
+                      </p>
+                    </div>
                   </b-form-group>
                   <b-form-group
                     id="SubtitleInputGroup"
-                    class="text-dark font-weight-bold"
+                    class="text-dark font-weight-bold mb-4"
                     label="Short description"
                     label-for="SubtitleInput"
                   >
                     <b-form-input
                       id="SubtitleInput"
+                      :maxlength="maxLength20"
                       v-model="newSub"
                       type="text"
-                      class="w-100 py-2 px-3 mb-4"
+                      class="w-100 py-2 px-3"
                       placeholder="Who are you?..."
                       required
                     />
+                    <div class="text-right mt-1">
+                      <p class="font-weight-light">
+                        {{ newSub.length }} / {{ maxLength20 }}
+                      </p>
+                    </div>
                   </b-form-group>
                   <b-form-group
                     id="DescInputGroup"
-                    class="text-dark font-weight-bold"
+                    class="text-dark font-weight-bold mb-4"
                     label="About me"
                     label-for="DescInput"
                   >
                     <b-form-textarea
                       id="DescInput"
+                      :maxlength="maxLength50"
                       v-model="newDesc"
                       type="text"
-                      class="w-100 py-2 px-3 mb-4"
+                      class="w-100 py-2 px-3"
                       placeholder="Tell us about you..."
                       required
                     />
+                    <div class="text-right mt-1">
+                      <p class="font-weight-light">
+                        {{ newDesc.length }} / {{ maxLength50 }}
+                      </p>
+                    </div>
                   </b-form-group>
                 </section>
               </b-form>
@@ -947,9 +980,9 @@ export default {
       newUsername: "",
       newAvatar: null,
       newBackground: null,
-      newTitle: null,
-      newSub: null,
-      newDesc: null,
+      newTitle: "",
+      newSub: "",
+      newDesc: "",
       newCategory: null,
       newSite: null,
       newInstagram: null,
@@ -957,6 +990,13 @@ export default {
       newTwitch: null,
       newYoutube: null,
       holea: 1,
+
+      maxLength10: 10,
+      maxLength20: 20,
+      maxLength30: 30,
+      maxLength50: 50,
+      maxLength70: 70,
+      maxLength100: 100,
 
       noSite: "yourSite",
       noTitle: "No title added",
@@ -977,11 +1017,11 @@ export default {
       formattedStart: "",
       formattedEnd: "",
 
-      goalCategory: "Undefined",
+      goalCategory: null,
 
-      goalDesc: null,
-      goalAmount: null,
-      goalTitle: null,
+      goalDesc: "",
+      goalAmount: "",
+      goalTitle: "",
 
       selected: "",
 
@@ -1301,6 +1341,9 @@ export default {
     },
   },
   watch: {
+    launchGoalModal() {
+      this.startedCampaigns();
+    },
     newUsername() {
       if (this.newUsername) {
         this.fetchingPage = true;

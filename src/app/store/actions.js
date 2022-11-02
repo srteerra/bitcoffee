@@ -307,6 +307,8 @@ export const actions = {
     }
   },
   async claimRIF({ commit, getters, dispatch }, payload) {
+    commit("LOADING_CAMPS", { allow: true });
+
     if (provider) {
       const net = await web3.eth.net.getId();
 
@@ -319,12 +321,14 @@ export const actions = {
         .claim(payload.id)
         .send({ from: ethereum.selectedAddress })
         .on("receipt", function (receipt) {
+          commit("LOADING_CAMPS", { allow: false });
           dispatch("addNotification", {
             type: "success",
             message: "Successfully Claimed!.",
           });
         })
         .on("error", function (err, receipt) {
+          commit("LOADING_CAMPS", { allow: false });
           if (err.code === 4001) {
             dispatch("addNotification", {
               type: "danger",
@@ -339,9 +343,11 @@ export const actions = {
         });
     } else {
       console.log("install a wallet");
+      commit("LOADING_CAMPS", { allow: false });
     }
   },
   async refundRIF({ commit, getters, dispatch }, payload) {
+    commit("LOADING_CAMPS", { allow: true });
     if (provider) {
       const net = await web3.eth.net.getId();
 
@@ -354,12 +360,14 @@ export const actions = {
         .refund(payload.id)
         .send({ from: ethereum.selectedAddress })
         .on("receipt", function (receipt) {
+          commit("LOADING_CAMPS", { allow: false });
           dispatch("addNotification", {
             type: "success",
             message: "Successfully Refunded!.",
           });
         })
         .on("error", function (err, receipt) {
+          commit("LOADING_CAMPS", { allow: false });
           if (err.code === 4001) {
             dispatch("addNotification", {
               type: "danger",
@@ -373,6 +381,7 @@ export const actions = {
           }
         });
     } else {
+      commit("LOADING_CAMPS", { allow: false });
       console.log("install a wallet");
     }
   },
