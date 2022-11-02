@@ -158,8 +158,38 @@
         <div class="user-goals__list p-0 m-0">
           <h1 class="my-4 font-weight-bold">My goals</h1>
           <p>Here you can help me to continue my stuff.</p>
+          <b-row v-if="!skeler" class="skeler">
+            <b-col
+              class="d-flex justify-content-center my-4"
+              cols="12"
+              md="12"
+              lg="6"
+            >
+              <div class="hola">
+                <b-skeleton-img
+                  no-aspect
+                  width="100%"
+                  height="100%"
+                ></b-skeleton-img>
+              </div>
+            </b-col>
+            <b-col
+              class="d-flex justify-content-center my-4"
+              cols="12"
+              md="12 "
+              lg="6"
+            >
+              <div class="hola">
+                <b-skeleton-img
+                  no-aspect
+                  width="100%"
+                  height="100%"
+                ></b-skeleton-img>
+              </div>
+            </b-col>
+          </b-row>
           <b-row class="mt-5">
-            <b-col cols="12" md="12" class="mx-auto" v-if="!noCampaigns">
+            <b-col cols="12" md="10" class="mx-auto" v-if="!noCampaigns">
               <ul
                 class="d-flex justify-content-center justify-content-md-around flex-wrap p-0 m-0"
               >
@@ -167,6 +197,7 @@
                   id="goal-per"
                   v-for="(campaign, idx) in campaigns_rif"
                   :key="idx"
+                  class="p-0 m-0"
                 >
                   <UserGoalCard
                     :collapse_a="'card' + idx"
@@ -255,6 +286,8 @@ export default {
       campaigns_rif: [],
       noCampaigns: false,
       loadingCampaigns: true,
+
+      skeler: false,
     };
   },
   components: {
@@ -362,6 +395,7 @@ export default {
             console.log("No campaigns");
             this.noCampaigns = true;
           } else {
+            this.skeler = true;
             for (let i = 0; i < totalCamps; i++) {
               let campaign = await tokenContract.methods
                 .campaignsAddress(this.memberAddress, i)
@@ -578,6 +612,22 @@ export default {
         width: 100%;
       }
     }
+  }
+}
+
+.skeler {
+  height: 500px;
+  .hola {
+    width: 50%;
+    border-radius: 25px;
+    overflow: hidden;
+    @media (max-width: 1000px) {
+      width: 80%;
+    }
+  }
+
+  @media (max-width: 1000px) {
+    height: 700px;
   }
 }
 
