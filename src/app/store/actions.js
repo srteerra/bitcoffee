@@ -285,7 +285,10 @@ export const actions = {
             message: "Successfully Contributed!.",
           });
         })
-        .on("error", function (err, receipt) {
+        .on("error", async function (err, receipt) {
+          console.log(err);
+          const block = new web3.eth.getBlock(receipt.blockNumber);
+          console.log(await block.timestamp);
           if (err.code === 4001) {
             dispatch("addNotification", {
               type: "danger",

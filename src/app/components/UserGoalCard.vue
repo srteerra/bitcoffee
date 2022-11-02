@@ -199,7 +199,7 @@
                     variant="primary"
                     pill
                     @click="claimRIF({ id: campId })"
-                    v-if="!time && this.campPledged === this.campGoal"
+                    v-if="!time && campPledged > campGoal"
                     ><span class="pr-2"><b-icon icon="cash"></b-icon></span
                     >CLAIM</b-button
                   >
@@ -256,7 +256,7 @@
         </b-collapse>
 
         <b-collapse :id="collapse_a" class="mt-2" v-else>
-          <b-row v-if="userContribution > 0">
+          <b-row v-if="userContribution > 0 && isconnected">
             <b-col class="text-center">
               <h5><strong>My contribution</strong></h5>
               <p>{{ convertedRIFContribution }} RIF</p>
@@ -406,7 +406,9 @@
                   class="btn font-weight-bold w-100 mx-auto"
                   variant="outline-dark"
                   pill
-                  v-else
+                  v-if="
+                    !time && userContribution !== 0 && campPledged < campGoal
+                  "
                   @click="refundRIF({ id: campId })"
                   >REFUND</b-button
                 >
@@ -570,7 +572,8 @@ export default {
     timer(date, start, toStartA) {
       let deadline = new Date(date).getTime();
       let toStart = new Date(toStartA).getTime();
-      let now = new Date().setHours(new Date().getUTCHours());
+      const nowDate = new Date();
+      let now = new Date();
       let t = deadline - now;
       let t2 = toStart - now;
       let Days = Math.floor(t / (1000 * 60 * 60 * 24));
@@ -768,13 +771,17 @@ export default {
   created() {
     var self = this;
     console.log(self.campStartAt);
-    var fullDate = new Date(self.campEndAt * 1000).toUTCString({
+    var fullDate = new Date(self.campEndAt * 1000).toLocaleString({
+      month: "long",
+      day: "numeric",
       hour: "numeric",
       minute: "numeric",
       second: "numeric",
     });
 
-    var fullDate2 = new Date(self.campStartAt * 1000).toUTCString({
+    var fullDate2 = new Date(self.campStartAt * 1000).toLocaleString({
+      month: "long",
+      day: "numeric",
       hour: "numeric",
       minute: "numeric",
       second: "numeric",
