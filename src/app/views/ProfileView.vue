@@ -1094,7 +1094,7 @@ export default {
       const day = date.getDate();
 
       // Disabling oll days before
-      return day < now;
+      return day <= now;
     },
     dateDisabledEnd(ymd, date) {
       // get the selected start date
@@ -1125,40 +1125,40 @@ export default {
       } else {
         const nowDate = new Date();
         const today = new Date(
-          nowDate.getUTCFullYear(),
-          nowDate.getUTCMonth(),
-          nowDate.getUTCDate(),
-          nowDate.getUTCHours(),
-          nowDate.getUTCMinutes() + 5,
-          nowDate.getUTCSeconds()
+          nowDate.getFullYear(),
+          nowDate.getMonth(),
+          nowDate.getDate(),
+          nowDate.getHours(),
+          nowDate.getMinutes() + 5,
+          nowDate.getSeconds()
         );
 
         this.startUnixtime = today.getTime() / 1000;
 
         switch (this.selected) {
           case "5":
-            const v5 = today.setUTCMinutes(nowDate.getUTCMinutes() + 10);
-            var timeNow1 = v5.toString();
-            var v5t = parseInt(timeNow1.slice(0, 10));
+            const v5 = today.setMinutes(nowDate.getMinutes() + 5);
+            var timeNow4 = v5.toString();
+            var v5t = parseInt(timeNow4.slice(0, 10));
             this.endUnixtime = v5t;
             break;
 
           case "10":
-            const v10 = today.setUTCMinutes(nowDate.getUTCMinutes() + 15);
-            var timeNow2 = v10.toString();
-            var v10t = parseInt(timeNow2.slice(0, 10));
+            const v10 = today.setMinutes(nowDate.getMinutes() + 10);
+            var timeNow4 = v10.toString();
+            var v10t = parseInt(timeNow4.slice(0, 10));
             this.endUnixtime = v10t;
             break;
 
           case "15":
-            const v15 = today.setUTCMinutes(nowDate.getUTCMinutes() + 20);
-            var timeNow3 = v15.toString();
-            var v15t = parseInt(timeNow3.slice(0, 10));
+            const v15 = today.setMinutes(nowDate.getMinutes() + 15);
+            var timeNow4 = v15.toString();
+            var v15t = parseInt(timeNow4.slice(0, 10));
             this.endUnixtime = v15t;
             break;
 
           case "30":
-            const v30 = today.setUTCMinutes(nowDate.getUTCMinutes() + 35);
+            const v30 = today.setMinutes(nowDate.getMinutes() + 30);
             var timeNow4 = v30.toString();
             var v30t = parseInt(timeNow4.slice(0, 10));
             this.endUnixtime = v30t;
