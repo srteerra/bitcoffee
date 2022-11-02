@@ -45,6 +45,10 @@ export const getUserDescription = (state) => {
   return state.user_description;
 };
 
+export const getUserCategory = (state) => {
+  return state.user_category;
+};
+
 export const isConnected = () => {
   return state.isconnected;
 };

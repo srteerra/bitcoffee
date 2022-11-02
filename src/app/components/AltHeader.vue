@@ -86,7 +86,7 @@
           toggle-class="text-decoration-none"
           class="m-md-2 pl-1"
           variant="light"
-          no-caret="true"
+          no-caret
         >
           <template #button-content>
             <b-avatar button :src="`${avatar}`" size="4rem" />

@@ -46,8 +46,7 @@ export default {
     {
       name: "userCategory",
       title: "Category",
-      type: "array",
-      of: [{ type: "string" }],
+      type: "text",
     },
     {
       name: "userVerify",

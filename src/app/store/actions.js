@@ -317,7 +317,26 @@ export const actions = {
 
       tokenContract.methods
         .claim(payload.id)
-        .send({ from: ethereum.selectedAddress });
+        .send({ from: ethereum.selectedAddress })
+        .on("receipt", function (receipt) {
+          dispatch("addNotification", {
+            type: "success",
+            message: "Successfully Claimed!.",
+          });
+        })
+        .on("error", function (err, receipt) {
+          if (err.code === 4001) {
+            dispatch("addNotification", {
+              type: "danger",
+              message: "Request denied.",
+            });
+          } else {
+            dispatch("addNotification", {
+              type: "danger",
+              message: "Oh no, something went wrong.",
+            });
+          }
+        });
     } else {
       console.log("install a wallet");
     }
@@ -333,7 +352,26 @@ export const actions = {
 
       tokenContract.methods
         .refund(payload.id)
-        .send({ from: ethereum.selectedAddress });
+        .send({ from: ethereum.selectedAddress })
+        .on("receipt", function (receipt) {
+          dispatch("addNotification", {
+            type: "success",
+            message: "Successfully Refunded!.",
+          });
+        })
+        .on("error", function (err, receipt) {
+          if (err.code === 4001) {
+            dispatch("addNotification", {
+              type: "danger",
+              message: "Request denied.",
+            });
+          } else {
+            dispatch("addNotification", {
+              type: "danger",
+              message: "Oh no, something went wrong.",
+            });
+          }
+        });
     } else {
       console.log("install a wallet");
     }
@@ -414,7 +452,7 @@ export const actions = {
     commit("LOADING_DATA", true);
     console.log(payload.user);
     const query =
-      '*[_type == "users" && userName == $user] {userName, userAddress, userSite, userTitle, userDesc, userSubtitle, userAvatar, userBg, userInstagram, userTwitter, userTwitch, userYoutube}';
+      '*[_type == "users" && userName == $user] {userName, userAddress, userSite, userTitle, userDesc, userCategory, userSubtitle, userAvatar, userBg, userInstagram, userTwitter, userTwitch, userYoutube}';
     const params = { user: payload.user };
 
     client
@@ -428,6 +466,7 @@ export const actions = {
             commit("SET_CREATOR_ADDRESS", { address: user.userAddress });
             commit("SET_CREATOR_SITE", { site: user.userSite });
             commit("SET_CREATOR_DESC", { desc: user.userDesc });
+            commit("SET_CREATOR_CATEGORY", { category: user.userCategory });
             commit("SET_CREATOR_TITLE", { title: user.userTitle });
             commit("SET_CREATOR_INSTAGRAM", {
               instagram: user.userInstagram,
@@ -704,6 +743,7 @@ export const actions = {
                             userSite: "",
                             userSubtitle: "",
                             userDesc: "",
+                            userCategory: "",
                           };
 
                           client.createIfNotExists(userDoc);
@@ -721,6 +761,9 @@ export const actions = {
                                 subtitle: users.userSubtitle,
                               });
                               commit("SET_USER_DESC", { desc: users.userDesc });
+                              commit("SET_USER_CATEGORY", {
+                                category: users.userCategory,
+                              });
                               commit("SET_USER_INSTAGRAM", {
                                 instagram: users.userInstagram,
                               });
@@ -764,6 +807,7 @@ export const actions = {
                             userSite: "",
                             userSubtitle: "",
                             userDesc: "",
+                            userCategory: "",
                           };
 
                           client.createIfNotExists(userDoc);
@@ -781,6 +825,9 @@ export const actions = {
                                 subtitle: users.userSubtitle,
                               });
                               commit("SET_USER_DESC", { desc: users.userDesc });
+                              commit("SET_USER_CATEGORY", {
+                                category: users.userCategory,
+                              });
                               commit("SET_USER_INSTAGRAM", {
                                 instagram: users.userInstagram,
                               });
@@ -877,6 +924,7 @@ export const actions = {
                         userSite: "",
                         userSubtitle: "",
                         userDesc: "",
+                        userCategory: "",
                       };
 
                       client.createIfNotExists(userDoc);
@@ -894,6 +942,9 @@ export const actions = {
                             subtitle: users.userSubtitle,
                           });
                           commit("SET_USER_DESC", { desc: users.userDesc });
+                          commit("SET_USER_CATEGORY", {
+                            category: users.userCategory,
+                          });
                           commit("SET_USER_INSTAGRAM", {
                             instagram: users.userInstagram,
                           });
@@ -937,6 +988,7 @@ export const actions = {
                         userSite: "",
                         userSubtitle: "",
                         userDesc: "",
+                        userCategory: "",
                       };
 
                       client.createIfNotExists(userDoc);
@@ -954,6 +1006,9 @@ export const actions = {
                             subtitle: users.userSubtitle,
                           });
                           commit("SET_USER_DESC", { desc: users.userDesc });
+                          commit("SET_USER_CATEGORY", {
+                            category: users.userCategory,
+                          });
                           commit("SET_USER_INSTAGRAM", {
                             instagram: users.userInstagram,
                           });
@@ -1107,6 +1162,7 @@ export const actions = {
         let nTitle;
         let nSubitle;
         let nDesc;
+        let nCategory;
 
         if (!payload.name) {
           nUser = getters.getUsername;
@@ -1138,6 +1194,12 @@ export const actions = {
           nDesc = payload.desc;
         }
 
+        if (!payload.category) {
+          nCategory = getters.getUserCategory;
+        } else {
+          nCategory = payload.category;
+        }
+
         if (users.length === 0) {
           console.log("Not used");
           client
@@ -1148,6 +1210,7 @@ export const actions = {
               userTitle: nTitle,
               userSubtitle: nSubitle,
               userDesc: nDesc,
+              userCategory: nCategory,
               userInstagram: payload.instagram,
               userTwitter: payload.twitter,
               userTwitch: payload.twitch,
@@ -1166,6 +1229,9 @@ export const actions = {
                 subtitle: updatedAcc.userSubtitle,
               });
               commit("SET_USER_DESC", { desc: updatedAcc.userDesc });
+              commit("SET_USER_CATEGORY", {
+                category: updatedAcc.userCategory,
+              });
               commit("SET_USER_INSTAGRAM", {
                 instagram: updatedAcc.userInstagram,
               });
@@ -1204,6 +1270,7 @@ export const actions = {
               userTitle: nTitle,
               userSubtitle: nSubitle,
               userDesc: nDesc,
+              userCategory: nCategory,
               userInstagram: payload.instagram,
               userTwitter: payload.twitter,
               userTwitch: payload.twitch,
@@ -1222,6 +1289,9 @@ export const actions = {
                 subtitle: updatedAcc.userSubtitle,
               });
               commit("SET_USER_DESC", { desc: updatedAcc.userDesc });
+              commit("SET_USER_CATEGORY", {
+                category: updatedAcc.userCategory,
+              });
               commit("SET_USER_INSTAGRAM", {
                 instagram: updatedAcc.userInstagram,
               });

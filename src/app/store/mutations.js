@@ -46,6 +46,10 @@ export const SET_USER_DESC = (state, payload) => {
   state.user_description = payload.desc;
 };
 
+export const SET_USER_CATEGORY = (state, payload) => {
+  state.user_category = payload.category;
+};
+
 export const SET_USER_SITE = (state, payload) => {
   state.user_site = payload.site;
 };
@@ -100,6 +104,10 @@ export const SET_CREATOR_SUBTITLE = (state, payload) => {
 
 export const SET_CREATOR_DESC = (state, payload) => {
   state.creator_description = payload.desc;
+};
+
+export const SET_CREATOR_CATEGORY = (state, payload) => {
+  state.creator_category = payload.category;
 };
 
 export const CREATOR_FOUND = (state, payload) => {
