@@ -977,7 +977,7 @@ export default {
       formattedStart: "",
       formattedEnd: "",
 
-      goalCategory: "Undefined",
+      goalCategory: null,
 
       goalDesc: null,
       goalAmount: null,
@@ -1000,7 +1000,6 @@ export default {
     this.newTitle = this.user_title;
     this.newSub = this.user_subtitle;
     this.newDesc = this.user_description;
-    this.newCategory = this.user_category;
     this.newInstagram = this.user_instagram;
     this.newTwitter = this.user_twitter;
     this.newTwitch = this.user_twitch;

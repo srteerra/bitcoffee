@@ -14,6 +14,7 @@ export default {
   windowWidth: window.innerWidth,
 
   listedCategories: [
+    { value: undefined, text: "Select an option" },
     "Music",
     "Arts & Culture",
     "Gaming",
@@ -28,6 +29,7 @@ export default {
     "Cosplay",
   ],
   listedCategoriesUsers: [
+    { value: undefined, text: "Select an option" },
     "Music",
     "Arts & Culture",
     "Gaming",
