@@ -28,6 +28,11 @@ const routes = [
       import(/* webpackChunkName:"home" */ "../views/ExploreView"),
   },
   {
+    path: "/faq",
+    name: "faq",
+    component: () => import(/* webpackChunkName:"home" */ "../views/FAQView"),
+  },
+  {
     path: "/token",
     name: "token",
     component: () =>

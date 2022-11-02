@@ -48,11 +48,7 @@
           >
             Our token
           </router-link>
-          <router-link
-            to="/home"
-            class="px-2 my-auto"
-            active-class="activeLink"
-          >
+          <router-link to="/faq" class="px-2 my-auto" active-class="activeLink">
             Q&A
           </router-link>
           <!-- Connect wallet -->
