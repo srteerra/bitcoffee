@@ -227,6 +227,9 @@
               v-show="filterSearch(creator)"
               v-for="(creator, index) in itemsForCreatorsList"
               v-bind:key="index"
+              data-aos="fade-up"
+              :data-aos-delay="index + '00'"
+              data-aos-duration="500"
             >
               <b-skeleton-wrapper :loading="loading">
                 <template #loading>
