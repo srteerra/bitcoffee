@@ -689,48 +689,66 @@
                   </b-form-group>
                   <b-form-group
                     id="TitleInputGroup"
-                    class="text-dark font-weight-bold"
+                    class="text-dark font-weight-bold mb-4"
                     label="Title"
                     label-for="TitleInput"
                   >
                     <b-form-input
                       id="TitleInput"
+                      :maxlength="maxLength20"
                       v-model="newTitle"
                       type="text"
-                      class="w-100 py-2 px-3 mb-4"
+                      class="w-100 py-2 px-3"
                       placeholder="Enter the title"
                       required
                     />
+                    <div class="text-right mt-1">
+                      <p class="font-weight-light">
+                        {{ newTitle.length }} / {{ maxLength20 }}
+                      </p>
+                    </div>
                   </b-form-group>
                   <b-form-group
                     id="SubtitleInputGroup"
-                    class="text-dark font-weight-bold"
+                    class="text-dark font-weight-bold mb-4"
                     label="Short description"
                     label-for="SubtitleInput"
                   >
                     <b-form-input
                       id="SubtitleInput"
+                      :maxlength="maxLength20"
                       v-model="newSub"
                       type="text"
-                      class="w-100 py-2 px-3 mb-4"
+                      class="w-100 py-2 px-3"
                       placeholder="Who are you?..."
                       required
                     />
+                    <div class="text-right mt-1">
+                      <p class="font-weight-light">
+                        {{ newSub.length }} / {{ maxLength20 }}
+                      </p>
+                    </div>
                   </b-form-group>
                   <b-form-group
                     id="DescInputGroup"
-                    class="text-dark font-weight-bold"
+                    class="text-dark font-weight-bold mb-4"
                     label="About me"
                     label-for="DescInput"
                   >
                     <b-form-textarea
                       id="DescInput"
+                      :maxlength="maxLength50"
                       v-model="newDesc"
                       type="text"
-                      class="w-100 py-2 px-3 mb-4"
+                      class="w-100 py-2 px-3"
                       placeholder="Tell us about you..."
                       required
                     />
+                    <div class="text-right mt-1">
+                      <p class="font-weight-light">
+                        {{ newDesc.length }} / {{ maxLength50 }}
+                      </p>
+                    </div>
                   </b-form-group>
                 </section>
               </b-form>
@@ -973,6 +991,8 @@ export default {
       newYoutube: null,
       holea: 1,
 
+      maxLength10: 10,
+      maxLength20: 20,
       maxLength30: 30,
       maxLength50: 50,
       maxLength70: 70,
