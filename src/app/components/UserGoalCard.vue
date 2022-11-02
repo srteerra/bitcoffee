@@ -1,5 +1,5 @@
 <template>
-  <b-container class="user-goals__container my-5">
+  <b-container class="user-goals__container my-5 px-0">
     <div
       class="user-goal-card__container"
       data-aos="zoom-in"
@@ -770,7 +770,6 @@ export default {
   },
   created() {
     var self = this;
-    console.log(self.campStartAt);
     var fullDate = new Date(self.campEndAt * 1000).toLocaleString({
       month: "long",
       day: "numeric",

@@ -31,7 +31,8 @@
             @click="changeSelection()"
             class="ml-0 mt-3 mt-lg-0 ml-lg-4 px-4 py-2 rounded-pill font-weight-bold"
             variant="outline-dark"
-            ><span v-if="isconnected"
+            v-if="isconnected"
+            ><span
               ><span class="font-weight-light">Your balance: </span
               ><span class="pl-2" v-if="selectedCypto === 'BITC'">
                 {{ balanceOf.bitcBal.toLocaleString() }}
@@ -48,11 +49,15 @@
                   style="width: 20px; height: 20px"
                   alt=""
                 />
-              </span>
-            </span>
-            <span v-else class="font-weight-regular"
-              >GET <span class="font-weight-bold">$BITC</span></span
-            ></b-button
+              </span> </span
+          ></b-button>
+          <b-button
+            variant="outline-dark"
+            v-else
+            class="ml-0 mt-3 mt-lg-0 ml-lg-4 px-4 py-2 rounded-pill font-weight-bold"
+            href="https://faucet.rifos.org/"
+            target="_blank"
+            >GET <span class="font-weight-bold">$RIF</span></b-button
           >
 
           <!-- Connect wallet -->
@@ -81,7 +86,7 @@
           toggle-class="text-decoration-none"
           class="m-md-2 pl-1"
           variant="light"
-          no-caret="true"
+          no-caret
         >
           <template #button-content>
             <b-avatar button :src="`${avatar}`" size="4rem" />
