@@ -31,12 +31,12 @@
           variant="outline-dark"
           class="px-5 font-weight-bold"
           @click="copyAddress(currentAccount)"
-          >{{ myaddress }} <b-icon icon="files"></b-icon
-        ></b-button>
+          >{{ myaddress }} <b-icon icon="files"></b-icon></b-button
+        ><br />
         <a
           :href="site"
           target="_blank"
-          style="display: block"
+          style="display: inline-block"
           class="user-site my-4"
         >
           {{ site
@@ -1119,7 +1119,6 @@ export default {
       } else {
         const nowDate = new Date();
         const today = new Date(
-
           nowDate.getFullYear(),
           nowDate.getMonth(),
           nowDate.getDate(),
@@ -1132,7 +1131,6 @@ export default {
 
         switch (this.selected) {
           case "5":
-
             const v5 = today.setMinutes(nowDate.getMinutes() + 5);
             var timeNow4 = v5.toString();
             var v5t = parseInt(timeNow4.slice(0, 10));
@@ -1156,7 +1154,6 @@ export default {
             break;
 
           case "30":
-
             const v30 = today.setMinutes(nowDate.getMinutes() + 30);
 
             var timeNow4 = v30.toString();

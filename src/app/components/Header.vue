@@ -71,57 +71,59 @@
         </b-navbar-nav>
 
         <!-- Controls dropdown -->
-        <b-dropdown
-          v-if="isconnected"
-          right
-          toggle-class="text-decoration-none"
-          class="mx-auto m-md-2 pl-1 text-center"
-          variant="light"
-          no-caret="true"
-        >
-          <template #button-content>
-            <b-avatar button :src="`${avatar}`" size="4rem" />
-          </template>
-          <b-dropdown-item>
-            <div class="py-2">
-              <span class="px-2">
-                <img
-                  style="max-width: 50px"
-                  src="../assets/rsk/RSK_Logo_RGB_150dpi.png"
-                  alt=""
-                />
-              </span>
-              <span>RSK Testnet</span>
-            </div>
-          </b-dropdown-item>
-          <b-dropdown-divider />
-          <b-dropdown-item to="/profile">
-            <div class="py-2">
-              <span class="px-2"><b-icon-person /></span> My profile
-            </div>
-          </b-dropdown-item>
-          <b-dropdown-item to="/help">
-            <div class="py-2">
-              <span class="px-2"><b-icon-question-circle /></span>
-              Need help?
-            </div>
-          </b-dropdown-item>
-          <b-dropdown-item to="/help">
-            <div class="py-2">
-              <span class="px-2"><b-icon-bug /></span> Report a bug
-            </div>
-          </b-dropdown-item>
-          <b-dropdown-divider />
-          <b-dropdown-item-button
-            :disabled="disconnectBtnState"
-            @click="disconnectAcc()"
+        <div class="d-flex justify-content-center m-3 m-md-0">
+          <b-dropdown
+            v-if="isconnected"
+            right
+            toggle-class="text-decoration-none"
+            class="mx-auto m-md-2 pl-1 text-center"
+            variant="light"
+            no-caret
           >
-            <div class="py-2">
-              <span class="px-2"><b-icon-box-arrow-left /></span>
-              Disconnect
-            </div>
-          </b-dropdown-item-button>
-        </b-dropdown>
+            <template #button-content>
+              <b-avatar button :src="`${avatar}`" size="4rem" />
+            </template>
+            <b-dropdown-item>
+              <div class="py-2">
+                <span class="px-2">
+                  <img
+                    style="max-width: 50px"
+                    src="../assets/rsk/RSK_Logo_RGB_150dpi.png"
+                    alt=""
+                  />
+                </span>
+                <span>RSK Testnet</span>
+              </div>
+            </b-dropdown-item>
+            <b-dropdown-divider />
+            <b-dropdown-item to="/profile">
+              <div class="py-2">
+                <span class="px-2"><b-icon-person /></span> My profile
+              </div>
+            </b-dropdown-item>
+            <b-dropdown-item to="/help">
+              <div class="py-2">
+                <span class="px-2"><b-icon-question-circle /></span>
+                Need help?
+              </div>
+            </b-dropdown-item>
+            <b-dropdown-item to="/help">
+              <div class="py-2">
+                <span class="px-2"><b-icon-bug /></span> Report a bug
+              </div>
+            </b-dropdown-item>
+            <b-dropdown-divider />
+            <b-dropdown-item-button
+              :disabled="disconnectBtnState"
+              @click="disconnectAcc()"
+            >
+              <div class="py-2">
+                <span class="px-2"><b-icon-box-arrow-left /></span>
+                Disconnect
+              </div>
+            </b-dropdown-item-button>
+          </b-dropdown>
+        </div>
       </b-collapse>
     </b-navbar>
 
