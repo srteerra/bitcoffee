@@ -1119,6 +1119,7 @@ export default {
       } else {
         const nowDate = new Date();
         const today = new Date(
+
           nowDate.getFullYear(),
           nowDate.getMonth(),
           nowDate.getDate(),
@@ -1131,9 +1132,11 @@ export default {
 
         switch (this.selected) {
           case "5":
+
             const v5 = today.setMinutes(nowDate.getMinutes() + 5);
             var timeNow4 = v5.toString();
             var v5t = parseInt(timeNow4.slice(0, 10));
+
             this.endUnixtime = v5t;
             break;
 
@@ -1141,6 +1144,7 @@ export default {
             const v10 = today.setMinutes(nowDate.getMinutes() + 10);
             var timeNow4 = v10.toString();
             var v10t = parseInt(timeNow4.slice(0, 10));
+
             this.endUnixtime = v10t;
             break;
 
@@ -1152,7 +1156,9 @@ export default {
             break;
 
           case "30":
+
             const v30 = today.setMinutes(nowDate.getMinutes() + 30);
+
             var timeNow4 = v30.toString();
             var v30t = parseInt(timeNow4.slice(0, 10));
             this.endUnixtime = v30t;
