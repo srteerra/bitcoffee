@@ -33,6 +33,13 @@ module.exports = {
       gasPrice: Math.floor(gasPriceTestnet * 1.1),
       networkCheckTimeout: 1e9,
     },
+    develop: {
+      port: 8545,
+      network_id: 31,
+      accounts: 5,
+      defaultEtherBalance: 500,
+      blockTime: 3,
+    },
   },
   compilers: {
     solc: {
