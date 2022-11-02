@@ -68,7 +68,15 @@
                 <p>
                   {{ description }}
                 </p>
-                <div class="social__section">
+                <div
+                  class="social__section"
+                  v-if="
+                    creator_twitter ||
+                    creator_instagram ||
+                    creator_youtube ||
+                    creator_twitch
+                  "
+                >
                   <b-button
                     size="lg"
                     pill
@@ -224,13 +232,6 @@ export default {
       noSub: "No subtitle added",
       noDesc: "No description added",
       noBg: "https://images.unsplash.com/photo-1554147090-e1221a04a025?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1148&q=80",
-      cards: [
-        { id: "g1" },
-        { id: "g2" },
-        { id: "g3" },
-        { id: "g4" },
-        { id: "g4" },
-      ],
 
       donation: 0,
       monthNames: [
