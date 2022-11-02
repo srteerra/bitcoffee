@@ -365,16 +365,22 @@
               label="Goal title"
               label-for="goal-title"
               class="my-3"
-              description="Example (A new guitar!)"
             >
               <b-form-input
-                id="goal-category"
+                id="goal-title"
+                :maxlength="maxLength30"
                 type="text"
                 placeholder="Enter the goal title"
                 v-model="goalTitle"
                 class="rounded-pill pl-4"
                 required
               ></b-form-input>
+              <div class="d-flex justify-content-between mt-1">
+                <small style="opacity: 70%">Example (A new guitar!)</small>
+                <p class="font-weight-light">
+                  {{ goalTitle.length }} / {{ maxLength50 }}
+                </p>
+              </div>
             </b-form-group>
 
             <b-form-group
@@ -382,16 +388,25 @@
               label="Goal description"
               label-for="goal-description"
               class="my-3"
-              description="Example (I need it to make more music and learn new instruments.)"
             >
               <b-form-input
                 id="goal-description"
+                :maxlength="maxLength70"
                 type="text"
                 placeholder="Enter the goal description"
                 v-model="goalDesc"
                 class="rounded-pill pl-4"
                 required
               ></b-form-input>
+              <div class="d-flex justify-content-between mt-1">
+                <small style="opacity: 70%"
+                  >Example (I need it to make more music and learn new
+                  instruments.)</small
+                >
+                <p class="font-weight-light">
+                  {{ goalDesc.length }} / {{ maxLength70 }}
+                </p>
+              </div>
             </b-form-group>
 
             <b-form-group
@@ -958,6 +973,11 @@ export default {
       newYoutube: null,
       holea: 1,
 
+      maxLength30: 30,
+      maxLength50: 50,
+      maxLength70: 70,
+      maxLength100: 100,
+
       noSite: "yourSite",
       noTitle: "No title added",
       noSub: "No subtitle added",
@@ -979,9 +999,9 @@ export default {
 
       goalCategory: null,
 
-      goalDesc: null,
-      goalAmount: null,
-      goalTitle: null,
+      goalDesc: "",
+      goalAmount: "",
+      goalTitle: "",
 
       selected: "",
 
