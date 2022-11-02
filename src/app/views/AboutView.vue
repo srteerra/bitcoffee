@@ -5,7 +5,11 @@
       <!-- First section  -->
       <b-row class="about__section">
         <b-col cols="12" md="12" lg="6" class="about-info__container">
-          <div class="text-left px-2">
+          <div
+            data-aos="fade-right"
+            data-aos-duration="1000"
+            class="text-left px-2"
+          >
             <h1 class="font-weight-bold">
               About <span style="color: #d8bea7">Bitcoffee</span> <br />
               Team
@@ -20,7 +24,14 @@
             </p>
           </div>
         </b-col>
-        <b-col cols="12" md="12" lg="6" class="about-img__container w-100">
+        <b-col
+          data-aos="zoom-in"
+          data-aos-duration="1000"
+          cols="12"
+          md="12"
+          lg="6"
+          class="about-img__container w-100"
+        >
           <div>
             <img
               class="w-100"
