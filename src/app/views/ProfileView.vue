@@ -94,26 +94,20 @@
             {{ description }}
           </p>
 
-          <div
-            class="mt-5 mb-3 mx-auto"
+          <b-button
+            @click="SHOW_EDIT_PROFILE()"
+            variant="dark"
+            class="px-5 py-2"
             v-if="
-              !user_instagram ||
-              !user_instagram ||
-              !user_youtube ||
-              !user_twitch
+              !user_twitter && !user_instagram && !user_youtube && !user_twitch
             "
+            pill
+            ><span class="mr-2"
+              ><b-icon icon="heart-fill" class="pr-1"></b-icon
+            ></span>
+            Edit your social media</b-button
           >
-            <b-button
-              @click="SHOW_EDIT_PROFILE()"
-              variant="dark"
-              class="px-5 py-2"
-              pill
-              ><span class="mr-2"
-                ><b-icon icon="heart-fill" class="pr-1"></b-icon
-              ></span>
-              Edit your social media</b-button
-            >
-          </div>
+
           <div class="social__section mx-auto" v-else>
             <b-button
               size="lg"
@@ -133,7 +127,7 @@
               variant="outline-primary"
               class="mb-2 mx-2"
               :href="user_twitter"
-              v-if="user_instagram"
+              v-if="user_twitter"
               target="_blank"
               v-b-tooltip.hover.top="'Twitter'"
             >

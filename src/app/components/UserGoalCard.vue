@@ -199,7 +199,7 @@
                     variant="primary"
                     pill
                     @click="claimRIF({ id: campId })"
-                    v-if="!time && this.campPledged === this.campGoal"
+                    v-if="!time && campPledged > campGoal"
                     ><span class="pr-2"><b-icon icon="cash"></b-icon></span
                     >CLAIM</b-button
                   >
@@ -406,7 +406,9 @@
                   class="btn font-weight-bold w-100 mx-auto"
                   variant="outline-dark"
                   pill
-                  v-if="!time && userContribution !== 0"
+                  v-if="
+                    !time && userContribution !== 0 && campPledged < campGoal
+                  "
                   @click="refundRIF({ id: campId })"
                   >REFUND</b-button
                 >
