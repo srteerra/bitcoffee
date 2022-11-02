@@ -1119,7 +1119,6 @@ export default {
       } else {
         const nowDate = new Date();
         const today = new Date(
-
           nowDate.getFullYear(),
           nowDate.getMonth(),
           nowDate.getDate(),
@@ -1132,7 +1131,6 @@ export default {
 
         switch (this.selected) {
           case "5":
-
             const v5 = today.setMinutes(nowDate.getMinutes() + 5);
             var timeNow4 = v5.toString();
             var v5t = parseInt(timeNow4.slice(0, 10));
@@ -1156,7 +1154,6 @@ export default {
             break;
 
           case "30":
-
             const v30 = today.setMinutes(nowDate.getMinutes() + 30);
 
             var timeNow4 = v30.toString();
@@ -1192,7 +1189,6 @@ export default {
       "fetchingDataWait",
       "editProfileModal",
       "getCountCampaignsRIF",
-      "campaigns_count_rif",
       "listedCategories",
       "launchGoalModal",
       "fetchingLaunch",
