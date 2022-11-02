@@ -220,31 +220,51 @@
       ref="share-modal"
       size="lg"
       hide-header
+      hide-footer
       title="Edit goals"
       centered
       no-close-on-backdrop
       no-close-on-esc
       class="share__modal"
     >
-      <b-container class="d-block text-center">
-        <h3 class="mt-5">Share your profile</h3>
-        <p>So new users will find you.</p>
-      </b-container>
+      <b-container class="text-center px-4 py-5">
+        <b-row>
+          <b-container class="d-block text-center">
+            <h3>Share your profile</h3>
+            <p>So new users will find you.</p>
+            <router-link :to="'/' + username" class="font-weight-bold">
+              View your profile</router-link
+            >
+          </b-container>
+        </b-row>
 
-      <div class="share__button w-100 text-center mt-5">
-        <b-button
-          pill
-          class="w-75 px-4 py-2 mt-4"
-          variant="outline-dark"
-          @click="copyAddress('www.bitcoffee.site/#/' + username)"
-          v-b-tooltip.click="'Copied'"
-          >www.bitcoffee.site/{{ username }}
-          <span class="pl-1"><b-icon icon="files"></b-icon></span
-        ></b-button>
-      </div>
-      <div class="text-center mt-4">
-        <small>You can share this URL, is unique, is yours.</small>
-      </div>
+        <b-row>
+          <b-col>
+            <div class="share__button w-100 text-center">
+              <b-button
+                pill
+                class="w-75 px-4 py-2 mt-4"
+                variant="outline-dark"
+                @click="copyAddress('www.bitcoffee.site/#/' + username)"
+                v-b-tooltip.click="'Copied'"
+                >www.bitcoffee.site/{{ username }}
+                <span class="pl-1"><b-icon icon="files"></b-icon></span
+              ></b-button>
+            </div>
+            <div class="text-center mt-4 mb-3">
+              <small>You can share this URL, is unique, is yours.</small>
+            </div>
+          </b-col>
+        </b-row>
+
+        <b-row>
+          <b-col>
+            <b-button class="w-75" pill variant="danger" v-b-modal.share-modal
+              >Close</b-button
+            >
+          </b-col>
+        </b-row>
+      </b-container>
 
       <!-- <b-row class="mt-5 text-center">
         <p class="font-weight-bold mx-auto" style="color: gray">
@@ -599,6 +619,20 @@
                   <b-form-text>At least 3 characters.</b-form-text>
                 </b-form-group>
                 <b-form-group
+                  id="CategoryInputGroup"
+                  class="text-dark font-weight-bold"
+                  label="Category"
+                  label-for="CategoryInput"
+                >
+                  <b-form-select
+                    id="CategoryInput"
+                    v-model="newCategory"
+                    :options="listedCategoriesUsers"
+                    class="w-100 py-2 px-3"
+                    required
+                  ></b-form-select>
+                </b-form-group>
+                <b-form-group
                   id="AvatarInputGroup"
                   class="text-dark font-weight-bold"
                   label="Avatar"
@@ -820,6 +854,7 @@
                 title: newTitle,
                 sub: newSub,
                 desc: newDesc,
+                category: newCategory,
                 instagram: newInstagram,
                 twitter: newTwitter,
                 twitch: newTwitch,
@@ -1193,6 +1228,7 @@ export default {
       "editProfileModal",
       "getCountCampaignsRIF",
       "listedCategories",
+      "listedCategoriesUsers",
       "launchGoalModal",
       "fetchingLaunch",
     ]),

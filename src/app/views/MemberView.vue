@@ -134,7 +134,9 @@
               <router-link to="/explore" id="category-card">
                 <div class="category-description__card p-5">
                   <h3 class="font-weight-bold">Category</h3>
-                  <p class="font-weight-bold">Music</p>
+                  <p class="font-weight-bold">
+                    {{ creator_category || "No category specify" }}
+                  </p>
                   <p class="pt-3 pb-1 border-top">
                     <span class="mr-2"
                       ><b-icon icon="arrow-right-circle-fill"></b-icon
@@ -438,6 +440,7 @@ export default {
       "creator_username",
       "creator_site",
       "creator_subtitle",
+      "creator_category",
       "creator_instagram",
       "creator_twitter",
       "creator_twitch",

@@ -46,7 +46,7 @@ export default {
     {
       name: "userCategory",
       title: "Category",
-      type: "text",
+      type: "string",
     },
     {
       name: "userVerify",
