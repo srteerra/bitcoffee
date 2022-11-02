@@ -317,7 +317,26 @@ export const actions = {
 
       tokenContract.methods
         .claim(payload.id)
-        .send({ from: ethereum.selectedAddress });
+        .send({ from: ethereum.selectedAddress })
+        .on("receipt", function (receipt) {
+          dispatch("addNotification", {
+            type: "success",
+            message: "Successfully Claimed!.",
+          });
+        })
+        .on("error", function (err, receipt) {
+          if (err.code === 4001) {
+            dispatch("addNotification", {
+              type: "danger",
+              message: "Request denied.",
+            });
+          } else {
+            dispatch("addNotification", {
+              type: "danger",
+              message: "Oh no, something went wrong.",
+            });
+          }
+        });
     } else {
       console.log("install a wallet");
     }
@@ -333,7 +352,26 @@ export const actions = {
 
       tokenContract.methods
         .refund(payload.id)
-        .send({ from: ethereum.selectedAddress });
+        .send({ from: ethereum.selectedAddress })
+        .on("receipt", function (receipt) {
+          dispatch("addNotification", {
+            type: "success",
+            message: "Successfully Refunded!.",
+          });
+        })
+        .on("error", function (err, receipt) {
+          if (err.code === 4001) {
+            dispatch("addNotification", {
+              type: "danger",
+              message: "Request denied.",
+            });
+          } else {
+            dispatch("addNotification", {
+              type: "danger",
+              message: "Oh no, something went wrong.",
+            });
+          }
+        });
     } else {
       console.log("install a wallet");
     }
