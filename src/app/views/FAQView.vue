@@ -13,10 +13,10 @@
         <p class="mb-5 mt-2">Some answers</p>
 
         <p id="faq__desc">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit
-          consequatur voluptate ut cupiditate itaque facere ratione minima ullam
-          et tempore aliquam, nam architecto veritatis, temporibus repellendus
-          dolore assumenda porro ex a numquam tenetur, iste soluta.
+          Next we will show you a section in which you will be able to solve
+          your doubts, which are common with the arrival of all this new world
+          of Web3 technology, and you will also learn how to interact with our
+          platform.
         </p>
       </div>
 
