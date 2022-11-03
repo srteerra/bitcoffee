@@ -390,7 +390,7 @@
                   </div>
                 </div>
               </b-col>
-              <b-col class="my-2" v-if="!userOnCampaign">
+              <b-col class="my-2" v-if="userOnCampaign">
                 <b-button
                   class="btn font-weight-bold w-100 mx-auto"
                   variant="dark"
@@ -406,7 +406,7 @@
                   class="btn font-weight-bold w-100 mx-auto"
                   variant="outline-dark"
                   pill
-                  v-if="!time && !compareResult"
+                  v-if="!time && !compareResult && userContribution != 0"
                   @click="refundRIF({ id: campId })"
                   >REFUND</b-button
                 >
