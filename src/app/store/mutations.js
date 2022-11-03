@@ -236,8 +236,13 @@ export const LOADING_APPROVE = (state) => {
 export const LOADING_LAUNCH = (state) => {
   state.fetchingLaunch = !state.fetchingLaunch;
 };
+
 export const LOADING_CANCEL = (state) => {
   state.fetchingCancel = !state.fetchingCancel;
+};
+
+export const LOADING_CAMPS = (state, payload) => {
+  state.refreshCamps = payload.allow;
 };
 
 export const ALLOW_SPEND = (state, payload) => {
