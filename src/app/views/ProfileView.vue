@@ -265,65 +265,6 @@
           </b-col>
         </b-row>
       </b-container>
-
-      <!-- <b-row class="mt-5 text-center">
-        <p class="font-weight-bold mx-auto" style="color: gray">
-          Or share in your social networks
-        </p>
-        <div
-          class="modal-social__section text-center w-100 pt-4"
-          style="border-top: 1px solid black"
-        >
-          <b-button
-            size="lg"
-            pill
-            variant="outline-primary"
-            class="mb-2 mx-2"
-            :href="user_instagram"
-            v-if="user_instagram"
-            target="_blank"
-            v-b-tooltip.hover.top="'Instagram'"
-          >
-            <b-icon icon="instagram" aria-label="Help"></b-icon>
-          </b-button>
-          <b-button
-            size="lg"
-            pill
-            variant="outline-primary"
-            class="mb-2 mx-2"
-            :href="user_twitter"
-            v-if="user_twitter"
-            target="_blank"
-            v-b-tooltip.hover.top="'Twitter'"
-          >
-            <b-icon icon="twitter" aria-label="Help"></b-icon>
-          </b-button>
-          <b-button
-            size="lg"
-            pill
-            variant="outline-primary"
-            class="mb-2 mx-2"
-            :href="user_youtube"
-            v-if="user_youtube"
-            target="_blank"
-            v-b-tooltip.hover.top="'YouTube'"
-          >
-            <b-icon icon="youtube" aria-label="Help"></b-icon>
-          </b-button>
-          <b-button
-            size="lg"
-            pill
-            variant="outline-primary"
-            class="mb-2 mx-2"
-            :href="user_twitch"
-            v-if="user_twitch"
-            target="_blank"
-            v-b-tooltip.hover.top="'Twitch'"
-          >
-            <b-icon icon="twitch" aria-label="Help"></b-icon>
-          </b-button>
-        </div>
-      </b-row> -->
     </b-modal>
 
     <!-- Edit goals modal -->
@@ -344,7 +285,7 @@
           <p class="font-weight-light mb-5">
             Launch a new goal to get supported by other people.
           </p>
-          <b-form class="text-left">
+          <b-form class="text-left" @submit.stop.prevent>
             <b-form-group
               id="goal-category"
               label="Goal Category"
@@ -352,12 +293,16 @@
               class="my-3"
             >
               <b-form-select
+                :state="this.catValidation"
                 id="goal-category"
                 v-model="goalCategory"
                 :options="listedCategories"
                 class="rounded-pill pl-4"
                 required
               ></b-form-select>
+              <b-form-invalid-feedback :state="this.catValidation">
+                You have to select a goal category.
+              </b-form-invalid-feedback>
             </b-form-group>
 
             <b-form-group
@@ -373,6 +318,7 @@
                 placeholder="Enter the goal title"
                 v-model="goalTitle"
                 class="rounded-pill pl-4"
+                :state="this.titleValidation"
                 required
               ></b-form-input>
               <div class="d-flex justify-content-between mt-1">
@@ -396,6 +342,7 @@
                 placeholder="Enter the goal description"
                 v-model="goalDesc"
                 class="rounded-pill pl-4"
+                :state="this.descValidation"
                 required
               ></b-form-input>
               <div class="d-flex justify-content-between mt-1">
@@ -422,6 +369,7 @@
                   placeholder="Enter the goal amount"
                   type="number"
                   v-model="goalAmount"
+                  :state="this.amountValidation"
                   class="rounded-pill pl-4"
                   ondrop="return false;"
                   onpaste="return false;"
@@ -561,7 +509,7 @@
               </b-col>
               <b-col class="my-3" cols="12" md="6">
                 <b-button
-                  :disabled="launchValid || !termsValid"
+                  :disabled="!launchValid || !terms"
                   @click="launchGoal()"
                   class="w-100 font-weight-bold"
                   pill
@@ -950,14 +898,6 @@ export default {
       isAvailable: false,
       fetchingPage: false,
       terms: false,
-      cards: [
-        { id: "g1" },
-        // { title: "", desc: "", category: "", goal: "" },
-        { id: "g2" },
-        { id: "g3" },
-        { id: "g4" },
-        { id: "g4" },
-      ],
       selectedHotGoal: null,
       monthNames: [
         "January",
@@ -989,7 +929,6 @@ export default {
       newTwitter: null,
       newTwitch: null,
       newYoutube: null,
-      holea: 1,
 
       maxLength10: 10,
       maxLength20: 20,
@@ -1027,6 +966,8 @@ export default {
 
       campaigns_rif: [],
       noCampaigns: false,
+
+      inValidation: false,
     };
   },
   components: {
@@ -1315,17 +1256,14 @@ export default {
         const YYYY = today.getFullYear();
         const DD = today.getDate();
         // Set the current date in date-picker
-        this.goalDateStart = YYYY + "-" + MM + "-" + DD;
-        this.goalDateEnd = YYYY + "-" + MM + "-" + DD;
+        this.goalDateStart = "";
+        this.goalDateEnd = "";
       } else {
         this.selected = "";
       }
     },
     launchValid() {
-      if (
-        this.goalDateEnd === "" ||
-        (this.pickerDis === true && this.selected === "")
-      ) {
+      if (this.goalDateEnd != "" || this.selected != "") {
         return true;
       } else {
         return false;
@@ -1337,6 +1275,31 @@ export default {
       }
       if (this.terms === "true") {
         return true;
+      }
+    },
+    catValidation() {
+      return this.goalCategory != null;
+    },
+    titleValidation() {
+      return this.goalTitle.length > 3;
+    },
+    descValidation() {
+      return this.goalDesc.length > 5;
+    },
+    amountValidation() {
+      return this.goalAmount != "";
+    },
+
+    inputsValidation() {
+      if (
+        this.catValidation &&
+        this.titleValidation &&
+        this.descValidation &&
+        this.amountValidation
+      ) {
+        this.inValidation = true;
+      } else {
+        this.inValidation = false;
       }
     },
   },
