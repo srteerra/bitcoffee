@@ -83,7 +83,7 @@ This is possible with the [SDK](https://developers.rsk.co/rif/scheduler/sdk/) of
 # Our Contracts
 See our token and the Crowdfunding smart contract on the RSK Explorer.
   #### [Bitcoffee Token Contract](https://explorer.testnet.rsk.co/address/0x2f395a03820af458ae3e39fca40c9dc80223492d)
-  #### [Bitcoffee Crowdfunding Contract](https://explorer.testnet.rsk.co/address/0xf927aa202d6f565e0c9df1753fa00e28f2dcd9cc)
+  #### [Bitcoffee Crowdfunding Contract](https://explorer.testnet.rsk.co/address/0x25ef68cfa7c1066c4b8d106e58f0de3baf2c5432)
 <br />
 both already deployed on RSK Testnet and implemented in the application.
 
