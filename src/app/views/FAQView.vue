@@ -45,13 +45,17 @@
         "
         >
           <b-card class="question-item__card text-dark"
-            >Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde
-            maxime necessitatibus optio voluptatem ipsa distinctio ab fugiat
-            alias cupiditate, quae repudiandae dignissimos excepturi modi
-            quaerat voluptate officia impedit. Ullam alias dolorem, debitis
-            inventore illo id reiciendis deleniti deserunt ratione minima,
-            facere quam eum? Assumenda error aliquid porro praesentium
-            quod.</b-card
+            >Simple, through a smart contract, the Campaigns are created in a
+            period of time to make the Crowdsourcing.
+            <br />
+            <br />
+            Once the Campaign is over the creator will be able to claim the
+            pledged tokens only if the amount of contributed tokens is equal or
+            more than the amount of tokens defined in the campaign.
+            <br />
+            <br />
+            Otherwise, the users on the campaign will able to refund their
+            tokens.</b-card
           >
         </b-collapse>
 
@@ -79,13 +83,7 @@
         "
         >
           <b-card class="question-item__card text-dark"
-            >Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde
-            maxime necessitatibus optio voluptatem ipsa distinctio ab fugiat
-            alias cupiditate, quae repudiandae dignissimos excepturi modi
-            quaerat voluptate officia impedit. Ullam alias dolorem, debitis
-            inventore illo id reiciendis deleniti deserunt ratione minima,
-            facere quam eum? Assumenda error aliquid porro praesentium
-            quod.</b-card
+            >No, only RSK Testnet at this moment.</b-card
           >
         </b-collapse>
 
@@ -112,14 +110,13 @@
           accordion="questions
         "
         >
-          <b-card class="question-item__card text-dark"
-            >Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde
-            maxime necessitatibus optio voluptatem ipsa distinctio ab fugiat
-            alias cupiditate, quae repudiandae dignissimos excepturi modi
-            quaerat voluptate officia impedit. Ullam alias dolorem, debitis
-            inventore illo id reiciendis deleniti deserunt ratione minima,
-            facere quam eum? Assumenda error aliquid porro praesentium
-            quod.</b-card
+          <b-card class="question-item__card text-dark">
+            During the active Campaign, all the pledged tokens goes to our Smart
+            Contract.
+            <br />
+            <br />
+            Once the campaign is over, the Smart Contract takes the decision of
+            what happens next.</b-card
           >
         </b-collapse>
 
@@ -135,9 +132,7 @@
               icon="question-circle"
               class="ml-1 ml-md-3 mr-3 mb-0"
             ></b-icon>
-            <p class="m-0 font-weight-bold">
-              How much the platform takes form fees?
-            </p>
+            <p class="m-0 font-weight-bold">Can I contribute my ETH or BNB?</p>
           </div>
           <div class="question__icon">
             <img src="../assets/icons/Artboard 81 1.png" alt="" />
@@ -149,13 +144,7 @@
         "
         >
           <b-card class="question-item__card text-dark"
-            >Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde
-            maxime necessitatibus optio voluptatem ipsa distinctio ab fugiat
-            alias cupiditate, quae repudiandae dignissimos excepturi modi
-            quaerat voluptate officia impedit. Ullam alias dolorem, debitis
-            inventore illo id reiciendis deleniti deserunt ratione minima,
-            facere quam eum? Assumenda error aliquid porro praesentium
-            quod.</b-card
+            >No, the Smart Contract only accepts tRIF.</b-card
           >
         </b-collapse>
 
@@ -171,7 +160,7 @@
               icon="question-circle"
               class="ml-1 ml-md-3 mr-3 mb-0"
             ></b-icon>
-            <p class="m-0 font-weight-bold">How it works?</p>
+            <p class="m-0 font-weight-bold">How to get verified?</p>
           </div>
           <div class="question__icon">
             <img src="../assets/icons/Artboard 81 1.png" alt="" />
@@ -183,25 +172,173 @@
         "
         >
           <b-card class="question-item__card text-dark"
-            >Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde
-            maxime necessitatibus optio voluptatem ipsa distinctio ab fugiat
-            alias cupiditate, quae repudiandae dignissimos excepturi modi
-            quaerat voluptate officia impedit. Ullam alias dolorem, debitis
-            inventore illo id reiciendis deleniti deserunt ratione minima,
-            facere quam eum? Assumenda error aliquid porro praesentium
-            quod.</b-card
+            >You need to send us a message and we'll confirm your identity and
+            other steps to get verify!</b-card
           >
         </b-collapse>
       </div>
 
-      <div id="see-more" class="w-100 text-center">
-        <p>See more</p>
-      </div>
-    </b-container>
-
-    <b-container>
-      <div class="w-100 d-flex justify-content-center">
-        <h1><strong>Videos</strong></h1>
+      <div class="w-100" id="tutos__sect">
+        <b-row class="text-center mb-5">
+          <b-col>
+            <h1><strong>Videos</strong></h1>
+            <p>Learn more about Bitcoffee and Web 3.0</p>
+          </b-col>
+        </b-row>
+        <b-row>
+          <b-col class="tutorials__section">
+            <b-row class="tutorials__section__card">
+              <b-col cols="12" lg="6">
+                <iframe
+                  class="tutorial__video"
+                  src="https://www.youtube.com/embed/Kg1h0uZX6G8"
+                  title="YouTube video player"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen
+                ></iframe>
+              </b-col>
+              <b-col cols="12" lg="6" class="py-2 px-0 px-lg-5">
+                <h3 class="font-weight-bold mt-4 mt-lg-0">
+                  How to launch a goal
+                </h3>
+                <p style="opacity: 60%">
+                  Launch your first goal to achieve your monetary goals through
+                  our platform which provides you with the tools to achieve it.
+                </p>
+                <b-button variant="primary" class="mt-5 px-4 py-2 rounded-lg"
+                  ><span><b-icon icon="play-fill" class="mr-2"></b-icon></span
+                  >Watch now</b-button
+                >
+                <b-button
+                  variant="outline-dark"
+                  class="mt-5 px-4 py-2 rounded-lg"
+                  ><span><b-icon icon="share"></b-icon></span
+                ></b-button>
+              </b-col>
+            </b-row>
+            <b-row class="tutorials__section__card">
+              <b-col cols="12" lg="6">
+                <iframe
+                  class="tutorial__video"
+                  src="https://www.youtube.com/embed/EmsgVGoXhnA"
+                  title="YouTube video player"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen
+                ></iframe>
+              </b-col>
+              <b-col cols="12" lg="6" class="py-2 px-0 px-lg-5">
+                <h3 class="font-weight-bold mt-4 mt-lg-0">
+                  How to create a wallet
+                </h3>
+                <p style="opacity: 60%">
+                  Start interacting with our platform through a wallet which we
+                  will teach you how to create step by step.
+                </p>
+                <b-button variant="primary" class="mt-5 px-4 py-2 rounded-lg"
+                  ><span><b-icon icon="play-fill" class="mr-2"></b-icon></span
+                  >Watch now</b-button
+                >
+                <b-button
+                  variant="outline-dark"
+                  class="mt-5 px-4 py-2 rounded-lg"
+                  ><span><b-icon icon="share"></b-icon></span
+                ></b-button>
+              </b-col>
+            </b-row>
+            <b-row class="tutorials__section__card">
+              <b-col cols="12" lg="6">
+                <iframe
+                  class="tutorial__video"
+                  src="https://www.youtube.com/embed/C9TWsQghfGA"
+                  title="YouTube video player"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen
+                ></iframe>
+              </b-col>
+              <b-col cols="12" lg="6" class="py-2 px-0 px-lg-5">
+                <h3 class="font-weight-bold mt-4 mt-lg-0">
+                  How to contribute a goal
+                </h3>
+                <p style="opacity: 60%">
+                  Start supporting a creator you follow by contributing to their
+                  goals which you can fund on our platform.
+                </p>
+                <b-button variant="primary" class="mt-5 px-4 py-2 rounded-lg"
+                  ><span><b-icon icon="play-fill" class="mr-2"></b-icon></span>
+                  Watch now</b-button
+                >
+                <b-button
+                  variant="outline-dark"
+                  class="mt-5 px-4 py-2 rounded-lg"
+                  ><span><b-icon icon="share"></b-icon></span
+                ></b-button>
+              </b-col>
+            </b-row>
+            <b-row class="tutorials__section__card">
+              <b-col cols="12" lg="6">
+                <iframe
+                  class="tutorial__video"
+                  src="https://www.youtube.com/embed/TNOJcKMxO7o"
+                  title="YouTube video player"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen
+                ></iframe>
+              </b-col>
+              <b-col cols="12" lg="6" class="py-2 px-0 px-lg-5">
+                <h3 class="font-weight-bold mt-4 mt-lg-0">
+                  How to refund a goal
+                </h3>
+                <p style="opacity: 60%">
+                  Learn how to refund your contributions made to goals that were
+                  not met.
+                </p>
+                <b-button variant="primary" class="mt-5 px-4 py-2 rounded-lg"
+                  ><span><b-icon icon="play-fill" class="mr-2"></b-icon></span>
+                  Watch now</b-button
+                >
+                <b-button
+                  variant="outline-dark"
+                  class="mt-5 px-4 py-2 rounded-lg"
+                  ><span><b-icon icon="share"></b-icon></span
+                ></b-button>
+              </b-col>
+            </b-row>
+            <b-row class="tutorials__section__card">
+              <b-col cols="12" lg="6">
+                <iframe
+                  class="tutorial__video"
+                  src="https://www.youtube.com/embed/ZxstS_FsyJU"
+                  title="YouTube video player"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen
+                ></iframe>
+              </b-col>
+              <b-col cols="12" lg="6" class="py-2 px-0 px-lg-5">
+                <h3 class="font-weight-bold mt-4 mt-lg-0">
+                  How to send a donation
+                </h3>
+                <p style="opacity: 60%">
+                  Learn how to directly support your favorite creator through
+                  the direct contribution feature.
+                </p>
+                <b-button variant="primary" class="mt-5 px-4 py-2 rounded-lg"
+                  ><span><b-icon icon="play-fill" class="mr-2"></b-icon></span>
+                  Watch now</b-button
+                >
+                <b-button
+                  variant="outline-dark"
+                  class="mt-5 px-4 py-2 rounded-lg"
+                  ><span><b-icon icon="share"></b-icon></span
+                ></b-button>
+              </b-col>
+            </b-row>
+          </b-col>
+        </b-row>
       </div>
     </b-container>
     <Footer />
@@ -224,6 +361,31 @@ export default {
 </script>
 
 <style lang="scss">
+#tutos__sect {
+  margin: 50px 0 300px;
+}
+.tutorials__section {
+  display: flex;
+  gap: 25px;
+  flex-direction: column;
+
+  .tutorials__section__card {
+    background-color: white;
+    padding: 50px 40px;
+    margin-bottom: 20px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 1px 10px -5px,
+      rgba(64, 64, 64, 0.3) 0px 20px 46px -6px;
+    border-radius: 20px;
+
+    .tutorial__video {
+      width: 100%;
+      height: 280px;
+      max-width: 550px;
+      border-radius: 20px;
+    }
+  }
+}
+
 .FAQ__container {
   #see-more {
     margin: 200px 0;
