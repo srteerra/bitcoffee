@@ -285,7 +285,7 @@
           <p class="font-weight-light mb-5">
             Launch a new goal to get supported by other people.
           </p>
-          <b-form class="text-left" @submit.stop.prevent>
+          <b-form class="text-left">
             <b-form-group
               id="goal-category"
               label="Goal Category"
@@ -293,16 +293,12 @@
               class="my-3"
             >
               <b-form-select
-                :state="this.catValidation"
                 id="goal-category"
                 v-model="goalCategory"
                 :options="listedCategories"
                 class="rounded-pill pl-4"
                 required
               ></b-form-select>
-              <b-form-invalid-feedback :state="this.catValidation">
-                You have to select a goal category.
-              </b-form-invalid-feedback>
             </b-form-group>
 
             <b-form-group
@@ -318,7 +314,6 @@
                 placeholder="Enter the goal title"
                 v-model="goalTitle"
                 class="rounded-pill pl-4"
-                :state="this.titleValidation"
                 required
               ></b-form-input>
               <div class="d-flex justify-content-between mt-1">
@@ -342,7 +337,6 @@
                 placeholder="Enter the goal description"
                 v-model="goalDesc"
                 class="rounded-pill pl-4"
-                :state="this.descValidation"
                 required
               ></b-form-input>
               <div class="d-flex justify-content-between mt-1">
@@ -369,7 +363,6 @@
                   placeholder="Enter the goal amount"
                   type="number"
                   v-model="goalAmount"
-                  :state="this.amountValidation"
                   class="rounded-pill pl-4"
                   ondrop="return false;"
                   onpaste="return false;"
@@ -509,7 +502,7 @@
               </b-col>
               <b-col class="my-3" cols="12" md="6">
                 <b-button
-                  :disabled="!launchValid || !terms"
+                  :disabled="!launchValid || !termsValid || !inputsValidation"
                   @click="launchGoal()"
                   class="w-100 font-weight-bold"
                   pill
@@ -956,7 +949,7 @@ export default {
       formattedStart: "",
       formattedEnd: "",
 
-      goalCategory: null,
+      goalCategory: "",
 
       goalDesc: "",
       goalAmount: "",
@@ -1250,11 +1243,6 @@ export default {
     },
     reset() {
       if (this.pickerDis === true) {
-        // Get today date for date-picker
-        const today = new Date();
-        const MM = today.getMonth() + 1;
-        const YYYY = today.getFullYear();
-        const DD = today.getDate();
         // Set the current date in date-picker
         this.goalDateStart = "";
         this.goalDateEnd = "";
@@ -1277,29 +1265,17 @@ export default {
         return true;
       }
     },
-    catValidation() {
-      return this.goalCategory != null;
-    },
-    titleValidation() {
-      return this.goalTitle.length > 3;
-    },
-    descValidation() {
-      return this.goalDesc.length > 5;
-    },
-    amountValidation() {
-      return this.goalAmount != "";
-    },
 
     inputsValidation() {
       if (
-        this.catValidation &&
-        this.titleValidation &&
-        this.descValidation &&
-        this.amountValidation
+        this.goalCategory != "" &&
+        this.goalTitle != "" &&
+        this.goalDesc != "" &&
+        this.goalAmount != ""
       ) {
-        this.inValidation = true;
+        return true;
       } else {
-        this.inValidation = false;
+        return false;
       }
     },
   },
