@@ -187,7 +187,11 @@
         </b-row>
         <b-row>
           <b-col class="tutorials__section">
-            <b-row class="tutorials__section__card">
+            <b-row
+              class="tutorials__section__card"
+              data-aos="fade-up"
+              data-aos-duration="1000"
+            >
               <b-col cols="12" lg="6">
                 <iframe
                   class="tutorial__video"
@@ -223,7 +227,11 @@
                 ></b-button>
               </b-col>
             </b-row>
-            <b-row class="tutorials__section__card">
+            <b-row
+              class="tutorials__section__card"
+              data-aos="fade-up"
+              data-aos-duration="1000"
+            >
               <b-col cols="12" lg="6">
                 <iframe
                   class="tutorial__video"
@@ -259,7 +267,11 @@
                 ></b-button>
               </b-col>
             </b-row>
-            <b-row class="tutorials__section__card">
+            <b-row
+              class="tutorials__section__card"
+              data-aos="fade-up"
+              data-aos-duration="1000"
+            >
               <b-col cols="12" lg="6">
                 <iframe
                   class="tutorial__video"
@@ -295,7 +307,11 @@
                 ></b-button>
               </b-col>
             </b-row>
-            <b-row class="tutorials__section__card">
+            <b-row
+              class="tutorials__section__card"
+              data-aos="fade-up"
+              data-aos-duration="1000"
+            >
               <b-col cols="12" lg="6">
                 <iframe
                   class="tutorial__video"
@@ -331,7 +347,11 @@
                 ></b-button>
               </b-col>
             </b-row>
-            <b-row class="tutorials__section__card">
+            <b-row
+              class="tutorials__section__card"
+              data-aos="fade-up"
+              data-aos-duration="1000"
+            >
               <b-col cols="12" lg="6">
                 <iframe
                   class="tutorial__video"
@@ -367,7 +387,11 @@
                 ></b-button>
               </b-col>
             </b-row>
-            <b-row class="tutorials__section__card">
+            <b-row
+              class="tutorials__section__card"
+              data-aos="fade-up"
+              data-aos-duration="1000"
+            >
               <b-col cols="12" lg="6">
                 <iframe
                   class="tutorial__video"
