@@ -34,6 +34,45 @@ Bitcoffee is a CrowdFunding Dapp on the RSK network, in which anyone can raise f
 # Pitch
 [![Alt text](https://img.youtube.com/vi/Acfm1Ey-9Lw/0.jpg)](https://www.youtube.com/watch?v=Acfm1Ey-9Lw)
 
+## Smart contract interactions
+### How to claim a goal:
+
+[![Alt text](https://img.youtube.com/vi/1jmZGAyPCv8/0.jpg)](https://www.youtube.com/watch?v=1jmZGAyPCv8&t=2s)
+
+Meet your goals through the realization of the claim of the contributions you make in your goals.
+
+### How to create a wallet:
+
+[![Alt text](https://img.youtube.com/vi/EmsgVGoXhnA/0.jpg)](https://www.youtube.com/watch?v=EmsgVGoXhnA)
+
+Start interacting with our platform through a wallet which we will teach you how to create step by step.
+
+### How to contribute:
+
+[![Alt text](https://img.youtube.com/vi/C9TWsQghfGA/0.jpg)](https://www.youtube.com/watch?v=C9TWsQghfGA)
+
+Start supporting a creator you follow by contributing to their goals which you can fund on our platform.
+
+### How to refund a goal:
+
+[![Alt text](https://img.youtube.com/vi/TNOJcKMxO7o/0.jpg)](https://www.youtube.com/watch?v=TNOJcKMxO7o)
+
+Learn how to refund your contributions made to goals that were not met.
+
+### How to send a donation:
+
+[![Alt text](https://img.youtube.com/vi/ZxstS_FsyJU/0.jpg)](https://www.youtube.com/watch?v=ZxstS_FsyJU)
+
+Learn how to directly support your favorite creator through the direct contribution feature.
+
+### How to launch a goal:
+
+[![Alt text](https://img.youtube.com/vi/Kg1h0uZX6G8/0.jpg)](https://www.youtube.com/watch?v=Kg1h0uZX6G8)
+
+Launch your first goal to achieve your monetary goals through our platform which provides you with the tools to achieve it.
+
+
+
 # Features
 - 👁‍🗨 Pure design and dynamic views.
 - 🦊 Connection with Metamask.
