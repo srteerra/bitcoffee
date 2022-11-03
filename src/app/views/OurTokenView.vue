@@ -30,13 +30,11 @@
             <h1><strong>Our token</strong></h1>
             <h3 class="my-4">About Bitcoffee token</h3>
             <p class="mt-2">
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Error
-              nisi nobis, quasi dolorum reprehenderit, nihil quo nemo suscipit
-              esse accusantium voluptas similique sint obcaecati saepe in neque,
-              repudiandae laborum quia sunt. Quod optio, labore reprehenderit,
-              ab possimus veniam qui porro quae vel asperiores ad natus officia
-              quos explicabo laborum dolorem eligendi laudantium modi. Minima
-              voluptatibus illum sit facilis voluptas doloremque.
+              Our Bitcoffee token is an asset which interacts directly with the
+              platform, in order to give value to the platform, as well as to
+              grant a right to the user, pay for content as an incentive that
+              serves as a gateway to extra services or for a better user
+              experience.
             </p>
           </div>
         </b-col>
@@ -52,9 +50,9 @@
               For now, it's only a development token, So it's not in liquidty.
             </p>
             <p class="py-3">
-              But you can interact using RBTC, here is a
-              <strong><a href="#">faucet</a></strong> to fund you Testnet
-              account.
+              But you can interact the platform using rRIF, here is a
+              <strong><a href="https://faucet.rifos.org/">faucet</a></strong> to
+              fund you Testnet account.
             </p>
           </div>
         </div>

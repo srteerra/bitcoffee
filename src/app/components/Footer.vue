@@ -40,7 +40,11 @@
               <router-link to="how" class="footer__link"> Learn </router-link>
             </li>
             <li class="py-2">
-              <a href="https://faucet.rifos.org/" class="footer__link">
+              <a
+                href="https://faucet.rifos.org/"
+                target="_blank"
+                class="footer__link"
+              >
                 tRIF Faucet
               </a>
             </li>
