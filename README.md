@@ -416,7 +416,7 @@ git clone https://github.com/srteerra/bitcoffee.git
 npm install
 ```
 
-#### And there you have, Bitcoffee locally!
+#### And there you have, Bitcoffee locally!!
 ### For development environment
 Execute the following command:
 ```bash
