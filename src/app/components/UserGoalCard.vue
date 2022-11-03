@@ -199,7 +199,7 @@
                     variant="primary"
                     pill
                     @click="claimRIF({ id: campId })"
-                    v-if="!time && campPledged > campGoal"
+                    v-if="!time && compareResult"
                     ><span class="pr-2"><b-icon icon="cash"></b-icon></span
                     >CLAIM</b-button
                   >
@@ -390,7 +390,7 @@
                   </div>
                 </div>
               </b-col>
-              <b-col class="my-2" v-if="userOnCampaign">
+              <b-col class="my-2" v-if="!userOnCampaign">
                 <b-button
                   class="btn font-weight-bold w-100 mx-auto"
                   variant="dark"
@@ -406,9 +406,7 @@
                   class="btn font-weight-bold w-100 mx-auto"
                   variant="outline-dark"
                   pill
-                  v-if="
-                    !time && userContribution !== 0 && campPledged < campGoal
-                  "
+                  v-if="!time"
                   @click="refundRIF({ id: campId })"
                   >REFUND</b-button
                 >
@@ -525,6 +523,7 @@ export default {
       contributors: [],
       pledgeAmount: null,
       pledgedTotal: 0,
+      compareResult: false,
 
       timerStart1: false,
       isClaimed: false,
@@ -790,6 +789,14 @@ export default {
     self.counter = setInterval(function () {
       self.timer(fullDate, startDate, fullDate2);
     }, 1000);
+
+    let v1 = parseInt(web3.utils.fromWei(this.campGoal, "ether"));
+    let v2 = parseInt(web3.utils.fromWei(this.campPledged, "ether"));
+    if (v2 >= v1) {
+      this.compareResult = true;
+    } else {
+      this.compareResult = false;
+    }
   },
 };
 </script>
