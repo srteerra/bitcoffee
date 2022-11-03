@@ -206,12 +206,18 @@
                   Launch your first goal to achieve your monetary goals through
                   our platform which provides you with the tools to achieve it.
                 </p>
-                <b-button variant="primary" class="mt-5 px-4 py-2 rounded-lg"
+                <b-button
+                  variant="primary"
+                  href="https://youtu.be/Kg1h0uZX6G8"
+                  target="_blank"
+                  class="mt-5 px-4 py-2 rounded-lg"
                   ><span><b-icon icon="play-fill" class="mr-2"></b-icon></span
                   >Watch now</b-button
                 >
                 <b-button
                   variant="outline-dark"
+                  href="https://youtu.be/Kg1h0uZX6G8"
+                  target="_blank"
                   class="mt-5 px-4 py-2 rounded-lg"
                   ><span><b-icon icon="share"></b-icon></span
                 ></b-button>
@@ -236,12 +242,18 @@
                   Start interacting with our platform through a wallet which we
                   will teach you how to create step by step.
                 </p>
-                <b-button variant="primary" class="mt-5 px-4 py-2 rounded-lg"
+                <b-button
+                  variant="primary"
+                  href="https://youtu.be/EmsgVGoXhnA"
+                  target="_blank"
+                  class="mt-5 px-4 py-2 rounded-lg"
                   ><span><b-icon icon="play-fill" class="mr-2"></b-icon></span
                   >Watch now</b-button
                 >
                 <b-button
                   variant="outline-dark"
+                  href="https://youtu.be/EmsgVGoXhnA"
+                  target="_blank"
                   class="mt-5 px-4 py-2 rounded-lg"
                   ><span><b-icon icon="share"></b-icon></span
                 ></b-button>
@@ -266,12 +278,18 @@
                   Start supporting a creator you follow by contributing to their
                   goals which you can fund on our platform.
                 </p>
-                <b-button variant="primary" class="mt-5 px-4 py-2 rounded-lg"
+                <b-button
+                  variant="primary"
+                  href="https://youtu.be/C9TWsQghfGA"
+                  target="_blank"
+                  class="mt-5 px-4 py-2 rounded-lg"
                   ><span><b-icon icon="play-fill" class="mr-2"></b-icon></span>
                   Watch now</b-button
                 >
                 <b-button
                   variant="outline-dark"
+                  href="https://youtu.be/C9TWsQghfGA"
+                  target="_blank"
                   class="mt-5 px-4 py-2 rounded-lg"
                   ><span><b-icon icon="share"></b-icon></span
                 ></b-button>
@@ -296,12 +314,18 @@
                   Learn how to refund your contributions made to goals that were
                   not met.
                 </p>
-                <b-button variant="primary" class="mt-5 px-4 py-2 rounded-lg"
+                <b-button
+                  variant="primary"
+                  href="https://youtu.be/TNOJcKMxO7o"
+                  target="_blank"
+                  class="mt-5 px-4 py-2 rounded-lg"
                   ><span><b-icon icon="play-fill" class="mr-2"></b-icon></span>
                   Watch now</b-button
                 >
                 <b-button
                   variant="outline-dark"
+                  href="https://youtu.be/TNOJcKMxO7o"
+                  target="_blank"
                   class="mt-5 px-4 py-2 rounded-lg"
                   ><span><b-icon icon="share"></b-icon></span
                 ></b-button>
@@ -326,12 +350,52 @@
                   Learn how to directly support your favorite creator through
                   the direct contribution feature.
                 </p>
-                <b-button variant="primary" class="mt-5 px-4 py-2 rounded-lg"
+                <b-button
+                  variant="primary"
+                  href="https://youtu.be/ZxstS_FsyJU"
+                  target="_blank"
+                  class="mt-5 px-4 py-2 rounded-lg"
                   ><span><b-icon icon="play-fill" class="mr-2"></b-icon></span>
                   Watch now</b-button
                 >
                 <b-button
                   variant="outline-dark"
+                  href="https://youtu.be/ZxstS_FsyJU"
+                  target="_blank"
+                  class="mt-5 px-4 py-2 rounded-lg"
+                  ><span><b-icon icon="share"></b-icon></span
+                ></b-button>
+              </b-col>
+            </b-row>
+            <b-row class="tutorials__section__card">
+              <b-col cols="12" lg="6">
+                <iframe
+                  class="tutorial__video"
+                  src="https://www.youtube.com/embed/1jmZGAyPCv8"
+                  title="YouTube video player"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen
+                ></iframe>
+              </b-col>
+              <b-col cols="12" lg="6" class="py-2 px-0 px-lg-5">
+                <h3 class="font-weight-bold mt-4 mt-lg-0">How claim a goal</h3>
+                <p style="opacity: 60%">
+                  Meet your goals through the realization of the claim of the
+                  contributions you make in your goals.
+                </p>
+                <b-button
+                  variant="primary"
+                  href="https://youtu.be/1jmZGAyPCv8"
+                  target="_blank"
+                  class="mt-5 px-4 py-2 rounded-lg"
+                  ><span><b-icon icon="play-fill" class="mr-2"></b-icon></span>
+                  Watch now</b-button
+                >
+                <b-button
+                  variant="outline-dark"
+                  href="https://youtu.be/1jmZGAyPCv8"
+                  target="_blank"
                   class="mt-5 px-4 py-2 rounded-lg"
                   ><span><b-icon icon="share"></b-icon></span
                 ></b-button>
