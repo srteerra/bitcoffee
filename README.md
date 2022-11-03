@@ -11,6 +11,7 @@
 
 Bitcoffee is a CrowdFunding Dapp on the RSK network, in which anyone can raise funds for their personal interests, campaigns, charity funds, etc as well as for their followers can follow their goals, this through the use of crypto assets such as RBTC, Stablecoins from RSK or our own token BITC (Bitcoffee Token).
 
+### This platform is now working at [bitcoffee.site](https://www.bitcoffee.site/#/home) and every smart contracs is fully functional.
 
 # Table of contents
 - [Pitch](#Pitch)
@@ -83,7 +84,7 @@ This is possible with the [SDK](https://developers.rsk.co/rif/scheduler/sdk/) of
 # Our Contracts
 See our token and the Crowdfunding smart contract on the RSK Explorer.
   #### [Bitcoffee Token Contract](https://explorer.testnet.rsk.co/address/0x2f395a03820af458ae3e39fca40c9dc80223492d)
-  #### [Bitcoffee Crowdfunding Contract](https://explorer.testnet.rsk.co/address/0xf927aa202d6f565e0c9df1753fa00e28f2dcd9cc)
+  #### [Bitcoffee Crowdfunding Contract](https://explorer.testnet.rsk.co/address/0x25ef68cfa7c1066c4b8d106e58f0de3baf2c5432)
 <br />
 both already deployed on RSK Testnet and implemented in the application.
 
