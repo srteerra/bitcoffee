@@ -16,11 +16,13 @@
             </h1>
             <p class="my-3">Members and more</p>
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure,
-              odio? Optio ducimus laboriosam expedita perspiciatis, esse
-              consectetur quasi porro minus voluptatibus. Et temporibus suscipit
-              fuga, a consectetur vitae cum iste, dolor incidunt aspernatur
-              voluptas nisi, ullam maiores recusandae.
+              Bitcoffee team is composed by Angel, Carlos, Jonathan, we are
+              passionate about the projects that like to learn new things, as
+              well as being part of the discoveries of these new technologies.
+              <br />
+              <br />
+              We have been working together for almost four years so we are used
+              to work together in our multiple projects.
             </p>
           </div>
         </b-col>
@@ -116,14 +118,14 @@
           </p>
           <b-button
             class="token-address__button w-75 mx-auto bg-dark font-weight-bold p-3"
-            @click="copyAddress('0xc351155C80aCD043BD5F8FE7ffc8536af1fF9375')"
+            @click="copyAddress('0xc351155C80aCD043BD5F8FE7ffc8536af1fF9375aa')"
             v-b-tooltip.click="'Copied'"
-            >0xc351155C80aCD043BD5F8FE7ffc8536af1fF9375
+            >0xc351155C80aCD043BD5F8FE7ffc8536af1fF9375aa
             <span class="px-2"><b-icon icon="files"></b-icon></span
           ></b-button>
           <b-button
             class="token-address-short__button w-75 mx-auto bg-dark font-weight-bold p-3"
-            @click="copyAddress('0xc351155C80aCD043BD5F8FE7ffc8536af1fF9375')"
+            @click="copyAddress('0xc351155C80aCD043BD5F8FE7ffc8536af1fF9375aa')"
             v-b-tooltip.click="'Copied'"
             >0xc3...9375 <span class="px-2"><b-icon icon="files"></b-icon></span
           ></b-button>

@@ -509,7 +509,7 @@
               </b-col>
               <b-col class="my-3" cols="12" md="6">
                 <b-button
-                  :disabled="!launchValid || !termsValid || !inValidation"
+                  :disabled="!launchValid || !termsValid || !inputsValidation"
                   @click="launchGoal()"
                   class="w-100 font-weight-bold"
                   pill
@@ -898,14 +898,6 @@ export default {
       isAvailable: false,
       fetchingPage: false,
       terms: false,
-      cards: [
-        { id: "g1" },
-        // { title: "", desc: "", category: "", goal: "" },
-        { id: "g2" },
-        { id: "g3" },
-        { id: "g4" },
-        { id: "g4" },
-      ],
       selectedHotGoal: null,
       monthNames: [
         "January",
@@ -937,7 +929,13 @@ export default {
       newTwitter: null,
       newTwitch: null,
       newYoutube: null,
-      holea: 1,
+
+      maxLength10: 10,
+      maxLength20: 20,
+      maxLength30: 30,
+      maxLength50: 50,
+      maxLength70: 70,
+      maxLength100: 100,
 
       maxLength10: 10,
       maxLength20: 20,
@@ -965,7 +963,7 @@ export default {
       formattedStart: "",
       formattedEnd: "",
 
-      goalCategory: null,
+      goalCategory: "",
 
       goalDesc: "",
       goalAmount: "",
@@ -1259,11 +1257,6 @@ export default {
     },
     reset() {
       if (this.pickerDis === true) {
-        // Get today date for date-picker
-        const today = new Date();
-        const MM = today.getMonth() + 1;
-        const YYYY = today.getFullYear();
-        const DD = today.getDate();
         // Set the current date in date-picker
         this.goalDateStart = "";
         this.goalDateEnd = "";
@@ -1286,29 +1279,17 @@ export default {
         return true;
       }
     },
-    catValidation() {
-      return this.goalCategory != null;
-    },
-    titleValidation() {
-      return this.goalTitle.length > 3;
-    },
-    descValidation() {
-      return this.goalDesc.length > 5;
-    },
-    amountValidation() {
-      return this.goalAmount != "";
-    },
 
     inputsValidation() {
       if (
-        this.catValidation &&
-        this.titleValidation &&
-        this.descValidation &&
-        this.amountValidation
+        this.goalCategory != "" &&
+        this.goalTitle != "" &&
+        this.goalDesc != "" &&
+        this.goalAmount != ""
       ) {
-        this.inValidation = true;
+        return true;
       } else {
-        this.inValidation = false;
+        return false;
       }
     },
   },

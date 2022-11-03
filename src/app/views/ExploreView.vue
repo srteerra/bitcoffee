@@ -98,7 +98,11 @@
           <ul
             class="d-flex text-center justify-content-center justify-content-md-around flex-wrap p-0 m-0"
           >
-            <li v-for="(campaign, index) in campaigns_rif" v-bind:key="index">
+            <li
+              style="max-width: 33%"
+              v-for="(campaign, index) in campaigns_rif"
+              v-bind:key="index"
+            >
               <UserGoalCard
                 :collapse_a="'card' + index"
                 :collapse_b="'card' + index"
