@@ -13,6 +13,7 @@ Bitcoffee is a CrowdFunding Dapp on the RSK network, in which anyone can raise f
 
 # Table of contents
 - [Pitch](#Pitch)
+- [Smart contract interactions](#smart-contract-interactions)
 - [Features](#features)
 - [Built with](#built-with)
 - [Workflow](#WorkFlow)
