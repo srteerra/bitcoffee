@@ -406,7 +406,7 @@
                   class="btn font-weight-bold w-100 mx-auto"
                   variant="outline-dark"
                   pill
-                  v-if="!time"
+                  v-if="!time && !compareResult"
                   @click="refundRIF({ id: campId })"
                   >REFUND</b-button
                 >

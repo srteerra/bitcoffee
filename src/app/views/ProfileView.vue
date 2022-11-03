@@ -509,7 +509,7 @@
               </b-col>
               <b-col class="my-3" cols="12" md="6">
                 <b-button
-                  :disabled="!launchValid || !termsValid || !inValidation"
+                  :disabled="!launchValid || !terms"
                   @click="launchGoal()"
                   class="w-100 font-weight-bold"
                   pill
@@ -898,14 +898,6 @@ export default {
       isAvailable: false,
       fetchingPage: false,
       terms: false,
-      cards: [
-        { id: "g1" },
-        // { title: "", desc: "", category: "", goal: "" },
-        { id: "g2" },
-        { id: "g3" },
-        { id: "g4" },
-        { id: "g4" },
-      ],
       selectedHotGoal: null,
       monthNames: [
         "January",
@@ -937,7 +929,6 @@ export default {
       newTwitter: null,
       newTwitch: null,
       newYoutube: null,
-      holea: 1,
 
       maxLength10: 10,
       maxLength20: 20,
