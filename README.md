@@ -9,18 +9,22 @@
 
 Bitcoffee is a CrowdFunding Dapp on the RSK network, in which anyone can raise funds for their personal interests, campaigns, charity funds, etc as well as for their followers can follow their goals, this through the use of crypto assets such as RBTC, Stablecoins from RSK or our own token BITC (Bitcoffee Token).
 
-### This platform is now working at [bitcoffee.site](https://www.bitcoffee.site/#/home) and every smart contracs is fully functional.
+### This platform is now working at [bitcoffee.site](https://www.bitcoffee.site/#/home) and every Smart Contract is fully functional and tested.
 
 # Table of contents
-- [Pitch](#Pitch)
+- [Pitch](#pitch)
 - [Smart contract interactions](#smart-contract-interactions)
 - [Features](#features)
 - [Built with](#built-with)
-- [Workflow](#WorkFlow)
+- [Workflow](#workflow)
 - [Roadmap](#roadmap)
 - [Our Contracts](#our-contracts)
   - [Bitcoffee Token](#bitcoffee-token-contract)
   - [Crowdfunding Contract](#bitcoffee-crowdfunding-contract)
+- [Testing](#contracts-testing)
+  - [Bitcoffee testing](#bitcoffee-testing)
+  - [Crowdfund Bitcoffee Testing](#crowdfund-bitcoffee-testing)
+  - [Crowdfund tRIF Testing](#crowdfund-trif-testing)
 - [Screenshots](#screenshots)
 - [Authors](#authors)
 - [See our Demo](#demo-on-figma)
@@ -174,6 +178,8 @@ This is possible with the [SDK](https://developers.rsk.co/rif/scheduler/sdk/) of
       }
   }
 ```
+This Smart Contract is tested with Truffle and is completely functional in the platform.
+
 #### [Bitcoffee Crowdfunding Contract](https://explorer.testnet.rsk.co/address/0x25ef68cfa7c1066c4b8d106e58f0de3baf2c5432)
 ```solidity
   // SPDX-License-Identifier: MIT
@@ -357,7 +363,7 @@ This is possible with the [SDK](https://developers.rsk.co/rif/scheduler/sdk/) of
       }
   }
 ```
-This Smart Contract is tested with Truffle and is completely functional in the platform.
+This Smart Contract is tested with Truffle and is completely functional in the platform. We followed this [RSK Guide](https://developers.rsk.co/tutorials/ethereum-devs/truffle-test/)
 
 #### This contract can do:
 - Create a campaign
@@ -369,11 +375,13 @@ This Smart Contract is tested with Truffle and is completely functional in the p
 <br />
 
 ## Contracts Testing
+We used Truffle to test our Smart Contracts. Everything is working well ☕
+
 ### Bitcoffee testing:
 ![WhatsApp Image 2022-11-03 at 19 43 35](https://user-images.githubusercontent.com/74383100/199867261-40bde3a2-ad91-4442-aba8-c71029edcdfa.jpg)
-### Crowdfund (Bitcoffee) testing:
+### Crowdfund Bitcoffee Testing:
 ![WhatsApp Image 2022-11-03 at 19 52 38](https://user-images.githubusercontent.com/74383100/199868166-8ac865af-e94c-4a66-b037-3c1b17436b16.jpg)
-### Crowdfund (RIF) testing:
+### Crowdfund tRIF Testing:
 ![WhatsApp Image 2022-11-03 at 19 51 00](https://user-images.githubusercontent.com/74383100/199867955-d87eb5a7-6884-48c6-b189-b4f96e5d0ae0.jpg)
 
 
@@ -420,7 +428,11 @@ cd bitcoffee/
 ```bash
 git clone https://github.com/srteerra/bitcoffee.git
 ```
-### 4. Install dependences with:
+### 4. Move on terminal to the new repo folder.
+```bash
+cd bitcoffee
+```
+### 5. Install dependences with:
 ```bash
 npm install
 ```
