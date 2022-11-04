@@ -9,18 +9,22 @@
 
 Bitcoffee is a CrowdFunding Dapp on the RSK network, in which anyone can raise funds for their personal interests, campaigns, charity funds, etc as well as for their followers can follow their goals, this through the use of crypto assets such as RBTC, Stablecoins from RSK or our own token BITC (Bitcoffee Token).
 
-### This platform is now working at [bitcoffee.site](https://www.bitcoffee.site/#/home) and every smart contracs is fully functional.
+### This platform is now working at [bitcoffee.site](https://www.bitcoffee.site/#/home) and every Smart Contract is fully functional and tested.
 
 # Table of contents
-- [Pitch](#Pitch)
+- [Pitch](#pitch)
 - [Smart contract interactions](#smart-contract-interactions)
 - [Features](#features)
 - [Built with](#built-with)
-- [Workflow](#WorkFlow)
+- [Workflow](#workflow)
 - [Roadmap](#roadmap)
 - [Our Contracts](#our-contracts)
   - [Bitcoffee Token](#bitcoffee-token-contract)
   - [Crowdfunding Contract](#bitcoffee-crowdfunding-contract)
+- [Testing](#contracts-testing)
+  - [Bitcoffee testing](#bitcoffee-testing)
+  - [Crowdfund Bitcoffee Testing](#crowdfund-bitcoffee-testing)
+  - [Crowdfund tRIF Testing](#crowdfund-trif-testing)
 - [Screenshots](#screenshots)
 - [Authors](#authors)
 - [See our Demo](#demo-on-figma)
@@ -31,42 +35,51 @@ Bitcoffee is a CrowdFunding Dapp on the RSK network, in which anyone can raise f
 - [Project Structure](#project-structure)
 
 # Pitch
-[![Alt text](https://img.youtube.com/vi/Acfm1Ey-9Lw/0.jpg)](https://www.youtube.com/watch?v=Acfm1Ey-9Lw)
+[![Alt text](https://ipfs.io/ipfs/QmRnWBGvLBja9m3U5j2QBMpnXdLHaoxP3RoueZ8MJHFRFr?filename=pitch.jpg)](https://www.youtube.com/watch?v=Acfm1Ey-9Lw)
+
+# Live demo
+[![Alt text](https://ipfs.io/ipfs/QmbqVUmXsSFMQkUeiW76CDrujDz3hB4a3rfn4F7S3HSQf1?filename=demo.jpg)](https://youtu.be/qoM2SKe9Dp0)
 
 ## Smart contract interactions
 ### How to claim a goal:
 
-[![Alt text](https://img.youtube.com/vi/1jmZGAyPCv8/0.jpg)](https://www.youtube.com/watch?v=1jmZGAyPCv8&t=2s)
+[![Alt text](https://ipfs.io/ipfs/QmRbsuvvQsgsAbyEVKJLB47xHRMZXbctSMhsZrVQ49nk11?filename=claim.jpg)](https://www.youtube.com/watch?v=1jmZGAyPCv8&t=2s)
 
 Meet your goals through the realization of the claim of the contributions you make in your goals.
 
 ### How to create a wallet:
 
-[![Alt text](https://img.youtube.com/vi/EmsgVGoXhnA/0.jpg)](https://www.youtube.com/watch?v=EmsgVGoXhnA)
+[![Alt text](https://ipfs.io/ipfs/QmPUXdw6ujBbHeKtWjYxu4mtnjTjBPdx1N4wuctH1KxCBi?filename=wallet.jpg)](https://www.youtube.com/watch?v=EmsgVGoXhnA)
 
 Start interacting with our platform through a wallet which we will teach you how to create step by step.
 
 ### How to contribute:
 
-[![Alt text](https://img.youtube.com/vi/C9TWsQghfGA/0.jpg)](https://www.youtube.com/watch?v=C9TWsQghfGA)
+[![Alt text](https://ipfs.io/ipfs/Qmf68BauQbXxUJ7HXB5nE1YU6bUvMKnNDSjxqNip5LkJFf?filename=contribute.jpg)](https://www.youtube.com/watch?v=C9TWsQghfGA)
 
 Start supporting a creator you follow by contributing to their goals which you can fund on our platform.
 
+### How to edit profile:
+
+[![Alt text](https://ipfs.io/ipfs/QmPSXoGxPf1j1sDXB4Kw79CuY6YXTGZo5MdfktnnTtMLMx?filename=profile.jpg)](https://youtu.be/ycsesNDEE-E)
+
+Set up your profile to start creating campaigns and interact with others in the platform
+
 ### How to refund a goal:
 
-[![Alt text](https://img.youtube.com/vi/TNOJcKMxO7o/0.jpg)](https://www.youtube.com/watch?v=TNOJcKMxO7o)
+[![Alt text](https://ipfs.io/ipfs/QmXpmUNBoq5tPYQXAbuboRuPRa8bDpioD8ZPzY2AHiu83U?filename=refund.jpg)](https://www.youtube.com/watch?v=TNOJcKMxO7o)
 
 Learn how to refund your contributions made to goals that were not met.
 
 ### How to send a donation:
 
-[![Alt text](https://img.youtube.com/vi/ZxstS_FsyJU/0.jpg)](https://www.youtube.com/watch?v=ZxstS_FsyJU)
+[![Alt text](https://ipfs.io/ipfs/Qmbu4ARtvhaq46An2EYeUUtXbjjRxWeFVLyajqUL6wsLjy?filename=donation.jpg)](https://www.youtube.com/watch?v=ZxstS_FsyJU)
 
 Learn how to directly support your favorite creator through the direct contribution feature.
 
 ### How to launch a goal:
 
-[![Alt text](https://img.youtube.com/vi/Kg1h0uZX6G8/0.jpg)](https://www.youtube.com/watch?v=Kg1h0uZX6G8)
+[![Alt text](https://ipfs.io/ipfs/QmX9F8z7rx8k6VSPErAVjxrYw1FcEGxtKD7LS9qX65NwWW?filename=launch.jpg)](https://www.youtube.com/watch?v=Kg1h0uZX6G8)
 
 Launch your first goal to achieve your monetary goals through our platform which provides you with the tools to achieve it.
 
@@ -174,6 +187,8 @@ This is possible with the [SDK](https://developers.rsk.co/rif/scheduler/sdk/) of
       }
   }
 ```
+This Smart Contract is tested with Truffle and is completely functional in the platform.
+
 #### [Bitcoffee Crowdfunding Contract](https://explorer.testnet.rsk.co/address/0x25ef68cfa7c1066c4b8d106e58f0de3baf2c5432)
 ```solidity
   // SPDX-License-Identifier: MIT
@@ -357,7 +372,7 @@ This is possible with the [SDK](https://developers.rsk.co/rif/scheduler/sdk/) of
       }
   }
 ```
-This Smart Contract is tested with Truffle and is completely functional in the platform.
+This Smart Contract is tested with Truffle and is completely functional in the platform. We followed this [RSK Guide](https://developers.rsk.co/tutorials/ethereum-devs/truffle-test/)
 
 #### This contract can do:
 - Create a campaign
@@ -367,6 +382,17 @@ This Smart Contract is tested with Truffle and is completely functional in the p
 - Claim tokens from campaign
 - Refund tokens from campaign
 <br />
+
+## Contracts Testing
+We used Truffle to test our Smart Contracts. Everything is working well ☕
+
+### Bitcoffee testing:
+![WhatsApp Image 2022-11-03 at 19 43 35](https://user-images.githubusercontent.com/74383100/199867261-40bde3a2-ad91-4442-aba8-c71029edcdfa.jpg)
+### Crowdfund Bitcoffee Testing:
+![WhatsApp Image 2022-11-03 at 19 52 38](https://user-images.githubusercontent.com/74383100/199868166-8ac865af-e94c-4a66-b037-3c1b17436b16.jpg)
+### Crowdfund tRIF Testing:
+![WhatsApp Image 2022-11-03 at 19 51 00](https://user-images.githubusercontent.com/74383100/199867955-d87eb5a7-6884-48c6-b189-b4f96e5d0ae0.jpg)
+
 
 # Screenshots
 ### Home View:
@@ -411,7 +437,11 @@ cd bitcoffee/
 ```bash
 git clone https://github.com/srteerra/bitcoffee.git
 ```
-### 4. Install dependences with:
+### 4. Move on terminal to the new repo folder.
+```bash
+cd bitcoffee
+```
+### 5. Install dependences with:
 ```bash
 npm install
 ```
@@ -433,7 +463,10 @@ http:/localhost:8080/
     $ BitCoffee Tree
     bitcoffee/
     ├── build:
-    │    ├── contracts/:                         # Folder for Smart Contracts JSON.
+    │    └── contracts/:                        # Folder for Smart Contracts JSON.
+    ├── migrations/:
+    │    ├── 1_initial_migration.js:            # Initial migration.
+    │    └── 2_deploy_contracts.js:             # Smart Contracts deploy.
     ├── contracts/:  
     |    ├── Bitcoffee.sol:                     # Bitcoffee Smart Contract ERC-20 token.
     │    ├── CrowdFund.sol:                     # CrowdFunding Smart Contract for Bitcoffee token.
@@ -466,4 +499,9 @@ http:/localhost:8080/
     │    ├──lib/:                               # Folder for local modules and tools.
     │    └──app.js:                             # File to run the aplication. 
     ├── studio/:                                # Sanity Folder.
+    ├── test/:                                  # Smart Contracts testing.
+    │    ├──Bitcoffee.js:                       # Testing for Bitcoffee Smart Contract.
+    │    ├──CrowdFund.js:                       # Testing for CrowdFund (Bitcoffee) Smart Contract.
+    │    └──CrowdFundERC677.js:                 # Testing for CrowdFund (tRIF) Smart Contract.
+    ├── webpack.config.js                       # Webpack configurations for compile.
     └── README.md:                              # Default README file.
