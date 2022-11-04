@@ -454,7 +454,10 @@ http:/localhost:8080/
     $ BitCoffee Tree
     bitcoffee/
     ├── build:
-    │    ├── contracts/:                         # Folder for Smart Contracts JSON.
+    │    └── contracts/:                        # Folder for Smart Contracts JSON.
+    ├── migrations/:
+    │    ├── 1_initial_migration.js:            # Initial migration.
+    │    └── 2_deploy_contracts.js:             # Smart Contracts deploy.
     ├── contracts/:  
     |    ├── Bitcoffee.sol:                     # Bitcoffee Smart Contract ERC-20 token.
     │    ├── CrowdFund.sol:                     # CrowdFunding Smart Contract for Bitcoffee token.
@@ -487,4 +490,9 @@ http:/localhost:8080/
     │    ├──lib/:                               # Folder for local modules and tools.
     │    └──app.js:                             # File to run the aplication. 
     ├── studio/:                                # Sanity Folder.
+    ├── test/:                                  # Smart Contracts testing.
+    │    ├──Bitcoffee.js:                       # Testing for Bitcoffee Smart Contract.
+    │    ├──CrowdFund.js:                       # Testing for CrowdFund (Bitcoffee) Smart Contract.
+    │    └──CrowdFundERC677.js:                 # Testing for CrowdFund (tRIF) Smart Contract.
+    ├── webpack.config.js                       # Webpack configurations for compile.
     └── README.md:                              # Default README file.
