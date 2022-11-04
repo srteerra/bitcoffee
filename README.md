@@ -35,42 +35,51 @@ Bitcoffee is a CrowdFunding Dapp on the RSK network, in which anyone can raise f
 - [Project Structure](#project-structure)
 
 # Pitch
-[![Alt text](https://img.youtube.com/vi/Acfm1Ey-9Lw/0.jpg)](https://www.youtube.com/watch?v=Acfm1Ey-9Lw)
+[![Alt text](https://ipfs.io/ipfs/QmRnWBGvLBja9m3U5j2QBMpnXdLHaoxP3RoueZ8MJHFRFr?filename=pitch.jpg)](https://www.youtube.com/watch?v=Acfm1Ey-9Lw)
+
+# Live demo
+[![Alt text](https://ipfs.io/ipfs/QmbqVUmXsSFMQkUeiW76CDrujDz3hB4a3rfn4F7S3HSQf1?filename=demo.jpg)](https://youtu.be/qoM2SKe9Dp0)
 
 ## Smart contract interactions
 ### How to claim a goal:
 
-[![Alt text](https://img.youtube.com/vi/1jmZGAyPCv8/0.jpg)](https://www.youtube.com/watch?v=1jmZGAyPCv8&t=2s)
+[![Alt text](https://ipfs.io/ipfs/QmRbsuvvQsgsAbyEVKJLB47xHRMZXbctSMhsZrVQ49nk11?filename=claim.jpg)](https://www.youtube.com/watch?v=1jmZGAyPCv8&t=2s)
 
 Meet your goals through the realization of the claim of the contributions you make in your goals.
 
 ### How to create a wallet:
 
-[![Alt text](https://img.youtube.com/vi/EmsgVGoXhnA/0.jpg)](https://www.youtube.com/watch?v=EmsgVGoXhnA)
+[![Alt text](https://ipfs.io/ipfs/QmPUXdw6ujBbHeKtWjYxu4mtnjTjBPdx1N4wuctH1KxCBi?filename=wallet.jpg)](https://www.youtube.com/watch?v=EmsgVGoXhnA)
 
 Start interacting with our platform through a wallet which we will teach you how to create step by step.
 
 ### How to contribute:
 
-[![Alt text](https://img.youtube.com/vi/C9TWsQghfGA/0.jpg)](https://www.youtube.com/watch?v=C9TWsQghfGA)
+[![Alt text](https://ipfs.io/ipfs/Qmf68BauQbXxUJ7HXB5nE1YU6bUvMKnNDSjxqNip5LkJFf?filename=contribute.jpg)](https://www.youtube.com/watch?v=C9TWsQghfGA)
 
 Start supporting a creator you follow by contributing to their goals which you can fund on our platform.
 
+### How to edit profile:
+
+[![Alt text](https://ipfs.io/ipfs/QmPSXoGxPf1j1sDXB4Kw79CuY6YXTGZo5MdfktnnTtMLMx?filename=profile.jpg)](https://youtu.be/ycsesNDEE-E)
+
+Set up your profile to start creating campaigns and interact with others in the platform
+
 ### How to refund a goal:
 
-[![Alt text](https://img.youtube.com/vi/TNOJcKMxO7o/0.jpg)](https://www.youtube.com/watch?v=TNOJcKMxO7o)
+[![Alt text](https://ipfs.io/ipfs/QmXpmUNBoq5tPYQXAbuboRuPRa8bDpioD8ZPzY2AHiu83U?filename=refund.jpg)](https://www.youtube.com/watch?v=TNOJcKMxO7o)
 
 Learn how to refund your contributions made to goals that were not met.
 
 ### How to send a donation:
 
-[![Alt text](https://img.youtube.com/vi/ZxstS_FsyJU/0.jpg)](https://www.youtube.com/watch?v=ZxstS_FsyJU)
+[![Alt text](https://ipfs.io/ipfs/Qmbu4ARtvhaq46An2EYeUUtXbjjRxWeFVLyajqUL6wsLjy?filename=donation.jpg)](https://www.youtube.com/watch?v=ZxstS_FsyJU)
 
 Learn how to directly support your favorite creator through the direct contribution feature.
 
 ### How to launch a goal:
 
-[![Alt text](https://img.youtube.com/vi/Kg1h0uZX6G8/0.jpg)](https://www.youtube.com/watch?v=Kg1h0uZX6G8)
+[![Alt text](https://ipfs.io/ipfs/QmX9F8z7rx8k6VSPErAVjxrYw1FcEGxtKD7LS9qX65NwWW?filename=launch.jpg)](https://www.youtube.com/watch?v=Kg1h0uZX6G8)
 
 Launch your first goal to achieve your monetary goals through our platform which provides you with the tools to achieve it.
 
