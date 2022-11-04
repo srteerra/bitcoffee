@@ -368,6 +368,15 @@ This Smart Contract is tested with Truffle and is completely functional in the p
 - Refund tokens from campaign
 <br />
 
+## Contracts Testing
+### Bitcoffee testing:
+![WhatsApp Image 2022-11-03 at 19 43 35](https://user-images.githubusercontent.com/74383100/199867261-40bde3a2-ad91-4442-aba8-c71029edcdfa.jpg)
+### Crowdfund (Bitcoffee) testing:
+![WhatsApp Image 2022-11-03 at 19 52 38](https://user-images.githubusercontent.com/74383100/199868166-8ac865af-e94c-4a66-b037-3c1b17436b16.jpg)
+### Crowdfund (RIF) testing:
+![WhatsApp Image 2022-11-03 at 19 51 00](https://user-images.githubusercontent.com/74383100/199867955-d87eb5a7-6884-48c6-b189-b4f96e5d0ae0.jpg)
+
+
 # Screenshots
 ### Home View:
 ![Slide 16_9 - 1](https://user-images.githubusercontent.com/74383100/192910250-2ffe2b4c-9f20-42db-9754-75288642c0a6.png)
